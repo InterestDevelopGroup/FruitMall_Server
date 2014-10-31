@@ -3,7 +3,7 @@
 /**
  * 管理员 Action
  *
- * @author lzjjie
+ * @author Zonkee
  * @version 1.0.0
  * @since 1.0.0
  */
@@ -51,7 +51,11 @@ class AdministratorAction extends AdminAction {
             $admin = D('AdminUser');
             $total = $admin->getAdminCount();
             if ($total) {
-                $rows = $admin->getAdminList($page, $pageSize, $order, $sort);
+                $rows = array_map(function($v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
+                    return $v;
+                }, $admin->getAdminList($page, $pageSize, $order, $sort));
             } else {
                 $rows = null;
             }

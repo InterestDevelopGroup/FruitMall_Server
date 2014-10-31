@@ -34,11 +34,16 @@ class LoginAction extends Action {
             $adminUser = D('AdminUser');
             $check = $adminUser->auth($username, $password);
             if ($check['status']) {
-                session('admin_info', $check['admin_info']);
-                $adminUser->where("id = {$check['admin_info']['id']}")->save(array(
-                    'last_time' => time()
-                ));
-                $this->redirect(U('/'));
+                if ($check['admin_info']['status']) {
+                    session('admin_info', $check['admin_info']);
+                    $adminUser->where("id = {$check['admin_info']['id']}")->save(array(
+                        'last_time' => time()
+                    ));
+                    $this->redirect(U('/'));
+                } else {
+                    vendor('Message.Message');
+                    Message::showMsg('对不起！您的帐号已经被禁用，请联系系统管理员！', U('/login'));
+                }
             } else {
                 vendor('Message.Message');
                 Message::showMsg($check['msg'], U('/login'));

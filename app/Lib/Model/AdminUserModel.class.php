@@ -3,7 +3,7 @@
 /**
  * tea_admin_user 表模型
  *
- * @author lzjjie
+ * @author Zonkee
  * @version 1.0.0
  * @since 1.0.0
  */
@@ -177,14 +177,16 @@ class AdminUserModel extends Model {
      */
     public function getAdminList($page, $pageSize, $order, $sort) {
         return $this->field(array(
-            "id",
-            "username",
-            "real_name",
-            "email",
-            "desc",
-            "type",
-            "FROM_UNIXTIME(add_time)" => "add_time",
-            "IF(ISNULL(last_time), last_time, FROM_UNIXTIME(last_time))" => "last_time"
+            'id',
+            'username',
+            'password',
+            'real_name',
+            'email',
+            'add_time',
+            'last_time',
+            'type',
+            'status',
+            'desc'
         ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
     }
 

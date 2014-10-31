@@ -8,10 +8,11 @@
                 </div>
             </div>
         </div>
-
         <div class="top_4">
-            <input class="btn btn-primary" type="button" value="添加管理员" onclick="javascript:add();">&nbsp;&nbsp;
-            <input class="btn btn-primary" type="button" value="删除管理员" onclick="javascript:del();">
+            <input class="btn btn-primary" type="button" value="添加管理员"
+                onclick="javascript:add();">&nbsp;&nbsp; <input
+                class="btn btn-primary" type="button" value="删除管理员"
+                onclick="javascript:del();">
         </div>
         <div>
             <div id="maingrid4" style="margin: 0px auto; padding: 0px;"></div>
@@ -25,21 +26,31 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "帐号", name: 'username', align: 'center', width: '10%', isSort: true},
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '10%', isSort: true},
-            {display: "邮箱", name: 'email', align: 'center', width: '15%', isSort: false, render: function(rowdata, rowindex, value) {
-					return value ? value : '暂无';
-				}
-			},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '15%', isSort: true},
-            {display: "上次登录时间", name: 'last_time', align: 'center', width: '15%', isSort: true, render: function(rowdata, rowindex, value) {
-					return value ? value : '该帐号从未登录过系统';
-				}
-			},
-            {display: "简介", name: 'desc', align: 'left', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
-					return value ? value : '暂无';
-				}
-			}
+            {display: "帐号", name: 'username', align: 'center', width: '12%', isSort: true},
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: true},
+            {display: "邮箱", name: 'email', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "添加时间", name: 'add_time', align: 'center', width: '12%', isSort: true},
+            {display: "上次登录时间", name: 'last_time', align: 'center', width: '12%', isSort: true, render: function(rowdata, rowindex, value) {
+                    return value ? value : '从未登录';
+                }
+            },
+            {display: "状态", name: 'status', align: 'center', width: '6%', isSort: true, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? '正常' : '禁用';
+                }
+            },
+            {display: "简介", name: 'desc', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "操作", align: 'center', width:'6%', render: function(rowdata, rowindex, value) {
+                    var action = parseInt(rowdata.status) ? '禁用' : '启用';
+                    var status = parseInt(rowdata.status) ? 0 : 1;
+                    return '<a href="javascript:vid(0);" onclick="update_admin_status('+rowdata.id+', '+ status +')">'+action+'</a>';
+                }
+            }
             ],
             url: '<{:U("Administrator/management")}>',
             dataAction: 'server',
@@ -143,6 +154,10 @@ function isPromise() {
     }
 }
 
+function update_admin_status(id, status) {
+    alert(id);
+    alert(status);
+}
 //]]>
 </script>
 <include file="./Public/html/footer.html" />
