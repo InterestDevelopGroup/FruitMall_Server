@@ -16,7 +16,7 @@
 .logged-in{ width:800px;}
 .logged-in .title{ font-size:30px; line-height:1.1;}
 .logged-in .title .icon{ margin-left:18px;}
-.logged-in .content{ line-height:38px;}
+.logged-in .content{ line-height:24px;}
 .logged-in .content b{color:#1869a4; font-size:14px;}
 
 .password-reset{ width:340px;}
