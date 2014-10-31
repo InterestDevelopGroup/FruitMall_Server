@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+/**
+ *@desc account控制器css文件
+ *@author lizongjie
+ */
+
+/****common****/
+*{margin:0px;padding:0px;font-family:"微软雅黑";}
+
+/****index.phtml****/
+.top{width:100%;margin:12px auto 6px;}
+.top_1{width:100%;height:40px;line-height:40px;overflow:hidden;}
+.top_1_tit{height:40px;line-height:40px;float:left;font-size:20px;color:#666;font-weight:bolder;}
+.top_1_time{height:40px;line-height:40px;float:right;font-size:14px;font-weight:bolder;}
+.top_2{width:100%;height:40px;line-height:40px;overflow:hidden;}
+.top_2_tit{float:left;font-weight:bolder;}
+.top_2_button{float:left;margin-left:16px;}
+.top_2_button input{margin-top:3px;overflow:hidden;}
+.top_3{width:100%;height:24px;line-height:24px;overflow:hidden;}
+.top_3 span{font-weight:bolder;color:#f00;margin-left:40px;}
+.top_4{width:100%;height:40px;line-height:40px;}
+.top_5{width:100%;height:36px;line-height:36px;font-size:14px;font-weight:bolder;}
+.top_5 span{color:#00f;padding-left:6px;padding-right:6px;}

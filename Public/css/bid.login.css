@@ -1,0 +1,27 @@
+#main { padding-bottom:0;}
+#main .title {font-family:"Microsoft YaHei"; text-align:center; color:#00477b;}
+#main .title .icon{ margin:0 10px 0 18px;}
+#main .content{ padding-top:40px;}
+.login-form,.logged-in,.password-reset{ margin:70px auto 0;}
+
+.login-form{ width:600px; height:240px; padding:60px 0; border:1px solid #92bbdb; border-radius:6px; background:#fff url(../images/bid-login-bg.gif) no-repeat left bottom;}
+.login-form .title{font-weight:700; font-size:18px; line-height:2.4;}
+.login-form .icon{ margin-right:10px;}
+.login-form .content{ padding-left:100px;}
+.login-form .controls{ padding-left:10px;}
+.login-form .ui-text{ width:220px; padding:6px 4px;}
+.login-form .control-label{ line-height:26px;}
+.login-form .password .icon{ margin-right:13px;}
+
+.logged-in{ width:800px;}
+.logged-in .title{ font-size:30px; line-height:1.1;}
+.logged-in .title .icon{ margin-left:18px;}
+.logged-in .content{ line-height:38px;}
+.logged-in .content b{color:#1869a4; font-size:14px;}
+
+.password-reset{ width:340px;}
+.password-reset .title{font-size:18px; line-height:1.8; font-weight:700;}
+.password-reset .ui-text{ width:220px; padding:6px 4px;}
+.password-reset .control-label{ line-height:26px;}
+.password-reset .content{ margin-left:-30px;}
+.controls input[type="reset"] {margin-left:16px;}

@@ -1,0 +1,32 @@
+#contentA .title .checkbox{ font-size:16px; font-weight:700; text-align: left;}
+#contentA .content{ border-bottom:1px dashed #a8d0f0; padding:15px 10px; margin-bottom:20px;}
+#contentA .item{ line-height:26px;padding:8px 0}
+#contentA .item span{ display:inline-block; vertical-align:top}
+#contentA input[class^='input-']{ margin:0 6px 0 0;width:60px;}
+#contentA .checkbox + .ui-text{ margin-left:0}
+* html #contentA .checkbox{white-space:nowrap;}
+#contentA .content .list ul{ display:inline;}
+#contentA .content .list ul li{ margin-right:30px;display:inline;}
+#contentA .width80{ width:80px;}
+#contentA .width130{ width:130px;}
+#contentA .width220{ width:220px;}
+#contentA .width310{ width:310px;}
+
+#contentB {}
+
+#contentC {}
+
+#contentD {}
+
+#contentF .content{width:620px; margin:20px auto 0;}
+
+
+#contentG .content{width:600px; margin:20px auto 0;}
+#contentG .content .control-label{ padding-top:4px;}
+
+#contentH {}
+
+#contentI .content dl{ line-height:26px;}
+#contentI .content dt,#contentI .content dd{ height:20px; padding:3px 0}
+#contentI .content dt{ background-color:#bddaf2;padding:3px 0 3px 10px; margin:10px 0; font-size:14px;}
+#contentI .content dd{ padding-left:28px;}

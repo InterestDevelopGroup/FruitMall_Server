@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <include file="./Public/html/public_js_css.html"/>
+        <script type="text/javascript" src="__PUBLIC__/js/smartyFloat.js"></script>
+        <title>易茶茶行--品牌查询</title>
+    </head>
+
+    <body>
+        <!-- header begin-->
+        <include file="./Public/html/home_header.html" />
+        <!-- header end-->    
+        <!-- left_nav begin -->
+        <include file="./Public/html/left_nav.html" />
+        <!-- left nav end -->    
+        <!-- brand_goods begin -->
+        <div class="brand_goods">
+            <div class="brand_content">
+                <div class="brand_list">
+                    <!-- 先注释掉，换一种筛选方式
+                    <div class="year_filter">
+                        <h3>年份筛选：</h3>
+                        <div class="filter_body">
+                            <form action="{:U('Brand/index')}" method="post">
+                            <div class="year_sear clearfix">
+                                <input type="text" name="year" class="year_input" value="{$search.year}" />
+                                <input type="hidden" name="cate_id" value="{$cate_id}" />
+                                <div class="option" id="filter_box">下拉框</div>
+                            </div>
+                            </form>
+                            <div class="year_show" id="year_show">
+                                <ul>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2014))}">2014</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2013))}">2013</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2012))}">2012</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2011))}">2011</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2010))}">2010</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2009))}">2009</a></li>
+                                    <li><a href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2008))}">2008</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="year_list clearfix">
+                            <a <?php if($year == 1) echo 'class="cur"';?> href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>1))}">2000-2005</a>
+                            <a <?php if($year == 2) echo 'class="cur"';?> href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>2))}">2006-2010</a>
+                            <a <?php if($year == 3) echo 'class="cur"';?> href="{:U('Brand/index',array('cate_id'=>$cate_id,'year'=>3))}">2011-2014</a>
+                        </div>
+                    </div>
+                    -->
+                    <div class="filter_box">
+                        <div class="title">品牌茶叶-商品筛选</div>
+                        <div class="screeBox clearfix">
+                            <div class="fitel f_l">年份</div>
+                            <div class="fiter f_l">
+                                <a href="{:U('Brand/index',array('year'=>0))}" <?php if($_SESSION['search2']['year'] == 0) echo 'class="cur"';?>>不限<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2014))}" <?php if($_SESSION['search2']['year'] == 2014) echo 'class="cur"';?>>2014年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2013))}" <?php if($_SESSION['search2']['year'] == 2013) echo 'class="cur"';?>>2013年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2012))}" <?php if($_SESSION['search2']['year'] == 2012) echo 'class="cur"';?>>2012年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2011))}" <?php if($_SESSION['search2']['year'] == 2011) echo 'class="cur"';?>>2011年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2010))}" <?php if($_SESSION['search2']['year'] == 2010) echo 'class="cur"';?>>2010年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2009))}" <?php if($_SESSION['search2']['year'] == 2009) echo 'class="cur"';?>>2009年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2008))}" <?php if($_SESSION['search2']['year'] == 2008) echo 'class="cur"';?>>2008年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2007))}" <?php if($_SESSION['search2']['year'] == 2007) echo 'class="cur"';?>>2007年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2006))}" <?php if($_SESSION['search2']['year'] == 2006) echo 'class="cur"';?>>2006年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2005))}" <?php if($_SESSION['search2']['year'] == 2005) echo 'class="cur"';?>>2005年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2004))}" <?php if($_SESSION['search2']['year'] == 2004) echo 'class="cur"';?>>2004年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2003))}" <?php if($_SESSION['search2']['year'] == 2003) echo 'class="cur"';?>>2003年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2002))}" <?php if($_SESSION['search2']['year'] == 2002) echo 'class="cur"';?>>2002年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2001))}" <?php if($_SESSION['search2']['year'] == 2001) echo 'class="cur"';?>>2001年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>2000))}" <?php if($_SESSION['search2']['year'] == 2000) echo 'class="cur"';?>>2000年<span></span></a>
+                                <a href="{:U('Brand/index',array('year'=>1999))}" <?php if($_SESSION['search2']['year'] == 1999) echo 'class="cur"';?>>2000年以前<span></span></a>
+                            </div>
+                        </div>
+                        <div class="screeBox clearfix">
+                            <div class="fitel f_l">类型</div>
+                            <div class="fiter f_l">
+                                <a href="{:U('Brand/index',array('type'=>0))}" <?php if($_SESSION['search2']['type'] == 0) echo 'class="cur"';?>>不限<span></span></a>
+                                <a href="{:U('Brand/index',array('type'=>1))}" <?php if($_SESSION['search2']['type'] == 1) echo 'class="cur"';?>>饼茶<span></span></a>
+                                <a href="{:U('Brand/index',array('type'=>2))}" <?php if($_SESSION['search2']['type'] == 2) echo 'class="cur"';?>>沱茶<span></span></a>
+                                <a href="{:U('Brand/index',array('type'=>3))}" <?php if($_SESSION['search2']['type'] == 3) echo 'class="cur"';?>>砖茶<span></span></a>
+                                <a href="{:U('Brand/index',array('type'=>4))}" <?php if($_SESSION['search2']['type'] == 4) echo 'class="cur"';?>>散茶<span></span></a>
+                            </div>
+                        </div>
+                        <div class="screeBox clearfix">
+                            <div class="fitel f_l">生产工艺</div>
+                            <div class="fiter f_l">
+                                <a href="{:U('Brand/index',array('proart'=>0))}" <?php if($_SESSION['search2']['proart'] == 0) echo 'class="cur"';?>>不限<span></span></a>
+                                <a href="{:U('Brand/index',array('proart'=>1))}" <?php if($_SESSION['search2']['proart'] == 1) echo 'class="cur"';?>>生茶<span></span></a>
+                                <a href="{:U('Brand/index',array('proart'=>2))}" <?php if($_SESSION['search2']['proart'] == 2) echo 'class="cur"';?>>熟茶<span></span></a>
+                                <a href="{:U('Brand/index',array('proart'=>3))}" <?php if($_SESSION['search2']['proart'] == 3) echo 'class="cur"';?>>生熟混合<span></span></a>
+                            </div>
+                        </div>
+                        <div class="screeBox clearfix">
+                            <div class="fitel f_l">系列</div>
+                            <div class="fiter f_l">
+                                <a href="{:U('Brand/index',array('series'=>0))}" <?php if($_SESSION['search2']['series'] == 0) echo 'class="cur"';?>>不限<span></span></a>
+                                <?php foreach($series as $val):?>
+                                <a href="{:U('Brand/index',array('series'=>$val['id']))}" <?php if($_SESSION['search2']['series'] == $val['id']) echo 'class="cur"';?>>{$val.name}<span></span></a>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter_rst">
+                        <ul class="clearfix">
+                            <?php $i = 0; foreach($good_list as $val):?>
+                            <li <?php if($i % 6 == 5) echo 'class="last"';?>>
+                                <div class="name"><a href="{:U('Brand/detail',array('goods_id'=>$val['id']))}"><img width="148px" height="159px" src="{$val.image}" /></a></div>
+                                <div class="intro">
+                                    <p><a href="{:U('Brand/detail',array('goods_id'=>$val['id']))}">{$val.name}</a></p>
+                                    <p><span>参考价：</span>￥{$val._price}元</p>
+                                    <p>
+                                        <span>升跌：</span>
+                                        <?php if($val['trend'] == 'fall'):?>
+                                        <span class="green">降￥{$val.var_price}&nbsp;&nbsp;↓{$val.var_scale}</span>
+                                        <?php else:?>
+                                        <span class="red">升￥{$val.var_price}&nbsp;&nbsp;↑{$val.var_scale}</span>
+                                        <?php endif;?>
+                                    </p>
+                                </div>
+                            </li>
+                            <?php $i++; endforeach;?>
+                        </ul>
+                    </div>
+                    <div class="page">{$page}</div>
+                </div>
+            </div>
+        </div>
+        <!-- brand_goods end -->    
+        <div class="flower_side"></div>    
+        <div class="center">
+            <!-- footer begin -->
+            <include file="./Public/html/home_footer.html" />
+            <!-- footer end -->
+        </div>
+    </body>
+</html>

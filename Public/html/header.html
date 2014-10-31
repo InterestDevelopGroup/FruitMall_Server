@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/base.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/bootstrap.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/bid.public.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/bid.login.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/css/bid.set.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/lib/ligerUI/skins/Aqua/css/ligerui-all.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/lib/fileupload/css/jquery.fileupload.css" />
+        <link type="text/css" rel="stylesheet" href="__PUBLIC__/lib/jquery-jsonview/jquery.jsonview.css" />
+        <link type="text/css" rel="Stylesheet" href="__PUBLIC__/css/account.css" />
+        <script type="text/javascript" src="__PUBLIC__/js/jquery.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/core/base.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerGrid.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerDialog.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerToolBar.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerDateEditor.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerTextBox.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerComboBox.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerSpinner.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerCheckBox.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerTab.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/ligerUI/js/plugins/ligerTip.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/fileupload/js/vendor/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/fileupload/js/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/fileupload/js/jquery.fileupload.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/lib/jquery-jsonview/jquery.jsonview.js"></script>
+        <script type="text/javascript">
+        //<![CDATA[
+        // 自动适应宽度
+        function f_change() {
+            $(".l-grid-header-inner","#maingrid4").css("width","100%");
+            $(".l-grid-header-table","#maingrid4").css("width","100%");
+            $(".l-grid-body-inner","#maingrid4").css("width","100%");
+            $(".l-grid-body-table","#maingrid4").css("width","100%");
+            $(".l-grid-row-cell-inner","#maingrid4").css("width","100%");
+            $("table","#maingrid4").css("table-layout","fixed");
+            if(parseInt(this.options.total) <= 0){
+                $("#maingrid4").css({"height":"280px"});
+                $(".l-grid-body2").html("<div style='height:300px;width:100%;'><div style='height:100px;font-size:14px;font-weight:bolder;text-align:center;margin:120px auto;'>No data...</div></div>");
+                return false;
+            } else {
+                if (this.options.checkbox == false) {
+                    $("#maingrid4grid").css({"height":"100%"});
+                }
+            }
+        }
+        //获取选择行的数据属性
+        function getCheckedData(which) {
+            var rows = grid.getCheckedRows();
+            var arr = new Array();
+            $(rows).each(function () {
+                arr.push(parseInt(this[which]));
+            });
+            return arr;
+        }
+        //]]>
+        </script>
+        <style>
+        <!--
+        .l-text{ border:none;}
+        .l-trigger,.l-trigger-hover,.l-trigger-pressed{margin-top:4px;right:13px;}
+        -->
+        </style>
+    </head>
+    <body>
+        <div class="container">
+

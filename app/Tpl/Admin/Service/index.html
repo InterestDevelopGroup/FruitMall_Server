@@ -1,0 +1,139 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>客服一览
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <input class="btn btn-primary" type="button" value="添加客服" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="删除客服" onclick="javascript:del();">
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "联系人", name: 'contact', align: 'center', width: '16%', isSort: true},
+            {display: "联系电话", name: 'phone', align: 'center', width: '16%', isSort: true},
+            {display: "服务星级", name: 'level', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (parseInt(value)) {
+                        var str = '';
+                        var len = parseInt(value);
+                        for (var i = 1; i <= len; i++) {
+                            str += '★'
+                        }
+                        return '<font color="red">'+str+'</font>'
+                    } else {
+                        return '暂无评级';
+                    }
+                }
+            },
+            {display: "添加时间", name: 'add_time', align: 'center', width: '20%', isSort: true},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '20%', isSort: true},
+            {display: "操作", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
+                }
+            }
+            ],
+            url: '<{:U("Service/index")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//添加客服
+var addServiceDialog;
+function add() {
+    addServiceDialog = $.ligerDialog.open({
+        url: '<{:U("Service/add")}>', height: 350, width: 600,
+        isDrag: false, title: '添加客服',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addServiceDialog.frame.addServiceFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加客服回调
+function addServiceCallback(obj) {
+    addServiceDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+//删除客服
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个客服', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要删除选中的客服吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("Service/delete")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//编辑客服
+var updateServiceDialog;
+function update(id) {
+    updateServiceDialog = $.ligerDialog.open({
+        url: '<{:U("Service/update")}>?id='+id, height: 350, width: 600,
+        isDrag: false, title: '编辑客服',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateServiceDialog.frame.updateServiceFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑客服回调
+function updateServiceCallback(obj) {
+    updateServiceDialog.close();
+    if (1 == obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

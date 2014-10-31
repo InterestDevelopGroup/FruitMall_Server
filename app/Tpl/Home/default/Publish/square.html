@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <include file="./Public/html/public_js_css.html"/>
+        <script type="text/javascript" src="__PUBLIC__/js/smartyFloat.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/jwplayer/jwplayer.js"></script>
+        <title>易茶茶行--茶叶广场</title>
+        <script type="text/javascript">
+        (function($) {
+            $(document).ready(function(){
+                $('#tea_pic').uploadify({
+                    'swf'      : '__PUBLIC__/images/uploadify.swf',
+                    'uploader' : 'index.php?a=upload_image&m=Common',
+                    //'method'   : 'post',//方法，服务端可以用$_POST数组获取数据
+                    'buttonText' : '选择图片',//设置按钮文本
+                    //'multi'    : true,//允许同时上传多张图片
+                    //'uploadLimit' : <{$count}>,//一次最多只允许上传10张图片
+                    'width'	: 22,
+                    'height': 16,
+                    'fileTypeExts' : '*.jpeg; *.jpg; *.png',//限制允许上传的图片后缀
+                    'fileSizeLimit' : '2000KB',//限制上传的图片不得超过2000KB
+                    'onUploadSuccess' : function(file,data){
+                        //alert(data);
+                        var obj = jQuery.parseJSON(data);
+                        //alert(obj.error);
+                        var html = '<div class="upload_pic"><input type="hidden" class="ids" value="" name="ids[]"/><input type="hidden" class="pic" value="'+obj.pic+'" name="pic[]"/><input type="hidden" class="thumb" value="'+obj.thumb+'" name="thumb[]"/>';
+                        html += '<img style="width:150px;height:150px;" src="__ROOT__/'+obj.pic+'" /><a href="javascript:void(0)" class="del_pic" onclick="getDelete(this)">删除图片</a></div>';
+                        $("#piclist").append(html);
+                    }
+                });
+        
+                $('.inputName .txt_input').focus(function(){
+                    if($(this).val() == '请输入产品名称'){
+                        $(this).val('');
+                    }
+                    $(this).css('color','#000');
+                }).blur(function(){
+                    if($(this).val() == ''){
+                        $(this).val('请输入产品名称');
+                        $(this).css('color','#999');
+                    }
+                });
+        
+                $(".fancybox-effects-a").fancybox({
+                    helpers: {
+                        title : {
+                            type : 'outside'
+                        },
+                        overlay : {
+                            speedOut : 0
+                        }
+                    }
+                });
+            });
+        })(jQuery)
+        
+        function check(){
+            if($('.inputName .txt_input').val() == '请输入产品名称'){
+                alert('请输入产品名称');
+                return false;
+            }
+        }
+        
+        function getDelete(mthis){
+            var id = $(mthis).siblings('.ids').val();
+            var pic = $(mthis).siblings('.pic').val();
+            var thumb = $(mthis).siblings('.thumb').val();
+            $.get('__ROOT__/home/Common/delete_image',{id:id,pic:pic,thumb:thumb},function(){
+                $(mthis).parent().remove();
+            });
+        }
+        </script>
+    </head>
+
+    <body>
+        <!-- header begin-->
+        <include file="./Public/html/home_header.html" />
+        <!-- header end-->
+        <!-- left_nav begin -->
+        <include file="./Public/html/left_nav.html" />
+        <!-- left nav end -->
+        <!-- trade into begin -->
+        <div class="trade_body">
+            <div class="scroll_info">
+                <marquee onmouseout="this.start();" onmouseover="this.stop();">
+                    <ul class="clearfix">
+                        <?php $i = 0; foreach($publish_list as $val):?>
+                        <li><span>{$val.account}</span>&nbsp;&nbsp;<?php if($val['is_buy']){ echo '要买';}else{ echo '要卖';}?>&nbsp;&nbsp;{$val.name}&nbsp;&nbsp;{$val.batch}&nbsp;&nbsp;<span>{$val.price}元</span>&nbsp;&nbsp;<span>{$val.amount}</span>件&nbsp;&nbsp;{$val.business_number}</li>
+                        <?php $i++; endforeach;?>
+                    </ul>
+                </marquee>
+            </div>
+        </div>
+        <!-- trade info end -->    
+        <!-- banner begin -->
+        <include file="./Public/html/banner.html" />
+        <!-- banner end -->    
+        <!-- brand list begin -->
+        <include file="./Public/html/brand_list.html" />
+        <!-- brand list end -->    
+        <div class="flower_side"></div>    
+        <!-- square begin -->
+        <div cLass="main_square">
+            <div class="square clearfix">
+                <div class="square_l">
+                    <div class="trade_info">
+                        <div class="new_info"><a href="{:U('Publish/square')}">有{$publish_count}条新发布，点击查看</a></div>
+                    </div>
+                    <div class="trade_list">
+                        <ul>
+                            <?php foreach($publish_list as $val):?>
+                            <li>
+                                <div class="trade_detail clearfix">
+                                    <div class="detail_l">
+                                        <div class="img"><img width="91px" height="90px" src="__ROOT__{$val.avatar}" /></div>
+                                        <div class="title">
+                                            <?php if($val['is_buy'] == 0):?>
+                                            我要出
+                                            <?php elseif($val['is_buy'] == 1):?>
+                                            我要找
+                                            <?php endif;?>
+                                        </div>
+                                        <if condition="$val['is_buy'] eq 0">
+                                        <input type="button" value="拍下" class="sub_btn add_shopping" rel="{$val['id']}" name="{$val['user_id']}" />
+                                        </if>
+                                    </div>
+                                    <div class="detail_r">
+                                        <p class="rep">
+                                            <span>信誉</span><img src="__PUBLIC__/images/star_1.png" /><span class="distribute"><?php if($val['is_distribute']){echo '可散出';}else{ echo '不可散出';}?></span>
+                                        </p>
+                                        <p class="name">{$val.name}</p>
+                                        <p class="batch"><span>批次：</span>{$val.batch}</p>
+                                        <div class="whats clearfix">
+                                            <p class="breed">{$val.brand}</p>
+                                            <p class="num">{$val.amount}{$val.unit}</p>
+                                            <p class="last">单价：<span>￥{$val.price}</span></p>
+                                        </div>
+                                        <div class="pic clearfix">
+                                            <?php if($val['image_1']):?>
+                                            <a class="fancybox-effects-a" href="{$val.image_1}"><img height="119px" src="__ROOT__{$val.image_1}" /></a>
+                                            <?php endif;?>
+                                            <?php if($val['image_2']):?>
+                                            <a class="fancybox-effects-a" href="{$val.image_2}"><img height="119px" src="__ROOT__{$val.image_1}" /></a>
+                                            <?php endif;?>
+                                            <?php if($val['image_3']):?>
+                                            <a class="fancybox-effects-a" href="{$val.image_3}"><img height="119px" src="__ROOT__{$val.image_1}" /></a>
+                                            <?php endif;?>
+                                        </div>
+                                        <div class="trade_num clearfix">
+                                            <div class="trade_n">
+                                                交易号：<span>{$val.business_number}</span>
+                                            </div>
+                                            <div class="date">{$val.publish_time}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="contact_us" href="{:U('Service/index')}">联系客服</a>
+                            </li>
+                            <?php endforeach;?>
+                        </ul>
+                        <div class="page">{$page}</div>
+                    </div>
+                    <div class="trade_publish">
+                        <h3>快把自己想买想卖的告诉我们吧！</h3>
+                        <div class="publish_deal">
+                            <h4>发布买卖<font color="#c0c0c0">（带<span>*</span>号必填）</font></h4>
+                            <form id="publish_form" action="{:U('Publish/release')}" method="post" enctype="multipart/form-data" onsubmit="return check();">
+                                <table cellpadding="0" cellspacing="0" border="0">
+                                    <tr>
+                                        <td class="one">
+                                            <span>*</span>供求：
+                                        </td>
+                                        <td>
+                                            <select name="is_buy">
+                                                <option value="-1">--请选择--</option>
+                                                <option value="0" <?php if($is_buy == 'sell') echo 'selected="selected"'; ?>>我要出</option>
+                                                <option value="1" <?php if($is_buy == 'buy') echo 'selected="selected"'; ?>>我要找</option>
+                                            </select>
+                                        </td>
+                                        <td class="two"><span>*</span>是否可散出：</td>
+                                        <td>
+                                            <select name="is_distribute" class="is_distribute">
+                                                <option value="0">否</option>
+                                                <option value="1">是</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="one"><span>*</span>品牌：</td>
+                                        <td>
+                                            <input type="text" class="txt_input" name="brand_name" />
+                                        </td>
+                                        <td class="two">批次：</td>
+                                        <td>
+                                            <input type="text" class="txt_input" name="batch" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="one"><span>*</span>茶叶名称：</td>
+                                        <td class="inputName">
+                                            <input type="text" class="txt_input tea_name required" name="tea_name" value="请输入产品名称" />
+                                        </td>
+                                        <td class="two">价格：</td>
+                                        <td>
+                                            <input type="text" class="txt_input" name="price" /><label>元</label>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="one">数量：</td>
+                                        <td>
+                                            <input type="text" class="txt_input" name="amount" />
+                                        </td>
+                                        <td rowspan="2" class="two remark">详细信息：</td>
+                                        <td rowspan="2">
+                                            <textarea name="details" class="content"></textarea>
+                                        </td>
+                                    </tr> 
+                                    <tr>
+                                        <td class="one">单位：</td>
+                                        <td>
+                                            <select name="unit" class="unit">
+                                                <option value="0">请选择单位</option>
+                                                <option value="片">片</option>
+                                                <option value="件">件</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td>
+                                            <div class="upload_pic_left">
+                                                <input type="file" name="tea_pic" id="tea_pic" class="required" />
+                                                <p class="tips">最多只能上传三张图片</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td>
+                                            <div id="piclist"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" align="center">
+                                            <input type="submit" class="btn_sub" value="提交信息" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="square_r">
+                    <div class="block">
+                        <h3>【视频】泡茶要三步...</h3>
+                        <div class="box">
+                            <div class="box_top">
+                                <div id="mediaplayer" class="mediaplayer"></div>
+                                <script type="text/javascript">
+                                jwplayer("mediaplayer").setup({
+                                    flashplayer: "__PUBLIC__/jwplayer/player.swf",
+                                    file: "__PUBLIC__/jwplayer/video.mp4",
+                                    image: "__PUBLIC__/jwplayer/preview.jpg",
+                                    height:120,
+                                    width:295
+                                });
+                                </script>
+                            </div>
+                            <!--
+                            <div class="box_bottom"><a href="#">查看</a></div>
+                            -->
+                        </div>
+                    </div>
+                    <div class="block">
+                        <h3>【活动】易茶带你走进...</h3>
+                        <div class="box">
+                            <div class="box_top">
+                                <a href="{:U('News/detail', array('news_id' => $top_news['id']))}"><img width="295px" height="120px" src="{$top_news['image']}"></a>
+                                <div class="act_fixed">
+                                    <a href="http://yichatea.com/news/detail/news_id/25">{$top_news['title']}</a>
+                                </div>
+                            </div>
+                            <div class="box_bottom">
+                                <a href="{:U('News/detail', array('news_id' => $top_news['id']))}">查看</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <h3>热门搜索<img src="__PUBLIC__/images/hot_search.png"></h3>
+                        <div class="box hot_search">
+                            <ul>
+                                <volist name="hot_search_list" id="val" key="key">
+                                <li class="clearfix">
+                                <div class="name">
+                                    <a href="{:U('Brand/detail',array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                </div>
+                                <div class="price">
+                                    {$val['_price']}万
+                                </div>
+                                <if condition="$key eq 1">
+                                <div class="intro">
+                                    {$val['description']}
+                                </div>
+                                </if>
+                                </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <h3>热门产品<img src="__PUBLIC__/images/hot_product.png"></h3>
+                        <div class="box hot_product">
+                            <ul>
+                                <volist name="hot_goods_list" id="val">
+                                <li class="clearfix">
+                                <div class="img">
+                                    <a href="{:U('Market/goods', array('goods_id' => $val['id']))}"><img width="38px" height="36px" src="{$val['image']}"></a>
+                                </div>
+                                <div class="details">
+                                    <p class="name">
+                                        <a href="{:U('Market/goods', array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                    </p>
+                                    <p class="price">
+                                        ￥{$val['_price']}元
+                                    </p>
+                                    <p class="weight">
+                                        单片重量：<span>{$val['weight']}g</span>
+                                    </p>
+                                </div>
+                                </li>
+                                </volist>
+                            </ul>
+                            <div class="more">
+                                <a href="{:U('Market/index')}">更多</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <h3>升价产品<img src="__PUBLIC__/images/up.png"></h3>
+                        <div class="box heaven up">
+                            <ul>
+                                <volist name="rise_list" id="val" key="key">
+                                <if condition="$key eq 1">
+                                <li class="first">
+                                <div class="img">
+                                    <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}"><img width="294px" height="200px" src="{$val['image']}"></a>
+                                    <div class="top_fixed">
+                                        <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                    </div>
+                                </div>
+                                <div class="title clearfix">
+                                    <div class="up_l">
+                                        升￥{$val['delta']}
+                                    </div>
+                                    <div class="up_r">
+                                        {$val['scale']}%
+                                    </div>
+                                </div>
+                                </li>
+                                <else />
+                                <li class="clearfix">
+                                <p class="one">
+                                    <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                </p>
+                                <p class="two">
+                                    升<span>￥{$val['delta']}</span>
+                                </p>
+                                <p class="three">
+                                    <span>{$val['scale']}%</span>
+                                </p>
+                                </li>
+                                </if>
+                                </volist>
+                            </ul>
+                            <div class="more">
+                                <a href="{:U('Market/quotations')}">更多</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <h3>降价产品<img src="__PUBLIC__/images/down.png"></h3>
+                        <div class="box heaven down">
+                            <ul>
+                                <volist name="fall_list" id="val" key="key">
+                                <if condition="$key eq 1">
+                                <li class="first">
+                                <div class="img">
+                                    <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}"><img width="294px" height="200px" src="{$val['image']}"></a>
+                                    <div class="top_fixed">
+                                        <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                    </div>
+                                </div>
+                                <div class="title clearfix">
+                                    <div class="up_l">
+                                        降￥{$val['delta']}
+                                    </div>
+                                    <div class="up_r">
+                                        {$val['scale']}%
+                                    </div>
+                                </div>
+                                </li>
+                                <else />
+                                <li class="clearfix">
+                                <p class="one">
+                                    <a href="{:U('Brand/detail', array('goods_id' => $val['id']))}">{$val['name']}</a>
+                                </p>
+                                <p class="two">
+                                    降<span>￥{$val['delta']}</span>
+                                </p>
+                                <p class="three">
+                                    <span>{$val['delta']}%</span>
+                                </p>
+                                </li>
+                                </if>
+                                </volist>
+                            </ul>
+                            <div class="more">
+                                <a href="{:U('Market/quotations')}">更多</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- square end -->
+        <div class="flower_side"></div>    
+        <div class="wraper">
+            <!-- footer begin -->
+            <include file="./Public/html/home_footer.html" />
+            <!-- footer end -->
+        </div>
+    </body>
+    <style type="text/css">
+    .sub_btn{background: #d84512;border: none;color: #FFFFFF;cursor: pointer;font-size: 14px;height: 35px;line-height: 35px;width: 86px;border-radius: 5px;margin-top:12px;}
+    </style>
+</html>
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function() {
+        $(".contact_us").fancybox({
+           'padding' : 0,
+           'margin' :0,
+           'autoSize':false,
+           'width':896,
+           'height':249,
+           'type': 'iframe'
+        });
+    });
+    $(".add_shopping").click(function() {
+        var publish_id = $(this).attr("rel");
+        var publisher_id = $(this).attr("name");
+        $.post("{:U('publish/add_shopping')}", {publish_id: publish_id, publisher_id: publisher_id}, function(data) {
+            alert(data.msg);
+        }, 'json');
+    });
+})(jQuery)
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <include file="./Public/html/public_js_css.html"/>
+        <script type="text/javascript" src="__PUBLIC__/js/smartyFloat.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/js/comment.js"></script>
+        <title>易茶茶行-市场资讯详情</title>
+    </head>
+    
+    <body>
+        <!-- header begin-->
+        <include file="./Public/html/home_header.html" />
+        <!-- header end-->
+        <!-- left_nav begin -->
+        <include file="./Public/html/left_nav.html" />
+        <!-- left nav end -->
+        <!-- news_detail begin -->
+        <div class="center">
+            <div class="main_content">
+                <div class="top_content">
+                    <div class="news_detail">
+                        <div class="detail_wrap">
+                            <h3>[{$details.type_name}]{$details.title}</h3>
+                            <p class="time">{$details.update_time}&nbsp;&nbsp;作者：易茶茶行</p>
+                            <div class="news_pic"><img src="{$details.image}" /></div>
+                            <div class="news_main">
+                                <div class="news_type"><strong>资讯类别：</strong>{$details.type_name}</div>
+                                <div class="news_intro"><strong>资讯描述：</strong>{$details.description}</div>
+                                <div class="news_info">
+                                    <p><strong>资讯简介：</strong>{$details.description}</p>
+                                </div>
+                            </div>
+                            <div class="news_share clearfix">
+                                <div style="width:90px;overflow:hidden;margin:10px 0;" class="bdshare_t bds_tools get-codes-bdshare" id="bdshare">   
+                                   <span class="bds_more">分享到</span>
+                                </div>
+                                <script data="type=tools&amp;mini=1" id="bdshare_js" type="text/javascript" src="http://bdimg.share.baidu.com/static/js/bds_s_v2.js?cdnversion=383171"></script>
+                                <script type="text/javascript">
+                                    //在这里定义bds_config
+                                    var bds_config = {"bdText": "<?php echo $details['title'];?>","bdPic" : "http://www.yichatea.com<?php echo $details['image'] ?>"};
+                                    document.getElementById('bdshell_js').src= "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + new Date().getHours();
+                                </script>
+                            </div>
+                            <div class="news_comment">
+                                <div class="news_comment_list">
+                                    <ul>
+                                        <?php if($comments):?>
+                                        <?php foreach($comments as $comment):?>
+                                        <li class="clearfix">
+                                            <div class="pic">
+                                                <img width="50px" height="50px" src="{$comment.avatar}" />
+                                                <p class="name">{$comment.account}</p>
+                                            </div>
+                                            <div class="msg">
+                                                <p class="con">{$comment.content}</p>
+                                                <p class="time">{$comment.add_time}</p>
+                                            </div>
+                                        </li>
+                                        <?php endforeach;?>
+                                        <?php else: ?>
+                                        <li>该资讯暂时没有人评论</li>
+                                        <?php endif;?>
+                                    </ul>
+                                </div>
+                                <div class="publish_comment">
+                                    <h4>发表评论</h4>
+                                    <form action="{:U('News/send_comment')}" method="post" id="comment_form">
+                                        <div class="comment_box">
+                                            <textarea id="content" name="content" class="content"></textarea>
+                                        </div>
+                                        <div class="comment_send">
+                                            <input type="submit" id="btn_sub" value="发表" />
+                                            <input type="hidden" name="user_id" value="{$member_info.id}" />
+                                            <input type="hidden" name="news_id" value="{$details.id}" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- news_detail end -->    
+        <div class="flower_side"></div>    
+        <div class="center">
+            <!-- footer begin -->
+            <include file="./Public/html/home_footer.html" />
+            <!-- footer end -->
+        </div>
+    </body>
+</html>

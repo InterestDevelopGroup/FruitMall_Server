@@ -1,0 +1,103 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}
+.l-table-edit-td{padding:10px 20px;}
+.l-table-edit-td input{width:130px;}
+.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}
+.l-verify-tip{left:230px;top:120px;}
+.l-table-edit tr td span{color:#f30;padding-left:5px;}
+.tipmsg{color:#f30;}
+.tip_msg3{color:#fb072f;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit" >
+    <tr>
+        <td align="right" class="l-table-edit-td">New Password:</td>
+        <td align="left" class="l-table-edit-td"><input type="password" name="password" id="password" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">Password Confirm:</td>
+        <td align="left" class="l-table-edit-td"><input type="password" name="confirm_password" id="confirm_password" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#password").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '6-16 letters or numbers.');
+    }).blur(function() {
+         removeTip($(this).parent('td').next('td:last'));
+         ckPassword();
+    });
+    $("#confirm_password").focus(function() {
+        addTip($(this).parent('td').next('td:last'), 'New password again!');
+    }).blur(function() {
+         removeTip($(this).parent('td').next('td:last'));
+         ckRePassword();
+    });
+});
+
+//add tips
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//remove tips
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//check password
+function ckPassword() {
+    var password = $.trim($("#password").val());
+    var regOtherString=/[~!@#\$%\^&\*]+/g ;
+    if (password.length > 16 || password.length < 6) {
+        addTip($("#password").parent('td').next('td:last'), '6-16 letters or numbers.');
+        return false;
+    } else if (regOtherString.test(password)) {
+        removeTip($("#password").parent('td').next('td:last'));
+        addTip($("#password").parent('td').next('td:last'), 'Password can not contain special characters!');
+        return false;
+    }
+    return true;
+}
+
+//confirm password
+function ckRePassword() {
+    var password = $.trim($("#password").val());
+    var rePassword = $.trim($("#confirm_password").val());
+    if (rePassword.length == 0) {
+        addTip($("#confirm_password").parent('td').next('td:last'), 'New password again!');
+        return false;
+    } else if (password != rePassword) {
+        addTip($("#confirm_password").parent('td').next('td:last'), 'Two passwords are not the same!');
+        return false;
+    }
+    return true;
+}
+
+//check form
+function checkForm() {
+    if (!ckPassword()) return false;
+    if (!ckRePassword()) return false;
+    var password = $.trim($("#password").val());
+    return {password: password};
+}
+
+//submit form
+function chmypwdSubmit() {
+    if (checkForm) {
+        $.post('<{:U("login/chpwd?id=$adminId")}>', checkForm(), function(data) {
+            window.parent.chmypwdCallback(data);
+        }, 'json')
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

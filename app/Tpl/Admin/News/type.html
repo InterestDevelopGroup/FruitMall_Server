@@ -1,0 +1,149 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left:0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>资讯分类
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <input type="text" value="请输入要添加的资讯分类名称" onfocus="autoClear(this)" id="type_name" />&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="添加分类" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="删除分类" onclick="javascript:del();">
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "分类名称", name: 'name', align: 'center', width: '20%', isSort: false},
+            {display: "资讯数量", name: 'news_num', align: 'center', width: '10%'},
+            {display: "添加时间", name: 'add_time', align: 'center', width: '30%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '30%'},
+            {display: "操作", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (parseInt(rowdata.is_system)) {
+						return '---';
+					} else {
+						return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
+					}
+                }
+            }
+            ],
+            url: '<{:U("News/type")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:10,
+            pageSizeOptions: [5, 10, 50, 100, 200],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//自动清除input默认值
+function autoClear(obj) {
+    obj.onfocus = function () {
+        if (this.value == this.defaultValue) {
+            this.value = "";
+            this.style.color = "#000000";
+        } else {
+            this.style.color = "#000000";
+        }
+    };
+    obj.onblur = function () {
+        if (this.value == "") {
+            this.value = this.defaultValue;
+            this.style.color = "#999999";
+        }
+    };
+    obj.onfocus();
+}
+
+//添加分类
+function add() {
+    var name = $.trim($("#type_name").val());
+    if (name == document.getElementById('type_name').defaultValue || name.length <= 0) {
+        $.ligerDialog.alert('请输入分类名称', '温馨提示', 'warn');
+        return false;
+    }
+    if (name.length > 30) {
+        $.ligerDialog.alert('分类名称不能超过30个字', '温馨提示', 'warn');
+        return false;
+    }
+    $.post('<{:U("News/add_type")}>', {name:name}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+            location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//删除分类
+function del() {
+	var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个分类', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i = 0; i < data.length; i++) {
+        if (i == data.length - 1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('温馨提示：<br />删除分类会将该分类下的所有资讯<br />一起删除，您确定要删除选中的分类吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("News/delete_type")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//编辑分类
+var updateNewsTypeDialog;
+function update(id) {
+    updateNewsTypeDialog = $.ligerDialog.open({
+        url: '<{:U("News/update_type")}>?id='+id, height: 150, width: 500,
+        isDrag: false, title: '编辑资讯分类',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateNewsTypeDialog.frame.updateNewsTypeFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑分类回调
+function updateNewsTypeCallback(obj) {
+    updateNewsTypeDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <include file="./Public/html/public_js_css.html"/>
+        <script type="text/javascript" src="__PUBLIC__/js/smartyFloat.js"></script>
+        <title>易茶茶行--商品筛选</title>
+    </head>
+    
+    <body>
+        <!-- header begin-->
+        <include file="./Public/html/home_header.html" />
+        <!-- header end-->    
+        <!-- left_nav begin -->
+        <include file="./Public/html/left_nav.html" />
+        <!-- left nav end -->    
+        <!-- search_list bagin -->
+        <div class="top_content">
+            <div class="market_content">
+                <div class="market_main">
+                    <div class="goods_body">
+                        <?php if($good_list): ?>
+                        <?php $i = 0; foreach($good_list as $goods):?>
+                            <?php if($i % 14 == 0):?>
+                            <ul class="clearfix">
+                            <?php endif;?>
+                            <li <?php if($i % 7 == 6) echo 'class="last"';?>>
+                                <?php if($search_type == '0'):?>
+                                <div class="img">
+                                    <a href="{:U('Brand/detail',array('goods_id'=>$goods['id']))}"><img width="158px" height="145px" src="{$goods.image}" /></a>
+                                </div>
+                                <p class="title"><a href="{:U('Market/goods',array('goods_id'=>$goods['id']))}">{$goods.name}</a></p>
+                                <p class="price">￥{$goods._price}元/件</p>
+                                <?php else:?>
+                                <div class="img">
+                                    <a href="{:U('Market/goods',array('goods_id'=>$goods['id']))}"><img width="158px" height="145px" src="{$goods.image}" /></a>
+                                </div>
+                                <p class="title"><a href="{:U('Market/goods',array('goods_id'=>$goods['id']))}">{$goods.name}</a></p>
+                                <p class="price">￥{$goods._price}元/片</p>
+                                <?php endif;?>
+                            </li>
+                            <?php if($i % 14 == 13 || $i == count($good_list)-1):?>
+                            </ul>
+                            <?php endif;?>
+                        <?php $i++; endforeach;?>
+                        <?php else:?>
+                        <h3 style="text-align:center;">对不起，没有你要找的茶叶信息，你可以点击网站其他内容继续浏览！</h3>
+                        <?php endif;?>
+                    </div>
+                    <div class="page">{$page}</div>
+                </div>
+            </div>
+        </div>
+        <!-- search_list end -->    
+        <div class="flower_side"></div>    
+        <div class="wraper">
+            <!-- footer begin -->
+            <include file="./Public/html/home_footer.html" />
+            <!-- footer end -->
+        </div>
+    </body>
+</html>
