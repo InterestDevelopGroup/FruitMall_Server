@@ -1,0 +1,83 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+.infoTable{width:100%;}
+.info{width:96%;margin:12px auto;}
+.infoTable td{border-bottom:#C8B9AE solid 1px; padding:5px 5px 5px;vertical-align: top;}
+.infoTable th{border-bottom:#C8B9AE solid 1px; padding:5px 5px 5px;vertical-align: top;}
+-->
+</style>
+<div class="info">
+    <table class="infoTable">
+        <tr>
+            <th class="paddingT15" style="width:12%">用户名:</th>
+            <td class="paddingT15 wordSpacing5" style="width:18%;"><{$user_info['username']}></td>
+            <td class="paddingT15 wordSpacing5" style="width:70%">&nbsp;</td>
+        </tr>
+        <foreach name="privileges" key="key" item="val">
+        <tr>
+            <th class="paddingT15">设置权限:</th>
+            <th class="paddingT15 wordSpacing5 w80">
+            <input style="width:20px;" type="checkbox" id="h_<{$key}>" /><b><{$language[$key][$key]}></b></th>
+            <?php $_key = $key; ?>
+            <td class="paddingT15" width="100%" id="<{$key}>">
+                <ul class="admin" style="list-style:none; float:left;">
+                <foreach name="val" key="key_1" item="val_1">
+                    <li class="paddingT15" style="float:left;padding-left:20px; list-style:none;">
+                    <label>
+                    	<input type="checkbox" value="<{$val_1}>" name="priv[<{$key_1}>]"
+                        <foreach name="_privileges" item="val_2">
+                        	<if condition="strcmp($val_1, $val_2) eq 0">checked</if>
+                        </foreach>
+                         />
+                        <?php echo $language[$_key][$key_1]; ?>
+                    </label>
+                    </li>
+                </foreach>
+                </ul>
+            </td>
+        </tr>
+        </foreach>
+    </table>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    //全选
+    $('[id^="h_"]').change(function() {
+        var obj = $(this);
+        var param = $(this).attr('id').split('_')[1];
+        $("#"+param+" input").each(function(i, v) {
+            v.checked = obj.is(":checked");
+        });
+    });
+	// 初始化
+	$('[id^="h_"]').each(function(index, element) {
+        var obj = $(element);
+		var t = [];
+		var p = $(element).attr('id').split('_')[1];
+		$("#"+p+" input").each(function(i, e) {
+            if (e.checked) {
+				t.push(1);
+			} else {
+				t.push(0);
+			}
+        });
+		obj.attr('checked', !($.inArray(0, t) >= 0));
+    });
+});
+
+//提交设置权限表单
+function setPrivFormSubmit(id) {
+	// 带上初始化权限
+    var priv = ['index|all', 'login|all'];
+    $("input[name^=priv]:checked").each(function(i, v) {
+        priv.push(v.value);
+    });
+    $.post('<{:U("Administrator/set_privileges")}>?id='+id, {priv: priv}, function(data) {
+        window.parent.setPrivCallback(data);
+    });
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

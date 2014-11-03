@@ -32,8 +32,7 @@ class AdministratorAction extends AdminAction {
     public function delete() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
-            $adminUser = D('AdminUser');
-            $this->ajaxReturn($adminUser->deleteAdministrator((array) $id));
+            $this->ajaxReturn(D('AdminUser')->deleteAdministrator((array) $id));
         } else {
             $this->redirect('/');
         }
@@ -51,7 +50,7 @@ class AdministratorAction extends AdminAction {
             $admin = D('AdminUser');
             $total = $admin->getAdminCount();
             if ($total) {
-                $rows = array_map(function($v) {
+                $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
                     return $v;
@@ -66,6 +65,43 @@ class AdministratorAction extends AdminAction {
         } else {
             $this->assign('type', $this->admin_info['type']);
             $this->display();
+        }
+    }
+
+    /**
+     * 设置权限
+     */
+    public function set_privileges() {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
+        $id || $this->redirect('/');
+        if ($this->isAjax()) {
+            $priv = isset($_POST['priv']) ? implode(',', $_POST['priv']) : $this->redirect('/');
+            $this->ajaxReturn(D('AdminPriv')->setPriv($id, $priv));
+        } else {
+            $privileges = M('AdminUser')->table(M('AdminUser')->getTableName() . " AS au ")->join(array(
+                " LEFT JOIN " . M('AdminPriv')->getTableName() . " AS ap ON au.id = ap.admin_id "
+            ))->where(array(
+                'admin_id' => $id
+            ))->find();
+            $privileges['priv'] = explode(',', $privileges['priv']);
+            $this->assign('user_info', $privileges);
+            $this->assign('_privileges', $privileges['priv']);
+            $this->assign('privileges', C('priv'));
+            $this->assign('language', C('priv_language'));
+            $this->display();
+        }
+    }
+
+    /**
+     * 更新管理员状态
+     */
+    public function update() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            $this->ajaxReturn(D('AdminUser')->updateAdministrator($id, $status));
+        } else {
+            $this->redirect('/');
         }
     }
 

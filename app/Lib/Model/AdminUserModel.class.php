@@ -1,7 +1,7 @@
 <?php
 
 /**
- * tea_admin_user 表模型
+ * fruit_admin_user 表模型
  *
  * @author Zonkee
  * @version 1.0.0
@@ -29,7 +29,7 @@ class AdminUserModel extends Model {
         if (!empty($result)) {
             return array(
                 'status' => false,
-                'msg' => '该管理员已经存在（管理员不能重名）'
+                'msg' => '该管理员已经存在（管理员帐号不能重复）'
             );
         }
         $data = array(
@@ -43,12 +43,27 @@ class AdminUserModel extends Model {
         // 开始事务
         $this->startTrans();
         if ($this->add($data)) {
-            // 添加成功，提交事务
-            $this->commit();
-            return array(
-                'status' => true,
-                'msg' => '添加管理员成功'
-            );
+            $id = $this->getLastInsID();
+            // 初始化权限
+            $privileges = 'index|all,login|all';
+            if (M('AdminPriv')->add(array(
+                'admin_id' => $id,
+                'priv' => $privileges
+            ))) {
+                // 添加成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => true,
+                    'msg' => '添加管理员成功'
+                );
+            } else {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '添加管理员失败'
+                );
+            }
         } else {
             // 添加失败，回滚事务
             $this->rollback();
@@ -188,6 +203,33 @@ class AdminUserModel extends Model {
             'status',
             'desc'
         ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+    }
+
+    /**
+     * 更新管理员状态
+     *
+     * @param int $id
+     *            管理员ID
+     * @param int $status
+     *            状态（1：启用，0：禁用）
+     * @return array
+     */
+    public function updateAdministrator($id, $status) {
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'status' => $status
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '操作成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '操作失败'
+            );
+        }
     }
 
 }

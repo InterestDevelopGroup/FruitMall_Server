@@ -26,9 +26,9 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "帐号", name: 'username', align: 'center', width: '12%', isSort: true},
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: true},
-            {display: "邮箱", name: 'email', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "帐号", name: 'username', align: 'center', width: '10%', isSort: true},
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '10%', isSort: true},
+            {display: "邮箱", name: 'email', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
@@ -45,10 +45,14 @@ $(function(){
                     return value ? value : '暂无';
                 }
             },
-            {display: "操作", align: 'center', width:'6%', render: function(rowdata, rowindex, value) {
-                    var action = parseInt(rowdata.status) ? '禁用' : '启用';
-                    var status = parseInt(rowdata.status) ? 0 : 1;
-                    return '<a href="javascript:vid(0);" onclick="update_admin_status('+rowdata.id+', '+ status +')">'+action+'</a>';
+            {display: "操作", align: 'center', width:'12%', render: function(rowdata, rowindex, value) {
+					if (rowdata.id == 1) {
+						return '---';
+					} else {
+                    	var action = parseInt(rowdata.status) ? '禁用' : '启用';
+                    	var status = parseInt(rowdata.status) ? 0 : 1;
+                    	return '<a href="javascript:vid(0);" onclick="update_admin_status('+rowdata.id+', '+ status +')">'+action+'</a> | <a href="javascript:void(0);" onclick="set_privileges(' + rowdata.id + ')">设置权限</a>';
+					}
                 }
             }
             ],
@@ -57,14 +61,30 @@ $(function(){
             method: 'get',
             width: '100%',
             checkbox: true,
+            frozenCheckbox: false,
             selectRowButtonOnly: true,
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
-            onAfterChangeColumnWidth:f_change
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
     });
     $("#pageloading").hide();
 });
+//明细
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>帐号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>真实姓名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.real_name + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>邮箱：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.email ? record.email : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>上次登录时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.last_time ? record.last_time : '从未登陆') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.status) ? '正常' : '禁用') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>类型：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.type) ? '系统管理员' : '普通管理员') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.desc ? record.desc : '暂无') + "</td></tr>");
+    out.push('</table>');
+    $(container).html(out.join(''));
+}
 
 //添加管理员
 var addAdminDialog;
@@ -154,9 +174,43 @@ function isPromise() {
     }
 }
 
+// 更新管理员状态
 function update_admin_status(id, status) {
-    alert(id);
-    alert(status);
+    if (!isPromise()) {
+        return false;
+    }
+	if (status) {
+		var action = '启用';
+	} else {
+		var action = '禁用';
+	}
+    ajaxUpdateAdmin({action: action, url: '<{:U("Administrator/update")}>', post_data: {id: id, status: status}});
+}
+
+//设置权限
+var privDialog;
+function set_privileges(id) {
+	if (!isPromise()) {
+        return false;
+    }
+    privDialog = $.ligerDialog.open({
+        url: '<{:U("Administrator/set_privileges")}>?id='+id, height: 500, width: 600,
+        title : '设置权限', isDrag : false,
+        buttons: [{text: '提交', onclick: function (item, dialog) {privDialog.frame.setPrivFormSubmit(id);}},
+                  {text: '取消', onclick: function (item, dialog) {dialog.close();}}]
+    });
+}
+
+//设置权限回调
+function setPrivCallback(data) {
+    privDialog.close();
+    if (data.status) {
+        $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+        return false;
+    }
 }
 //]]>
 </script>
