@@ -19,7 +19,7 @@ var TECSS={
 	btnHeight:17,
 	lineWidth:7,
 
-	fulled:"te_fulled",//全屏时全屏按钮样式
-	sourceMode:"te_source"//源码模式时的按钮样式
+	fulled:"te_fulled",//全锟斤拷时全锟斤拷锟斤拷钮锟斤拷式
+	sourceMode:"te_source"//源锟斤拷模式时锟侥帮拷钮锟斤拷式
 
 };

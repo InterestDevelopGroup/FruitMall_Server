@@ -4,29 +4,15 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>茶叶超市
+                    <span class="icon icon8"></span>所有商品
                 </div>
             </div>
         </div>
         <div class="top_4">
-            <form method="get" name="search_form">
-                <table width="640px">
-                    <tr>
-                        <td>关键字：</td>
-                        <td><input type="text" name="keyword" value="<{$keyword}>" /></td>
-                        <td>年份：</td>
-                        <td>
-                            <select name="year">
-                                <option value="0">--请选择年份--</option>
-                                <?php for ($i = 1970; $i <= intval(date("Y")); $i++) :?>
-                                <option value="<?php echo $i;?>"<?php if($i == $year):?> selected<?php endif;?>><?php echo $i;?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </td>
-                        <td><input class="btn btn-primary" type="submit" value="搜索" /></td>
-                        <td><input class="btn btn-primary" type="button" value="删除茶叶商品" onclick="javascript:del();" /></td>
-                    </tr>
-                </table>
+            <form method="get">
+                关键字：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="删除商品" onclick="javascript:del();" />
             </form>
         </div>
         <div>
@@ -40,10 +26,11 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "商品名称", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "分类", name: 'cate', align: 'center', width: '8%', isSort: false},
-            {display: "原价", name: 'price', align: 'center', width: '8%'},
-            {display: "现价", name: '_price', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
+            {display: "商品名称", name: 'name', align: 'center', width: '16%', isSort: false},
+            {display: "大分类", name: 'parent_category', align: 'center', width: '12%', isSort: false},
+			{display: "小分类", name: 'child_category', align: 'center', width: '12%', isSort: false},
+            {display: "单价", name: 'price', align: 'center', width: '12%'},
+            {display: "市场价", name: '_price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
                         return '暂无';
                     } else {
@@ -51,30 +38,14 @@ $(function(){
                     }
                 }
             },
-            {display: "单位", name: 'unit', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
-                    return value ? value : '请设置';
-                }
-            },
-            {display: "单片质量", name: 'weight', align: 'center', width: '6%'},
+            {display: "价格单位", name: 'unit', align: 'center', width: '12%'},
             {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
-            {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
-                    return value ? value : '从未更新';
-                }
-            },
-            {display: "是否出售", name: 'is_sell', align: 'center', width: '6%',render:function(rowdata,rowindex,value){
-                    if(value == '0'){
-                        return '否';
-                    }else{
-                        return '是';
-                    }
-                }
-            },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
                 }
             }
             ],
-            url: '<{:U("goods/index")}>?keyword=<{$keyword}>&year=<{$year}>',
+            url: '<{:U("goods/index")}>?keyword=<{$keyword}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',
@@ -91,55 +62,19 @@ $(function(){
 });
 //商品明细
 function f_onShowDetail(record, container, callback) {
-    var type = '';
-    var product_art = '';
-    switch (parseInt(record.type)) {
-        case 1 :
-            type = '饼茶';
-            break;
-        case 2 :
-            type = '沱茶';
-            break;
-        case 3 :
-            type = '砖茶';
-            break;
-        case 4 :
-            type = '散茶';
-            break;
-        default :
-            type = '暂无分类';
-            break;
-    }
-    switch (parseInt(record.product_art)) {
-        case 1 :
-            product_art = '生茶';
-            break;
-        case 2 :
-            product_art = '熟茶';
-            break;
-        case 3 :
-            product_art = '生熟混合';
-            break;
-        default :
-            product_art = '不祥';
-            break;
-    }
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
-    out.push("<tr><td width='20%' align='right'>年份：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.year + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>库存：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.stock ? record.stock : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>专区：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.zone_name + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>系列：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.series + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>生产工艺：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.production ? record.production : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>规格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.specification ? record.specification : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>配料：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.burden ? record.burden : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>出品商：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.producer ? record.producer : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>存储方式：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.storage ? record.storage : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>商品名称：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.name + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>大分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.parent_category + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>小分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.child_category + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.price + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._price ? record._price : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.unit + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>商品简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>淘宝链接：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.url ? record.url : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>类型：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + type + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>生产工艺：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + product_art + "</td></tr>");
     out.push("</table>");
     out.push('<div style="margin:10px;width:90%;">');
+	/*
     for (var i = 1; i <= 5; i++) {
         var image = (i == 1) ? 'image' : 'image_' + i;
         if (record[image]) {
@@ -147,9 +82,10 @@ function f_onShowDetail(record, container, callback) {
         }
     }
     out.push('</div>');
+	*/
     $(container).html(out.join(''));
 }
-//删除茶叶
+//删除商品
 function del() {
     var data = getCheckedData('id');
     if (data.length <= 0) {

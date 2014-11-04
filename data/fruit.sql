@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-03 19:02:38
+Date: 2014-11-04 18:55:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,7 +53,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1414998293', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415071086', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1414987294', '1414998108', '0', '1', null);
 
 -- ----------------------------
@@ -67,10 +67,49 @@ CREATE TABLE `fruit_child_category` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='子分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='子分类表';
 
 -- ----------------------------
 -- Records of fruit_child_category
+-- ----------------------------
+INSERT INTO `fruit_child_category` VALUES ('2', '1', '小分類測試1', '1415077861', '1415077871');
+
+-- ----------------------------
+-- Table structure for fruit_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_goods`;
+CREATE TABLE `fruit_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `p_cate_id` int(11) NOT NULL COMMENT '大分类ID',
+  `c_cate_id` int(11) NOT NULL COMMENT '小分类ID',
+  `name` varchar(255) NOT NULL,
+  `price` decimal(10,2) NOT NULL COMMENT '商品单价',
+  `_price` decimal(10,2) DEFAULT NULL COMMENT '市场价',
+  `unit` varchar(20) NOT NULL COMMENT '价格单位',
+  `description` varchar(255) DEFAULT NULL COMMENT '商品简介',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品表';
+
+-- ----------------------------
+-- Records of fruit_goods
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for fruit_goods_image
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_goods_image`;
+CREATE TABLE `fruit_goods_image` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
+  `image` varchar(255) NOT NULL COMMENT '商品图片',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品图片表';
+
+-- ----------------------------
+-- Records of fruit_goods_image
 -- ----------------------------
 
 -- ----------------------------
@@ -116,5 +155,4 @@ CREATE TABLE `fruit_parent_category` (
 -- ----------------------------
 -- Records of fruit_parent_category
 -- ----------------------------
-INSERT INTO `fruit_parent_category` VALUES ('1', '啊颯颯', '1415012373', null);
-INSERT INTO `fruit_parent_category` VALUES ('2', '得瑟得瑟', '1415012508', null);
+INSERT INTO `fruit_parent_category` VALUES ('1', '大分類測試1', '1415012373', '1415073133');

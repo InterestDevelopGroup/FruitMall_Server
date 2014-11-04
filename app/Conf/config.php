@@ -140,6 +140,12 @@ $app_config = array(
             'parent_index' => '大分类',
             'child_index' => '小分类'
         )
+    ),
+    'MAX_SIZE' => 2097152,
+    'ALLOW_EXTENSIONS' => array(
+        'jpg',
+        'jpeg',
+        'png'
     )
 );
 return array_merge(require 'config.php', $app_config);

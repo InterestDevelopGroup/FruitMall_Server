@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>原价：
+                    <span>*</span>单价：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="price" />
@@ -29,7 +29,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    现价：
+                    市场价：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="_price" />
@@ -47,39 +47,12 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>单片质量：
+                    <span>*</span>大分类：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="weight" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    库存：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text" id="stock" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>年份：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text" id="year" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>分类：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="cate">
+                    <select id="p_cate_id">
                         <option value="0">--请选择--</option>
-                        <volist name="cate" id="val">
+                        <volist name="parentCategory" id="val">
                         <option value="<{$val['id']}>"><{$val['name']}></option>
                         </volist>
                     </select>
@@ -88,126 +61,14 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>是否出售：
+                    <span>*</span>小分类：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <select name="is_sell" id="is_sell">
-                        <option value="0">否</option>
-                        <option value="1">是</option>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>类型：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select name="type" id="type">
+                    <select id="c_cate_id">
                         <option value="0">--请选择--</option>
-                        <option value="1">饼茶</option>
-                        <option value="2">沱茶</option>
-                        <option value="3">砖茶</option>
-                        <option value="4">散茶</option>
                     </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>生产工艺(web)：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select name="product_art" id="product_art">
-                        <option value="0">--请选择--</option>
-                        <option value="1">生茶</option>
-                        <option value="2">熟茶</option>
-                        <option value="3">生熟混合</option>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>系列：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="series" name="series">
-                        <option value="0">--请选择--</option>
-                        <volist name="series" id="val">
-                        <option value="<{$val['id']}>"><{$val['name']}></option>
-                        </volist>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span>*</span>专区：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="zone">
-                        <option value="0">--请选择--</option>
-                        <volist name="zone" id="val">
-                        <option value="<{$val['id']}>"><{$val['name']}></option>
-                        </volist>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    淘宝链接：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="url" style="resize: none;" onfocus="javascript:checkLength(this, 'url_tip');" onkeydown="javascript:checkLength(this, 'url_tip');" onkeyup="javascript:checkLength(this, 'url_tip');" maxLength="255"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="url_tip"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    生产工艺：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="production" style="resize: none;" onfocus="javascript:checkLength(this, 'production_tip');" onkeydown="javascript:checkLength(this, 'production_tip');" onkeyup="javascript:checkLength(this, 'production_tip');" maxLength="80"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="production_tip"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    规格：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="specification" style="resize: none;" onfocus="javascript:checkLength(this, 'specification_tip');" onkeydown="javascript:checkLength(this, 'specification_tip');" onkeyup="javascript:checkLength(this, 'specification_tip');" maxLength="80"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="specification_tip"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    配料：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="burden" style="resize: none;" onfocus="javascript:checkLength(this, 'burden_tip');" onkeydown="javascript:checkLength(this, 'burden_tip');" onkeyup="javascript:checkLength(this, 'burden_tip');" maxLength="80"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="burden_tip"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    出品商：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="producer" style="resize: none;" onfocus="javascript:checkLength(this, 'producer_tip');" onkeydown="javascript:checkLength(this, 'producer_tip');" onkeyup="javascript:checkLength(this, 'producer_tip');" maxLength="80"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="producer_tip"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    存储方式：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <textarea id="storage" style="resize: none;" onfocus="javascript:checkLength(this, 'storage_tip');" onkeydown="javascript:checkLength(this, 'storage_tip');" onkeyup="javascript:checkLength(this, 'storage_tip');" maxLength="80"></textarea>
-                </td>
-                <td align="left" class="tipmsg" id="storage_tip"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
@@ -238,21 +99,19 @@
 </div>
 <style type="text/css">
 <!--
-body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.tip_msg3{color:#fb072f;}#cate{width:144px;}.image-preview{position:relative;margin-top:16px;}#is_sell{width:56px;}#type{width:144px;}#product_art{width: 144px;}#series{width:144px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#is_top,#is_free_parking{width:56px;}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;}#is_sell{width:56px;}#type{width:144px;}#product_art{width: 144px;}#series{width:144px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#is_top,#is_free_parking{width:56px;}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
 -->
 </style>
 <script type="text/javascript">
 //<![CDATA[
 var image_count = new Array();
 $(function() {
-    $("#name").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '商品名称不能超过30个字');
-    }).blur(function() {
+    $("#name").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
     });
     $("#price").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '商品原价最多保留两位小数');
+        addTip($(this).parent('td').next('td:last'), '单价最多保留两位小数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckPrice();
@@ -261,46 +120,30 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ck_Price();
     });
-    $("#_unit").blur(function() {
+    $("#unit").focus(function() {
+		addTip($(this).parent('td').next('td:last'), '价格单位示例：元/斤');
+	}).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUnit();
     });
-    $("#weight").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '商品单片质量只能为整数');
-    }).blur(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckWeight();
-    });
-    $("#stock").blur(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckStock();
-    });
-    $("#year").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '年份为4位数的整数年，如：1999');
-    }).blur(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckYear();
-    });
-    $("#cate").change(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckCate();
-    });
-    $("#type").change(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckType();
-    });
-    $("#product_art").change(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckProArt();
-    });
-    $("#series").change(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckSeries();
-    });
-    $("#zone").change(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckZone();
-    });
+	$("#p_cate_id").change(function() {
+		var p_cate_id = $(this).val();
+		$.post("<{:U('Category/getChildCategoryByParentId')}>", {parent_id: p_cate_id}, function(data) {
+			str = '<option value="0">--请选择--</option>';
+			if (data) {
+				for (var i in data) {
+					str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+				}
+			}
+			$("#c_cate_id").html(str);
+		}, 'json');
+		removeTip($(this).parent('td').next('td:last'));
+		ckPCateId();
+	});
+	$("#c_cate_id").change(function() {
+		removeTip($(this).parent('td').next('td:last'));
+		ckCCateId();
+	});
     $('#fileupload').fileupload({
         maxNumberOfFiles : 5,
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
@@ -314,19 +157,18 @@ $(function() {
         done : function(e, data) {
             if (data.result.status) {
                 $("#progress").hide();
-                if (image_count.length < 5) {
-                    image_count.push(data.result.filename);
-                    $("#image_tip").append("<div class='image-preview'>"
-                                            + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-                                            + "<img src='"+data.result.src+"' width='160' height='90' border='0' />"
-                                            + "</a>"
-                                            + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
-                                            + data.result.filename
-                                            + "\', $(this));\" class='image-preview-delete' title='删除'>"
-                                            + "</a>" + "</div>");
-                } else {
-                    delete_another_image(data.result.filename);
-                }
+				if (image_count.length == 0) {
+					$("#image_tip").empty();
+				}
+				image_count.push(data.result.filename);
+				$("#image_tip").append("<div class='image-preview'>"
+										+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+										+ "<img src='"+data.result.src+"' width='160' height='90' border='0' />"
+										+ "</a>"
+										+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+										+ data.result.filename
+										+ "\', $(this));\" class='image-preview-delete' title='删除'>"
+										+ "</a>" + "</div>");
             } else {
                 $("#image_tip").html(data.result.msg);
             }
@@ -357,9 +199,6 @@ function ckName() {
     if (name.length <= 0) {
         addTip($("#name").parent('td').next('td:last'), '商品名称不能为空');
         return false;
-    } else if (name.length > 30) {
-        addTip($("#name").parent('td').next('td:last'), '商品名称不能超过30个字');
-        return false;
     }
     return true;
 }
@@ -368,12 +207,12 @@ function ckName() {
 function ckPrice() {
     var price = $.trim($("#price").val());
     if (price.length <= 0) {
-        addTip($("#price").parent('td').next('td:last'), '商品原价不能为空');
+        addTip($("#price").parent('td').next('td:last'), '单价不能为空');
         return false;
     }
     var priceReg = /^\d+(\.\d{1,2})?$/;
     if (!priceReg.test(price)) {
-        addTip($("#price").parent('td').next('td:last'), '原价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
+        addTip($("#price").parent('td').next('td:last'), '单价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
         return false;
     }
     if (parseFloat(price) > 99999999.99) {
@@ -389,11 +228,11 @@ function ck_Price() {
     if (_price.length > 0) {
         var priceReg = /^\d+(\.\d{1,2})?$/;
         if (!priceReg.test(_price)) {
-            addTip($("#_price").parent('td').next('td:last'), '现价最多只能保留两位小数，<br />不能包含非数字和\'.\'以外的字符');
+            addTip($("#_price").parent('td').next('td:last'), '市场价最多只能保留两位小数，<br />不能包含非数字和\'.\'以外的字符');
             return false;
         }
         if (parseFloat(_price) > 99999999.99) {
-            addTip($("#_price").parent('td').next('td:last'), '现价已经超过范围');
+            addTip($("#_price").parent('td').next('td:last'), '市场价已经超过范围');
             return false;
         }
         return true;
@@ -401,120 +240,34 @@ function ck_Price() {
     return true;
 }
 
-//检测单位
+//检测价格单位
 function ckUnit() {
     var unit = $.trim($("#unit").val());
     if (unit.length <= 0) {
-        addTip($("#unit").parent('td').next('td:last'), '单位不能为空');
+        addTip($("#unit").parent('td').next('td:last'), '价格单位不能为空');
         return false;
     }
     return true;
 }
 
-//检测单片质量
-function ckWeight() {
-    var weight = $.trim($("#weight").val());
-    if (weight.length <= 0) {
-        addTip($("#weight").parent('td').next('td:last'), '单片质量不能为空');
+//检测大分类
+function ckPCateId() {
+	var p_cate_id = $("#p_cate_id").val();
+	if (p_cate_id == 0) {
+		addTip($("#p_cate_id").parent('td').next('td:last'), '请选择一个大分类');
         return false;
-    }
-    var reg = /^\d+$/g;
-    if (!reg.test(weight)) {
-        addTip($("#weight").parent('td').next('td:last'), '单片质量只能为数字');
-        return false;
-    }
-    if (weight.length > 10) {
-        addTip($("#weight").parent('td').next('td:last'), '单片质量已经超过范围');
-        return false;
-    }
-    return true;
+	}
+	return true;
 }
 
-//检测库存
-function ckStock() {
-    var stock = $.trim($("#stock").val());
-    if (stock.length > 0) {
-        var reg = /^\d+$/g;
-        if (!reg.test(stock)) {
-            addTip($("#stock").parent('td').next('td:last'), '库存只能为数字');
-            return false;
-        }
-        if (stock.length > 10) {
-            addTip($("#stock").parent('td').next('td:last'), '库存已经超出范围');
-            return false;
-        }
-        return true;
-    }
-    return true;
-}
-
-//检测年份
-function ckYear() {
-    var year = $.trim($("#year").val());
-    if (year.length <= 0) {
-        addTip($("#year").parent('td').next('td:last'), '年份不能为空');
+//检测小分类
+function ckCCateId() {
+	var c_cate_id = $("#c_cate_id").val();
+	if (c_cate_id == 0) {
+		addTip($("#c_cate_id").parent('td').next('td:last'), '请选择一个小分类');
         return false;
-    }
-    if (year.length > 4) {
-        addTip($("#year").parent('td').next('td:last'), '年份不能超过4位数');
-        return false;
-    }
-    var reg = /^[1-9]\d{3}$/g;
-    if (!reg.test(year)) {
-        addTip($("#year").parent('td').next('td:last'), '年份格式不对');
-        return false;
-    }
-    return true;
-}
-
-// 检测分类
-function ckCate() {
-    var cate = $("#cate").val();
-    if (cate <= 0) {
-        addTip($("#cate").parent('td').next('td:last'), '请选择分类');
-        return false;
-    }
-    return true;
-}
-
-//检测类型
-function ckType() {
-    var type = $("#type").val();
-    if (type <= 0) {
-        addTip($("#type").parent('td').next('td:last'), '请选择类型');
-        return false;
-    }
-    return true;
-}
-
-//检测生产工艺
-function ckProArt(){
-    var product_art = $("#product_art").val();
-    if (product_art <= 0) {
-        addTip($("#product_art").parent('td').next('td:last'), '请选择生产工艺');
-        return false;
-    }
-    return true;
-}
-
-//检查系列
-function ckSeries(){
-    var series = $("#series").val();
-    if (series <= 0) {
-        addTip($("#series").parent('td').next('td:last'), '请选择商品系列');
-        return false;
-    }
-    return true;
-}
-
-//检测专区
-function ckZone(){
-    var zone = parseInt($("#zone").val());
-    if (zone <= 0) {
-        addTip($("#zone").parent('td').next('td:last'), '请选择商品所属专区');
-        return false;
-    }
-    return true;
+	}
+	return true;
 }
 
 //检测简介
@@ -544,56 +297,24 @@ function checkForm() {
     if (!ckPrice()) return false;
     if (!ck_Price()) return false;
     if (!ckUnit()) return false;
-    if (!ckWeight()) return false;
-    if (!ckStock()) return false;
-    if (!ckYear()) return false;
-    if (!ckCate()) return false;
-    if (!ckType()) return false;
-    if (!ckProArt()) return false;
-    if (!ckSeries()) return false;
-    if (!ckZone()) return false;
+	if (!ckPCateId()) return false;
+	if (!ckCCateId()) return false;
     if (!ckImage()) return false;
     var name = $.trim($("#name").val());
     var price = $.trim($("#price").val());
     var _price = $.trim($("#_price").val());
     var unit = $.trim($("#unit").val());
-    var weight = $.trim($("#weight").val());
-    var stock = $.trim($("#stock").val());
-    var year = $.trim($("#year").val());
-    var cate = $("#cate").val();
-    var is_sell = $('#is_sell').val();
-    var type = $('#type').val();
-    var product_art = $('#product_art').val();
-    var series = $('#series').val();
-    var zone = $("#zone").val();
-    var url = $.trim($('#url').val());
-    var production = $.trim($("#production").val());
-    var specification = $.trim($("#specification").val());
-    var burden = $.trim($("#burden").val());
-    var producer = $.trim($("#producer").val());
-    var storage = $.trim($("#storage").val());
+    var p_cate_id = $("#p_cate_id").val();
+	var c_cate_id = $("#c_cate_id").val();
     var description = $.trim($("#desc").val());
     return {
         name : name,
         price : price,
         _price : _price,
         unit: unit,
+		p_cate_id: p_cate_id,
+		c_cate_id: c_cate_id,
         image : image_count,
-        weight : weight,
-        stock : stock,
-        year : year,
-        cate : cate,
-        is_sell : is_sell,
-        type : type,
-        product_art : product_art,
-        series : series,
-        zone : zone,
-        url : url,
-        production : production,
-        specification : specification,
-        burden : burden,
-        producer : producer,
-        storage : storage,
         description : description
     };
 }
@@ -627,13 +348,6 @@ function delete_image(filename, obj) {
             return false;
         }
     }, 'json');
-}
-
-// 删除多余的图片
-function delete_another_image(filename) {
-    $.post('<{:U("Goods/delete_image")}>', {
-        filename : filename
-    });
 }
 //]]>
 </script>

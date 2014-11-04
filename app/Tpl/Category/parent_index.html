@@ -23,10 +23,10 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "分类名称", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "商品数量", name: 'goods_amount', align: 'center', width: '10%'},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '30%'},
-            {display: "更新时间", name: 'update_time', align: 'center', width: '30%', render: function(rowdata, rowindex, value) {
+            {display: "分类名称", name: 'name', align: 'center', width: '30%', isSort: false},
+            {display: "商品数量", name: 'goods_amount', align: 'center', width: '16%'},
+            {display: "添加时间", name: 'add_time', align: 'center', width: '16%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
 					return value ? value : '从未更新';
 				}
 			},

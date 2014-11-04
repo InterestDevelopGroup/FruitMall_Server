@@ -62,19 +62,47 @@ class ParentCategoryModel extends Model {
                     'in',
                     $id
                 )
-            ))->delete()) {
-                if (M('Goods')->where(array(
-                    'p_cate_id' => array(
+            ))->count()) {
+                if (M('ChildCategory')->where(array(
+                    'parent_id' => array(
                         'in',
                         $id
                     )
                 ))->delete()) {
-                    // 删除成功，提交事务
-                    $this->commit();
-                    return array(
-                        'status' => true,
-                        'msg' => '删除成功'
-                    );
+                    if (M('Goods')->where(array(
+                        'p_cate_id' => array(
+                            'in',
+                            $id
+                        )
+                    ))->count()) {
+                        if (M('Goods')->where(array(
+                            'p_cate_id' => array(
+                                'in',
+                                $id
+                            )
+                        ))->delete()) {
+                            // 删除成功，提交事务
+                            $this->commit();
+                            return array(
+                                'status' => true,
+                                'msg' => '删除成功'
+                            );
+                        } else {
+                            // 删除失败，回滚事务
+                            $this->rollback();
+                            return array(
+                                'status' => false,
+                                'msg' => '删除失败'
+                            );
+                        }
+                    } else {
+                        // 删除成功，提交事务
+                        $this->commit();
+                        return array(
+                            'status' => true,
+                            'msg' => '删除成功'
+                        );
+                    }
                 } else {
                     // 删除失败，回滚事务
                     $this->rollback();
@@ -84,11 +112,11 @@ class ParentCategoryModel extends Model {
                     );
                 }
             } else {
-                // 删除失败，回滚事务
-                $this->rollback();
+                // 删除成功，提交事务
+                $this->commit();
                 return array(
-                    'status' => false,
-                    'msg' => '删除失败'
+                    'status' => true,
+                    'msg' => '删除成功'
                 );
             }
         } else {
@@ -130,7 +158,7 @@ class ParentCategoryModel extends Model {
             'name',
             'add_time',
             'update_time',
-            //"(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 

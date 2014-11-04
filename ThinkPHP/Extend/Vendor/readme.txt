@@ -1,7 +1,7 @@
-µÚÈý·½Àà¿âÊ¹ÓÃËµÃ÷
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½Ëµï¿½ï¿½
 
-µÚÈý·½Àà¿âÇø±ðÓÚÏµÍ³À©Õ¹Àà¿âµÄµØ·½¾ÍÊÇÎÞÐè×ñÑ­ThinkPHPµÄÀà¿â¶¨ÒåºÍÎÄ¼þ¹æ·¶¡£
-Ê¹ÓÃµÚÈý·½Àà¿â£¬ÐèÒªÔÚThinkPHPÏµÍ³Ä¿Â¼ÏÂÃæ´´½¨VendorÄ¿Â¼£¬È»ºóÖ±½Ó·ÅÈëµÚÈý·½Àà¿â¡£
-µ¼ÈëµÚÈý·½Àà¿âµÄ·½·¨£º
-// ¼ÙÉèÔÚVendorÄ¿Â¼ÏÂÃæÓÐÒ»¸öZend\Util\Array.php Àà¿âÎÄ¼þ
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ÄµØ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ThinkPHPï¿½ï¿½ï¿½ï¿½â¶¨ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½æ·¶ï¿½ï¿½
+Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½Òªï¿½ï¿½ThinkPHPÏµÍ³Ä¿Â¼ï¿½ï¿½ï¿½æ´´ï¿½ï¿½VendorÄ¿Â¼ï¿½ï¿½È»ï¿½ï¿½Ö±ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â¡£
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½VendorÄ¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Zend\Util\Array.php ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 vendor('Zend.Util.Array');

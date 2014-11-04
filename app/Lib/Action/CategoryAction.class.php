@@ -18,6 +18,7 @@ class CategoryAction extends AdminAction {
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
             $this->ajaxReturn(D('ChildCategory')->addChildCategory($name, $parent_id));
         } else {
+            $this->assign('parentCategory', M('ParentCategory')->select());
             $this->display();
         }
     }
@@ -76,7 +77,25 @@ class CategoryAction extends AdminAction {
             $this->assign('childCategory', M('ChildCategory')->where(array(
                 'id' => $id
             ))->find());
+            $this->assign('parentCategory', M('ParentCategory')->select());
             $this->display();
+        }
+    }
+
+    /**
+     * Ajax根据大分类ID获取小分类列表
+     */
+    public function getChildCategoryByParentId() {
+        if ($this->isAjax()) {
+            $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
+            $this->ajaxReturn(M('ChildCategory')->field(array(
+                'id',
+                'name'
+            ))->where(array(
+                'parent_id' => $parent_id
+            ))->select());
+        } else {
+            $this->redirect('/');
         }
     }
 

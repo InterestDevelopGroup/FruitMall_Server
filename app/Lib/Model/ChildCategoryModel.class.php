@@ -65,19 +65,33 @@ class ChildCategoryModel extends Model {
                     'in',
                     $id
                 )
-            ))->delete()) {
+            ))->count()) {
+                if (M('Goods')->where(array(
+                    'c_cate_id' => array(
+                        'in',
+                        $id
+                    )
+                ))->delete()) {
+                    // 删除成功，提交事务
+                    $this->commit();
+                    return array(
+                        'status' => true,
+                        'msg' => '删除成功'
+                    );
+                } else {
+                    // 删除失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => false,
+                        'msg' => '删除失败'
+                    );
+                }
+            } else {
                 // 删除成功，提交事务
                 $this->commit();
                 return array(
                     'status' => true,
                     'msg' => '删除成功'
-                );
-            } else {
-                // 删除失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '删除失败'
                 );
             }
         } else {
