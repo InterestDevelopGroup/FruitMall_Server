@@ -1,9 +1,9 @@
 <?php
 
 /**
- * tea_goods 表模型
+ * fruit_goods 表模型
  *
- * @author lzjjie
+ * @author Zonkee
  * @version 1.0.0
  * @since 1.0.0
  */

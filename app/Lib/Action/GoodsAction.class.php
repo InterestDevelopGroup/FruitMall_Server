@@ -35,8 +35,7 @@ class GoodsAction extends AdminAction {
     public function delete() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
-            $goods = D('Goods');
-            $this->ajaxReturn($goods->deleteGoods((array) $id));
+            $this->ajaxReturn(D('Goods')->deleteGoods((array) $id));
         } else {
             $this->redirect('/');
         }
