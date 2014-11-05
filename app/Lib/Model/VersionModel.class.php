@@ -1,9 +1,9 @@
 <?php
 
 /**
- * tea_version表模型
+ * fruit_version表模型
  *
- * @author lzjjie
+ * @author Zonkee
  * @version 1.0.0
  * @since 1.0.0
  */
@@ -21,33 +21,56 @@ class VersionModel extends Model {
      * @return array
      */
     public function addVersion($version, $download_url, $type) {
-        $is_exists = $this->where("version = {$version} AND type = {$type} AND download_url = {$download_url}")->count();
-        if ($is_exists) {
+        if ($this->where(array(
+            'version' => $version,
+            'type' => $type,
+            'download_url' => $download_url
+        ))->count()) {
             return array(
                 'status' => false,
                 'msg' => '已经存在一个与此相同的版本'
             );
         }
-        // 开启事务
-        $this->startTrans();
         if ($this->add(array(
             'version' => $version,
             'download_url' => $download_url,
             'type' => $type,
             'add_time' => time()
         ))) {
-            // 添加成功，提交事务
-            $this->commit();
             return array(
                 'status' => 1,
                 'msg' => '添加版本成功'
             );
         } else {
-            // 添加失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => 0,
                 'msg' => '添加版本失败'
+            );
+        }
+    }
+
+    /**
+     * 删除版本
+     *
+     * @param array $id
+     *            版本ID
+     * @return array
+     */
+    public function deleteVersion(array $id) {
+        if ($this->where(array(
+            'id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '删除失败'
             );
         }
     }
@@ -60,7 +83,9 @@ class VersionModel extends Model {
      * @return int
      */
     public function getVersionCount($type) {
-        return (int) $this->where("type = {$type}")->count();
+        return (int) $this->where(array(
+            'type' => $type
+        ))->count();
     }
 
     /**
@@ -78,12 +103,10 @@ class VersionModel extends Model {
      *            版本类型(0:android,1:ios)
      */
     public function getVersionList($page, $pageSize, $order, $sort, $type) {
-        return $this->field(array(
-            'id',
-            'version',
-            'download_url',
-            'FROM_UNIXTIME(add_time)' => 'add_time'
-        ))->where("type = {$type}")->order($order . " " . $sort)->limit(($page - 1) * $pageSize, $pageSize)->select();
+        $offset = ($page - 1) * $pageSize;
+        return $this->where(array(
+            'type' => $type
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
 }

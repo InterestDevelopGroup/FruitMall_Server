@@ -3,7 +3,7 @@
 /**
  * App版本管理Action
  *
- * @author lzjjie
+ * @author Zonkee
  * @version 1.0.0
  * @since 1.0.0
  */
@@ -17,8 +17,7 @@ class VersionAction extends AdminAction {
             $version = isset($_POST['version']) ? trim($_POST['version']) : $this->redirect('/');
             $download_url = isset($_POST['download_url']) ? trim($_POST['download_url']) : $this->redirect('/');
             $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
-            $versionModel = D('Version');
-            $this->ajaxReturn($versionModel->addVersion($version, $download_url, $type));
+            $this->ajaxReturn(D('Version')->addVersion($version, $download_url, $type));
         } else {
             $this->redirect('/');
         }
@@ -36,7 +35,10 @@ class VersionAction extends AdminAction {
             $version = D('Version');
             $total = $version->getVersionCount(0);
             if ($total) {
-                $rows = $version->getVersionList($page, $pageSize, $order, $sort, 0);
+                $rows = array_map(function ($v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    return $v;
+                }, $version->getVersionList($page, $pageSize, $order, $sort, 0));
             } else {
                 $rows = null;
             }
@@ -46,6 +48,18 @@ class VersionAction extends AdminAction {
             ));
         } else {
             $this->display();
+        }
+    }
+
+    /**
+     * 删除版本
+     */
+    public function delete() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Version')->deleteVersion((array) $id));
+        } else {
+            $this->redirect('/');
         }
     }
 
