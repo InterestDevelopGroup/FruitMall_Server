@@ -92,6 +92,7 @@ $app_config = array(
                 )
             )
         ),
+        */
         'Open' => array(
             'text' => 'API',
             'default' => 'index',
@@ -102,7 +103,6 @@ $app_config = array(
                 )
             )
         )
-        */
     ),
     'priv' => array(
         'administrator' => array(
@@ -160,6 +160,10 @@ $app_config = array(
         'jpg',
         'jpeg',
         'png'
+    ),
+    'SMS' => array(
+        'sn' => 'SDK-WSS-010-07201',
+        'pwd' => 'wddydg'
     )
 );
 return array_merge(require 'config.php', $app_config);
