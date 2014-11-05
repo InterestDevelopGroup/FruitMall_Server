@@ -19,7 +19,7 @@ var TECSS={
 	btnHeight:17,
 	lineWidth:7,
 
-	fulled:"te_fulled",//ȫ��ʱȫ����ť��ʽ
-	sourceMode:"te_source"//Դ��ģʽʱ�İ�ť��ʽ
+	fulled:"te_fulled",
+	sourceMode:"te_source"
 
 };
