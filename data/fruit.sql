@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-04 18:55:11
+Date: 2014-11-05 11:31:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,7 +53,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415071086', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415154812', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1414987294', '1414998108', '0', '1', null);
 
 -- ----------------------------
@@ -67,12 +67,11 @@ CREATE TABLE `fruit_child_category` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='子分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='子分类表';
 
 -- ----------------------------
 -- Records of fruit_child_category
 -- ----------------------------
-INSERT INTO `fruit_child_category` VALUES ('2', '1', '小分類測試1', '1415077861', '1415077871');
 
 -- ----------------------------
 -- Table structure for fruit_goods
@@ -150,9 +149,25 @@ CREATE TABLE `fruit_parent_category` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='父分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='父分类表';
 
 -- ----------------------------
 -- Records of fruit_parent_category
 -- ----------------------------
-INSERT INTO `fruit_parent_category` VALUES ('1', '大分類測試1', '1415012373', '1415073133');
+
+-- ----------------------------
+-- Table structure for fruit_version
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_version`;
+CREATE TABLE `fruit_version` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `version` varchar(10) NOT NULL,
+  `download_url` varchar(255) NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '版本类型（0：android，1：ios）',
+  `add_time` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='App版本管理表';
+
+-- ----------------------------
+-- Records of fruit_version
+-- ----------------------------
