@@ -19,6 +19,7 @@ $app_config = array(
                 )
             )
         ),
+        /*
         'Member' => array(
             'text' => '会员',
             'default' => 'index',
@@ -29,6 +30,7 @@ $app_config = array(
                 )
             )
         ),
+        */
         'Goods' => array(
             'text' => '商品',
             'default' => 'index',
@@ -57,6 +59,7 @@ $app_config = array(
                 )
             )
         ),
+        /*
         'Order' => array(
             'text' => '订单',
             'default' => 'index',
@@ -67,6 +70,7 @@ $app_config = array(
                 )
             )
         ),
+        */
         'Version' => array(
             'text' => 'App版本管理',
             'default' => 'android',
@@ -77,6 +81,7 @@ $app_config = array(
                 )
             )
         ),
+        /*
         'Feedback' => array(
             'text' => '用户反馈',
             'default' => 'index',
@@ -97,6 +102,7 @@ $app_config = array(
                 )
             )
         )
+        */
     ),
     'priv' => array(
         'administrator' => array(
@@ -112,6 +118,9 @@ $app_config = array(
         'category' => array(
             'parent_index' => 'category|parent_index',
             'child_index' => 'category|child_index'
+        ),
+        'version' => array(
+            'android' => 'version|android'
         )
     ),
     'child_priv' => array(
@@ -119,7 +128,8 @@ $app_config = array(
         'member|index' => 'member|delete',
         'goods|index' => 'goods|delete,goods|update',
         'category|parent_index' => 'catagory|parent_add,category|parent_delete,category|parent_update',
-        'category|child_index' => 'category|child_add,category|child_delete,category|child_update'
+        'category|child_index' => 'category|child_add,category|child_delete,category|child_update',
+        'version|android' => 'version|add,version|delete'
     ),
     'priv_language' => array(
         'administrator' => array(
@@ -139,6 +149,10 @@ $app_config = array(
             'category' => '商品分类',
             'parent_index' => '大分类',
             'child_index' => '小分类'
+        ),
+        'version' => array(
+            'version' => 'App版本管理',
+            'android' => 'Android App版本管理'
         )
     ),
     'MAX_SIZE' => 2097152,
