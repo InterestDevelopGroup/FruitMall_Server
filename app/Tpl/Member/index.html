@@ -31,7 +31,11 @@ $(function(){
                 }
             },
             {display: "手机", name: 'phone', align: 'center', width: '16%', isSort: false},
-            {display: "性别", name: 'sex', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "性别", name: 'sex', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
                         case 0 :
                             return '保密';
@@ -79,6 +83,7 @@ function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>用户名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.username ? record.username : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>手机：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.phone + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>真实姓名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.real_name ? record.real_name : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>性别：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + sex + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>注册时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.register_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>上一次登录时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.last_time ? record.last_time : '从未登录') + "</td></tr>");

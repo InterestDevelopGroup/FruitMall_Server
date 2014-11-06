@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-06 15:08:30
+Date: 2014-11-06 18:16:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -120,6 +120,7 @@ CREATE TABLE `fruit_member` (
   `phone` char(11) NOT NULL COMMENT '用户手机',
   `password` varchar(32) NOT NULL COMMENT '用户密码',
   `username` varchar(30) DEFAULT NULL COMMENT '用户名',
+  `real_name` varchar(30) DEFAULT NULL COMMENT '真实姓名',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
   `sex` tinyint(1) DEFAULT '0' COMMENT '用户性别（0：保密，1：男，2：女）',
   `register_time` int(10) NOT NULL COMMENT '注册时间',

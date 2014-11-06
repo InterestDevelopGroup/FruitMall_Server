@@ -113,6 +113,7 @@ class MemberModel extends Model {
             'id',
             'phone',
             'username',
+            'real_name',
             'avatar',
             'sex',
             'register_time',
