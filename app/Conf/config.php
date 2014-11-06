@@ -19,7 +19,6 @@ $app_config = array(
                 )
             )
         ),
-        /*
         'Member' => array(
             'text' => '会员',
             'default' => 'index',
@@ -30,7 +29,6 @@ $app_config = array(
                 )
             )
         ),
-        */
         'Goods' => array(
             'text' => '商品',
             'default' => 'index',

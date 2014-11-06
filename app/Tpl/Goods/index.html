@@ -28,7 +28,7 @@ $(function(){
         columns: [
             {display: "商品名称", name: 'name', align: 'center', width: '16%', isSort: false},
             {display: "大分类", name: 'parent_category', align: 'center', width: '12%', isSort: false},
-			{display: "小分类", name: 'child_category', align: 'center', width: '12%', isSort: false},
+            {display: "小分类", name: 'child_category', align: 'center', width: '12%', isSort: false},
             {display: "单价", name: 'price', align: 'center', width: '12%'},
             {display: "市场价", name: '_price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
@@ -74,15 +74,6 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>商品简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
     out.push("</table>");
     out.push('<div style="margin:10px;width:90%;">');
-	/*
-    for (var i = 1; i <= 5; i++) {
-        var image = (i == 1) ? 'image' : 'image_' + i;
-        if (record[image]) {
-            out.push('<div style="display:inline-block;margin:3px;"><a href="' + record[image] + '" title="点击查看原图" target="_blank"><img src="' + record[image] + '" width="200" height="150" /></a></div>');
-        }
-    }
-    out.push('</div>');
-	*/
     $(container).html(out.join(''));
 }
 //删除商品

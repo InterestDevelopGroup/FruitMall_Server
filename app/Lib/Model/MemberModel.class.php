@@ -10,6 +10,32 @@
 class MemberModel extends Model {
 
     /**
+     * 删除用户
+     *
+     * @param array $id
+     *            用户ID
+     * @return array
+     */
+    public function deleteMember(array $id) {
+        if ($this->where(array(
+            'id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '删除失败'
+            );
+        }
+    }
+
+    /**
      * 找回密码
      *
      * @param string $phone
@@ -42,6 +68,56 @@ class MemberModel extends Model {
                 'result' => '未知错误'
             );
         }
+    }
+
+    /**
+     * 获取会员数量
+     *
+     * @param string $keyword
+     *            查询关键字
+     * @return int
+     */
+    public function getMemberCount($keyword) {
+        empty($keyword) || $this->where(array(
+            'username' => array(
+                'like',
+                "%{$keyword}%"
+            )
+        ));
+        return (int) $this->count();
+    }
+
+    /**
+     * 获取会员列表
+     *
+     * @param int $page
+     *            当前页
+     * @param int $pageSize
+     *            每页显示条数
+     * @param string $order
+     *            排序字段
+     * @param string $sort
+     *            排序方式
+     * @param string $keyword
+     *            查询关键字
+     */
+    public function getMemberList($page, $pageSize, $order, $sort, $keyword) {
+        $offset = ($page - 1) * $pageSize;
+        empty($keyword) || $this->where(array(
+            'username' => array(
+                'like',
+                "%{$keyword}%"
+            )
+        ));
+        return $this->field(array(
+            'id',
+            'phone',
+            'username',
+            'avatar',
+            'sex',
+            'register_time',
+            'last_time'
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

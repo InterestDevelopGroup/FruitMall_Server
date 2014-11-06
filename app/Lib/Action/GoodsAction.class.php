@@ -105,13 +105,13 @@ class GoodsAction extends AdminAction {
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $goods = D('Goods');
-            $total = $goods->getGoodsCount($keyword, intval($year));
+            $total = $goods->getGoodsCount($keyword);
             if ($total) {
-                $rows = $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword);
-                foreach ($rows as &$v) {
+                $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
-                }
+                    return $v;
+                }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword));
             } else {
                 $rows = null;
             }
