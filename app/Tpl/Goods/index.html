@@ -20,6 +20,9 @@
         </div>
     </div>
 </div>
+<style type="text/css">
+.detail_image{width:160px;height:90px;overflow:hidden;margin-left:12px;display:inline-block;margin-left:6px;position:relative;}
+</style>
 <script type="text/javascript">
 //<![CDATA[
 var grid;
@@ -69,13 +72,23 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.price + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._price ? record._price : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.unit + "</td></tr>");
+	out.push("<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.amount ? record.amount : '暂无') + "</td></tr>");
+	out.push("<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.weight ? record.weight : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>商品简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
     out.push("</table>");
-    out.push('<div style="margin:10px;width:90%;">');
+	out.push('<div style="margin:10px;width:88%;">');
+	out.push("<h3>商品缩略图：</h3><div class='detail_image'><a href='"+record.thumb+"' title='点击查看原图' target='_blank'><img src='"+record.thumb+"' width='100%' /></a></div>");
+	out.push("<h3 style='clear:both'>商品介绍图：</h3>");
+	for (var i = 1; i <= 5; i++) {
+		var image = 'image_' + i;
+		out.push("<div class='detail_image'><a href='"+record[image]+"' title='点击查看原图' target='_blank'><img src='"+record[image]+"' width='100%' /></a></div>");
+	}
+	out.push('</div>');
     $(container).html(out.join(''));
 }
+
 //删除商品
 function del() {
     var data = getCheckedData('id');

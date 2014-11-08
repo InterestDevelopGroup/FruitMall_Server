@@ -130,16 +130,7 @@ class GoodsModel extends Model {
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
             " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id "
         ))->field(array(
-            'g.id',
-            'g.p_cate_id',
-            'g.c_cate_id',
-            'g.name',
-            'g.price',
-            'g._price',
-            'g.unit',
-            'g.description',
-            'g.add_time',
-            'g.update_time',
+            'g.*',
             'pc.name' => 'parent_category',
             'cc.name' => 'child_category'
         ))->order($order . " " . $sort)->limit($offset, $pageSize);

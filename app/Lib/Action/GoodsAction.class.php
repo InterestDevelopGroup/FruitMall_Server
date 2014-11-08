@@ -113,6 +113,7 @@ class GoodsAction extends AdminAction {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['description'] = strip_tags($v['description']);
                     return $v;
                 }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword));
             } else {
