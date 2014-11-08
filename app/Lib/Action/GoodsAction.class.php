@@ -20,9 +20,12 @@ class GoodsAction extends AdminAction {
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
+            $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
+            $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $image = isset($_POST['image']) ? (array) $_POST['image'] : $this->redirect('/');
-            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $description, $image));
+            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->select());
             $this->display();
@@ -139,9 +142,12 @@ class GoodsAction extends AdminAction {
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
+            $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
+            $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
+            $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $image = isset($_POST['image']) ? (array) $_POST['image'] : array();
-            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $description, $image));
+            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
             $goodsAssign = M('Goods')->where(array(
                 'id' => $id
@@ -151,14 +157,11 @@ class GoodsAction extends AdminAction {
             $this->assign('childCategory', M('ChildCategory')->where(array(
                 'parent_id' => $goodsAssign['p_cate_id']
             ))->select());
-            $goodsImages = M('GoodsImage')->where(array(
-                'goods_id' => $id
-            ))->select();
-            $this->assign('goodsImages', $goodsImages);
             $image_count = array();
-            foreach ($goodsImages as $v) {
-                $image_count[] = $v['image'];
+            for ($i = 1; $i <= 5; $i++) {
+                $image_count[] = $goodsAssign["image_{$i}"];
             }
+            $this->assign('introduction_image', $image_count);
             $this->assign('image_count', json_encode($image_count));
             $this->display();
         }
@@ -170,6 +173,45 @@ class GoodsAction extends AdminAction {
     public function upload() {
         if (!empty($_FILES)) {
             $this->ajaxReturn(upload($_FILES, C('MAX_SIZE'), C('ALLOW_EXTENSIONS')));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 商品简介内部图片上传
+     */
+    public function upload_image() {
+        if (!empty($_FILES)) {
+            $year = date("Y");
+            $month = date("m");
+            $day = date("d");
+            $targetPath = $_SERVER['DOCUMENT_ROOT'] . "/uploads/{$year}/{$month}/{$day}";
+            if (!file_exists($targetPath)) {
+                mkdir($targetPath, 0755, true);
+            }
+            if ($_FILES['upload']['size'] > C('MAX_SIZE')) {
+                echo "<script type='text/javascript'>
+                        window.parent.CKEDITOR.tools.callFunction(0, '', '图片不能大于2M');
+                        </script>";
+            } else {
+                $fileParts = pathinfo($_FILES['upload']['name']);
+                $tempFile = $_FILES['upload']['tmp_name'];
+                if (in_array(strtolower($fileParts['extension']), C('ALLOW_EXTENSIONS'))) {
+                    $uploadFileName = generateTargetFileName($fileParts['extension']);
+                    $targetFile = rtrim($targetPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $uploadFileName;
+                    move_uploaded_file($tempFile, $targetFile);
+                    $fileName = "http://{$_SERVER['HTTP_HOST']}/uploads/{$year}/{$month}/{$day}/" . $uploadFileName;
+                    $funcNum = $_GET['CKEditorFuncNum'];
+                    echo "<script type='text/javascript'>
+                    window.parent.CKEDITOR.tools.callFunction($funcNum, '$fileName');
+                    </script>";
+                } else {
+                    echo "<script type='text/javascript'>
+                            window.parent.CKEDITOR.tools.callFunction(0, '', '不支持的图片格式');
+                            </script>";
+                }
+            }
         } else {
             $this->redirect('/');
         }

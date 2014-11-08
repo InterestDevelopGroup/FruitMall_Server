@@ -13,10 +13,10 @@ class GoodsModel extends Model {
      * 添加商品
      *
      * @param string $name
-     *            商品名
+     *            名称
      * @param float $price
      *            单价
-     * @param float $_price
+     * @param string $_price
      *            市场价
      * @param string $unit
      *            价格单位
@@ -24,62 +24,41 @@ class GoodsModel extends Model {
      *            大分类ID
      * @param int $c_cate_id
      *            小分类ID
+     * @param string $amount
+     *            每盒数量
+     * @param string $weight
+     *            每盒重量
+     * @param string $thumb_image
+     *            缩略图
+     * @param array $introduction_image
+     *            介绍图
      * @param string $description
      *            简介
-     * @param array $image
-     *            商品图片
      * @return array
      */
-    public function addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $description, array $image) {
-        if ($this->where(array(
-            'name' => $name
-        ))->count()) {
-            return array(
-                'status' => false,
-                'msg' => '商品名不能重复'
-            );
-        }
+    public function addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
             'unit' => $unit,
             'p_cate_id' => $p_cate_id,
             'c_cate_id' => $c_cate_id,
+            'thumb' => $thumb_image,
             'add_time' => time()
         );
+        for ($i = 1; $i <= 5; $i++) {
+            $data["image_{$i}"] = $introduction_image[$i - 1];
+        }
         strlen($_price) && $data['_price'] = floatval($_price);
+        strlen($amount) && $data['amount'] = intval($amount);
+        strlen($weight) && $data['weight'] = intval($weight);
         strlen($description) && $data['description'] = $description;
-        // 开启事务
-        $this->startTrans();
         if ($this->add($data)) {
-            $goods_id = $this->getLastInsID();
-            $dataList = array();
-            $add_time = time();
-            for ($i = 0; $i < count($image); $i++) {
-                $dataList[] = array(
-                    'goods_id' => $goods_id,
-                    'image' => $image[$i],
-                    'add_time' => $add_time
-                );
-            }
-            if (M('GoodsImage')->addAll($dataList)) {
-                // 添加成功，提交事务
-                $this->commit();
-                return array(
-                    'status' => true,
-                    'msg' => '添加成功'
-                );
-            } else {
-                // 添加失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '添加失败'
-                );
-            }
+            return array(
+                'status' => true,
+                'msg' => '添加成功'
+            );
         } else {
-            // 添加失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '添加失败'
@@ -174,14 +153,15 @@ class GoodsModel extends Model {
     }
 
     /**
+     * 更新商品
      *
      * @param int $id
      *            商品ID
      * @param string $name
-     *            商品名
+     *            名称
      * @param float $price
      *            单价
-     * @param float|string $_price
+     * @param string $_price
      *            市场价
      * @param string $unit
      *            价格单位
@@ -189,76 +169,43 @@ class GoodsModel extends Model {
      *            大分类ID
      * @param int $c_cate_id
      *            小分类ID
+     * @param string $amount
+     *            每盒数量
+     * @param string $weight
+     *            每盒质量
+     * @param string $thumb_image
+     *            缩略图
+     * @param array $introduction_image
+     *            介绍图
      * @param string $description
-     *            商品简介
-     * @param array $image
-     *            更新的商品图片
+     *            简介
      * @return array
      */
-    public function updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $description, array $image) {
-        if ($this->where(array(
-            'name' => $name,
-            'id' => array(
-                'neq',
-                $id
-            )
-        ))->count()) {
-            return array(
-                'status' => false,
-                'msg' => '商品名不能重复'
-            );
-        }
+    public function updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
             'unit' => $unit,
             'p_cate_id' => $p_cate_id,
             'c_cate_id' => $c_cate_id,
+            'thumb' => $thumb_image,
             'update_time' => time()
         );
         $data['_price'] = strlen($_price) ? floatval($_price) : null;
         $data['description'] = strlen($description) ? $description : null;
-        // 开启事务
-        $this->startTrans();
+        $data['amount'] = strlen($amount) ? intval($amount) : null;
+        $data['weight'] = strlen($weight) ? intval($weight) : null;
+        for ($i = 1; $i <= 5; $i++) {
+            $data["image_{$i}"] = $introduction_image[$i - 1];
+        }
         if ($this->where(array(
             'id' => $id
         ))->save($data)) {
-            if (empty($image)) {
-                // 更新成功，提交事务
-                $this->commit();
-                return array(
-                    'status' => true,
-                    'msg' => '商品更新成功'
-                );
-            } else {
-                $dataList = array();
-                $add_time = time();
-                for ($i = 0; $i < count($image); $i++) {
-                    $dataList[] = array(
-                        'goods_id' => $id,
-                        'image' => $image[$i],
-                        'add_time' => $add_time
-                    );
-                }
-                if (M('GoodsImage')->addAll($dataList)) {
-                    // 更新成功，提交事务
-                    $this->commit();
-                    return array(
-                        'status' => true,
-                        'msg' => '商品更新成功'
-                    );
-                } else {
-                    // 更新失败，回滚事务
-                    $this->rollback();
-                    return array(
-                        'status' => false,
-                        'msg' => '商品更新失败'
-                    );
-                }
-            }
+            return array(
+                'status' => true,
+                'msg' => '商品更新成功'
+            );
         } else {
-            // 更新失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '商品更新失败'

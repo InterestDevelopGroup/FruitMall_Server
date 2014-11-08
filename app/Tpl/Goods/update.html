@@ -11,7 +11,7 @@
         <table cellpadding="0" cellspacing="0" class="l-table-edit">
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>名称：
+                    <span class="required">*</span>名称：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="name" value="<{$goods['name']}>" />
@@ -20,7 +20,35 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>单价：
+                    <span class="required">*</span>大分类：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="p_cate_id">
+                        <option value="0">--请选择--</option>
+                        <volist name="parentCategory" id="val">
+                        <option value="<{$val['id']}>" <if condition="$goods['p_cate_id'] eq $val['id']">selected</if>><{$val['name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>小分类：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="c_cate_id">
+	                    <option value="0">--请选择--</option>
+                    	<volist name="childCategory" id="val">
+                        <option value="<{$val['id']}>" <if condition="$goods['c_cate_id'] eq $val['id']">selected</if>><{$val['name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>单价：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="price" value="<{$goods['price']}>" />
@@ -38,7 +66,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>单位：
+                    <span class="required">*</span>价格单位：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="unit" value="<{$goods['unit']}>" />
@@ -47,29 +75,19 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>大分类：
+                    每盒个数：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <select id="p_cate_id">
-                        <option value="0">--请选择--</option>
-                        <volist name="parentCategory" id="val">
-                        <option value="<{$val['id']}>" <if condition="$goods['p_cate_id'] eq $val['id']">selected</if>><{$val['name']}></option>
-                        </volist>
-                    </select>
+                    <input type="text" id="amount" value="<{$goods['amount']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>小分类：
+                    每盒重量：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <select id="c_cate_id">
-	                    <option value="0">--请选择--</option>
-                    	<volist name="childCategory" id="val">
-                        <option value="<{$val['id']}>" <if condition="$goods['c_cate_id'] eq $val['id']">selected</if>><{$val['name']}></option>
-                        </volist>
-                    </select>
+                    <input type="text" id="weight" value="<{$goods['weight']}>" />&nbsp;&nbsp;克
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -78,32 +96,60 @@
                     商品简介：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <textarea id="desc" style="resize: none;" onfocus="javascript:checkLength(this, 'desc_tip');" onkeydown="javascript:checkLength(this, 'desc_tip');" onkeyup="javascript:checkLength(this, 'desc_tip');" maxLength="80"><{$goods['description']}></textarea>
+                    <textarea id="desc"><{$goods['description']}></textarea>
                 </td>
                 <td align="left" class="tipmsg" id="desc_tip"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span>*</span>商品图片：
+                    <span class="required">*</span>商品缩略图：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <span class="btn btn-success fileinput-button" style="color: #fff;">
                         &nbsp;&nbsp;选择图片
-                        <input id="fileupload" type="file" name="files[]" multiple />
+                        <input id="thumb" type="file" name="files[]" />
+                        <input type="hidden" id="thumb_image" value="<{$goods['thumb']}>" />
                     </span><br /><br />
-                    <div id="progress" class="progress" style="display: none;">
+                    <div id="thumb_progress" class="progress" style="display: none;">
                         <div class="progress-bar progress-bar-success"></div>
                     </div>
                 </td>
-                <td align="left" class="tipmsg" id="image_tip">
-                	<volist name="goodsImages" id="val">
-                	<div class="image-preview">
-                    	<a href="http://<{$_SERVER['HTTP_HOST']}><{$val['image']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
-                        	<img src="http://<{$_SERVER['HTTP_HOST']}><{$val['image']}>" width="160" height="90" border="0" />
+                <td align="left" class="tipmsg" id="thumb_tip"></td>
+            </tr>
+            <tr>
+            	<td id="thumb_result" colspan="3">
+                    <div class="image-preview">
+                        <a href="http://<{$_SERVER['HTTP_HOST']}><{$goods['thumb']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
+                            <img src="http://<{$_SERVER['HTTP_HOST']}><{$goods['thumb']}>" border="0" />
                         </a>
-                        <a href="javascript:void(0);" onclick="delete_image(<{$val['id']}>, '<{$val['image']}>', $(this));" class="image-preview-delete" title="删除"></a>
+                        <a href="javascript:void(0);" onclick="delete_image(<{$goods['thumb']}>, $(this));" class="image-preview-delete" title="删除"></a>
                     </div>
-                    </volist>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>商品介绍图：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <span class="btn btn-success fileinput-button" style="color: #fff;">
+                        &nbsp;&nbsp;选择图片
+                        <input id="introduction" type="file" name="files[]" multiple />
+                    </span><br /><br />
+                    <div id="introduction_progress" class="progress" style="display: none;">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div></td>
+                <td align="left" class="tipmsg" id="introduction_tip"></td>
+            </tr>
+            <tr>
+            	<td id="introduction_result" colspan="3">
+                	<?php for($i = 0; $i < count($introduction_image); $i++) : ?>
+                	<div class="image-preview">
+                        <a href="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" target="_blank" title="点击查看原图" class="image-preview-outter">
+                            <img src="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" border="0" />
+                        </a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$introduction_image[$i]}>', $(this));" class="image-preview-delete" title="删除"></a>
+                    </div>
+                    <?php endfor; ?>
                 </td>
             </tr>
         </table>
@@ -112,14 +158,22 @@
 </div>
 <style type="text/css">
 <!--
-body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;}#is_sell{width:56px;}#type{width:144px;}#product_art{width: 144px;}#series{width:144px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#is_top,#is_free_parking{width:56px;}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.required{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#add_goods_button{width:100%;text-align:center;margin:12px auto}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
 -->
 </style>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/adapters/jquery.js"></script>
 <script type="text/javascript">
 //<![CDATA[
+CKEDITOR.disableAutoInline = true;
 var image_count = <{$image_count}>;
-var update_image = new Array();
 $(function() {
+	var editor = $("#desc").ckeditor({
+        width         : 700,
+        height        : 300,
+        language      : 'zh-cn',
+        filebrowserUploadUrl: '<{:U("goods/upload_image")}>'
+    });
     $("#name").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
@@ -158,7 +212,41 @@ $(function() {
 		removeTip($(this).parent('td').next('td:last'));
 		ckCCateId();
 	});
-    $('#fileupload').fileupload({
+	// 上传缩略图
+    $('#thumb').fileupload({
+        maxNumberOfFiles : 1,
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("Goods/upload")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#thumb_progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#thumb_progress").hide();
+				$("#thumb_tip").empty();
+				$("#thumb_image").val(data.result.filename);
+				$("#thumb_result").html("<div class='image-preview'>"
+										+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+										+ "<img src='"+data.result.src+"' border='0' />"
+										+ "</a>"
+										+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+										+ data.result.filename
+										+ "\', $(this));\" class='image-preview-delete' title='删除'>"
+										+ "</a>" + "</div>");
+            } else {
+                $("#thumb_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#thumb_progress .progress-bar').css('width', progress + '%');
+        }
+    });
+	// 上传介绍图
+	$('#introduction').fileupload({
         maxNumberOfFiles : 5,
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
         maxFileSize : 2097152,
@@ -166,30 +254,32 @@ $(function() {
         url : '<{:U("Goods/upload")}>',
         dataType : 'json',
         send : function(e, data) {
-            $("#progress").show();
+            $("#introduction_progress").show();
         },
         done : function(e, data) {
             if (data.result.status) {
-                $("#progress").hide();
-				if (image_count.length == 0 && update_image.length == 0) {
-					$("#image_tip").empty();
+                $("#introduction_progress").hide();
+				$("#introduction_tip").empty();
+				if (image_count.length < 5) {
+					image_count.push(data.result.filename);
+					$("#introduction_result").append("<div class='image-preview'>"
+											+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+											+ "<img src='"+data.result.src+"' border='0' />"
+											+ "</a>"
+											+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+											+ data.result.filename
+											+ "\', $(this));\" class='image-preview-delete' title='删除'>"
+											+ "</a>" + "</div>");
+				} else {
+					delete_excess_image(data.result.filename);
 				}
-				update_image.push(data.result.filename);
-				$("#image_tip").append("<div class='image-preview'>"
-										+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-										+ "<img src='"+data.result.src+"' width='160' height='90' border='0' />"
-										+ "</a>"
-										+ "<a href='javascript:void(0);' onclick=\"delete_update_image(\'"
-										+ data.result.filename
-										+ "\', $(this));\" class='image-preview-delete' title='删除'>"
-										+ "</a>" + "</div>");
             } else {
-                $("#image_tip").html(data.result.msg);
+                $("#introduction_tip").html(data.result.msg);
             }
         },
         progressall : function(e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css('width', progress + '%');
+            $('#introduction_progress .progress-bar').css('width', progress + '%');
         }
     });
 });
@@ -284,22 +374,20 @@ function ckCCateId() {
 	return true;
 }
 
-//检测简介
-function checkLength(obj, id) {
-    var maxLength = obj.maxLength;
-    var desc = obj.value;
-    if (desc.length <= maxLength) {
-        $("#"+id).html('还剩下'+ (maxLength - desc.length) + '个字');
-    }
-    obj.onblur = function() {
-        $("#"+id).empty();
-    }
+//检测缩略图
+function ckThumb() {
+	var thumb_image = $.trim($("#thumb_image").val());
+	if (thumb_image.length == 0) {
+		addTip($("#thumb_tip"), '请至少上传一张商品缩略图片');
+        return false;
+	}
+	return true;
 }
 
-//检测图片
-function ckImage() {
-    if (image_count.length == 0 && update_image.length == 0) {
-        addTip($("#image_tip"), '请至少上传一张商品图片');
+//检测介绍图片
+function ckIntroductionImage() {
+    if (image_count.length != 5) {
+        addTip($("#introduction_tip"), '请上传5张商品介绍图片');
         return false;
     }
     return true;
@@ -313,22 +401,29 @@ function checkForm() {
     if (!ckUnit()) return false;
 	if (!ckPCateId()) return false;
 	if (!ckCCateId()) return false;
-    if (!ckImage()) return false;
+    if (!ckThumb()) return false;
+	if (!ckIntroductionImage()) return false;
     var name = $.trim($("#name").val());
     var price = $.trim($("#price").val());
     var _price = $.trim($("#_price").val());
     var unit = $.trim($("#unit").val());
     var p_cate_id = $("#p_cate_id").val();
 	var c_cate_id = $("#c_cate_id").val();
+	var amount = $.trim($("#amount").val());
+	var weight = $.trim($("#weight").val());
+	var thumb_image = $.trim($("#thumb_image").val());
     var description = $.trim($("#desc").val());
-    return {
+	return {
         name : name,
         price : price,
         _price : _price,
         unit: unit,
 		p_cate_id: p_cate_id,
 		c_cate_id: c_cate_id,
-        image : update_image,
+		amount: amount,
+		weight: weight,
+		thumb_image: thumb_image,
+        introduction_image : image_count,
         description : description
     };
 }
@@ -349,9 +444,8 @@ function updateGoodsSubmit() {
 }
 
 //删除图片
-function delete_image(id, filename, obj) {
+function delete_image(filename, obj) {
     $.post('<{:U("Goods/delete_image")}>', {
-		id: id,
         filename : filename
     }, function(data) {
         if (data.status) {
@@ -365,20 +459,9 @@ function delete_image(id, filename, obj) {
     }, 'json');
 }
 
-//删除更新的图片
-function delete_update_image(filename, obj) {
-    $.post('<{:U("Goods/delete_image")}>', {
-        filename : filename
-    }, function(data) {
-        if (data.status) {
-            obj.parent().remove();
-            var index = update_image.indexOf(filename);
-            update_image.splice(index, 1);
-        } else {
-            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
-            return false;
-        }
-    }, 'json');
+//删除多余的图片
+function delete_excess_image(filename) {
+	$.post("<{:U('Goods/delete_image')}>", {filename: filename});
 }
 //]]>
 </script>
