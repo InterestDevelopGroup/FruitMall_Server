@@ -10,13 +10,13 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-06 18:16:14
+Date: 2014-11-08 17:07:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for fruit_admin_priv
+-- Table structure for `fruit_admin_priv`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_admin_priv`;
 CREATE TABLE `fruit_admin_priv` (
@@ -33,7 +33,7 @@ INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
 INSERT INTO `fruit_admin_priv` VALUES ('2', '2', 'index|all,login|all,administrator|management,member|index');
 
 -- ----------------------------
--- Table structure for fruit_admin_user
+-- Table structure for `fruit_admin_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_admin_user`;
 CREATE TABLE `fruit_admin_user` (
@@ -53,11 +53,11 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415254106', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415428196', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1414987294', '1415254071', '0', '1', null);
 
 -- ----------------------------
--- Table structure for fruit_child_category
+-- Table structure for `fruit_child_category`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_child_category`;
 CREATE TABLE `fruit_child_category` (
@@ -74,7 +74,7 @@ CREATE TABLE `fruit_child_category` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for fruit_goods
+-- Table structure for `fruit_goods`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_goods`;
 CREATE TABLE `fruit_goods` (
@@ -85,7 +85,15 @@ CREATE TABLE `fruit_goods` (
   `price` decimal(10,2) NOT NULL COMMENT '商品单价',
   `_price` decimal(10,2) DEFAULT NULL COMMENT '市场价',
   `unit` varchar(20) NOT NULL COMMENT '价格单位',
-  `description` varchar(255) DEFAULT NULL COMMENT '商品简介',
+  `amount` int(11) DEFAULT NULL COMMENT '每盒个数',
+  `weight` int(11) DEFAULT NULL COMMENT '每盒重量',
+  `thumb` varchar(255) NOT NULL COMMENT '商品缩略图',
+  `image_1` varchar(255) NOT NULL COMMENT '商品图片1',
+  `image_2` varchar(255) NOT NULL COMMENT '商品图片2',
+  `image_3` varchar(255) NOT NULL COMMENT '商品图片3',
+  `image_4` varchar(255) NOT NULL COMMENT '商品图片4',
+  `image_5` varchar(255) NOT NULL COMMENT '商品图片5',
+  `description` text COMMENT '商品简介',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -96,23 +104,7 @@ CREATE TABLE `fruit_goods` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for fruit_goods_image
--- ----------------------------
-DROP TABLE IF EXISTS `fruit_goods_image`;
-CREATE TABLE `fruit_goods_image` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `goods_id` int(11) NOT NULL COMMENT '商品ID',
-  `image` varchar(255) NOT NULL COMMENT '商品图片',
-  `add_time` int(10) NOT NULL COMMENT '添加时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品图片表';
-
--- ----------------------------
--- Records of fruit_goods_image
--- ----------------------------
-
--- ----------------------------
--- Table structure for fruit_member
+-- Table structure for `fruit_member`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_member`;
 CREATE TABLE `fruit_member` (
@@ -133,7 +125,7 @@ CREATE TABLE `fruit_member` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for fruit_parent_category
+-- Table structure for `fruit_parent_category`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_parent_category`;
 CREATE TABLE `fruit_parent_category` (
@@ -149,7 +141,7 @@ CREATE TABLE `fruit_parent_category` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for fruit_version
+-- Table structure for `fruit_version`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_version`;
 CREATE TABLE `fruit_version` (
