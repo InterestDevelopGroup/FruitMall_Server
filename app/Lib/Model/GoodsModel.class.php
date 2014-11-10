@@ -36,7 +36,7 @@ class GoodsModel extends Model {
      *            简介
      * @return array
      */
-    public function addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, array $introduction_image, $description) {
+    public function addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
@@ -50,6 +50,7 @@ class GoodsModel extends Model {
             $data["image_{$i}"] = $introduction_image[$i - 1];
         }
         strlen($_price) && $data['_price'] = floatval($_price);
+        $tag && $data['tag'] = $tag;
         strlen($amount) && $data['amount'] = intval($amount);
         strlen($weight) && $data['weight'] = intval($weight);
         strlen($description) && $data['description'] = $description;
@@ -128,11 +129,13 @@ class GoodsModel extends Model {
         $offset = ($page - 1) * $pageSize;
         $this->table($this->getTableName() . " AS g ")->join(array(
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
-            " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id "
+            " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
+            " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON t.id = g.tag "
         ))->field(array(
             'g.*',
             'pc.name' => 'parent_category',
-            'cc.name' => 'child_category'
+            'cc.name' => 'child_category',
+            't.name' => 'tag_name'
         ))->order($order . " " . $sort)->limit($offset, $pageSize);
         empty($keyword) || $this->where(array(
             'g.name' => array(
@@ -172,7 +175,7 @@ class GoodsModel extends Model {
      *            简介
      * @return array
      */
-    public function updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, array $introduction_image, $description) {
+    public function updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
@@ -186,6 +189,7 @@ class GoodsModel extends Model {
         $data['description'] = strlen($description) ? $description : null;
         $data['amount'] = strlen($amount) ? intval($amount) : null;
         $data['weight'] = strlen($weight) ? intval($weight) : null;
+        $data['tag'] = $tag ? $tag : null;
         for ($i = 1; $i <= 5; $i++) {
             $data["image_{$i}"] = $introduction_image[$i - 1];
         }

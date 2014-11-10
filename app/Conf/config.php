@@ -57,6 +57,16 @@ $app_config = array(
                 )
             )
         ),
+        'Tag' => array(
+            'text' => '商品标签',
+            'default' => 'parent',
+            'children' => array(
+                'parent' => array(
+                    'text' => '标签一览',
+                    'url' => '/tag/index'
+                )
+            )
+        ),
         /*
         'Order' => array(
             'text' => '订单',

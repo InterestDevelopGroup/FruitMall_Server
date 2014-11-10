@@ -20,14 +20,16 @@ class GoodsAction extends AdminAction {
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $tag = isset($_POST['tag']) ? intval($_POST['tag']) : $this->redirect('/');
             $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->select());
+            $this->assign('tag', M('Tag')->select());
             $this->display();
         }
     }
@@ -49,48 +51,23 @@ class GoodsAction extends AdminAction {
      */
     public function delete_image() {
         if ($this->isAjax()) {
-            $filename = isset($_POST['filename']) ? trim($_POST['filename']) : $this->redirect('/');
-            $id = isset($_POST['id']) ? intval($_POST['id']) : null;
-            if ($id) {
-                $goodsImage = M('GoodsImage');
-                // 开始事务
-                $goodsImage->startTrans();
-                if ($goodsImage->where(array(
-                    'id' => $id
-                ))->delete()) {
-                    if ($this->delete_local_image($filename)) {
-                        // 删除成功，提交事务
-                        $goodsImage->commit();
-                        $this->ajaxReturn(array(
-                            'status' => true
-                        ));
-                    } else {
-                        // 删除失败，回滚事务
-                        $goodsImage->rollback();
-                        $this->ajaxReturn(array(
-                            'status' => false,
-                            'msg' => '删除图片失败'
-                        ));
-                    }
-                } else {
-                    // 删除失败，回滚事务
-                    $goodsImage->rollback();
-                    $this->ajaxReturn(array(
-                        'status' => false,
-                        'msg' => '删除图片失败'
-                    ));
-                }
-            } else {
-                if ($this->delete_local_image($filename)) {
+            $filename = isset($_POST['filename']) ? $_SERVER['DOCUMENT_ROOT'] . $_POST['filename'] : $this->redirect('/');
+            if (file_exists($filename)) {
+                if (unlink($filename)) {
                     $this->ajaxReturn(array(
                         'status' => true
                     ));
                 } else {
                     $this->ajaxReturn(array(
                         'status' => false,
-                        'msg' => '删除图片失败'
+                        'msg' => '删除失败'
                     ));
                 }
+            } else {
+                $this->ajaxReturn(array(
+                    'status' => false,
+                    'msg' => '图片已经删除'
+                ));
             }
         } else {
             $this->redirect('/');
@@ -143,12 +120,13 @@ class GoodsAction extends AdminAction {
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
+            $tag = isset($_POST['tag']) ? intval($_POST['tag']) : $this->redirect('/');
             $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $amount, $weight, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
             $goodsAssign = M('Goods')->where(array(
                 'id' => $id
@@ -158,6 +136,7 @@ class GoodsAction extends AdminAction {
             $this->assign('childCategory', M('ChildCategory')->where(array(
                 'parent_id' => $goodsAssign['p_cate_id']
             ))->select());
+            $this->assign('tag', M('Tag')->select());
             $image_count = array();
             for ($i = 1; $i <= 5; $i++) {
                 $image_count[] = $goodsAssign["image_{$i}"];

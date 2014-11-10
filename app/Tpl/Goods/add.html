@@ -72,6 +72,20 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
+                    标签：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="tag">
+                        <option value="0">--请选择--</option>
+                        <volist name="tag" id="val">
+                        <option value="<{$val['id']}>"><{$val['name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
                     每盒个数：
                 </td>
                 <td align="left" class="l-table-edit-td">
@@ -390,6 +404,7 @@ function checkForm() {
     var unit = $.trim($("#unit").val());
     var p_cate_id = $("#p_cate_id").val();
 	var c_cate_id = $("#c_cate_id").val();
+	var tag = $("#tag").val();
 	var amount = $.trim($("#amount").val());
 	var weight = $.trim($("#weight").val());
 	var thumb_image = $.trim($("#thumb_image").val());
@@ -401,6 +416,7 @@ function checkForm() {
         unit: unit,
 		p_cate_id: p_cate_id,
 		c_cate_id: c_cate_id,
+		tag: tag,
 		amount: amount,
 		weight: weight,
 		thumb_image: thumb_image,
