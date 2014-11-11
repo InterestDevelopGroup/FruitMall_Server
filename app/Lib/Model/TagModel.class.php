@@ -10,6 +10,38 @@
 class TagModel extends Model {
 
     /**
+     * 获取商品标签列表（API）
+     *
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @param int|null $goods_amount
+     *            附带商品数量
+     * @param string|null $keyword
+     *            关键字
+     * @return array
+     */
+    public function _getTagList($offset, $pagesize, $goods_amount, $keyword) {
+        $keyword && $this->where(array(
+            't.name' => array(
+                "like",
+                "%{$keyword}%"
+            )
+        ));
+        $result = $this->table($this->getTableName() . " AS t ")->field(array(
+            't.*',
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE tag = t.id)" => 'goods_amount'
+        ))->limit($offset, $pagesize)->select();
+        if ($goods_amount && !empty($result)) {
+            foreach ($result as &$v) {
+                $v['goods_list'] = D('Goods')->_getGoodsList(0, $goods_amount, null, null, $v['id'], null);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * 添加标签
      *
      * @param string $name

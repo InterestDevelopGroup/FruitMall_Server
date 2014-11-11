@@ -124,6 +124,131 @@
                     <td><div class="failed_return_4"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">商品列表</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/goods</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取商品数，非负整数）<br />
+                        int p_cate_id: 1（大分类ID，非0正整数，非必传）<br />
+                        int c_cate_id: 1（小分类ID，非0正整数，非必传）<br />
+                        int tag: 1（标签ID，非0正整数，非必传）<br />
+                        string keyword: 'xxx'（搜索商品关键字，非必传）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_5"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_5"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">大分类</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/parent_category</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取商品数，非负整数）<br />
+                        string keyword: 'xxx'（搜索大分类关键字，非必传）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_6"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_6"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">小分类</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/child_category</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取商品数，非负整数）<br />
+                        int p_cate_id: 1（大分类ID，非0正整数，非必传）<br />
+                        string keyword: 'xxx'（搜索小分类关键字，非必传）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_7"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_7"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">商品标签</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/tag</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取商品数，非负整数）<br />
+                        int goods_amount: 5（附带5个标签商品，非必传）<br />
+                        string keyword: 'xxx'（搜索标签关键字，非必传）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_8"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_8"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -144,6 +269,14 @@ $(function() {
     $(".failed_return_3").JSONView({"status":0,"result":"\u5bc6\u7801\u9519\u8bef"});
     $(".success_return_4").JSONView({"status":1,"result":"\u4fee\u6539\u5bc6\u7801\u6210\u529f"});
     $(".failed_return_4").JSONView({"status":0,"result":"\u8be5\u624b\u673a\u5c1a\u672a\u6ce8\u518c"});
+    $(".success_return_5").JSONView({"status":1,"result":[{"id":"1","p_cate_id":"1","c_cate_id":"1","name":"\u6e2c\u8a66\u5546\u54c11","price":"12.00","_price":"24.00","unit":"\u5143\/\u65a4","tag":null,"amount":"12","weight":"300","thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","image_1":"\/uploads\/2014\/11\/10\/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg","image_2":"\/uploads\/2014\/11\/10\/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg","image_3":"\/uploads\/2014\/11\/10\/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg","image_4":"\/uploads\/2014\/11\/10\/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg","image_5":"\/uploads\/2014\/11\/10\/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg","description":"<p>\u6e2c\u8a66\u5546\u54c11<\/p>","add_time":"1415615863","update_time":null,"parent_category":"\u6e2c\u8a66\u5927\u5206\u985e1","child_category":"\u6e2c\u8a66\u5c0f\u5206\u985e1","tag_name":null},{"id":"2","p_cate_id":"1","c_cate_id":"1","name":"\u6e2c\u8a66\u5546\u54c12","price":"12.00","_price":"42.00","unit":"\u5143\/\u65a4","tag":"1","amount":"20","weight":"400","thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","image_1":"\/uploads\/2014\/11\/10\/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg","image_2":"\/uploads\/2014\/11\/10\/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg","image_3":"\/uploads\/2014\/11\/10\/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg","image_4":"\/uploads\/2014\/11\/10\/08efced33d98f170345e8b9f1005822600f104e9.jpg","image_5":"\/uploads\/2014\/11\/10\/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg","description":"<p>\u6e2c\u8a66\u5546\u54c12<\/p>","add_time":"1415615924","update_time":null,"parent_category":"\u6e2c\u8a66\u5927\u5206\u985e1","child_category":"\u6e2c\u8a66\u5c0f\u5206\u985e1","tag_name":"\u6e2c\u8a66\u6a19\u7c641"}]});
+    $(".failed_return_5").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_6").JSONView({"status":1,"result":[{"id":"1","name":"\u6e2c\u8a66\u5927\u5206\u985e1","add_time":"1415615785","update_time":"1415615808","goods_amount":"2"}]});
+    $(".failed_return_6").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_7").JSONView({"status":1,"result":[{"id":"1","name":"\u6e2c\u8a66\u5c0f\u5206\u985e1","parent":"\u6e2c\u8a66\u5927\u5206\u985e1","parent_id":"1","add_time":"1415615797","update_time":"1415615815","goods_amount":"2"}]});
+    $(".failed_return_7").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_8").JSONView({"status":1,"result":[{"id":"1","name":"\u6e2c\u8a66\u6a19\u7c641","image":"\/uploads\/2014\/11\/10\/8f6548b8bdb6beae0a0271cebd2ec0f92b5793a4.jpg","add_time":"1415615885","update_time":null,"goods_amount":"1","goods_list":[{"id":"2","p_cate_id":"1","c_cate_id":"1","name":"\u6e2c\u8a66\u5546\u54c12","price":"12.00","_price":"42.00","unit":"\u5143\/\u65a4","tag":"1","amount":"20","weight":"400","thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","image_1":"\/uploads\/2014\/11\/10\/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg","image_2":"\/uploads\/2014\/11\/10\/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg","image_3":"\/uploads\/2014\/11\/10\/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg","image_4":"\/uploads\/2014\/11\/10\/08efced33d98f170345e8b9f1005822600f104e9.jpg","image_5":"\/uploads\/2014\/11\/10\/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg","description":"<p>\u6e2c\u8a66\u5546\u54c12<\/p>","add_time":"1415615924","update_time":null,"parent_category":"\u6e2c\u8a66\u5927\u5206\u985e1","child_category":"\u6e2c\u8a66\u5c0f\u5206\u985e1","tag_name":"\u6e2c\u8a66\u6a19\u7c641"}]}]});
+    $(".failed_return_8").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

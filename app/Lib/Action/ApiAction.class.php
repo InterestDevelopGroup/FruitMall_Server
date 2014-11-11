@@ -9,11 +9,28 @@
  */
 class ApiAction extends Action {
 
-    public function index() {
-        $this->ajaxReturn(array(
-            'status' => 0,
-            'result' => '未知错误'
-        ));
+    /**
+     * 小分类
+     */
+    public function child_category() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $p_cate_id = (isset($_POST['p_cate_id']) && intval($_POST['p_cate_id'])) ? intval($_POST['p_cate_id']) : null;
+            $keyword = (isset($_POST['keyword']) && !empty($_POST['keyword'])) ? trim($_POST['keyword']) : null;
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('ChildCategory')->_getChildCategoryList($offset, $pagesize, $p_cate_id, $keyword)
+            ));
+        } else {
+            $this->redirect('/');
+        }
     }
 
     /**
@@ -30,6 +47,32 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Member')->find_password($phone, $new_password));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 商品列表
+     */
+    public function goods() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $p_cate_id = (isset($_POST['p_cate_id']) && intval($_POST['p_cate_id'])) ? intval($_POST['p_cate_id']) : null;
+            $c_cate_id = (isset($_POST['c_cate_id']) && intval($_POST['c_cate_id'])) ? intval($_POST['c_cate_id']) : null;
+            $tag = (isset($_POST['tag']) && isset($_POST['tag'])) ? intval($_POST['tag']) : null;
+            $keyword = (isset($_POST['keyword']) && !empty($_POST['keyword'])) ? trim($_POST['keyword']) : null;
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('Goods')->_getGoodsList($offset, $pagesize, $p_cate_id, $c_cate_id, $tag, $keyword)
+            ));
         } else {
             $this->redirect('/');
         }
@@ -55,6 +98,29 @@ class ApiAction extends Action {
     }
 
     /**
+     * 大分类
+     */
+    public function parent_category() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $keyword = (isset($_POST['keyword']) && !empty($_POST['keyword'])) ? trim($_POST['keyword']) : null;
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('ParentCategory')->_getParentCategoryList($offset, $pagesize, $keyword)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 用户注册
      */
     public function register() {
@@ -68,6 +134,30 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Member')->register($phone, $password));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 商品标签
+     */
+    public function tag() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $goods_amount = (isset($_POST['goods_amount']) && intval($_POST['goods_amount'])) ? intval($_POST['goods_amount']) : null;
+            $keyword = (isset($_POST['keyword']) && !empty($_POST['keyword'])) ? trim($_POST['keyword']) : null;
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('Tag')->_getTagList($offset, $pagesize, $goods_amount, $keyword)
+            ));
         } else {
             $this->redirect('/');
         }

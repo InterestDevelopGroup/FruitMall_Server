@@ -10,6 +10,39 @@
 class ChildCategoryModel extends Model {
 
     /**
+     * 获取小分类列表（API）
+     *
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @param int|null $p_cate_id
+     *            小分类ID
+     * @param string|null $keyword
+     *            关键字
+     */
+    public function _getChildCategoryList($offset, $pagesize, $p_cate_id, $keyword) {
+        $where = array();
+        $p_cate_id && $where['cc.parent_id'] = $p_cate_id;
+        $keyword && $where['cc.name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
+        empty($where) || $this->where($where);
+        return $this->table($this->getTableName() . " AS cc ")->field(array(
+            'cc.id',
+            'cc.name',
+            'pc.name' => 'parent',
+            'cc.parent_id',
+            'cc.add_time',
+            'cc.update_time',
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE c_cate_id = cc.id)" => 'goods_amount'
+        ))->join(array(
+            " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = cc.parent_id "
+        ))->limit($offset, $pagesize)->select();
+    }
+
+    /**
      * 添加小分类
      *
      * @param string $name

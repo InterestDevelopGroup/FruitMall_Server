@@ -10,6 +10,32 @@
 class ParentCategoryModel extends Model {
 
     /**
+     * 获取大分类列表（API）
+     *
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @param string|null $keyword
+     *            关键字
+     */
+    public function _getParentCategoryList($offset, $pagesize, $keyword) {
+        $keyword && $this->where(array(
+            'pc.name' => array(
+                "like",
+                "%{$keyword}%"
+            )
+        ));
+        return $this->table($this->getTableName() . " AS pc ")->field(array(
+            'id',
+            'name',
+            'add_time',
+            'update_time',
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
+        ))->limit($offset, $pagesize)->select();
+    }
+
+    /**
      * 添加大分类
      *
      * @param string $name
