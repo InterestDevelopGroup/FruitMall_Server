@@ -197,27 +197,4 @@ class GoodsAction extends AdminAction {
         }
     }
 
-    /**
-     * 删除本地图片
-     *
-     * @param string $filename
-     *            图片文件名（相对于根目录）
-     * @return boolean
-     */
-    private function delete_local_image($filename) {
-        if (empty($filename)) {
-            return false;
-        } else {
-            if (file_exists($_SERVER['DOCUMENT_ROOT'] . $filename)) {
-                if (unlink($_SERVER['DOCUMENT_ROOT'] . $filename)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
-        }
-    }
-
 }

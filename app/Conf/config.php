@@ -113,55 +113,108 @@ $app_config = array(
         )
     ),
     'priv' => array(
-        'administrator' => array(
-            'management' => 'administrator|management'
-        ),
+//         'administrator' => array(
+//             'management' => 'administrator|management'
+//         ),
         'member' => array(
-            'index' => 'member|index'
+            'index' => 'member|index',
+            'delete' => 'member|delete'
         ),
         'goods' => array(
             'index' => 'goods|index',
-            'add' => 'goods|add'
+            'add' => 'goods|add',
+            'delete' => 'goods|delete',
+            'update' => 'goods|update'
         ),
         'category' => array(
             'parent_index' => 'category|parent_index',
-            'child_index' => 'category|child_index'
+            'parent_add' => 'category|parent_add',
+            'parent_delete' => 'category|parent_delete',
+            'parent_update' => 'category|parent_update',
+            'child_index' => 'category|child_index',
+            'child_add' => 'category|child_add',
+            'child_delete' => 'category|child_delete',
+            'child_update' => 'category|child_update',
+        ),
+        'tag' => array(
+            'index' => 'tag|index',
+            'add' => 'tag|add',
+            'delete' => 'tag|delete',
+            'update' => 'tag|update'
         ),
         'version' => array(
-            'android' => 'version|android'
+            'android' => 'version|android',
+            'add' => 'version|add',
+            'delete' => 'version|delete'
         )
     ),
+    // 子权限
     'child_priv' => array(
-        'administrator|management' => 'administrator|add,administrator|delete',
-        'member|index' => 'member|delete',
-        'goods|index' => 'goods|delete,goods|update',
-        'category|parent_index' => 'catagory|parent_add,category|parent_delete,category|parent_update',
-        'category|child_index' => 'category|child_add,category|child_delete,category|child_update',
-        'version|android' => 'version|add,version|delete'
+//         'administrator|management' => 'administrator|add,administrator|delete',
+        'goods|add' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
+        'goods|update' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
+        'tag|add' => 'tag|delete_image,tag|upload',
+        'tag|update' => 'tag|delete_image,tag|upload'
+//         'member|index' => 'member|delete',
+//         'goods|index' => 'goods|delete,goods|update',
+//         'category|parent_index' => 'catagory|parent_add,category|parent_delete,category|parent_update',
+//         'category|child_index' => 'category|child_add,category|child_delete,category|child_update',
+//         'version|android' => 'version|add,version|delete'
     ),
+    // 权限对应翻译
     'priv_language' => array(
-        'administrator' => array(
-            'administrator' => '管理员',
-            'management' => '管理员一览'
-        ),
+//         'administrator' => array(
+//             'administrator' => '管理员',
+//             'management' => '管理员一览'
+//         ),
+
         'member' => array(
             'member' => '会员',
-            'index' => '会员一览'
+            'index' => '会员一览',
+            'delete' => '删除会员'
         ),
         'goods' => array(
             'goods' => '商品',
             'index' => '所有商品',
-            'add' => '添加商品'
+            'add' => '添加商品',
+            'delete' => '删除商品',
+            'update' => '更新商品'
         ),
         'category' => array(
             'category' => '商品分类',
             'parent_index' => '大分类',
-            'child_index' => '小分类'
+            'parent_add' => '添加大分类',
+            'parent_delete' => '删除大分类',
+            'parent_update' => '删除大分类',
+            'child_index' => '小分类',
+            'child_add' => '添加小分类',
+            'child_delete' => '删除小分类',
+            'child_update' => '更新小分类'
+        ),
+        'tag' => array(
+            'tag' => '商品标签',
+            'index' => '标签一览',
+            'add' => '添加标签',
+            'delete' => '删除标签',
+            'update' => '更新标签'
         ),
         'version' => array(
             'version' => 'App版本管理',
-            'android' => 'Android App版本管理'
+            'android' => 'Android App版本管理',
+            'add' => '添加版本',
+            'delete' => '删除版本'
         )
+    ),
+    // 菜单权限
+    'menu_priv' => array(
+//         'administrator|management',
+        'member|index',
+        'goods|index',
+        'goods|add',
+        'category|parent_index',
+        'category|child_index',
+        'tag|index',
+        'version|android'
     ),
     'MAX_SIZE' => 2097152,
     'ALLOW_EXTENSIONS' => array(

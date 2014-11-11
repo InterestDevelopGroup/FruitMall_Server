@@ -23,8 +23,16 @@ class AdminAction extends Action {
         // 检测是否登录
         $this->admin_info = $this->isLogin() ? $this->isLogin() : $this->redirect(U('/login'));
         if (!$this->check_privileges(strtolower(MODULE_NAME), strtolower(ACTION_NAME))) {
-            vendor('Message.Message');
-            Message::onshowMsg('抱歉，您没有权限查看该页面！您可以点击左侧或头部导航，查看其它页面，或联系管理员申请权限！');
+            $menu_priv = C('menu_priv');
+            if (in_array(strtolower(MODULE_NAME) . "|" . strtolower(ACTION_NAME), $menu_priv)) {
+                vendor('Message.Message');
+                Message::onshowMsg('抱歉，您没有权限查看该页面！您可以点击左侧或头部导航，查看其它页面，或联系管理员申请权限！');
+            } else {
+                $this->ajaxReturn(array(
+                    'status' => false,
+                    'msg' => '对不起！您没有该操作的权限！'
+                ));
+            }
         }
     }
 
