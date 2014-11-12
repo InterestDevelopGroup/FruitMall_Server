@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-11 19:04:57
+Date: 2014-11-12 11:43:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,13 +24,13 @@ CREATE TABLE `fruit_admin_priv` (
   `admin_id` int(10) NOT NULL COMMENT '管理员ID',
   `priv` text NOT NULL COMMENT '管理员权限',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
 
 -- ----------------------------
 -- Records of fruit_admin_priv
 -- ----------------------------
 INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
-INSERT INTO `fruit_admin_priv` VALUES ('2', '2', 'index|all,login|all,administrator|management,member|index');
+INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index');
 
 -- ----------------------------
 -- Table structure for `fruit_admin_user`
@@ -48,13 +48,13 @@ CREATE TABLE `fruit_admin_user` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态(1：正常，0：禁用)',
   `desc` varchar(255) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='后台管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='后台管理员表';
 
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415675092', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('2', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1414987294', '1415254071', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415763607', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415763408', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_child_category`

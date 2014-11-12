@@ -113,9 +113,6 @@ $app_config = array(
         )
     ),
     'priv' => array(
-//         'administrator' => array(
-//             'management' => 'administrator|management'
-//         ),
         'member' => array(
             'index' => 'member|index',
             'delete' => 'member|delete'
@@ -150,24 +147,13 @@ $app_config = array(
     ),
     // 子权限
     'child_priv' => array(
-//         'administrator|management' => 'administrator|add,administrator|delete',
         'goods|add' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
         'goods|update' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
         'tag|add' => 'tag|delete_image,tag|upload',
         'tag|update' => 'tag|delete_image,tag|upload'
-//         'member|index' => 'member|delete',
-//         'goods|index' => 'goods|delete,goods|update',
-//         'category|parent_index' => 'catagory|parent_add,category|parent_delete,category|parent_update',
-//         'category|child_index' => 'category|child_add,category|child_delete,category|child_update',
-//         'version|android' => 'version|add,version|delete'
     ),
     // 权限对应翻译
     'priv_language' => array(
-//         'administrator' => array(
-//             'administrator' => '管理员',
-//             'management' => '管理员一览'
-//         ),
-
         'member' => array(
             'member' => '会员',
             'index' => '会员一览',
@@ -207,10 +193,11 @@ $app_config = array(
     ),
     // 菜单权限
     'menu_priv' => array(
-//         'administrator|management',
+        'administrator|management',
         'member|index',
         'goods|index',
         'goods|add',
+        'goods|update',
         'category|parent_index',
         'category|child_index',
         'tag|index',

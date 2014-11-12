@@ -152,18 +152,32 @@ class AdminUserModel extends Model {
                 $id
             )
         ))->delete()) {
-            // 删除成功，提交事务
-            $this->commit();
-            return array(
-                'status' => true,
-                'msg' => '删除管理员成功'
-            );
+            if (M('AdminPriv')->where(array(
+                'admin_id' => array(
+                    'in',
+                    $id
+                )
+            ))->delete()) {
+                // 删除成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => true,
+                    'msg' => '删除成功'
+                );
+            } else {
+                // 删除失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '删除失败'
+                );
+            }
         } else {
             // 删除失败，回滚事务
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => '删除管理员失败'
+                'msg' => '删除失败'
             );
         }
     }

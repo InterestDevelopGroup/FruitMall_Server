@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @since 1.0.0
  */
-class MemberAction extends Action {
+class MemberAction extends AdminAction {
 
     /**
      * 删除用户
