@@ -457,17 +457,17 @@
                     <td>请求参数：</td>
                     <td>
                         int user_id: 1（用户ID）<br />
-                        int offset: 0（偏移量，非负整数）<br />
-                        int pagesize: 10（获取条数，非负整数）<br />
+                        int address_id: 1（地址ID）<br />
+                        int is_default: 1（是否默认，0：否，1：是）<br />
                     </td>
                 </tr>
                 <tr>
                     <td>成功返回：</td>
-                    <td><div class="success_return_14"></div></td>
+                    <td><div class="success_return_15"></div></td>
                 </tr>
                 <tr>
                     <td>失败返回：</td>
-                    <td><div class="failed_return_14"></div></td>
+                    <td><div class="failed_return_15"></div></td>
                 </tr>
             </table>
         </div>
@@ -510,6 +510,8 @@ $(function() {
     $(".failed_return_13").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_14").JSONView({"status":1,"result":[{"address_id":"4","user_id":"1","consignee":"\u4e2d\u56fd\u7535\u4fe1","phone":"13800000000","province":"\u5e7f\u4e1c\u7701","city":"\u5e7f\u5dde\u5e02","district":"\u5929\u6cb3\u533a","address":"\u5e7f\u5dde\u5e02\u5929\u6cb3\u533a\u4e2d\u5c71\u5927\u9053\u7f8a\u57ce\u82b1\u56ed\u5eb7\u82d1\u516b\u5ea7402","_consignee":"\u4e2d\u56fd\u8054\u901a","_phone":"13800138001","add_time":"1415789535","update_time":"1415790180","is_default":"0"},{"address_id":"5","user_id":"1","consignee":"\u4e2d\u56fd\u79fb\u52a8","phone":"13800138000","province":"\u5e7f\u4e1c\u7701","city":"\u5e7f\u5dde\u5e02","district":"\u5929\u6cb3\u533a","address":"\u5e7f\u5dde\u5e02\u5929\u6cb3\u533a\u4e2d\u5c71\u5927\u9053\u7f8a\u57ce\u82b1\u56ed\u5eb7\u82d1\u516b\u5ea7401","_consignee":"\u4e2d\u56fd\u8054\u901a","_phone":"13800138001","add_time":"1415790242","update_time":null,"is_default":"0"}]});
     $(".failed_return_14").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_15").JSONView({"status":1,"result":"\u8bbe\u7f6e\u6210\u529f"});
+    $(".failed_return_15").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>
