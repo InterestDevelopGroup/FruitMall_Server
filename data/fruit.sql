@@ -10,10 +10,36 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-12 11:43:37
+Date: 2014-11-12 19:10:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `fruit_address`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_address`;
+CREATE TABLE `fruit_address` (
+  `address_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `consignee` varchar(30) NOT NULL COMMENT '收货人',
+  `phone` char(11) NOT NULL COMMENT '收货人手机',
+  `province` varchar(50) NOT NULL COMMENT '省份',
+  `city` varchar(50) NOT NULL COMMENT '城市',
+  `district` varchar(50) DEFAULT NULL COMMENT '区',
+  `address` varchar(255) NOT NULL COMMENT '详细地址',
+  `_consignee` varchar(50) DEFAULT NULL COMMENT '备用收货人',
+  `_phone` char(11) DEFAULT NULL COMMENT '备用收货人手机',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`address_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='地址表';
+
+-- ----------------------------
+-- Records of fruit_address
+-- ----------------------------
+INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '1415789535', '1415790180');
+INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '1415790242', null);
 
 -- ----------------------------
 -- Table structure for `fruit_admin_priv`
@@ -75,6 +101,22 @@ CREATE TABLE `fruit_child_category` (
 INSERT INTO `fruit_child_category` VALUES ('1', '1', '測試小分類1', '1415615797', '1415615815');
 
 -- ----------------------------
+-- Table structure for `fruit_default_address`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_default_address`;
+CREATE TABLE `fruit_default_address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `address_id` int(11) NOT NULL COMMENT '地址ID',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='默认地址表';
+
+-- ----------------------------
+-- Records of fruit_default_address
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `fruit_goods`
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_goods`;
@@ -123,11 +165,12 @@ CREATE TABLE `fruit_member` (
   `register_time` int(10) NOT NULL COMMENT '注册时间',
   `last_time` int(10) DEFAULT NULL COMMENT '上一次登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
+INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/12/d7c00b0ca7c86cba43ca7a38b7eee57936376a75.png', '1', '1415763408', '1415772963');
 
 -- ----------------------------
 -- Table structure for `fruit_parent_category`

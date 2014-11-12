@@ -1,6 +1,26 @@
 <?php
 
 /**
+ * base64编码转图片
+ *
+ * @param string $code
+ *            base64编码
+ * @return string|boolean
+ */
+function base64Code2Image($code) {
+    $savePath = "/uploads/" . date("Y") . "/" . date("m") . "/" . date("d");
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $savePath)) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . $savePath, 0755, true);
+    }
+    $fileName = $savePath . "/" . generateTargetFileName("png");
+    if (file_put_contents($_SERVER['DOCUMENT_ROOT'] . $fileName, base64_decode($code))) {
+        return $fileName;
+    } else {
+        return false;
+    }
+}
+
+/**
  * 生成上传文件名
  *
  * @param string $extension

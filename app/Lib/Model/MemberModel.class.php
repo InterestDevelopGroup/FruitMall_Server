@@ -10,6 +10,41 @@
 class MemberModel extends Model {
 
     /**
+     * 修改用户手机
+     *
+     * @param int $id
+     *            用户ID
+     * @param string $phone
+     *            新手机号码
+     * @return array
+     */
+    public function changePhone($id, $phone) {
+        if ($this->where(array(
+            'phone' => $phone
+        ))->count()) {
+            return array(
+                'status' => 0,
+                'result' => '手机号码已经存在'
+            );
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'phone' => $phone
+        ))) {
+            return array(
+                'status' => 1,
+                'result' => '修改成功'
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '未知错误'
+            );
+        }
+    }
+
+    /**
      * 删除用户
      *
      * @param array $id
@@ -192,6 +227,63 @@ class MemberModel extends Model {
             return array(
                 'status' => 1,
                 'result' => '注册成功'
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '未知错误'
+            );
+        }
+    }
+
+    /**
+     * 更新用户
+     *
+     * @param int $id
+     *            用户ID
+     * @param string $username
+     *            用户名
+     * @param string $real_name
+     *            真实姓名
+     * @param string $avatar
+     *            头像
+     * @param int $sex
+     *            性别（0：保密，1：男，2：女）
+     * @return array
+     */
+    public function updateMember($id, $username, $real_name, $avatar, $sex) {
+        $data = array();
+        $username && $data['username'] = $username;
+        $real_name && $data['real_name'] = $real_name;
+        $avatar && $data['avatar'] = base64Code2Image($avatar);
+        !is_null($sex) && in_array($sex, array(
+            0,
+            1,
+            2
+        )) && $data['sex'] = $sex;
+        if (empty($data)) {
+            return array(
+                'status' => 0,
+                'result' => '参数错误'
+            );
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save($data)) {
+            return array(
+                'status' => 1,
+                'result' => $this->field(array(
+                    'id',
+                    'phone',
+                    'username',
+                    'real_name',
+                    'avatar',
+                    'sex',
+                    'register_time',
+                    'last_time'
+                ))->where(array(
+                    'id' => $id
+                ))->find()
             );
         } else {
             return array(

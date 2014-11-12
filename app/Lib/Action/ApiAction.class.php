@@ -10,6 +10,74 @@
 class ApiAction extends Action {
 
     /**
+     * 添加地址
+     */
+    public function add_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $consignee = isset($_POST['consignee']) ? trim($_POST['consignee']) : $this->redirect('/');
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            $province = isset($_POST['province']) ? trim($_POST['province']) : $this->redirect('/');
+            $city = isset($_POST['city']) ? trim($_POST['city']) : $this->redirect('/');
+            $district = isset($_POST['district']) ? trim($_POST['district']) : $this->redirect('/');
+            $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
+            $_consignee = (isset($_POST['_consignee']) && !empty($_POST['_consignee'])) ? trim($_POST['_consignee']) : null;
+            $_phone = (isset($_POST['_phone']) && !empty($_POST['_phone'])) ? trim($_POST['_phone']) : null;
+            if ($user_id < 1 || empty($consignee) || empty($phone) || empty($province) || empty($city) || empty($address)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Address')->addAddress($user_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 地址列表
+     */
+    public function address_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('Address')->_getAddressList($user_id, $offset, $pagesize)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 修改用户手机
+     */
+    public function change_phone() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            if ($id < 1 || empty($phone)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Member')->changePhone($id, $phone));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 小分类
      */
     public function child_category() {
@@ -28,6 +96,47 @@ class ApiAction extends Action {
                 'status' => 1,
                 'result' => D('ChildCategory')->_getChildCategoryList($offset, $pagesize, $p_cate_id, $keyword)
             ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 设置/取消默认地址
+     */
+    public function default_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
+            $is_default = isset($_POST['is_default']) ? intval($_POST['is_default']) : $this->redirect('/');
+            if ($user_id < 1 || $address_id < 1 || !in_array($is_default, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('DefaultAddress')->changeDefaultAddress($user_id, $address_id, $is_default));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 删除地址
+     */
+    public function delete_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $address_id = isset($_POST['address_id']) ? explode(',', $_POST['address_id']) : $this->redirect('/');
+            if (empty($address_id)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Address')->deleteAddress((array) $address_id));
         } else {
             $this->redirect('/');
         }
@@ -158,6 +267,54 @@ class ApiAction extends Action {
                 'status' => 1,
                 'result' => D('Tag')->_getTagList($offset, $pagesize, $goods_amount, $keyword)
             ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 更新地址
+     */
+    public function update_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
+            $consignee = (isset($_POST['consignee']) && !empty($_POST['consignee'])) ? trim($_POST['consignee']) : null;
+            $phone = (isset($_POST['phone']) && !empty($_POST['phone'])) ? trim($_POST['phone']) : null;
+            $province = (isset($_POST['province']) && !empty($_POST['province'])) ? trim($_POST['province']) : null;
+            $city = (isset($_POST['city']) && !empty($_POST['city'])) ? trim($_POST['city']) : null;
+            $district = (isset($_POST['district']) && !empty($_POST['district'])) ? trim($_POST['district']) : null;
+            $address = (isset($_POST['address']) && !empty($_POST['address'])) ? trim($_POST['address']) : null;
+            $_consignee = (isset($_POST['_consignee']) && !empty($_POST['_consignee'])) ? trim($_POST['_consignee']) : null;
+            $_phone = (isset($_POST['_phone']) && !empty($_POST['_phone'])) ? trim($_POST['_phone']) : null;
+            if ($address_id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Address')->updateAddress($address_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 更新用户
+     */
+    public function update_member() {
+        if ($this->isPost() || $this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $username = (isset($_POST['username']) && !empty($_POST['username'])) ? trim($_POST['username']) : null;
+            $real_name = (isset($_POST['real_name']) && !empty($_POST['real_name'])) ? trim($_POST['real_name']) : null;
+            $avatar = isset($_POST['avatar']) ? trim($_POST['avatar']) : null;
+            $sex = isset($_POST['sex']) ? intval($_POST['sex']) : null;
+            if ($id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Member')->updateMember($id, $username, $real_name, $avatar, $sex));
         } else {
             $this->redirect('/');
         }
