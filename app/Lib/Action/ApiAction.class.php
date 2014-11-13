@@ -207,6 +207,29 @@ class ApiAction extends Action {
     }
 
     /**
+     * 套餐列表
+     */
+    public function package() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $keyword = (isset($_POST['keyword']) && !empty($_POST['keyword'])) ? trim($_POST['keyword']) : null;
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('Package')->_getPackageList($offset, $pagesize, $keyword)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 大分类
      */
     public function parent_category() {

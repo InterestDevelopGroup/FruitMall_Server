@@ -136,7 +136,7 @@
                         <a href="http://<{$_SERVER['HTTP_HOST']}><{$goods['thumb']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
                             <img src="http://<{$_SERVER['HTTP_HOST']}><{$goods['thumb']}>" border="0" />
                         </a>
-                        <a href="javascript:void(0);" onclick="delete_image(<{$goods['thumb']}>, $(this));" class="image-preview-delete" title="删除"></a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$goods['thumb']}>', $(this), 1);" class="image-preview-delete" title="删除"></a>
                     </div>
                 </td>
             </tr>
@@ -161,7 +161,7 @@
                         <a href="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" target="_blank" title="点击查看原图" class="image-preview-outter">
                             <img src="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" border="0" />
                         </a>
-                        <a href="javascript:void(0);" onclick="delete_image('<{$introduction_image[$i]}>', $(this));" class="image-preview-delete" title="删除"></a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$introduction_image[$i]}>', $(this), 2);" class="image-preview-delete" title="删除"></a>
                     </div>
                     <?php endfor; ?>
                 </td>
@@ -248,7 +248,7 @@ $(function() {
 										+ "</a>"
 										+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
 										+ data.result.filename
-										+ "\', $(this));\" class='image-preview-delete' title='删除'>"
+										+ "\', $(this), 1);\" class='image-preview-delete' title='删除'>"
 										+ "</a>" + "</div>");
             } else {
                 $("#thumb_tip").html(data.result.msg);
@@ -282,7 +282,7 @@ $(function() {
 											+ "</a>"
 											+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
 											+ data.result.filename
-											+ "\', $(this));\" class='image-preview-delete' title='删除'>"
+											+ "\', $(this), 2);\" class='image-preview-delete' title='删除'>"
 											+ "</a>" + "</div>");
 				} else {
 					delete_excess_image(data.result.filename);
@@ -460,14 +460,18 @@ function updateGoodsSubmit() {
 }
 
 //删除图片
-function delete_image(filename, obj) {
+function delete_image(filename, obj, type) {
     $.post('<{:U("Goods/delete_image")}>', {
         filename : filename
     }, function(data) {
         if (data.status) {
             obj.parent().remove();
-            var index = image_count.indexOf(filename);
-            image_count.splice(index, 1);
+			if (type == 1) {
+				$("#thumb_image").val('');
+			} else { 
+            	var index = image_count.indexOf(filename);
+            	image_count.splice(index, 1);
+			}
         } else {
             $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
             return false;

@@ -4,7 +4,7 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>添加商品
+                    <span class="icon icon8"></span>添加套餐
                 </div>
             </div>
         </div>
@@ -20,32 +20,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>大分类：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="p_cate_id">
-                        <option value="0">--请选择--</option>
-                        <volist name="parentCategory" id="val">
-                        <option value="<{$val['id']}>"><{$val['name']}></option>
-                        </volist>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>小分类：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="c_cate_id">
-                        <option value="0">--请选择--</option>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>单价：
+                    <span class="required">*</span>价格：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="price" />
@@ -63,48 +38,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>价格单位：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text" id="unit" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    标签：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="tag">
-                        <option value="0">--请选择--</option>
-                        <volist name="tag" id="val">
-                        <option value="<{$val['id']}>"><{$val['name']}></option>
-                        </volist>
-                    </select>
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    每盒个数：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text" id="amount" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    每盒重量：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <input type="text" id="weight" />&nbsp;&nbsp;克
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    商品简介：
+                    套餐简介：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <textarea id="desc"></textarea>
@@ -113,7 +47,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>商品缩略图：
+                    <span class="required">*</span>套餐缩略图：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <span class="btn btn-success fileinput-button" style="color: #fff;">
@@ -132,7 +66,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>商品介绍图：
+                    <span class="required">*</span>套餐介绍图：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <span class="btn btn-success fileinput-button" style="color: #fff;">
@@ -149,7 +83,7 @@
             </tr>
         </table>
     </div>
-    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="添加" onclick="addGoodsSubmit();" /></div>
+    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="添加" onclick="addPackageSubmit();" /></div>
 </div>
 <style type="text/css">
 <!--
@@ -167,7 +101,7 @@ $(function() {
         width         : 700,
         height        : 300,
         language      : 'zh-cn',
-        filebrowserUploadUrl: '<{:U("goods/upload_image")}>'
+        filebrowserUploadUrl: '<{:U("package/upload_image")}>'
     });
     $("#name").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -183,37 +117,13 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ck_Price();
     });
-    $("#unit").focus(function() {
-		addTip($(this).parent('td').next('td:last'), '价格单位示例：元/斤');
-	}).blur(function() {
-        removeTip($(this).parent('td').next('td:last'));
-        ckUnit();
-    });
-	$("#p_cate_id").change(function() {
-		var p_cate_id = $(this).val();
-		$.post("<{:U('Category/getChildCategoryByParentId')}>", {parent_id: p_cate_id}, function(data) {
-			str = '<option value="0">--请选择--</option>';
-			if (data) {
-				for (var i in data) {
-					str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-				}
-			}
-			$("#c_cate_id").html(str);
-		}, 'json');
-		removeTip($(this).parent('td').next('td:last'));
-		ckPCateId();
-	});
-	$("#c_cate_id").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
-		ckCCateId();
-	});
 	// 上传缩略图
     $('#thumb').fileupload({
         maxNumberOfFiles : 1,
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
         maxFileSize : 2097152,
         minFileSize : 1,
-        url : '<{:U("Goods/upload")}>',
+        url : '<{:U("package/upload")}>',
         dataType : 'json',
         send : function(e, data) {
             $("#thumb_progress").show();
@@ -246,7 +156,7 @@ $(function() {
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
         maxFileSize : 2097152,
         minFileSize : 1,
-        url : '<{:U("Goods/upload")}>',
+        url : '<{:U("package/upload")}>',
         dataType : 'json',
         send : function(e, data) {
             $("#introduction_progress").show();
@@ -292,11 +202,11 @@ function removeTip(my) {
     my.find(".tip_msg").remove();
 }
 
-//检测商品名称
+//检测套餐名称
 function ckName() {
     var name = $.trim($("#name").val());
     if (name.length <= 0) {
-        addTip($("#name").parent('td').next('td:last'), '商品名称不能为空');
+        addTip($("#name").parent('td').next('td:last'), '套餐名称不能为空');
         return false;
     }
     return true;
@@ -339,41 +249,11 @@ function ck_Price() {
     return true;
 }
 
-//检测价格单位
-function ckUnit() {
-    var unit = $.trim($("#unit").val());
-    if (unit.length <= 0) {
-        addTip($("#unit").parent('td').next('td:last'), '价格单位不能为空');
-        return false;
-    }
-    return true;
-}
-
-//检测大分类
-function ckPCateId() {
-	var p_cate_id = $("#p_cate_id").val();
-	if (p_cate_id == 0) {
-		addTip($("#p_cate_id").parent('td').next('td:last'), '请选择一个大分类');
-        return false;
-	}
-	return true;
-}
-
-//检测小分类
-function ckCCateId() {
-	var c_cate_id = $("#c_cate_id").val();
-	if (c_cate_id == 0) {
-		addTip($("#c_cate_id").parent('td').next('td:last'), '请选择一个小分类');
-        return false;
-	}
-	return true;
-}
-
 //检测缩略图
 function ckThumb() {
 	var thumb_image = $.trim($("#thumb_image").val());
 	if (thumb_image.length == 0) {
-		addTip($("#thumb_tip"), '请至少上传一张商品缩略图片');
+		addTip($("#thumb_tip"), '请至少上传一张套餐缩略图片');
         return false;
 	}
 	return true;
@@ -382,7 +262,7 @@ function ckThumb() {
 //检测介绍图片
 function ckIntroductionImage() {
     if (image_count.length != 5) {
-        addTip($("#introduction_tip"), '请上传5张商品介绍图片');
+        addTip($("#introduction_tip"), '请上传5张套餐介绍图片');
         return false;
     }
     return true;
@@ -393,32 +273,17 @@ function checkForm() {
     if (!ckName()) return false;
     if (!ckPrice()) return false;
     if (!ck_Price()) return false;
-    if (!ckUnit()) return false;
-	if (!ckPCateId()) return false;
-	if (!ckCCateId()) return false;
     if (!ckThumb()) return false;
 	if (!ckIntroductionImage()) return false;
     var name = $.trim($("#name").val());
     var price = $.trim($("#price").val());
     var _price = $.trim($("#_price").val());
-    var unit = $.trim($("#unit").val());
-    var p_cate_id = $("#p_cate_id").val();
-	var c_cate_id = $("#c_cate_id").val();
-	var tag = $("#tag").val();
-	var amount = $.trim($("#amount").val());
-	var weight = $.trim($("#weight").val());
 	var thumb_image = $.trim($("#thumb_image").val());
     var description = $.trim($("#desc").val());
 	return {
         name : name,
         price : price,
         _price : _price,
-        unit: unit,
-		p_cate_id: p_cate_id,
-		c_cate_id: c_cate_id,
-		tag: tag,
-		amount: amount,
-		weight: weight,
 		thumb_image: thumb_image,
         introduction_image : image_count,
         description : description
@@ -426,9 +291,9 @@ function checkForm() {
 }
 
 //提交表单
-function addGoodsSubmit() {
+function addPackageSubmit() {
     if (checkForm()) {
-        $.post('<{:U("Goods/add")}>', checkForm(), function(data) {
+        $.post('<{:U("package/add")}>', checkForm(), function(data) {
             if (data.status) {
                 $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
                 location.reload(true);
@@ -442,7 +307,7 @@ function addGoodsSubmit() {
 
 //删除图片
 function delete_image(filename, obj, type) {
-    $.post('<{:U("Goods/delete_image")}>', {
+    $.post('<{:U("package/delete_image")}>', {
         filename : filename
     }, function(data) {
         if (data.status) {
@@ -451,7 +316,7 @@ function delete_image(filename, obj, type) {
 				$("#thumb_image").val('');
 			} else {
             	var index = image_count.indexOf(filename);
-           		image_count.splice(index, 1);
+            	image_count.splice(index, 1);
 			}
         } else {
             $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
@@ -462,7 +327,7 @@ function delete_image(filename, obj, type) {
 
 //删除多余的图片
 function delete_excess_image(filename) {
-	$.post("<{:U('Goods/delete_image')}>", {filename: filename});
+	$.post("<{:U('package/delete_image')}>", {filename: filename});
 }
 //]]>
 </script>

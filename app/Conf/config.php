@@ -59,11 +59,25 @@ $app_config = array(
         ),
         'Tag' => array(
             'text' => '商品标签',
-            'default' => 'parent',
+            'default' => 'index',
             'children' => array(
-                'parent' => array(
+                'index' => array(
                     'text' => '标签一览',
                     'url' => '/tag/index'
+                )
+            )
+        ),
+        'Package' => array(
+            'text' => '套餐',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有套餐',
+                    'url' => '/package/index'
+                ),
+                'add' => array(
+                    'text' => '添加套餐',
+                    'url' => '/package/add'
                 )
             )
         ),
@@ -131,13 +145,19 @@ $app_config = array(
             'child_index' => 'category|child_index',
             'child_add' => 'category|child_add',
             'child_delete' => 'category|child_delete',
-            'child_update' => 'category|child_update',
+            'child_update' => 'category|child_update'
         ),
         'tag' => array(
             'index' => 'tag|index',
             'add' => 'tag|add',
             'delete' => 'tag|delete',
             'update' => 'tag|update'
+        ),
+        'package' => array(
+            'index' => 'package|index',
+            'add' => 'package|add',
+            'delete' => 'package|delete',
+            'update' => 'package|update'
         ),
         'version' => array(
             'android' => 'version|android',
@@ -150,7 +170,9 @@ $app_config = array(
         'goods|add' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
         'goods|update' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
         'tag|add' => 'tag|delete_image,tag|upload',
-        'tag|update' => 'tag|delete_image,tag|upload'
+        'tag|update' => 'tag|delete_image,tag|upload',
+        'package|add' => 'package|delete_image,package|upload,package|upload_image',
+        'package|update' => 'package|delete_image,package|upload,package|upload_image'
     ),
     // 权限对应翻译
     'priv_language' => array(
@@ -184,6 +206,13 @@ $app_config = array(
             'delete' => '删除标签',
             'update' => '更新标签'
         ),
+        'package' => array(
+            'package' => '套餐',
+            'index' => '所有套餐',
+            'add' => '添加套餐',
+            'delete' => '删除套餐',
+            'update' => '更新套餐'
+        ),
         'version' => array(
             'version' => 'App版本管理',
             'android' => 'Android App版本管理',
@@ -201,6 +230,9 @@ $app_config = array(
         'category|parent_index',
         'category|child_index',
         'tag|index',
+        'package|index',
+        'package|add',
+        'package|update',
         'version|android'
     ),
     'MAX_SIZE' => 2097152,
