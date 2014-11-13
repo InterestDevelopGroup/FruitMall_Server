@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-13 14:53:23
+Date: 2014-11-13 18:49:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `fruit_admin_priv` (
 -- Records of fruit_admin_priv
 -- ----------------------------
 INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
-INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,package|index');
+INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,package|index,shipping|index');
 
 -- ----------------------------
 -- Table structure for `fruit_admin_user`
@@ -80,7 +80,27 @@ CREATE TABLE `fruit_admin_user` (
 -- Records of fruit_admin_user
 -- ----------------------------
 INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415861384', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415861364', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415875462', '0', '1', null);
+
+-- ----------------------------
+-- Table structure for `fruit_branch`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_branch`;
+CREATE TABLE `fruit_branch` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(255) NOT NULL COMMENT '分店名称',
+  `admin_id` int(11) DEFAULT NULL COMMENT '分店管理员ID',
+  `courier` text COMMENT '送货人员',
+  `range` text COMMENT '配送范围',
+  `remark` text COMMENT '备注',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分店表';
+
+-- ----------------------------
+-- Records of fruit_branch
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `fruit_child_category`
@@ -218,6 +238,30 @@ CREATE TABLE `fruit_parent_category` (
 -- Records of fruit_parent_category
 -- ----------------------------
 INSERT INTO `fruit_parent_category` VALUES ('1', '測試大分類1', '1415615785', '1415615808');
+
+-- ----------------------------
+-- Table structure for `fruit_shipping_address`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_shipping_address`;
+CREATE TABLE `fruit_shipping_address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city` varchar(255) NOT NULL COMMENT '市',
+  `district` varchar(255) DEFAULT NULL COMMENT '区',
+  `road_number` varchar(255) DEFAULT NULL COMMENT '路牌号',
+  `community` varchar(255) DEFAULT NULL COMMENT '小区（社区）、建筑名',
+  `building` varchar(255) DEFAULT NULL COMMENT '栋、几期、座',
+  `branch_id` int(11) DEFAULT NULL COMMENT '分店ID',
+  `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
+  `discount` decimal(4,2) DEFAULT NULL COMMENT '价格调整比例',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
+
+-- ----------------------------
+-- Records of fruit_shipping_address
+-- ----------------------------
+INSERT INTO `fruit_shipping_address` VALUES ('2', '廣州市', '天河區', '189號', '羊城花園', '康苑八座401', null, '10.00', '20.00', '1415874727', '1415874737');
 
 -- ----------------------------
 -- Table structure for `fruit_tag`

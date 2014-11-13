@@ -81,6 +81,20 @@ $app_config = array(
                 )
             )
         ),
+        'Shipping' => array(
+            'text' => '配送地址',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有地址',
+                    'url' => '/shipping/index'
+                ),
+                'add' => array(
+                    'text' => '添加配送地址',
+                    'url' => '/shipping/add'
+                )
+            )
+        ),
         /*
         'Order' => array(
             'text' => '订单',
@@ -159,6 +173,12 @@ $app_config = array(
             'delete' => 'package|delete',
             'update' => 'package|update'
         ),
+        'shipping' => array(
+            'index' => 'shipping|index',
+            'add' => 'shipping|add',
+            'delete' => 'shipping|delete',
+            'update' => 'shipping|update'
+        ),
         'version' => array(
             'android' => 'version|android',
             'add' => 'version|add',
@@ -213,6 +233,13 @@ $app_config = array(
             'delete' => '删除套餐',
             'update' => '更新套餐'
         ),
+        'shipping' => array(
+            'shipping' => '配送地址',
+            'index' => '所有地址',
+            'add' => '添加地址',
+            'delete' => '删除地址',
+            'update' => '更新地址'
+        ),
         'version' => array(
             'version' => 'App版本管理',
             'android' => 'Android App版本管理',
@@ -233,6 +260,9 @@ $app_config = array(
         'package|index',
         'package|add',
         'package|update',
+        'shipping|index',
+        'shipping|add',
+        'shipping|update',
         'version|android'
     ),
     'MAX_SIZE' => 2097152,

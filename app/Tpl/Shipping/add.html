@@ -1,0 +1,195 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>添加配送地址
+                </div>
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>市：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="city" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    区：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="district" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    路牌号：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="road_number" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+					小区（社区）、建筑名：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="community" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+					栋、期、座：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="building" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    分店：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="branch_id">
+                    	<option value="0">--请选择--</option>
+                        <volist name="branch" id="val">
+                        <option value="<{$val['id']}>"><{$val['name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>送货费：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="shipping_fee" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    价格调整比例：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="discount" />&nbsp;%
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="添加" onclick="addShippingAddressSubmit();" /></div>
+</div>
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.required{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}#add_goods_button{width:100%;text-align:center;margin:12px auto}
+-->
+</style>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#city").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckCity();
+    });
+    $("#shipping_fee").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '送货费最多保留两位小数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckShippingFee();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1 + tip + tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测市
+function ckCity() {
+    var city = $.trim($("#city").val());
+    if (city.length <= 0) {
+        addTip($("#city").parent('td').next('td:last'), '市不能为空');
+        return false;
+    }
+    return true;
+}
+
+//检测送货费
+function ckShippingFee() {
+    var shipping_fee = $.trim($("#shipping_fee").val());
+    if (shipping_fee.length <= 0) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), '单价不能为空');
+        return false;
+    }
+    var priceReg = /^\d+(\.\d{1,2})?$/;
+    if (!priceReg.test(shipping_fee)) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), '单价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
+        return false;
+    }
+    if (parseFloat(shipping_fee) > 99999999.99) {
+        addTip($("#shipping_fee").parent('td').next('td:last'), '原价已经超过范围');
+        return false;
+    }
+    return true;
+}
+
+//检测表单 
+function checkForm() {
+    if (!ckCity()) return false;
+    if (!ckShippingFee()) return false;
+    var city = $.trim($("#city").val());
+    var district = $.trim($("#district").val());
+    var road_number = $.trim($("#road_number").val());
+    var community = $.trim($("#community").val());
+	var building = $.trim($("#building").val());
+	var branch_id = $("#branch_id").val();
+	var shipping_fee = $.trim($("#shipping_fee").val());
+	var discount = $.trim($("#discount").val());
+	return {
+        city: city,
+        district: district,
+        road_number: road_number,
+        community: community,
+		building: building,
+		branch_id: branch_id,
+		shipping_fee: shipping_fee,
+		discount: discount
+    };
+}
+
+//提交表单
+function addShippingAddressSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("Shipping/add")}>', checkForm(), function(data) {
+            if (data.status) {
+                $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                location.reload(true);
+            } else {
+                $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                return false;
+            }
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
