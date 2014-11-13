@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-12 19:10:35
+Date: 2014-11-13 10:37:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,7 +79,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415763607', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415845600', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415763408', '0', '1', null);
 
 -- ----------------------------
@@ -110,11 +110,12 @@ CREATE TABLE `fruit_default_address` (
   `address_id` int(11) NOT NULL COMMENT '地址ID',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='默认地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='默认地址表';
 
 -- ----------------------------
 -- Records of fruit_default_address
 -- ----------------------------
+INSERT INTO `fruit_default_address` VALUES ('1', '1', '4', '1415845607');
 
 -- ----------------------------
 -- Table structure for `fruit_goods`
