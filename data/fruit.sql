@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-13 18:49:36
+Date: 2014-11-14 18:38:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `fruit_admin_user` (
 -- Records of fruit_admin_user
 -- ----------------------------
 INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415861384', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415875462', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415955213', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_branch`
@@ -194,6 +194,64 @@ CREATE TABLE `fruit_member` (
 -- Records of fruit_member
 -- ----------------------------
 INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/12/d7c00b0ca7c86cba43ca7a38b7eee57936376a75.png', '1', '1415763408', '1415772963');
+
+-- ----------------------------
+-- Table structure for `fruit_order`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_order`;
+CREATE TABLE `fruit_order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `address_id` int(11) NOT NULL COMMENT '收获地址ID',
+  `order_number` char(14) NOT NULL COMMENT '订单号',
+  `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收）',
+  `start_shipping_time` char(5) DEFAULT NULL COMMENT '开始送货时间',
+  `end_shipping_time` char(5) DEFAULT NULL COMMENT '结束送货时间',
+  `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
+  `remark` varchar(255) NOT NULL COMMENT '备注',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单表';
+
+-- ----------------------------
+-- Records of fruit_order
+-- ----------------------------
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '1', '12:00', '18:00', '12.50', 'nothing', '1415960111', null);
+
+-- ----------------------------
+-- Table structure for `fruit_order_goods`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_order_goods`;
+CREATE TABLE `fruit_order_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `amount` int(11) NOT NULL COMMENT '数量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='商品订单表';
+
+-- ----------------------------
+-- Records of fruit_order_goods
+-- ----------------------------
+INSERT INTO `fruit_order_goods` VALUES ('1', '1', '1', '10');
+INSERT INTO `fruit_order_goods` VALUES ('2', '2', '1', '8');
+
+-- ----------------------------
+-- Table structure for `fruit_order_package`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_order_package`;
+CREATE TABLE `fruit_order_package` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `package_id` int(11) NOT NULL COMMENT '套餐ID',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `amount` int(11) NOT NULL COMMENT '数量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
+
+-- ----------------------------
+-- Records of fruit_order_package
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `fruit_package`
