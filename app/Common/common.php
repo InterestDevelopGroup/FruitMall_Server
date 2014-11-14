@@ -32,6 +32,34 @@ function generateTargetFileName($extension) {
 }
 
 /**
+ * 对象转换成数组
+ *
+ * @param object $obj
+ *            对象
+ * @return array
+ */
+function ob2ar($obj) {
+    if (is_object($obj)) {
+        $obj = (array) $obj;
+        $obj = ob2ar($obj);
+    } elseif (is_array($obj)) {
+        foreach ($obj as $key => $value) {
+            $obj[$key] = ob2ar($value);
+        }
+    }
+    return $obj;
+}
+
+/**
+ * 生成订单号
+ *
+ * @return string
+ */
+function orderNumber() {
+    return date('ymd') . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+}
+
+/**
  * 发送短信
  *
  * @param string $phone

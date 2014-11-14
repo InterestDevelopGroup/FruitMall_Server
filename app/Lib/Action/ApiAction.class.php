@@ -9,6 +9,21 @@
  */
 class ApiAction extends Action {
 
+    public function index() {
+        $data = array(
+            array(
+                'goods_id' => 1,
+                'amount' => 10
+            ),
+            array(
+                'goods_id' => 2,
+                'amount' => 8
+            )
+        );
+        $this->ajaxReturn($data);
+        // echo date('ymd').substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    }
+
     /**
      * 添加地址
      */
@@ -201,6 +216,30 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Member')->login($phone, $password));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 提交订单
+     */
+    public function order() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? trim($_POST['user_id']) : $this->redirect('/');
+            $address_id = isset($_POST['address_id']) ? trim($_POST['address_id']) : $this->redirect('/');
+            $order = isset($_POST['order']) ? trim($_POST['order']) : $this->redirect('/');
+            $start_shipping_time = (isset($_POST['start_shipping_time']) && !empty($_POST['start_shipping_time'])) ? trim($_POST['start_shipping_time']) : null;
+            $end_shipping_time = (isset($_POST['end_shipping_time']) && !empty($_POST['end_shipping_time'])) ? trim($_POST['end_shipping_time']) : null;
+            $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : null;
+            $remark = (isset($_POST['remark']) && !empty($_POST['remark'])) ? trim($_POST['remark']) : null;
+            if ($user_id < 1 || empty($order)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Order')->addOrder($user_id, $address_id, $order, $start_shipping_time, $end_shipping_time, $shipping_fee, $remark));
         } else {
             $this->redirect('/');
         }
