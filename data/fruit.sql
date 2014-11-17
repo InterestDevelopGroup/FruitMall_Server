@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-14 18:38:11
+Date: 2014-11-17 11:42:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,8 +79,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1415861384', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1415955213', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416191362', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416195105', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_branch`
@@ -205,19 +205,19 @@ CREATE TABLE `fruit_order` (
   `address_id` int(11) NOT NULL COMMENT '收获地址ID',
   `order_number` char(14) NOT NULL COMMENT '订单号',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收）',
-  `start_shipping_time` char(5) DEFAULT NULL COMMENT '开始送货时间',
-  `end_shipping_time` char(5) DEFAULT NULL COMMENT '结束送货时间',
+  `shipping_time` char(11) DEFAULT NULL COMMENT '开始送货时间',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `remark` varchar(255) NOT NULL COMMENT '备注',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of fruit_order
 -- ----------------------------
-INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '1', '12:00', '18:00', '12.50', 'nothing', '1415960111', null);
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '1', '12:00-18:00', '12.50', 'nothing', '1415960111', null);
+INSERT INTO `fruit_order` VALUES ('2', '1', '5', '14111752489899', '1', '12:00-18:00', '22.50', '下订单测试', '1416193396', null);
 
 -- ----------------------------
 -- Table structure for `fruit_order_goods`
@@ -229,13 +229,14 @@ CREATE TABLE `fruit_order_goods` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='商品订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='商品订单表';
 
 -- ----------------------------
 -- Records of fruit_order_goods
 -- ----------------------------
 INSERT INTO `fruit_order_goods` VALUES ('1', '1', '1', '10');
 INSERT INTO `fruit_order_goods` VALUES ('2', '2', '1', '8');
+INSERT INTO `fruit_order_goods` VALUES ('3', '1', '2', '10');
 
 -- ----------------------------
 -- Table structure for `fruit_order_package`
@@ -247,11 +248,12 @@ CREATE TABLE `fruit_order_package` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
 
 -- ----------------------------
 -- Records of fruit_order_package
 -- ----------------------------
+INSERT INTO `fruit_order_package` VALUES ('1', '3', '2', '1');
 
 -- ----------------------------
 -- Table structure for `fruit_package`
