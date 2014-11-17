@@ -48,4 +48,61 @@ class FeedbackModel extends Model {
         }
     }
 
+    /**
+     * 删除投诉/反馈
+     *
+     * @param array $id
+     *            投诉/反馈ID
+     * @return array
+     */
+    public function deleteFeedback(array $id) {
+        if ($this->where(array(
+            'id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '删除失败'
+            );
+        }
+    }
+
+    /**
+     * 获取投诉/反馈总数
+     *
+     * @return int
+     */
+    public function getFeedbackCount() {
+        return (int) $this->count();
+    }
+
+    /**
+     * 获取投诉/反馈列表
+     *
+     * @param int $page
+     *            当前页
+     * @param int $pageSize
+     *            每页显示条数
+     * @param string $order
+     *            排序字段
+     * @param string $sort
+     *            排序方式
+     */
+    public function getFeedbackList($page, $pageSize, $order, $sort) {
+        $offset = ($page - 1) * $pageSize;
+        return $this->table($this->getTableName() . " AS f ")->join(array(
+            " LEFT JOIN " . M('Member')->getTableName() . " AS m ON f.user_id = m.id "
+        ))->field(array(
+            'f.*',
+            'm.username'
+        ))->order("f." . $order . " " . $sort)->limit($offset, $pageSize)->select();
+    }
+
 }

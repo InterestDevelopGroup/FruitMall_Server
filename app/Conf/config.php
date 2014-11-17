@@ -115,18 +115,16 @@ $app_config = array(
                 )
             )
         ),
-        /*
         'Feedback' => array(
-            'text' => '用户反馈',
+            'text' => '投诉/反馈',
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => '用户反馈一览',
+                    'text' => '投诉/反馈一览',
                     'url' => '/feedback/index'
                 )
             )
         ),
-        */
         'Open' => array(
             'text' => 'API',
             'default' => 'index',
@@ -184,6 +182,10 @@ $app_config = array(
             'android' => 'version|android',
             'add' => 'version|add',
             'delete' => 'version|delete'
+        ),
+        'feedback' => array(
+            'index' => 'feedback|index',
+            'delete' => 'feedback|delete'
         )
     ),
     // 子权限
@@ -250,6 +252,11 @@ $app_config = array(
             'android' => 'Android App版本管理',
             'add' => '添加版本',
             'delete' => '删除版本'
+        ),
+        'feedback' => array(
+            'feedback' => '投诉/反馈',
+            'index' => '投诉/反馈一览',
+            'delete' => '删除投诉/反馈'
         )
     ),
     // 菜单权限
@@ -269,7 +276,8 @@ $app_config = array(
         'shipping|add',
         'shipping|update',
         'order|index',
-        'version|android'
+        'version|android',
+        'feedback|index'
     ),
     'MAX_SIZE' => 2097152,
     'ALLOW_EXTENSIONS' => array(

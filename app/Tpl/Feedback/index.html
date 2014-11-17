@@ -1,0 +1,106 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>投诉/反馈一览
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get">
+                <input class="btn btn-primary" type="button" value="删除投诉/反馈" onclick="javascript:del();" />
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.detail_image{width:160px;height:90px;overflow:hidden;margin-left:12px;display:inline-block;margin-left:6px;position:relative;}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "用户名", name: 'username', align: 'center', width: '20%', isSort: false},
+            {display: "订单号", name: 'order_number', align: 'center', width: '20%', isSort: false},
+            {display: "送货服务", name: 'shipping_service', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? '赞' : '踩';
+                }
+            },
+            {display: "水果质量", name: 'quality', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? '赞' : '踩';
+                }
+            },
+            {display: "水果价格", name: 'price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? '赞' : '踩';
+                }
+            },
+            {display: "投诉/反馈时间", name: 'add_time', align: 'center', width: '12%'}
+            ],
+            url: '<{:U("feedback/index")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            frozenCheckbox: false,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+    });
+    $("#pageloading").hide();
+});
+//明细
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>用户名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_number + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>送货服务：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.shipping_service) ? '赞' : '踩') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>水果质量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.quality) ? '赞' : '踩') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>水果价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.price) ? '赞' : '踩') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>补充说明：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.postscript ? record.postscript : '---') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>投诉/反馈时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("</table>");
+    $(container).html(out.join(''));
+}
+
+//删除投诉/反馈
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个投诉/反馈', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要删除选中的投诉/反馈吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("feedback/delete")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
