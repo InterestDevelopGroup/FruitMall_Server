@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-17 11:42:40
+Date: 2014-11-17 18:49:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,8 +79,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416191362', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416195105', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416219312', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416219307', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_branch`
@@ -136,6 +136,27 @@ CREATE TABLE `fruit_default_address` (
 -- Records of fruit_default_address
 -- ----------------------------
 INSERT INTO `fruit_default_address` VALUES ('1', '1', '4', '1415845607');
+
+-- ----------------------------
+-- Table structure for `fruit_feedback`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_feedback`;
+CREATE TABLE `fruit_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `order_number` char(14) NOT NULL COMMENT '订单号',
+  `shipping_service` tinyint(1) NOT NULL COMMENT '送货服务（0：踩，1：赞）',
+  `quality` tinyint(1) NOT NULL COMMENT '水果质量（0：踩，1：赞）',
+  `price` tinyint(1) NOT NULL COMMENT '水果价格（0：踩，1：赞）',
+  `postscript` varchar(255) DEFAULT NULL COMMENT '补充说明',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户反馈表';
+
+-- ----------------------------
+-- Records of fruit_feedback
+-- ----------------------------
+INSERT INTO `fruit_feedback` VALUES ('1', '1', '14111410253561', '1', '1', '1', 'postscript testing', '1416219320');
 
 -- ----------------------------
 -- Table structure for `fruit_goods`

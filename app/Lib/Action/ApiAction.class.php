@@ -143,6 +143,38 @@ class ApiAction extends Action {
     }
 
     /**
+     * 用户反馈
+     */
+    public function feedback() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $order_number = isset($_POST['order_number']) ? trim($_POST['order_number']) : $this->redirect('/');
+            $shipping_service = isset($_POST['shipping_service']) ? intval($_POST['shipping_service']) : $this->redirect('/');
+            $quality = isset($_POST['quality']) ? intval($_POST['quality']) : $this->redirect('/');
+            $price = isset($_POST['price']) ? intval($_POST['price']) : $this->redirect('/');
+            $postscript = (isset($_POST['postscript']) && !empty($_POST['postscript'])) ? trim($_POST['postscript']) : null;
+            if ($user_id < 1 || empty($order_number) || !in_array($shipping_service, array(
+                0,
+                1
+            )) || !in_array($quality, array(
+                0,
+                1
+            )) || !in_array($price, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Feedback')->addFeedback($user_id, $order_number, $shipping_service, $quality, $price, $postscript));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 找回密码
      */
     public function find_password() {
