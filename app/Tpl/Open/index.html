@@ -519,8 +519,7 @@
                         int user_id: 1（用户ID）<br />
                         int address_id: 4（收货地址ID）<br />
                         json order: '[{"goods_id":1,"amount":10},{"goods_id":2,"amount":8},{"package_id":1,"amount":1}]'（订单详情）<br />
-                        string start_shipping_time: '12:00'（开始送货时间，非必传）<br />
-                        string end_shipping_time: '18:00'（结束送货时间，非必传）<br />
+                        string shipping_time: '12:00-18:00'（送货时间，非必传）<br />
                         float shipping_fee: 12.50（送货费）<br />
                         string remark: 'nothing'（备注，非必传）<br />
                     </td>
@@ -578,6 +577,15 @@ $(function() {
     $(".failed_return_15").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_16").JSONView({"status":1,"result":[{"id":"4","name":"\u6e2c\u8a66\u5957\u99102","price":"90.00","_price":"190.00","thumb":"\/uploads\/2014\/11\/13\/072499309814a5d2193fbfd79c21e4b43bbfcca3.jpg","image_1":"\/uploads\/2014\/11\/13\/810f0d8fee291ad7f08f2def72c3f53211c44037.jpg","image_2":"\/uploads\/2014\/11\/13\/828dad303ffdf9dc5d64dc165bec825dbc947cbd.jpg","image_3":"\/uploads\/2014\/11\/13\/642f092f5d89e842ddd06bf7ed8e1e9e7a0f6491.jpg","image_4":"\/uploads\/2014\/11\/13\/ae15438f4fb22869e932d7796ee11d6d76d6fbc7.jpg","image_5":"\/uploads\/2014\/11\/13\/30588fb013bfe4c210d635ca664540db9afef086.jpg","description":"<p>\u6e2c\u8a66\u5957\u99102<\/p>","add_time":"1415860582","update_time":null}]});
     $(".failed_return_16").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    /* $.post("<{:U('api/order')}>", {user_id: 1,
+    address_id: 5,
+    order: '[{"goods_id":1,"amount":10},{"package_id":3,"amount":1}]',
+    shipping_time: '12:00-18:00',
+    shipping_fee: 22.50,
+    remark: '下订单测试'
+    }, function(data) {
+    	$(".success_return_17").JSONView(data);
+    }, 'json'); */
     $(".success_return_17").JSONView({"status":1,"result":"\u63d0\u4ea4\u6210\u529f"});
     $(".failed_return_17").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });

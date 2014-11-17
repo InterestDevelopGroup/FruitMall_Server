@@ -95,7 +95,6 @@ $app_config = array(
                 )
             )
         ),
-        /*
         'Order' => array(
             'text' => '订单',
             'default' => 'index',
@@ -106,7 +105,6 @@ $app_config = array(
                 )
             )
         ),
-        */
         'Version' => array(
             'text' => 'App版本管理',
             'default' => 'android',
@@ -179,6 +177,9 @@ $app_config = array(
             'delete' => 'shipping|delete',
             'update' => 'shipping|update'
         ),
+        'order' => array(
+            'index' => 'order|index'
+        ),
         'version' => array(
             'android' => 'version|android',
             'add' => 'version|add',
@@ -240,6 +241,10 @@ $app_config = array(
             'delete' => '删除地址',
             'update' => '更新地址'
         ),
+        'order' => array(
+            'order' => '订单',
+            'index' => '订单一览'
+        ),
         'version' => array(
             'version' => 'App版本管理',
             'android' => 'Android App版本管理',
@@ -263,6 +268,7 @@ $app_config = array(
         'shipping|index',
         'shipping|add',
         'shipping|update',
+        'order|index',
         'version|android'
     ),
     'MAX_SIZE' => 2097152,
