@@ -97,6 +97,54 @@ class OrderModel extends Model {
     }
 
     /**
+     * 删除订单
+     *
+     * @param array $id
+     *            订单ID
+     * @return array
+     */
+    public function deleteOrder(array $id) {
+        // 开启事务
+        $this->startTrans();
+        if ($this->where(array(
+            'order_id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            if (!D('OrderGoods')->deleteOrderGoods($id)) {
+                // 删除订单商品失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '删除失败'
+                );
+            }
+            if (!D('OrderPackage')->deleteOrderPackage($id)) {
+                // 删除订单套餐失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '删除失败'
+                );
+            }
+            // 删除成功，提交事务
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
+        } else {
+            // 删除失败，回滚事务
+            $this->rollback();
+            return array(
+                'status' => false,
+                'msg' => '删除失败'
+            );
+        }
+    }
+
+    /**
      * 获取订单数量
      *
      * @param string $keyword

@@ -1,0 +1,107 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>所有退货申请
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get">
+                <input class="btn btn-primary" type="button" value="删除退货申请" onclick="javascript:del();" />
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.detail_image{width:160px;height:90px;overflow:hidden;margin-left:12px;display:inline-block;margin-left:6px;position:relative;}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "用户名", name: 'username', align: 'center', width: '20%', isSort: false},
+            {display: "订单号", name: 'order_number', align: 'center', width: '20%', isSort: false},
+            {display: "退货原因", name: 'reason', align: 'center', width: '20%', isSort: false},
+            {display: "申请时间", name: 'add_time', align: 'center', width: '20%'}
+            ],
+            url: '<{:U("returns/index")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            frozenCheckbox: false,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+    });
+    $("#pageloading").hide();
+});
+//明细
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>用户名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_number + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>退货原因：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.reason + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>补充说明：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.postscript ? record.postscript : '---') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>申请时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("</table>");
+	var str = "";
+	if (record.image_1) {
+		str += "<div class='detail_image'><a href='"+record.image_1+"' title='点击查看原图' target='_blank'><img src='"+record.image_1+"' width='100%' /></a></div>";
+	}
+	if (record.image_2) {
+		str += "<div class='detail_image'><a href='"+record.image_2+"' title='点击查看原图' target='_blank'><img src='"+record.image_2+"' width='100%' /></a></div>";
+	}
+	if (record.image_3) {
+		str += "<div class='detail_image'><a href='"+record.image_3+"' title='点击查看原图' target='_blank'><img src='"+record.image_3+"' width='100%' /></a></div>";
+	}
+	if (str.length) {
+		out.push('<div style="margin:10px;width:88%;"><h3>说明图片：</h3>' + str + '</div>');
+		out.push("");
+	}
+    $(container).html(out.join(''));
+}
+
+//删除退货申请
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个退货申请', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要删除选中的退货申请吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("returns/delete")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

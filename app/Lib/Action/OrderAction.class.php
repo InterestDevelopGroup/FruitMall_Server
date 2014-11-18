@@ -10,6 +10,18 @@
 class OrderAction extends AdminAction {
 
     /**
+     * 删除订单
+     */
+    public function delete() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Order')->deleteOrder((array) $id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 获取订单详细
      */
     public function getOrderDetail() {

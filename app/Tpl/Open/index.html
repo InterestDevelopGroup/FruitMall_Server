@@ -566,6 +566,40 @@
                     <td><div class="failed_return_18"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">退货申请</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/returns</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 1（用户ID）<br />
+                        string order_number: 'xxx'（订单号）<br />
+                        string reason: 'xxx'（退货原因）<br />
+                        string image_1: 'xxx'（图片1，非必传）<br />
+                        string image_2: 'xxx'（图片2，非必传）<br />
+                        string image_3: 'xxx'（图片3，非必传）<br />
+                        string postscript: 'xxx'（补充说明，非必传）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_19"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_19"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -614,6 +648,8 @@ $(function() {
     $(".failed_return_17").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_18").JSONView({"status":1,"result":"\u53cd\u9988\u6210\u529f"});
     $(".failed_return_18").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_19").JSONView({"status":1,"result":"\u7533\u8bf7\u6210\u529f"});
+    $(".failed_return_19").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

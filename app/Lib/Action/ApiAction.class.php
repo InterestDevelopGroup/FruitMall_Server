@@ -327,6 +327,30 @@ class ApiAction extends Action {
     }
 
     /**
+     * 退货申请
+     */
+    public function returns() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $order_number = isset($_POST['order_number']) ? trim($_POST['order_number']) : $this->redirect('/');
+            $reason = isset($_POST['reason']) ? trim($_POST['reason']) : $this->redirect('/');
+            $image_1 = (isset($_POST['image_1']) && !empty($_POST['image_1'])) ? trim($_POST['image_1']) : null;
+            $image_2 = (isset($_POST['image_2']) && !empty($_POST['image_2'])) ? trim($_POST['image_2']) : null;
+            $image_3 = (isset($_POST['image_3']) && !empty($_POST['image_3'])) ? trim($_POST['image_3']) : null;
+            $postscript = (isset($_POST['postscript']) && !empty($_POST['postscript'])) ? trim($_POST['postscript']) : null;
+            if ($user_id < 1 || empty($order_number) || empty($reason)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Returns')->addReturns($user_id, $order_number, $reason, $image_1, $image_2, $image_3, $postscript));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 商品标签
      */
     public function tag() {

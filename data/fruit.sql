@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-17 18:49:05
+Date: 2014-11-18 13:30:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -79,7 +79,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416219312', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416277815', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416219307', '0', '1', null);
 
 -- ----------------------------
@@ -319,6 +319,28 @@ CREATE TABLE `fruit_parent_category` (
 -- Records of fruit_parent_category
 -- ----------------------------
 INSERT INTO `fruit_parent_category` VALUES ('1', '測試大分類1', '1415615785', '1415615808');
+
+-- ----------------------------
+-- Table structure for `fruit_returns`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_returns`;
+CREATE TABLE `fruit_returns` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `order_number` char(14) NOT NULL COMMENT '订单号',
+  `reason` varchar(255) NOT NULL COMMENT '退货原因',
+  `image_1` varchar(255) DEFAULT NULL COMMENT '图片1',
+  `image_2` varchar(255) DEFAULT NULL COMMENT '图片2',
+  `image_3` varchar(255) DEFAULT NULL COMMENT '图片3',
+  `postscript` varchar(255) DEFAULT NULL COMMENT '补充说明',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='退货表';
+
+-- ----------------------------
+-- Records of fruit_returns
+-- ----------------------------
+INSERT INTO `fruit_returns` VALUES ('1', '1', '14111752489899', '有烂果', '/uploads/2014/11/18/a7628e2eb56c480e1b5dd1aa7daaa47f3c17cbb0.png', '/uploads/2014/11/18/5eadf5ad6542cf4e5e2278909d901b752281066a.png', null, '补充说明', '1416279982');
 
 -- ----------------------------
 -- Table structure for `fruit_shipping_address`

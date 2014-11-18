@@ -125,6 +125,16 @@ $app_config = array(
                 )
             )
         ),
+        'Returns' => array(
+            'text' => '退货申请',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有退货申请',
+                    'url' => '/returns/index'
+                )
+            )
+        ),
         'Open' => array(
             'text' => 'API',
             'default' => 'index',
@@ -176,7 +186,8 @@ $app_config = array(
             'update' => 'shipping|update'
         ),
         'order' => array(
-            'index' => 'order|index'
+            'index' => 'order|index',
+            'delete' => 'order|delete'
         ),
         'version' => array(
             'android' => 'version|android',
@@ -186,6 +197,10 @@ $app_config = array(
         'feedback' => array(
             'index' => 'feedback|index',
             'delete' => 'feedback|delete'
+        ),
+        'returns' => array(
+            'index' => 'returns|index',
+            'delete' => 'returns|delete'
         )
     ),
     // 子权限
@@ -195,7 +210,8 @@ $app_config = array(
         'tag|add' => 'tag|delete_image,tag|upload',
         'tag|update' => 'tag|delete_image,tag|upload',
         'package|add' => 'package|delete_image,package|upload,package|upload_image',
-        'package|update' => 'package|delete_image,package|upload,package|upload_image'
+        'package|update' => 'package|delete_image,package|upload,package|upload_image',
+        'order|index' => 'order|getOrderDetail'
     ),
     // 权限对应翻译
     'priv_language' => array(
@@ -245,7 +261,8 @@ $app_config = array(
         ),
         'order' => array(
             'order' => '订单',
-            'index' => '订单一览'
+            'index' => '订单一览',
+            'delete' => '删除订单'
         ),
         'version' => array(
             'version' => 'App版本管理',
@@ -257,6 +274,11 @@ $app_config = array(
             'feedback' => '投诉/反馈',
             'index' => '投诉/反馈一览',
             'delete' => '删除投诉/反馈'
+        ),
+        'returns' => array(
+            'returns' => '退货申请',
+            'index' => '所有退货申请',
+            'delete' => '删除退货申请'
         )
     ),
     // 菜单权限
@@ -277,7 +299,8 @@ $app_config = array(
         'shipping|update',
         'order|index',
         'version|android',
-        'feedback|index'
+        'feedback|index',
+        'returns|index'
     ),
     'MAX_SIZE' => 2097152,
     'ALLOW_EXTENSIONS' => array(

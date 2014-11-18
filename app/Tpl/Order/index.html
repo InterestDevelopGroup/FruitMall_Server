@@ -4,13 +4,13 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>所有商品
+                    <span class="icon icon8"></span>订单一览
                 </div>
             </div>
         </div>
         <div class="top_4">
             <form method="get">
-                关键字：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                订单号：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="删除订单" onclick="javascript:del();" />
             </form>
@@ -71,7 +71,7 @@ $(function(){
     });
     $("#pageloading").hide();
 });
-//商品明细
+//订单明细
 function f_onShowDetail(record, container, callback) {
     switch (parseInt(record.status)) {
         case 1 :
@@ -163,11 +163,11 @@ function f_onShowDetail(record, container, callback) {
     });
 }
 
-//删除商品
+//删除订单
 function del() {
-    var data = getCheckedData('id');
+    var data = getCheckedData('order_id');
     if (data.length <= 0) {
-        $.ligerDialog.alert('请至少选中一个商品', '温馨提示', 'warn');
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
         return false;
     }
     var id = '';
@@ -178,9 +178,9 @@ function del() {
             id += data[i]+',';
         }
     }
-    $.ligerDialog.confirm('您确定要删除选中的商品吗？', function(yes) {
+    $.ligerDialog.confirm('您确定要删除选中的订单吗？', function(yes) {
         if (yes) {
-            $.post('<{:U("Goods/delete")}>', {id:id}, function(data) {
+            $.post('<{:U("order/delete")}>', {id:id}, function(data) {
                 if (data.status) {
                     $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
                     location.reload(true);
@@ -191,11 +191,6 @@ function del() {
             }, 'json');
         }
     });
-}
-
-//编辑商品
-function update(id) {
-    top.f_addTab(null, '编辑商品', '<{:U("goods/update")}>/id/'+id);
 }
 //]]>
 </script>
