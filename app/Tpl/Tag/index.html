@@ -74,7 +74,7 @@ function f_onShowDetail(record, container, callback) {
 var addTagDialog;
 function add() {
     addTagDialog = $.ligerDialog.open({
-        url: '<{:U("tag/add")}>', height: 300, width: 600,
+        url: '<{:U("tag/add")}>', height: 400, width: 600,
         isDrag: false, title: '添加小分类',
         buttons: [{text: '确定', onclick: function(item, dialog) {addTagDialog.frame.addTagFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
@@ -127,7 +127,7 @@ function del() {
 var updateTagDialog;
 function update(id) {
     updateTagDialog = $.ligerDialog.open({
-        url: '<{:U("tag/update")}>?id='+id, height: 300, width: 600,
+        url: '<{:U("tag/update")}>?id='+id, height: 400, width: 600,
         isDrag: false, title: '编辑商品标签',
         buttons: [{text: '确定', onclick: function(item, dialog) {updateTagDialog.frame.updateTagFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]

@@ -53,7 +53,7 @@ $(function(){
 var addCategoryDialog;
 function add() {
     addCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/parent_add")}>', height: 200, width: 600,
+        url: '<{:U("Category/parent_add")}>', height: 400, width: 600,
         isDrag: false, title: '添加大分类',
         buttons: [{text: '确定', onclick: function(item, dialog) {addCategoryDialog.frame.addCategoryFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
@@ -106,7 +106,7 @@ function del() {
 var updateCategoryDialog;
 function update(id) {
     updateCategoryDialog = $.ligerDialog.open({
-        url: '<{:U("Category/parent_update")}>?id='+id, height: 200, width: 600,
+        url: '<{:U("Category/parent_update")}>?id='+id, height: 400, width: 600,
         isDrag: false, title: '编辑商品分类',
         buttons: [{text: '确定', onclick: function(item, dialog) {updateCategoryDialog.frame.updateCategoryFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]

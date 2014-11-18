@@ -52,7 +52,7 @@ $(function(){
                 }
             },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.order_id+')">编辑</a>';
                 }
             }
             ],
@@ -191,6 +191,29 @@ function del() {
             }, 'json');
         }
     });
+}
+
+//编辑订单状态
+var updateOrderStatusDialog;
+function update(id) {
+    updateOrderStatusDialog = $.ligerDialog.open({
+        url: '<{:U("order/update_status")}>?id='+id, height: 400, width: 600,
+        isDrag: false, title: '编辑订单状态',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateOrderStatusDialog.frame.updateOrderStatusFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑订单状态回调
+function updateOrderStatusCallback(obj) {
+    updateOrderStatusDialog.close();
+    if (parseInt(obj.status)) {
+        $.ligerDialog.alert(obj.result, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.result, '出错了(>_<)', 'error');
+        return false;
+    }
 }
 //]]>
 </script>

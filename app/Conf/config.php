@@ -189,7 +189,8 @@ $app_config = array(
         ),
         'order' => array(
             'index' => 'order|index',
-            'delete' => 'order|delete'
+            'delete' => 'order|delete',
+            'update_status' => 'order|update_status'
         ),
         'version' => array(
             'android' => 'version|android',
@@ -266,7 +267,8 @@ $app_config = array(
         'order' => array(
             'order' => '订单',
             'index' => '订单一览',
-            'delete' => '删除订单'
+            'delete' => '删除订单',
+            'update_status' => '更新订单状态'
         ),
         'version' => array(
             'version' => 'App版本管理',
@@ -293,8 +295,11 @@ $app_config = array(
         'goods|add',
         'goods|update',
         'category|parent_index',
+        'category|parent_update',
         'category|child_index',
+        'category|child_update',
         'tag|index',
+        'tag|update',
         'package|index',
         'package|add',
         'package|update',
@@ -302,6 +307,7 @@ $app_config = array(
         'shipping|add',
         'shipping|update',
         'order|index',
+        'order|update_status',
         'version|android',
         'feedback|index',
         'returns|index'

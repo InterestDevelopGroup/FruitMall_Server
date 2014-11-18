@@ -423,6 +423,30 @@ class ApiAction extends Action {
     }
 
     /**
+     * 更新订单状态
+     */
+    public function update_order() {
+        if ($this->isPost() || $this->isAjax()) {
+            $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            if ($order_id < 1 || !in_array($status, array(
+                1,
+                2,
+                3,
+                4
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Order')->updateOrderStatus($order_id, $status));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 验证码
      */
     public function validate_code() {

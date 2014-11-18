@@ -261,4 +261,32 @@ class OrderModel extends Model {
         ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
+    /**
+     * 更新订单状态
+     *
+     * @param int $order_id
+     *            订单ID
+     * @param int $status
+     *            订单状态（1：待确定，2：配送中，3：已收货，4：拒收）
+     * @return array
+     */
+    public function updateOrderStatus($order_id, $status) {
+        if ($this->where(array(
+            'order_id' => $order_id
+        ))->save(array(
+            'status' => $status,
+            'update_time' => time()
+        ))) {
+            return array(
+                'status' => 1,
+                'result' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '更新失败'
+            );
+        }
+    }
+
 }

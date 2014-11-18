@@ -64,4 +64,20 @@ class OrderAction extends AdminAction {
         }
     }
 
+    /**
+     * 更新订单状态
+     */
+    public function update_status() {
+        $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
+        if ($this->isAjax()) {
+            $status = (isset($_POST['status']) && intval($_POST['status'])) ? intval($_POST['status']) : $this->redirect('/');
+            $this->ajaxReturn(D('Order')->updateOrderStatus($id, $status));
+        } else {
+            $this->assign('order', M('Order')->where(array(
+                'order_id' => $id
+            ))->find());
+            $this->display();
+        }
+    }
+
 }

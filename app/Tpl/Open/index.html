@@ -600,6 +600,35 @@
                     <td><div class="failed_return_19"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">更新订单状态</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/update_order</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int order_id: 1（订单ID）<br />
+                        int status: 1（订单状态，1：待确认，2：配送中，3：已收货，4：拒收）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_20"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_20"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -650,6 +679,8 @@ $(function() {
     $(".failed_return_18").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_19").JSONView({"status":1,"result":"\u7533\u8bf7\u6210\u529f"});
     $(".failed_return_19").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_20").JSONView({"status":1,"result":"\u66f4\u65b0\u6210\u529f"});
+    $(".failed_return_20").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>
