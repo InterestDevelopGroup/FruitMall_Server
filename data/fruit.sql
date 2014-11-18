@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-18 13:30:01
+Date: 2014-11-18 15:14:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -81,6 +81,21 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416277815', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416219307', '0', '1', null);
+
+-- ----------------------------
+-- Table structure for `fruit_blacklist`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_blacklist`;
+CREATE TABLE `fruit_blacklist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='黑名单用户表';
+
+-- ----------------------------
+-- Records of fruit_blacklist
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `fruit_branch`
@@ -209,12 +224,12 @@ CREATE TABLE `fruit_member` (
   `register_time` int(10) NOT NULL COMMENT '注册时间',
   `last_time` int(10) DEFAULT NULL COMMENT '上一次登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
-INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/12/d7c00b0ca7c86cba43ca7a38b7eee57936376a75.png', '1', '1415763408', '1415772963');
+INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1415772963');
 
 -- ----------------------------
 -- Table structure for `fruit_order`

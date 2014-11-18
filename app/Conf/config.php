@@ -149,7 +149,9 @@ $app_config = array(
     'priv' => array(
         'member' => array(
             'index' => 'member|index',
-            'delete' => 'member|delete'
+            'delete' => 'member|delete',
+            'addBlacklist' => 'member|addBlacklist',
+            'deleteBlacklist' => 'member|deleteBlacklist'
         ),
         'goods' => array(
             'index' => 'goods|index',
@@ -218,7 +220,9 @@ $app_config = array(
         'member' => array(
             'member' => '会员',
             'index' => '会员一览',
-            'delete' => '删除会员'
+            'delete' => '删除会员',
+            'addBlacklist' => '拉入黑名单',
+            'deleteBlacklist' => '移出黑名单'
         ),
         'goods' => array(
             'goods' => '商品',

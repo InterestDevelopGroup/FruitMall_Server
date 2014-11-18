@@ -144,7 +144,7 @@ class MemberModel extends Model {
                 "%{$keyword}%"
             )
         ));
-        return $this->field(array(
+        return $this->table($this->getTableName() . " AS m ")->field(array(
             'id',
             'phone',
             'username',
@@ -152,7 +152,9 @@ class MemberModel extends Model {
             'avatar',
             'sex',
             'register_time',
-            'last_time'
+            'last_time',
+            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id AND status = 4)" => 'refuse_amount',
+            "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = m.id)" => 'is_blacklist'
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 

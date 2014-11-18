@@ -10,12 +10,36 @@
 class MemberAction extends AdminAction {
 
     /**
+     * 拉入黑名单
+     */
+    public function addBlacklist() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? (array) $_POST['id'] : $this->redirect('/');
+            $this->ajaxReturn(D('Blacklist')->addBlacklist((array) $id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 删除用户
      */
     public function delete() {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
             $this->ajaxReturn(D('Member')->deleteMember((array) $id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 移出黑名单
+     */
+    public function deleteBlacklist() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? (array) $_POST['id'] : $this->redirect('/');
+            $this->ajaxReturn(D('Blacklist')->deleteBlacklist((array) $id));
         } else {
             $this->redirect('/');
         }
