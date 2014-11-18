@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-18 15:14:31
+Date: 2014-11-18 19:09:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `fruit_admin_priv` (
 -- Records of fruit_admin_priv
 -- ----------------------------
 INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
-INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,package|index,shipping|index');
+INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,category|parent_index,category|child_index,tag|index,package|index,shipping|index,order|index');
 
 -- ----------------------------
 -- Table structure for `fruit_admin_user`
@@ -79,8 +79,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416277815', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416219307', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416301789', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416301659', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_blacklist`
@@ -252,8 +252,8 @@ CREATE TABLE `fruit_order` (
 -- ----------------------------
 -- Records of fruit_order
 -- ----------------------------
-INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '1', '12:00-18:00', '12.50', 'nothing', '1415960111', null);
-INSERT INTO `fruit_order` VALUES ('2', '1', '5', '14111752489899', '1', '12:00-18:00', '22.50', '下订单测试', '1416193396', null);
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '12:00-18:00', '12.50', 'nothing', '1415960111', '1416300350');
+INSERT INTO `fruit_order` VALUES ('2', '1', '5', '14111752489899', '4', '12:00-18:00', '22.50', '下订单测试', '1416193396', '1416300829');
 
 -- ----------------------------
 -- Table structure for `fruit_order_goods`
