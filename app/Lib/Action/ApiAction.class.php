@@ -262,6 +262,33 @@ class ApiAction extends Action {
     }
 
     /**
+     * 订单列表
+     */
+    public function order_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0 || !in_array($type, array(
+                1,
+                2
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('Order')->_getOrderList($user_id, $offset, $pagesize, $type)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 套餐列表
      */
     public function package() {

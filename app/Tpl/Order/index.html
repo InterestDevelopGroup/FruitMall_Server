@@ -125,8 +125,8 @@ function f_onShowDetail(record, container, callback) {
                     str += "<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].price + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i]._price ? data.order_goods[i]._price : '暂无') + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].unit + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].amount + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i]._amount ? data.order_goods[i]._amount : '暂无') + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].quantity + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].amount ? data.order_goods[i].amount : '暂无') + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].weight ? data.order_goods[i].weight : '暂无') + "</td></tr>";
                     str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>商品缩略图：</h3><div class="detail_image"><a href='+data.order_goods[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_goods[i].thumb+' width="100%" /></a></div></div></td></tr>';
                     var images = '';
@@ -147,7 +147,7 @@ function f_onShowDetail(record, container, callback) {
                     str += "<tr><td width='20%' align='right'>套餐名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].name + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].price + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>市场价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_package[i]._price ? data.order_package[i]._price : '暂无') + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].amount + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].quantity + "</td></tr>";
                     str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>套餐缩略图：</h3><div class="detail_image"><a href='+data.order_package[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_package[i].thumb+' width="100%" /></a></div></div></td></tr>';
                     var images = '';
                     for (var j = 1; j <= 5; j++) {

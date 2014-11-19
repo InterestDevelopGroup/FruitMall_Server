@@ -10,6 +10,68 @@
 class OrderModel extends Model {
 
     /**
+     * 获取订单列表（API）
+     *
+     * @param int $user_id
+     *            用户ID
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @param int $type
+     *            类型（1：未完成，2：历史）
+     * @return int
+     */
+    public function _getOrderList($user_id, $offset, $pagesize, $type) {
+        $where = array(
+            'o.user_id' => $user_id
+        );
+        if ($type == 1) {
+            $where['o.status'] = array(
+                'between',
+                array(
+                    1,
+                    2
+                )
+            );
+        } else if ($type == 2) {
+            $where['o.status'] = array(
+                'between',
+                array(
+                    3,
+                    4
+                )
+            );
+        }
+        $order_list = $this->table($this->getTableName() . " AS o ")->field(array(
+            'o.order_id',
+            'o.user_id',
+            'o.address_id',
+            'o.order_number',
+            'o.status',
+            'o.shipping_time',
+            'o.shipping_fee',
+            'o.remark',
+            'o.add_time',
+            'o.update_time',
+            'a.consignee',
+            'a.phone',
+            'a.province',
+            'a.city',
+            'a.district',
+            'a.address',
+            'a._consignee',
+            'a._phone'
+        ))->join(array(
+            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
+        ))->where($where)->limit($offset, $pagesize)->select();
+        foreach ($order_list as &$v) {
+            $v = array_merge($v, $this->getOrderDetail($v['order_id']));
+        }
+        return $order_list;
+    }
+
+    /**
      * 添加订单
      *
      * @param int $user_id
@@ -167,13 +229,13 @@ class OrderModel extends Model {
      */
     public function getOrderDetail($order_id) {
         $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
-            'og.amount',
+            'og.amount' => 'quantity',
             'g.name',
             'g.price',
             'g._price',
             'g.unit',
             'g.tag',
-            'g.amount' => '_amount',
+            'g.amount',
             'g.weight',
             'g.thumb',
             'g.image_1',
@@ -194,7 +256,7 @@ class OrderModel extends Model {
             'og.order_id' => $order_id
         ))->select();
         $order_package = M('OrderPackage')->table(M('OrderPackage')->getTableName() . " AS op ")->field(array(
-            'op.amount',
+            'op.amount' => 'quantity',
             'p.name',
             'p.price',
             'p._price',
