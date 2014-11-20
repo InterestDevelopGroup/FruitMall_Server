@@ -18,6 +18,21 @@
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
+            
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>套餐商品：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input class="btn btn-primary" type="button" value="添加" onclick="javascript:add_goods();" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr id="package_goods">
+            	<td colspan="3"></td>
+            </tr>
+            
+            
             <tr>
                 <td align="right" class="l-table-edit-td">
                     <span class="required">*</span>价格：
@@ -328,6 +343,29 @@ function delete_image(filename, obj, type) {
 //删除多余的图片
 function delete_excess_image(filename) {
 	$.post("<{:U('package/delete_image')}>", {filename: filename});
+}
+
+//添加套餐商品
+var addGoods;
+function add_goods() {
+	addGoods = $.ligerDialog.open({
+        url: '<{:U("package/add_goods")}>', height: 700, width:800,
+        isDrag: false, title: '添加商品',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addGoods.frame.addGoodsFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加套餐商品回调
+function addGoodsCallback(obj) {
+	/*addGoods.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }*/
 }
 //]]>
 </script>

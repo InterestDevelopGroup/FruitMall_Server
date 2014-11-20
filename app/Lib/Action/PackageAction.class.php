@@ -26,6 +26,21 @@ class PackageAction extends AdminAction {
         }
     }
 
+    public function add_goods() {
+        import('ORG.Util.Page');
+        $goods = M('Goods');
+        $count = $goods->count();
+        $page = new Page($count, 1);
+        $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
+        $page->setConfig('header', '个商品');
+        $show = $page->show();
+        $goodsList = $goods->limit($page->firstRow, $page->listRows)->select();
+        $this->assign('goodsList', $goodsList);
+        $this->assign('count', ceil($count / 1));
+        $this->assign('page', $show);
+        $this->display();
+    }
+
     /**
      * 删除套餐
      */
