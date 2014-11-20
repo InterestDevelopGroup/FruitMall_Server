@@ -243,13 +243,13 @@ class ApiAction extends Action {
      */
     public function order() {
         if ($this->isPost() || $this->isAjax()) {
-            $user_id = isset($_POST['user_id']) ? trim($_POST['user_id']) : $this->redirect('/');
-            $address_id = isset($_POST['address_id']) ? trim($_POST['address_id']) : $this->redirect('/');
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
             $order = isset($_POST['order']) ? trim($_POST['order']) : $this->redirect('/');
             $shipping_time = (isset($_POST['shipping_time']) && !empty($_POST['shipping_time'])) ? trim($_POST['shipping_time']) : null;
-            $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : null;
+            $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : $this->redirect('/');
             $remark = (isset($_POST['remark']) && !empty($_POST['remark'])) ? trim($_POST['remark']) : null;
-            if ($user_id < 1 || empty($order)) {
+            if ($user_id < 1 || $address_id < 1 || empty($order)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
