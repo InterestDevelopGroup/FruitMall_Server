@@ -42,11 +42,13 @@ class PackageModel extends Model {
      *            缩略图
      * @param array $introduction_image
      *            介绍图
+     * @param array $package_goods
+     *            套餐商品
      * @param string $description
      *            简介
      * @return array
      */
-    public function addPackage($name, $price, $_price, $thumb_image, array $introduction_image, $description) {
+    public function addPackage($name, $price, $_price, $thumb_image, array $introduction_image, array $package_goods, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
@@ -58,12 +60,28 @@ class PackageModel extends Model {
         }
         strlen($_price) && $data['_price'] = floatval($_price);
         strlen($description) && $data['description'] = $description;
+        // 开启事务
+        $this->startTrans();
         if ($this->add($data)) {
-            return array(
-                'status' => true,
-                'msg' => '添加成功'
-            );
+            $package_id = $this->getLastInsID();
+            if (D('PackageGoods')->addPackageGoods($package_id, $package_goods)) {
+                // 添加成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => true,
+                    'msg' => '添加成功'
+                );
+            } else {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '添加失败'
+                );
+            }
         } else {
+            // 添加失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '添加失败'
@@ -79,17 +97,37 @@ class PackageModel extends Model {
      * @return array
      */
     public function deletePackage(array $id) {
+        // 开启事务
+        $this->startTrans();
         if ($this->where(array(
             'id' => array(
                 'in',
                 $id
             )
         ))->delete()) {
-            return array(
-                'status' => true,
-                'msg' => '删除成功'
-            );
+            if (M('PackageGoods')->where(array(
+                'package_id' => array(
+                    'in',
+                    $id
+                )
+            ))->delete()) {
+                // 删除成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => true,
+                    'msg' => '删除成功'
+                );
+            } else {
+                // 删除失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '删除失败'
+                );
+            }
         } else {
+            // 删除失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '删除失败'
@@ -159,7 +197,7 @@ class PackageModel extends Model {
      *            简介
      * @return array
      */
-    public function updatePackage($id, $name, $price, $_price, $thumb_image, $introduction_image, $description) {
+    public function updatePackage($id, $name, $price, $_price, $thumb_image, array $introduction_image, array $package_goods, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
@@ -171,14 +209,28 @@ class PackageModel extends Model {
         for ($i = 1; $i <= 5; $i++) {
             $data["image_{$i}"] = $introduction_image[$i - 1];
         }
+        // 开启事务
+        $this->startTrans();
         if ($this->where(array(
             'id' => $id
         ))->save($data)) {
-            return array(
-                'status' => true,
-                'msg' => '套餐更新成功'
-            );
+            if (D('PackageGoods')->addPackageGoods($id, $package_goods)) {
+                // 添加成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => true,
+                    'msg' => '套餐更新成功'
+                );
+            } else {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '套餐更新失败'
+                );
+            }
         } else {
+            // 更新失败，回滚事务
             return array(
                 'status' => false,
                 'msg' => '套餐更新失败'

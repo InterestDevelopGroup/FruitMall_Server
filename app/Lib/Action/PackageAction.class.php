@@ -19,26 +19,44 @@ class PackageAction extends AdminAction {
             $_price = isset($_POST['_price']) ? trim($_POST['_price']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
+            $package_goods = isset($_POST['package_goods']) ? (array) $_POST['package_goods'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn(D('Package')->addPackage($name, $price, $_price, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn(D('Package')->addPackage($name, $price, $_price, $thumb_image, $introduction_image, $package_goods, $description));
         } else {
             $this->display();
         }
     }
 
+    /**
+     * 添加套餐商品
+     */
     public function add_goods() {
-        import('ORG.Util.Page');
-        $goods = M('Goods');
-        $count = $goods->count();
-        $page = new Page($count, 1);
-        $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
-        $page->setConfig('header', '个商品');
-        $show = $page->show();
-        $goodsList = $goods->limit($page->firstRow, $page->listRows)->select();
-        $this->assign('goodsList', $goodsList);
-        $this->assign('count', ceil($count / 1));
-        $this->assign('page', $show);
-        $this->display();
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $this->ajaxReturn(array(
+                'status' => true,
+                'goods' => M('Goods')->field(array(
+                    'id',
+                    'name',
+                    'thumb'
+                ))->where(array(
+                    'id' => $goods_id
+                ))->find()
+            ));
+        } else {
+            import('ORG.Util.Page');
+            $goods = M('Goods');
+            $count = $goods->count();
+            $page = new Page($count, 12);
+            $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
+            $page->setConfig('header', '个商品');
+            $show = $page->show();
+            $goodsList = $goods->limit($page->firstRow, $page->listRows)->select();
+            $this->assign('goodsList', $goodsList);
+            $this->assign('count', ceil($count / 12));
+            $this->assign('page', $show);
+            $this->display();
+        }
     }
 
     /**
@@ -126,8 +144,9 @@ class PackageAction extends AdminAction {
             $_price = isset($_POST['_price']) ? trim($_POST['_price']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
+            $package_goods = isset($_POST['package_goods']) ? (array) $_POST['package_goods'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn($package->updatePackage($id, $name, $price, $_price, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn($package->updatePackage($id, $name, $price, $_price, $thumb_image, $introduction_image, $package_goods, $description));
         } else {
             $packageAssign = M('Package')->where(array(
                 'id' => $id
@@ -139,6 +158,22 @@ class PackageAction extends AdminAction {
             }
             $this->assign('introduction_image', $image_count);
             $this->assign('image_count', json_encode($image_count));
+            $package_goods_list = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
+                " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON pg.goods_id = g.id"
+            ))->where(array(
+                'pg.package_id' => $id
+            ))->field(array(
+                'pg.goods_id',
+                'pg.amount',
+                'g.name',
+                'g.thumb'
+            ))->select();
+            $package_goods_id = array();
+            foreach ($package_goods_list as $v) {
+                $package_goods_id[] = intval($v['goods_id']);
+            }
+            $this->assign('package_goods_list', $package_goods_list);
+            $this->assign('package_goods_id', json_encode($package_goods_id));
             $this->display();
         }
     }
