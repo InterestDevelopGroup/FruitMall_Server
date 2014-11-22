@@ -27,8 +27,6 @@ class PackageModel extends Model {
             )
         ));
         return array_map(function ($value) {
-            $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-            $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
             $value['goods_list'] = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
                 " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = pg.goods_id "
             ))->field(array(
@@ -189,7 +187,19 @@ class PackageModel extends Model {
                 "%{$keyword}%"
             )
         ));
-        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return array_map(function ($value) {
+            $value['goods_list'] = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
+                " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = pg.goods_id "
+            ))->field(array(
+                'pg.goods_id',
+                'pg.amount',
+                'g.name',
+                'g.thumb'
+            ))->where(array(
+                'pg.package_id' => $value['id']
+            ))->select();
+            return $value;
+        }, $this->limit($offset, $pagesize)->select());
     }
 
     /**

@@ -320,7 +320,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('Package')->_getPackageList($offset, $pagesize, $keyword)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Package')->_getPackageList($offset, $pagesize, $keyword))
             ));
         } else {
             $this->redirect('/');
