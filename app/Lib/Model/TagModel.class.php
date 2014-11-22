@@ -35,7 +35,11 @@ class TagModel extends Model {
         ))->limit($offset, $pagesize)->select();
         if ($goods_amount && !empty($result)) {
             foreach ($result as &$v) {
-                $v['goods_list'] = D('Goods')->_getGoodsList(0, $goods_amount, null, null, $v['id'], null);
+                $v['goods_list'] = array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Goods')->_getGoodsList(0, $goods_amount, null, null, $v['id'], null));
             }
         }
         return $result;

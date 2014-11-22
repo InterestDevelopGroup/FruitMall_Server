@@ -51,7 +51,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('Address')->_getAddressList($user_id, $offset, $pagesize)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Address')->_getAddressList($user_id, $offset, $pagesize))
             ));
         } else {
             $this->redirect('/');
@@ -94,7 +98,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('ChildCategory')->_getChildCategoryList($offset, $pagesize, $p_cate_id, $keyword)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('ChildCategory')->_getChildCategoryList($offset, $pagesize, $p_cate_id, $keyword))
             ));
         } else {
             $this->redirect('/');
@@ -212,7 +220,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('Goods')->_getGoodsList($offset, $pagesize, $p_cate_id, $c_cate_id, $tag, $keyword)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Goods')->_getGoodsList($offset, $pagesize, $p_cate_id, $c_cate_id, $tag, $keyword))
             ));
         } else {
             $this->redirect('/');
@@ -281,7 +293,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('Order')->_getOrderList($user_id, $offset, $pagesize, $type)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Order')->_getOrderList($user_id, $offset, $pagesize, $type))
             ));
         } else {
             $this->redirect('/');
@@ -327,7 +343,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('ParentCategory')->_getParentCategoryList($offset, $pagesize, $keyword)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('ParentCategory')->_getParentCategoryList($offset, $pagesize, $keyword))
             ));
         } else {
             $this->redirect('/');
@@ -394,7 +414,11 @@ class ApiAction extends Action {
             }
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => D('Tag')->_getTagList($offset, $pagesize, $goods_amount, $keyword)
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Tag')->_getTagList($offset, $pagesize, $goods_amount, $keyword))
             ));
         } else {
             $this->redirect('/');

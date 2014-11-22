@@ -185,6 +185,8 @@ class MemberModel extends Model {
                 'last_time' => time()
             ))) {
                 $result['password'] = $password;
+                $result['register_time'] = date("Y-m-d H:i:s", $result['register_time']);
+                $result['last_time'] = $result['last_time'] ? date("Y-m-d H:i:s", $result['last_time']) : $result['last_time'];
                 return array(
                     'status' => 1,
                     'result' => $result
@@ -272,20 +274,23 @@ class MemberModel extends Model {
         if ($this->where(array(
             'id' => $id
         ))->save($data)) {
+            $result = $this->field(array(
+                'id',
+                'phone',
+                'username',
+                'real_name',
+                'avatar',
+                'sex',
+                'register_time',
+                'last_time'
+            ))->where(array(
+                'id' => $id
+            ))->find();
+            $result['register_time'] = date("Y-m-d H:i:s", $result['register_time']);
+            $result['last_time'] = $result['last_time'] ? date("Y-m-d H:i:s", $result['last_time']) : $result['last_time'];
             return array(
                 'status' => 1,
-                'result' => $this->field(array(
-                    'id',
-                    'phone',
-                    'username',
-                    'real_name',
-                    'avatar',
-                    'sex',
-                    'register_time',
-                    'last_time'
-                ))->where(array(
-                    'id' => $id
-                ))->find()
+                'result' => $result
             );
         } else {
             return array(
