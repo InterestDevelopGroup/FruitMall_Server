@@ -36,6 +36,27 @@ class ApiAction extends Action {
     }
 
     /**
+     * 加入购物车
+     */
+    public function add_shopping_car() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $goods_id = (isset($_POST['goods_id']) && intval($_POST['goods_id'])) ? intval($_POST['goods_id']) : null;
+            $package_id = (isset($_POST['package_id']) && intval($_POST['package_id'])) ? intval($_POST['package_id']) : null;
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
+            if ($user_id < 1 && $quantity < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('ShoppingCar')->addShoppingCar($user_id, $goods_id, $package_id, $quantity));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 地址列表
      */
     public function address_list() {
@@ -172,6 +193,24 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Address')->deleteAddress((array) $address_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 删除购物车商品或套餐
+     */
+    public function delete_shopping_car() {
+        if ($this->isPost() || $this->isAjax()) {
+            $shopping_car_id = isset($_POST['shopping_car_id']) ? explode(',', $_POST['shopping_car_id']) : $this->redirect('/');
+            if (empty($shopping_car_id)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('ShoppingCar')->deleteShoppingCar((array) $shopping_car_id));
         } else {
             $this->redirect('/');
         }
@@ -424,6 +463,32 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Returns')->addReturns($user_id, $order_number, $reason, $image_1, $image_2, $image_3, $postscript));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 获取购物车列表
+     */
+    public function shopping_car() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    return $value;
+                }, D('ShoppingCar')->_getShoppingCar($user_id, $offset, $pagesize))
+            ));
         } else {
             $this->redirect('/');
         }

@@ -691,6 +691,95 @@
                     <td><div class="failed_return_22"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">加入购物车</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/add_shopping_car</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 1（用户ID）<br />
+                        int goods_id: 0（商品ID，非必传）<br />
+                        int package_id: 10（套餐ID，非必传）<br />
+                        int quantity: 1（数量）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_23"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_23"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">删除购物车</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/delete_shopping_car</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        string shopping_car_id: 'x,x'（地址ID，多个ID之间使用英文半角逗号分开）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_24"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_24"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">获取购物车</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/shopping_car</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 1（用户ID）<br />
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取条数，非负整数）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_25"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_25"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -747,6 +836,12 @@ $(function() {
     $(".failed_return_21").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_22").JSONView({"status":1,"result":[{"id":"1","user_id":"1","score":"10","type":"recommend","publish_time":"2014-11-23 14:51:45","expire_time":"2014-12-23 14:51:45"}]});
     $(".failed_return_22").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_23").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
+    $(".failed_return_23").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_24").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
+    $(".failed_return_24").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_25").JSONView({"status":1,"result":[{"user_id":"1","goods_id":null,"package_id":"19","quantity":"2","add_time":"2014-11-23 22:01:25","goods_name":null,"goods_price":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"},{"user_id":"1","goods_id":"1","package_id":null,"quantity":"10","add_time":"2014-11-23 22:00:41","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_thumb":null}]});
+    $(".failed_return_25").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

@@ -104,7 +104,7 @@ CREATE TABLE `fruit_admin_user` (
 
 LOCK TABLES `fruit_admin_user` WRITE;
 /*!40000 ALTER TABLE `fruit_admin_user` DISABLE KEYS */;
-INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1416714340,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1416714329,0,1,NULL);
+INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1416749595,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1416714329,0,1,NULL);
 /*!40000 ALTER TABLE `fruit_admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,6 +582,34 @@ INSERT INTO `fruit_shipping_address` VALUES (2,'廣州市','天河區','189號',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `fruit_shopping_car`
+--
+
+DROP TABLE IF EXISTS `fruit_shopping_car`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fruit_shopping_car` (
+  `shopping_car_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '购物车ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
+  `package_id` int(11) DEFAULT NULL COMMENT '套餐ID',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `add_time` int(10) DEFAULT NULL COMMENT '添加时间',
+  PRIMARY KEY (`shopping_car_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='购物车表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `fruit_shopping_car`
+--
+
+LOCK TABLES `fruit_shopping_car` WRITE;
+/*!40000 ALTER TABLE `fruit_shopping_car` DISABLE KEYS */;
+INSERT INTO `fruit_shopping_car` VALUES (1,1,1,NULL,10,1416751241),(4,1,NULL,19,2,1416751285);
+/*!40000 ALTER TABLE `fruit_shopping_car` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `fruit_tag`
 --
 
@@ -651,4 +679,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-23 15:06:30
+-- Dump completed on 2014-11-23 22:10:57
