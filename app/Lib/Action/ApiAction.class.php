@@ -110,6 +110,33 @@ class ApiAction extends Action {
     }
 
     /**
+     * 水果劵
+     */
+    public function coupon() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['publish_time'] = date("Y-m-d H:i:s", $value['publish_time']);
+                    $value['expire_time'] = $value['expire_time'] ? date("Y-m-d H:i:s", $value['expire_time']) : $value['expire_time'];
+                    return $value;
+                }, D('Coupon')->_getCouponList($user_id, $offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 设置/取消默认地址
      */
     public function default_address() {
@@ -365,13 +392,14 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
             $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            $recommend = (isset($_POST['recommend']) && !empty($_POST['recommend'])) ? trim($_POST['recommend']) : null;
             if (empty($phone) || empty($password)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Member')->register($phone, $password));
+            $this->ajaxReturn(D('Member')->register($phone, $password, $recommend));
         } else {
             $this->redirect('/');
         }

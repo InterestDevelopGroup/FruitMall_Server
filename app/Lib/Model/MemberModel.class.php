@@ -212,9 +212,11 @@ class MemberModel extends Model {
      *            用户手机
      * @param string $password
      *            登录密码
+     * @param string|null $recommend
+     *            推荐人手机
      * @return array
      */
-    public function register($phone, $password) {
+    public function register($phone, $password, $recommend) {
         if ($this->where(array(
             'phone' => $phone
         ))->count()) {
@@ -223,16 +225,41 @@ class MemberModel extends Model {
                 'result' => '该手机已经注册'
             );
         }
+        // 开启事务
+        $this->startTrans();
         if ($this->add(array(
             'phone' => $phone,
             'password' => md5($password),
             'register_time' => time()
         ))) {
+            $id = $this->getLastInsID();
+            if ($recommend) {
+                if (!D('Coupon')->addCoupon($recommend, 'recommend')) {
+                    // 添加失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '推荐失败'
+                    );
+                }
+            }
+            if (!D('Coupon')->addCoupon($id, 'register')) {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '注册失败'
+                );
+            }
+            // 注册成功，提交事务
+            $this->commit();
             return array(
                 'status' => 1,
                 'result' => '注册成功'
             );
         } else {
+            // 注册失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => 0,
                 'result' => '未知错误'

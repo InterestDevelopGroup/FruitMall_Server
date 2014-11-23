@@ -335,6 +335,16 @@ $app_config = array(
     'SMS' => array(
         'sn' => 'SDK-WSS-010-07201',
         'pwd' => 'wddydg'
+    ),
+    'coupon_rule' => array(
+        'register' => array(
+            'score' => 10,
+            'expire' => 2592000
+        ),
+        'recommend' => array(
+            'score' => 10,
+            'expire' => 2592000
+        )
     )
 );
 return array_merge(require 'config.php', $app_config);
