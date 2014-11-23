@@ -95,6 +95,20 @@ $app_config = array(
                 )
             )
         ),
+//         'Coupon' => array(
+//             'text' => '水果劵',
+//             'default' => 'index',
+//             'children' => array(
+//                 'index' => array(
+//                     'text' => '所有水果劵',
+//                     'url' => '/coupon/index'
+//                 ),
+//                 'rule' => array(
+//                     'text' => '水果劵规则',
+//                     'url' => '/coupon/rule'
+//                 )
+//             )
+//         ),
         'Order' => array(
             'text' => '订单',
             'default' => 'index',
@@ -150,8 +164,8 @@ $app_config = array(
         'member' => array(
             'index' => 'member|index',
             'delete' => 'member|delete',
-            'addBlacklist' => 'member|addBlacklist',
-            'deleteBlacklist' => 'member|deleteBlacklist'
+            'addblacklist' => 'member|addblacklist',
+            'deleteblacklist' => 'member|deleteblacklist'
         ),
         'goods' => array(
             'index' => 'goods|index',
@@ -208,13 +222,13 @@ $app_config = array(
     ),
     // 子权限
     'child_priv' => array(
-        'goods|add' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
-        'goods|update' => 'category|getChildCategoryByParentId,goods|delete_image,goods|upload,goods|upload_image',
+        'goods|add' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
+        'goods|update' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
         'tag|add' => 'tag|delete_image,tag|upload',
         'tag|update' => 'tag|delete_image,tag|upload',
         'package|add' => 'package|delete_image,package|upload,package|upload_image',
         'package|update' => 'package|delete_image,package|upload,package|upload_image',
-        'order|index' => 'order|getOrderDetail'
+        'order|index' => 'order|getorderdetail'
     ),
     // 权限对应翻译
     'priv_language' => array(
@@ -222,8 +236,8 @@ $app_config = array(
             'member' => '会员',
             'index' => '会员一览',
             'delete' => '删除会员',
-            'addBlacklist' => '拉入黑名单',
-            'deleteBlacklist' => '移出黑名单'
+            'addblacklist' => '拉入黑名单',
+            'deleteblacklist' => '移出黑名单'
         ),
         'goods' => array(
             'goods' => '商品',
