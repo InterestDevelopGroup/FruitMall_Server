@@ -95,20 +95,6 @@ $app_config = array(
                 )
             )
         ),
-//         'Coupon' => array(
-//             'text' => '水果劵',
-//             'default' => 'index',
-//             'children' => array(
-//                 'index' => array(
-//                     'text' => '所有水果劵',
-//                     'url' => '/coupon/index'
-//                 ),
-//                 'rule' => array(
-//                     'text' => '水果劵规则',
-//                     'url' => '/coupon/rule'
-//                 )
-//             )
-//         ),
         'Order' => array(
             'text' => '订单',
             'default' => 'index',
@@ -165,7 +151,8 @@ $app_config = array(
             'index' => 'member|index',
             'delete' => 'member|delete',
             'addblacklist' => 'member|addblacklist',
-            'deleteblacklist' => 'member|deleteblacklist'
+            'deleteblacklist' => 'member|deleteblacklist',
+            'add_coupon' => 'member|add_coupon'
         ),
         'goods' => array(
             'index' => 'goods|index',
@@ -237,7 +224,8 @@ $app_config = array(
             'index' => '会员一览',
             'delete' => '删除会员',
             'addblacklist' => '拉入黑名单',
-            'deleteblacklist' => '移出黑名单'
+            'deleteblacklist' => '移出黑名单',
+            'add_coupon' => '送水果劵'
         ),
         'goods' => array(
             'goods' => '商品',
@@ -309,10 +297,13 @@ $app_config = array(
         'goods|add',
         'goods|update',
         'category|parent_index',
+        'category|parent_add',
         'category|parent_update',
         'category|child_index',
+        'category|child_add',
         'category|child_update',
         'tag|index',
+        'tag|add',
         'tag|update',
         'package|index',
         'package|add',

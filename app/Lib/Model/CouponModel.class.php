@@ -35,20 +35,39 @@ class CouponModel extends Model {
      *            水果劵规则
      * @return boolean
      */
-    public function addCoupon($user, $rule) {
-        $_add = function ($user_id) use($rule) {
-            $coupon_rule = C('coupon_rule');
+    public function addCoupon($user, $rule, $score = null, $expire = null) {
+        $_add = function ($user_id) use($rule, $score, $expire) {
             $publish_time = time();
+            if (!$score) {
+                $coupon_rule = C('coupon_rule');
+                $score = $coupon_rule[$rule]['score'];
+            }
+            if (!$expire) {
+                $coupon_rule = C('coupon_rule');
+                $expire = $coupon_rule[$rule]['expire'];
+            }
             $data = array(
                 'user_id' => $user_id,
-                'score' => $coupon_rule[$rule]['score'],
+                'score' => $score,
                 'type' => $rule,
                 'publish_time' => $publish_time,
-                'expire_time' => $publish_time + $coupon_rule[$rule]['expire']
+                'expire_time' => $publish_time + $expire
             );
             return $data;
         };
         switch ($rule) {
+            case 'handsel' :
+                if ($this->add($_add($user))) {
+                    return array(
+                        'status' => true,
+                        'msg' => '赠送成功'
+                    );
+                } else {
+                    return array(
+                        'status' => false,
+                        'msg' => '赠送失败'
+                    );
+                }
             case 'recommend' :
                 $user_info = M('Member')->where(array(
                     'phone' => $user

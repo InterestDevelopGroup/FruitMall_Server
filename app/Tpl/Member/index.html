@@ -28,7 +28,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "用户名", name: 'username', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "用户名", name: 'username', align: 'center', width: '14%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
@@ -48,8 +48,8 @@ $(function(){
                     }
                 }
             },
-            {display: "拒收次数", name: 'refuse_amount', align: 'center', width: '6%', isSort: false},
-            {display: "是否黑名单", name: 'is_blacklist', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "拒收次数", name: 'refuse_amount', align: 'center', width: '8%', isSort: false},
+            {display: "是否黑名单", name: 'is_blacklist', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '是' : '否';
                 }
             },
@@ -57,7 +57,11 @@ $(function(){
             {display: "上一次登录时间", name: 'last_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     return value ? value : '从未登录';
                 }
-            }
+            },
+			{display: "操作", align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
+					return '<a href="javascript:void(0);" onclick="addCoupon('+rowdata.id+')">送水果劵</a>';
+				}
+			}
             ],
             url: '<{:U("member/index")}>?keyword=<{$keyword}>',
             dataAction: 'server',
@@ -188,6 +192,29 @@ function delBlacklist() {
             }, 'json');
         }
     });
+}
+
+//送水果劵
+var addCouponDialog;
+function addCoupon(id) {
+	addCouponDialog = $.ligerDialog.open({
+        url: '<{:U("member/add_coupon")}>?id='+id, height: 400, width: 600,
+        isDrag: false, title: '送水果劵',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addCouponDialog.frame.addCouponFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//送水果劵回调
+function addCouponCallback(obj) {
+	addCouponDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
 }
 //]]>
 </script>

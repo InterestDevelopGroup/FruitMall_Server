@@ -1,0 +1,69 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>面值：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="score" />&nbsp;&nbsp;元</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">有效期：</td>
+		<td align="left" class="l-table-edit-td"><input type="text" id="expire" />&nbsp;&nbsp;天</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#score").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckScore();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测面值
+function ckScore() {
+    var score = $.trim($("#score").val());
+    if (score.length == 0) {
+        addTip($("#score").parent('td').next('td:last'), '请指定面值');
+        return false;
+    }
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckScore()) return false;
+    var score = $.trim($("#score").val());
+	var expire = $("#expire").val();
+    return {score: score, expire: expire, user_id: <{$id}>};
+}
+
+//提交表单
+function addCouponFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("member/add_coupon")}>', checkForm(), function(data) {
+            window.parent.addCouponCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
