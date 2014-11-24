@@ -20,6 +20,7 @@ class ApiAction extends Action {
             $province = isset($_POST['province']) ? trim($_POST['province']) : $this->redirect('/');
             $city = isset($_POST['city']) ? trim($_POST['city']) : $this->redirect('/');
             $district = isset($_POST['district']) ? trim($_POST['district']) : $this->redirect('/');
+            $community = isset($_POST['community']) ? trim($_POST['community']) : $this->redirect('/');
             $address = isset($_POST['address']) ? trim($_POST['address']) : $this->redirect('/');
             $_consignee = (isset($_POST['_consignee']) && !empty($_POST['_consignee'])) ? trim($_POST['_consignee']) : null;
             $_phone = (isset($_POST['_phone']) && !empty($_POST['_phone'])) ? trim($_POST['_phone']) : null;
@@ -29,7 +30,7 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Address')->addAddress($user_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone));
+            $this->ajaxReturn(D('Address')->addAddress($user_id, $consignee, $phone, $province, $city, $district, $community, $address, $_consignee, $_phone));
         } else {
             $this->redirect('/');
         }

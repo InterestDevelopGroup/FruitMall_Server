@@ -52,7 +52,7 @@ class AddressModel extends Model {
      *            备用收货人手机
      * @return array
      */
-    public function addAddress($user_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone) {
+    public function addAddress($user_id, $consignee, $phone, $province, $city, $district, $community, $address, $_consignee, $_phone) {
         $data = array(
             'user_id' => $user_id,
             'consignee' => $consignee,
@@ -60,11 +60,12 @@ class AddressModel extends Model {
             'province' => $province,
             'city' => $city,
             'address' => $address,
+            '_consignee' => $_consignee,
+            '_phone' => $_phone,
             'add_time' => time()
         );
         strlen($district) && $data['district'] = $district;
-        $_consignee && $data['_consignee'] = $_consignee;
-        $_phone && $data['_phone'] = $_phone;
+        strlen($community) && $data['community'] = $community;
         if ($this->add($data)) {
             return array(
                 'status' => 1,

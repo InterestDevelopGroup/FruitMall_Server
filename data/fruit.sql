@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-24 15:15:39
+Date: 2014-11-24 18:51:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,6 +27,7 @@ CREATE TABLE `fruit_address` (
   `province` varchar(50) NOT NULL COMMENT '省份',
   `city` varchar(50) NOT NULL COMMENT '城市',
   `district` varchar(50) DEFAULT NULL COMMENT '区',
+  `community` varchar(255) DEFAULT NULL COMMENT '小区',
   `address` varchar(255) NOT NULL COMMENT '详细地址',
   `_consignee` varchar(50) DEFAULT NULL COMMENT '备用收货人',
   `_phone` char(11) DEFAULT NULL COMMENT '备用收货人手机',
@@ -38,8 +39,8 @@ CREATE TABLE `fruit_address` (
 -- ----------------------------
 -- Records of fruit_address
 -- ----------------------------
-INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '1415789535', '1415790180');
-INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '1415790242', null);
+INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '1415789535', '1415790180');
+INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '1415790242', null);
 
 -- ----------------------------
 -- Table structure for `fruit_admin_priv`
@@ -79,8 +80,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416796438', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416714329', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416821851', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416820910', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_blacklist`
@@ -287,8 +288,8 @@ CREATE TABLE `fruit_member` (
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
-INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416631955');
-INSERT INTO `fruit_member` VALUES ('3', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1416725505', null);
+INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416824495');
+INSERT INTO `fruit_member` VALUES ('3', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1416725505', '1416824481');
 
 -- ----------------------------
 -- Table structure for `fruit_order`
@@ -484,7 +485,7 @@ CREATE TABLE `fruit_shopping_car` (
 -- Records of fruit_shopping_car
 -- ----------------------------
 INSERT INTO `fruit_shopping_car` VALUES ('1', '1', '1', null, '10', '1416751241');
-INSERT INTO `fruit_shopping_car` VALUES ('4', '1', null, '19', '2', '1416751285');
+INSERT INTO `fruit_shopping_car` VALUES ('4', '1', null, '19', '1', '1416751285');
 
 -- ----------------------------
 -- Table structure for `fruit_tag`
