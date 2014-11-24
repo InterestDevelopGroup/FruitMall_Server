@@ -36,6 +36,46 @@ class ApiAction extends Action {
     }
 
     /**
+     * 添加定制
+     */
+    public function add_custom() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
+            if ($user_id < 1 || empty($name)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Custom')->addCustom($user_id, $name));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 加入定制
+     */
+    public function add_custom_stuff() {
+        if ($this->isPost() || $this->isAjax()) {
+            $custom_id = isset($_POST['custom_id']) ? intval($_POST['custom_id']) : $this->redirect('/');
+            $goods_id = (isset($_POST['goods_id']) && intval($_POST['goods_id'])) ? intval($_POST['goods_id']) : null;
+            $package_id = (isset($_POST['package_id']) && intval($_POST['package_id'])) ? intval($_POST['package_id']) : null;
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
+            if ($custom_id < 1 || $quantity < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('CustomStuff')->addCustomStuff($custom_id, $goods_id, $package_id, $quantity));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 加入购物车
      */
     public function add_shopping_car() {
@@ -131,6 +171,32 @@ class ApiAction extends Action {
     }
 
     /**
+     * 定制
+     */
+    public function custom() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
+                    return $value;
+                }, D('Custom')->_getCustomList($user_id, $offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 水果劵
      */
     public function coupon() {
@@ -193,6 +259,42 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Address')->deleteAddress((array) $address_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 删除定制
+     */
+    public function delete_custom() {
+        if ($this->isPost() || $this->isAjax()) {
+            $custom_id = isset($_POST['custom_id']) ? explode(',', $_POST['custom_id']) : $this->redirect('/');
+            if (empty($custom_id)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Custom')->deleteCustom((array) $custom_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 删除定制商品/套餐
+     */
+    public function delete_custom_stuff() {
+        if ($this->isPost() || $this->isAjax()) {
+            $custom_stuff_id = isset($_POST['custom_stuff_id']) ? explode(',', $_POST['custom_stuff_id']) : $this->redirect('/');
+            if (empty($custom_stuff_id)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('CustomStuff')->deleteCustomStuff((array) $custom_stuff_id));
         } else {
             $this->redirect('/');
         }

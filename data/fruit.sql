@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-24 10:46:34
+Date: 2014-11-24 15:15:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -154,6 +154,44 @@ CREATE TABLE `fruit_coupon` (
 -- ----------------------------
 INSERT INTO `fruit_coupon` VALUES ('1', '1', '10', 'recommend', '1416725505', '1419317505');
 INSERT INTO `fruit_coupon` VALUES ('2', '3', '10', 'register', '1416725505', '1419317505');
+
+-- ----------------------------
+-- Table structure for `fruit_custom`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_custom`;
+CREATE TABLE `fruit_custom` (
+  `custom_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `name` varchar(30) NOT NULL COMMENT '定制名称',
+  `create_time` int(10) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`custom_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='我的定制表';
+
+-- ----------------------------
+-- Records of fruit_custom
+-- ----------------------------
+INSERT INTO `fruit_custom` VALUES ('4', '1', '測試定制1', '1416811035');
+
+-- ----------------------------
+-- Table structure for `fruit_custom_stuff`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_custom_stuff`;
+CREATE TABLE `fruit_custom_stuff` (
+  `custom_stuff_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `custom_id` int(11) NOT NULL COMMENT '定制ID',
+  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
+  `package_id` int(11) DEFAULT NULL COMMENT '套餐ID',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `add_time` int(10) NOT NULL COMMENT '加入定制时间',
+  PRIMARY KEY (`custom_stuff_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='定制商品/套餐表';
+
+-- ----------------------------
+-- Records of fruit_custom_stuff
+-- ----------------------------
+INSERT INTO `fruit_custom_stuff` VALUES ('5', '4', '1', null, '10', '1416811061');
+INSERT INTO `fruit_custom_stuff` VALUES ('6', '4', '2', null, '11', '1416811067');
+INSERT INTO `fruit_custom_stuff` VALUES ('9', '4', null, '19', '8', '1416811089');
 
 -- ----------------------------
 -- Table structure for `fruit_default_address`

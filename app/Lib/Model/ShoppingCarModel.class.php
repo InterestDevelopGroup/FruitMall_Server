@@ -57,7 +57,7 @@ class ShoppingCarModel extends Model {
         $data = array();
         $goods_id && $data['goods_id'] = $goods_id;
         $package_id && $data['package_id'] = $package_id;
-        if (empty($data)) {
+        if (empty($data) || count($data) == 2) {
             return array(
                 'status' => 0,
                 'result' => '添加失败'

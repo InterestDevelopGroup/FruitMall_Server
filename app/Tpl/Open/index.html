@@ -780,6 +780,152 @@
                     <td><div class="failed_return_25"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">添加定制</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/add_custom</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 1（用户ID）<br />
+                        string name: 'xxx'（定制名称，utf-8编码30个字节以内）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_26"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_26"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">加入定制</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/add_custom_stuff</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int custom_id: 1（定制ID）<br />
+                        int goods_id: 1（商品ID，非必填）<br />
+                        int package_id: 1（套餐ID，非必填）<br />
+                        int quantity: 1（数量）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_27"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_27"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">删除定制</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/delete_custom</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int custom_id: 'x,x'（定制ID，多个ID之间使用英文半角逗号分开）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_28"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_28"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">删除定制商品/套餐</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/delete_custom_stuff</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int custom_stuff_id: 'x,x'（定制货物ID，多个ID之间使用英文半角逗号分开）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_29"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_29"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">定制列表</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/custom</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 1（用户ID）<br />
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取条数，非负整数）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_30"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_30"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -842,6 +988,16 @@ $(function() {
     $(".failed_return_24").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_25").JSONView({"status":1,"result":[{"user_id":"1","goods_id":null,"package_id":"19","quantity":"2","add_time":"2014-11-23 22:01:25","goods_name":null,"goods_price":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"},{"user_id":"1","goods_id":"1","package_id":null,"quantity":"10","add_time":"2014-11-23 22:00:41","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_thumb":null}]});
     $(".failed_return_25").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_26").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
+    $(".failed_return_26").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_27").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
+    $(".failed_return_27").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_28").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
+    $(".failed_return_28").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_29").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
+    $(".failed_return_29").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_30").JSONView({"status":1,"result":[{"custom_id":"4","user_id":"1","name":"\u6e2c\u8a66\u5b9a\u52361","create_time":"2014-11-24 14:37:15","stuff_list":[{"goods_id":"1","package_id":null,"quantity":"10","goods_name":"\u6e2c\u8a66\u5546\u54c11","good_price":"12.00","good_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_thumb":null},{"goods_id":"2","package_id":null,"quantity":"11","goods_name":"\u6e2c\u8a66\u5546\u54c12","good_price":"12.00","good_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","package_name":null,"package_price":null,"package_thumb":null},{"goods_id":null,"package_id":"19","quantity":"8","goods_name":null,"good_price":null,"good_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]}]});
+    $(".failed_return_30").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>
