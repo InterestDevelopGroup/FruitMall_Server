@@ -187,6 +187,24 @@ class MemberModel extends Model {
                 $result['password'] = $password;
                 $result['register_time'] = date("Y-m-d H:i:s", $result['register_time']);
                 $result['last_time'] = $result['last_time'] ? date("Y-m-d H:i:s", $result['last_time']) : $result['last_time'];
+                if (M('DefaultAddress')->where(array(
+                    'user_id' => $result['id']
+                ))->count()) {
+                    $result = array_merge($result, M('DefaultAddress')->table(M('DefaultAddress')->getTableName() . " AS da ")->join(array(
+                        " LEFT JOIN " . M('Address')->getTableName() . " AS a ON da.address_id = a.address_id "
+                    ))->field(array(
+                        'a.address_id',
+                        'a.consignee',
+                        'a.province',
+                        'a.city',
+                        'a.district',
+                        'a.address',
+                        'a._consignee',
+                        'a._phone'
+                    ))->where(array(
+                        'da.user_id' => $result['id']
+                    ))->find());
+                }
                 return array(
                     'status' => 1,
                     'result' => $result

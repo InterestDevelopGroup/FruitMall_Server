@@ -30,10 +30,13 @@ class CustomModel extends Model {
                 'cs.package_id',
                 'cs.quantity',
                 'g.name' => 'goods_name',
-                'g.price' => 'good_price',
-                'g.thumb' => 'good_thumb',
+                'g.price' => 'goods_price',
+                'g._price' => 'goods_market_price',
+                'g.unit' => 'goods_price_unit',
+                'g.thumb' => 'goods_thumb',
                 'p.name' => 'package_name',
                 'p.price' => 'package_price',
+                'p._price' => 'package_market_price',
                 'p.thumb' => 'package_thumb'
             ))->where(array(
                 'cs.custom_id' => $value['custom_id']

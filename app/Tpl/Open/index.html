@@ -926,6 +926,35 @@
                     <td><div class="failed_return_30"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">更新购物车</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/update_shopping_car</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int shopping_car_id: 1（购物车ID）<br />
+                        int quantity: 1（数量）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_31"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_31"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -942,7 +971,7 @@ $(function() {
     $(".failed_return_1").JSONView({"status":0,"result":"\u672a\u77e5\u9519\u8bef"});
     $(".success_return_2").JSONView({"status":1,"result":"\u6ce8\u518c\u6210\u529f"});
     $(".failed_return_2").JSONView({"status":0,"result":"\u8be5\u624b\u673a\u5df2\u7ecf\u6ce8\u518c"});
-    $(".success_return_3").JSONView({"status":1,"result":{"id":"1","phone":"13800138000","password":"123456","username":"CMCC","real_name":"\u4e2d\u56fd\u79fb\u52a8","avatar":"\/uploads\/2014\/11\/13\/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg","sex":"1","register_time":"2014-11-12 11:36:48","last_time":"2014-11-22 12:49:35"}});
+    $(".success_return_3").JSONView({"status":1,"result":{"id":"1","phone":"13800138000","password":"123456","username":"CMCC","real_name":"\u4e2d\u56fd\u79fb\u52a8","avatar":"\/uploads\/2014\/11\/13\/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg","sex":"1","register_time":"2014-11-12 11:36:48","last_time":"2014-11-24 18:21:01","address_id":"4","consignee":"\u4e2d\u56fd\u7535\u4fe1","province":"\u5e7f\u4e1c\u7701","city":"\u5e7f\u5dde\u5e02","district":"\u5929\u6cb3\u533a","address":"\u5e7f\u5dde\u5e02\u5929\u6cb3\u533a\u4e2d\u5c71\u5927\u9053\u7f8a\u57ce\u82b1\u56ed\u5eb7\u82d1\u516b\u5ea7402","_consignee":"\u4e2d\u56fd\u8054\u901a","_phone":"13800138001"}});
     $(".failed_return_3").JSONView({"status":0,"result":"\u5bc6\u7801\u9519\u8bef"});
     $(".success_return_4").JSONView({"status":1,"result":"\u4fee\u6539\u5bc6\u7801\u6210\u529f"});
     $(".failed_return_4").JSONView({"status":0,"result":"\u8be5\u624b\u673a\u5c1a\u672a\u6ce8\u518c"});
@@ -986,7 +1015,7 @@ $(function() {
     $(".failed_return_23").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_24").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
     $(".failed_return_24").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
-    $(".success_return_25").JSONView({"status":1,"result":[{"user_id":"1","goods_id":null,"package_id":"19","quantity":"2","add_time":"2014-11-23 22:01:25","goods_name":null,"goods_price":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"},{"user_id":"1","goods_id":"1","package_id":null,"quantity":"10","add_time":"2014-11-23 22:00:41","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_thumb":null}]});
+    $(".success_return_25").JSONView({"status":1,"result":[{"user_id":"1","goods_id":"1","package_id":null,"quantity":"10","add_time":"2014-11-23 22:00:41","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"user_id":"1","goods_id":null,"package_id":"19","quantity":"1","add_time":"2014-11-23 22:01:25","goods_name":null,"goods_price":null,"goods_market_price":null,"goods_price_unit":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_market_price":"34.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]});
     $(".failed_return_25").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_26").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
     $(".failed_return_26").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
@@ -996,8 +1025,10 @@ $(function() {
     $(".failed_return_28").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_29").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
     $(".failed_return_29").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
-    $(".success_return_30").JSONView({"status":1,"result":[{"custom_id":"4","user_id":"1","name":"\u6e2c\u8a66\u5b9a\u52361","create_time":"2014-11-24 14:37:15","stuff_list":[{"goods_id":"1","package_id":null,"quantity":"10","goods_name":"\u6e2c\u8a66\u5546\u54c11","good_price":"12.00","good_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_thumb":null},{"goods_id":"2","package_id":null,"quantity":"11","goods_name":"\u6e2c\u8a66\u5546\u54c12","good_price":"12.00","good_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","package_name":null,"package_price":null,"package_thumb":null},{"goods_id":null,"package_id":"19","quantity":"8","goods_name":null,"good_price":null,"good_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]}]});
+    $(".success_return_30").JSONView({"status":1,"result":[{"custom_id":"4","user_id":"1","name":"\u6e2c\u8a66\u5b9a\u52361","create_time":"2014-11-24 14:37:15","stuff_list":[{"goods_id":"1","package_id":null,"quantity":"10","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"goods_id":"2","package_id":null,"quantity":"11","goods_name":"\u6e2c\u8a66\u5546\u54c12","goods_price":"12.00","goods_market_price":"42.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"goods_id":null,"package_id":"19","quantity":"8","goods_name":null,"goods_price":null,"goods_market_price":null,"goods_price_unit":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_market_price":"34.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]}]});
     $(".failed_return_30").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_31").JSONView({"status":1,"result":"\u66f4\u65b0\u6210\u529f"});
+    $(".failed_return_31").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

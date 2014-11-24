@@ -697,6 +697,25 @@ class ApiAction extends Action {
     }
 
     /**
+     * 更新购物车
+     */
+    public function update_shopping_car() {
+        if ($this->isPost() || $this->isAjax()) {
+            $shopping_car_id = isset($_POST['shopping_car_id']) ? intval($_POST['shopping_car_id']) : $this->redirect('/');
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
+            if ($shopping_car_id < 1 || $quantity < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('ShoppingCar')->updateShoppingCar($shopping_car_id, $quantity));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 验证码
      */
     public function validate_code() {

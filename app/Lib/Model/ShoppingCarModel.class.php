@@ -31,9 +31,12 @@ class ShoppingCarModel extends Model {
             's.add_time',
             'g.name' => 'goods_name',
             'g.price' => 'goods_price',
+            'g._price' => 'goods_market_price',
+            'g.unit' => 'goods_price_unit',
             'g.thumb' => 'goods_thumb',
             'p.name' => 'package_name',
             'p.price' => 'package_price',
+            'p._price' => 'package_market_price',
             'p.thumb' => 'package_thumb'
         ))->where(array(
             's.user_id' => $user_id
@@ -101,6 +104,33 @@ class ShoppingCarModel extends Model {
             return array(
                 'status' => 0,
                 'result' => '删除失败'
+            );
+        }
+    }
+
+    /**
+     * 更新购物车
+     *
+     * @param int $shopping_car_id
+     *            购物车ID
+     * @param int $quantity
+     *            数量
+     * @return array
+     */
+    public function updateShoppingCar($shopping_car_id, $quantity) {
+        if ($this->where(array(
+            'shopping_car_id' => $shopping_car_id
+        ))->save(array(
+            'quantity' => $quantity
+        ))) {
+            return array(
+                'status' => 1,
+                'result' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '更新失败'
             );
         }
     }
