@@ -109,4 +109,16 @@ class VersionModel extends Model {
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
+    /**
+     * 获取最新版本信息
+     *
+     * @param int $type
+     *            版本类型（0：android、1：IOS）
+     */
+    public function lastVersion($type) {
+        return $this->where(array(
+            'type' => $type
+        ))->order("id DESC")->limit(1)->select();
+    }
+
 }

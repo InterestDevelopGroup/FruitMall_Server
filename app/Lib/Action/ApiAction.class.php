@@ -371,6 +371,33 @@ class ApiAction extends Action {
     }
 
     /**
+     * 获取最新版本信息
+     */
+    public function last_version() {
+        if ($this->isPost() || $this->isAjax()) {
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if (!in_array($type, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    return $value;
+                }, D('Version')->lastVersion($type))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 商品列表
      */
     public function goods() {

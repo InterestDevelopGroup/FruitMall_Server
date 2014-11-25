@@ -957,6 +957,34 @@
                     <td><div class="failed_return_31"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">版本更新</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/last_version</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int type: 0（0：Android、1：IOS）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_32"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_32"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1031,6 +1059,8 @@ $(function() {
     $(".failed_return_30").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_31").JSONView({"status":1,"result":"\u66f4\u65b0\u6210\u529f"});
     $(".failed_return_31").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_32").JSONView({"status":1,"result":[{"id":"1","version":"1.0.1","download_url":"http:\/\/www.example.com\/","type":"0","add_time":"2014-11-25 11:18:02"}]});
+    $(".failed_return_32").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>
