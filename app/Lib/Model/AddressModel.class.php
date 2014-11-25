@@ -44,6 +44,8 @@ class AddressModel extends Model {
      *            城市
      * @param string $district
      *            区
+     * @param string $community
+     *            小区
      * @param string $address
      *            详细地址
      * @param string|null $_consignee
@@ -120,6 +122,8 @@ class AddressModel extends Model {
      *            城市
      * @param string|null $district
      *            区
+     * @param string|null $community
+     *            小区
      * @param string|null $address
      *            详细地址
      * @param string|null $_consignee
@@ -128,13 +132,14 @@ class AddressModel extends Model {
      *            备用收货人手机
      * @return array
      */
-    public function updateAddress($address_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone) {
+    public function updateAddress($address_id, $consignee, $phone, $province, $city, $district, $community, $address, $_consignee, $_phone) {
         $data = array();
         $consignee && $data['consignee'] = $consignee;
         $phone && $data['phone'] = $phone;
         $province && $data['province'] = $province;
         $city && $data['city'] = $city;
         $district && $data['district'] = $district;
+        $community && $data['community'] = $community;
         $address && $data['address'] = $address;
         $_consignee && $data['_consignee'] = $_consignee;
         $_phone && $data['_phone'] = $_phone;

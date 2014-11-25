@@ -636,6 +636,7 @@ class ApiAction extends Action {
             $province = (isset($_POST['province']) && !empty($_POST['province'])) ? trim($_POST['province']) : null;
             $city = (isset($_POST['city']) && !empty($_POST['city'])) ? trim($_POST['city']) : null;
             $district = (isset($_POST['district']) && !empty($_POST['district'])) ? trim($_POST['district']) : null;
+            $community = (isset($_POST['community']) && !empty($_POST['community'])) ? trim($_POST['community']) : null;
             $address = (isset($_POST['address']) && !empty($_POST['address'])) ? trim($_POST['address']) : null;
             $_consignee = (isset($_POST['_consignee']) && !empty($_POST['_consignee'])) ? trim($_POST['_consignee']) : null;
             $_phone = (isset($_POST['_phone']) && !empty($_POST['_phone'])) ? trim($_POST['_phone']) : null;
@@ -645,7 +646,7 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Address')->updateAddress($address_id, $consignee, $phone, $province, $city, $district, $address, $_consignee, $_phone));
+            $this->ajaxReturn(D('Address')->updateAddress($address_id, $consignee, $phone, $province, $city, $district, $community, $address, $_consignee, $_phone));
         } else {
             $this->redirect('/');
         }

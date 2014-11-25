@@ -59,6 +59,7 @@ class OrderModel extends Model {
             'a.province',
             'a.city',
             'a.district',
+            'a.community',
             'a.address',
             'a._consignee',
             'a._phone'
