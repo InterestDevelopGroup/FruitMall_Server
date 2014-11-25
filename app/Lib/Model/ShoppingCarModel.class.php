@@ -72,7 +72,9 @@ class ShoppingCarModel extends Model {
         if ($this->add($data)) {
             return array(
                 'status' => 1,
-                'result' => '添加成功'
+                'result' => array(
+                    'shopping_car_id' => $this->getLastInsID()
+                )
             );
         } else {
             return array(
