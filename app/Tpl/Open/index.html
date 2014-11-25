@@ -710,9 +710,7 @@
                     <td>请求参数：</td>
                     <td>
                         int user_id: 1（用户ID）<br />
-                        int goods_id: 0（商品ID，非必传）<br />
-                        int package_id: 10（套餐ID，非必传）<br />
-                        int quantity: 1（数量）<br />
+                        json shopping_list: [{"goods_id":1,"quantity":10},{"package_id":20,"quantity":2},{"custom_id":1,"quantity":1}]（购物单，可包含商品、定制、套餐）
                     </td>
                 </tr>
                 <tr>
@@ -800,6 +798,7 @@
                     <td>
                         int user_id: 1（用户ID）<br />
                         string name: 'xxx'（定制名称，utf-8编码30个字节以内）<br />
+                        json goods_list: [{"goods_id":1,"quantity":10},{"goods_id":2,"quantity":8}]（添加到定制商品列表）<br />
                     </td>
                 </tr>
                 <tr>
@@ -818,7 +817,7 @@
                 </tr>
                 <tr>
                     <td>请求地址：</td>
-                    <td>/api/add_custom_stuff</td>
+                    <td>/api/add_custom_goods</td>
                 </tr>
                 <tr>
                     <td>请求方式：</td>
@@ -828,8 +827,7 @@
                     <td>请求参数：</td>
                     <td>
                         int custom_id: 1（定制ID）<br />
-                        int goods_id: 1（商品ID，非必填）<br />
-                        int package_id: 1（套餐ID，非必填）<br />
+                        int goods_id: 1（商品ID）<br />
                         int quantity: 1（数量）
                     </td>
                 </tr>
@@ -873,11 +871,11 @@
             <table border="1" style="width:96%;">
                 <tr>
                     <td width="20%">接口：</td>
-                    <td width="80%">删除定制商品/套餐</td>
+                    <td width="80%">删除定制商品</td>
                 </tr>
                 <tr>
                     <td>请求地址：</td>
-                    <td>/api/delete_custom_stuff</td>
+                    <td>/api/delete_custom_goods</td>
                 </tr>
                 <tr>
                     <td>请求方式：</td>
@@ -886,7 +884,7 @@
                 <tr>
                     <td>请求参数：</td>
                     <td>
-                        int custom_stuff_id: 'x,x'（定制货物ID，多个ID之间使用英文半角逗号分开）
+                        int custom_goods_id: 'x,x'（定制商品ID，多个ID之间使用英文半角逗号分开）
                     </td>
                 </tr>
                 <tr>
@@ -985,6 +983,64 @@
                     <td><div class="failed_return_32"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">广告列表</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/advertisement</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取条数，非负整数）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_33"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_33"></div></td>
+                </tr>
+            </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">更新定制商品</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/update_custom_goods</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int custom_goods_id: 1（定制商品ID）<br />
+                        int quantity: 1（定制商品数量）<br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_34"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_34"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1041,11 +1097,11 @@ $(function() {
     $(".failed_return_21").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_22").JSONView({"status":1,"result":[{"id":"1","user_id":"1","score":"10","type":"recommend","publish_time":"2014-11-23 14:51:45","expire_time":"2014-12-23 14:51:45"}]});
     $(".failed_return_22").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
-    $(".success_return_23").JSONView({"status":1,"result":{"shopping_car_id":5}});
+    $(".success_return_23").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
     $(".failed_return_23").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_24").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
     $(".failed_return_24").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
-    $(".success_return_25").JSONView({"status":1,"result":[{"user_id":"1","goods_id":"1","package_id":null,"quantity":"10","add_time":"2014-11-23 22:00:41","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"user_id":"1","goods_id":null,"package_id":"19","quantity":"1","add_time":"2014-11-23 22:01:25","goods_name":null,"goods_price":null,"goods_market_price":null,"goods_price_unit":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_market_price":"34.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]});
+    $(".success_return_25").JSONView({"status":1,"result":[{"shopping_car_id":"1","user_id":"1","goods_id":"1","package_id":null,"custom_id":null,"quantity":"10","add_time":"2014-11-25 18:15:17","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg"},{"shopping_car_id":"2","user_id":"1","goods_id":null,"package_id":"20","custom_id":null,"quantity":"2","add_time":"2014-11-25 18:15:17","package_name":"\u6e2c\u8a66\u5957\u99102","package_price":"12.00","package_market_price":"20.00","thumb":"\/uploads\/2014\/11\/21\/9b370b6be335abd01c70ba6f5c69e061f214c913.jpg"},{"shopping_car_id":"3","user_id":"1","goods_id":null,"package_id":null,"custom_id":"1","quantity":"1","add_time":"2014-11-25 18:15:17","custom_name":"\u6211\u7684\u5b9a\u5236","goods_list":[{"goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg"},{"goods_name":"\u6e2c\u8a66\u5546\u54c12","goods_price":"12.00","goods_market_price":"42.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg"},{"goods_name":"\u6e2c\u8a66\u5546\u54c13","goods_price":"1.00","goods_market_price":"2.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/13\/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg"}]}]});
     $(".failed_return_25").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_26").JSONView({"status":1,"result":"\u6dfb\u52a0\u6210\u529f"});
     $(".failed_return_26").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
@@ -1055,12 +1111,16 @@ $(function() {
     $(".failed_return_28").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_29").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
     $(".failed_return_29").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
-    $(".success_return_30").JSONView({"status":1,"result":[{"custom_id":"4","user_id":"1","name":"\u6e2c\u8a66\u5b9a\u52361","create_time":"2014-11-24 14:37:15","stuff_list":[{"goods_id":"1","package_id":null,"quantity":"10","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"goods_id":"2","package_id":null,"quantity":"11","goods_name":"\u6e2c\u8a66\u5546\u54c12","goods_price":"12.00","goods_market_price":"42.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg","package_name":null,"package_price":null,"package_market_price":null,"package_thumb":null},{"goods_id":null,"package_id":"19","quantity":"8","goods_name":null,"goods_price":null,"goods_market_price":null,"goods_price_unit":null,"goods_thumb":null,"package_name":"\u6e2c\u8a66\u5957\u99101","package_price":"12.00","package_market_price":"34.00","package_thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg"}]}]});
+    $(".success_return_30").JSONView({"status":1,"result":[{"custom_id":"1","user_id":"1","name":"\u6211\u7684\u5b9a\u5236","create_time":"2014-11-25 17:14:29","goods_list":[{"custom_goods_id":"1","goods_id":"1","quantity":"10","goods_name":"\u6e2c\u8a66\u5546\u54c11","goods_price":"12.00","goods_market_price":"24.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg"},{"custom_goods_id":"2","goods_id":"2","quantity":"8","goods_name":"\u6e2c\u8a66\u5546\u54c12","goods_price":"12.00","goods_market_price":"42.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg"},{"custom_goods_id":"3","goods_id":"3","quantity":"22","goods_name":"\u6e2c\u8a66\u5546\u54c13","goods_price":"1.00","goods_market_price":"2.00","goods_price_unit":"\u5143\/\u65a4","goods_thumb":"\/uploads\/2014\/11\/13\/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg"}]}]});
     $(".failed_return_30").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_31").JSONView({"status":1,"result":"\u66f4\u65b0\u6210\u529f"});
     $(".failed_return_31").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_32").JSONView({"status":1,"result":[{"id":"1","version":"1.0.1","download_url":"http:\/\/www.example.com\/","type":"0","add_time":"2014-11-25 11:18:02"}]});
     $(".failed_return_32").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_33").JSONView({"status":1,"result":[{"advertisement_id":"2","goods_id":"1","package_id":null,"advertisement_add_time":"2014-11-25 13:57:53","p_cate_id":"1","c_cate_id":"1","name":"\u6e2c\u8a66\u5546\u54c11","price":"12.00","_price":"24.00","unit":"\u5143\/\u65a4","tag":null,"amount":"12","weight":"300","thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg","image_1":"\/uploads\/2014\/11\/10\/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg","image_2":"\/uploads\/2014\/11\/10\/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg","image_3":"\/uploads\/2014\/11\/10\/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg","image_4":"\/uploads\/2014\/11\/10\/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg","image_5":"\/uploads\/2014\/11\/10\/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg","description":"<p>\u6e2c\u8a66\u5546\u54c11<\/p>","goods_add_time":"2014-11-10 18:37:43","goods_update_time":null,"parent_category":"\u6e2c\u8a66\u5927\u5206\u985e1","child_category":"\u6e2c\u8a66\u5c0f\u5206\u985e1","tag_name":null},{"advertisement_id":"4","goods_id":null,"package_id":"19","advertisement_add_time":"2014-11-25 14:06:15","name":"\u6e2c\u8a66\u5957\u99101","price":"12.00","_price":"34.00","thumb":"\/uploads\/2014\/11\/21\/870de349e67ead4553db49dd7729d8598abced31.jpg","image_1":"\/uploads\/2014\/11\/21\/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg","image_2":"\/uploads\/2014\/11\/21\/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg","image_3":"\/uploads\/2014\/11\/21\/e765a800564ea255922319757e0e0e0d7028e271.jpg","image_4":"\/uploads\/2014\/11\/21\/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg","image_5":"\/uploads\/2014\/11\/21\/b328144233ee466bdea4206f120498732687c871.jpg","description":"<p>\u9019\u662f\u5957\u9910\u6e2c\u8a66<\/p>","package_add_time":"2014-11-21 19:01:43","package_update_time":null,"goods_list":[{"goods_id":"1","amount":"1","name":"\u6e2c\u8a66\u5546\u54c11","thumb":"\/uploads\/2014\/11\/10\/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg"},{"goods_id":"2","amount":"2","name":"\u6e2c\u8a66\u5546\u54c12","thumb":"\/uploads\/2014\/11\/10\/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg"}]}]});
+    $(".failed_return_33").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_34").JSONView({"status":1,"result":"\u66f4\u65b0\u6210\u529f"});
+    $(".failed_return_34").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

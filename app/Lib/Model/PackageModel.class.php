@@ -199,7 +199,10 @@ class PackageModel extends Model {
                 'pg.package_id' => $value['id']
             ))->select();
             return $value;
-        }, $this->limit($offset, $pagesize)->select());
+        }, $this->table($this->getTableName() . " AS p ")->field(array(
+            'p.*',
+            "(SELECT COUNT(1) FROM " . M('Advertisement')->getTableName() . " WHERE package_id = p.id)" => 'is_advertisement'
+        ))->limit($offset, $pagesize)->select());
     }
 
     /**

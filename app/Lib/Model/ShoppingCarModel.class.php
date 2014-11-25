@@ -20,27 +20,41 @@ class ShoppingCarModel extends Model {
      *            条数
      */
     public function _getShoppingCar($user_id, $offset, $pagesize) {
-        return $this->table($this->getTableName() . " AS s ")->join(array(
-            " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON s.goods_id = g.id ",
-            " LEFT JOIN " . M('Package')->getTableName() . " AS p ON s.package_id = p.id "
-        ))->field(array(
-            's.user_id',
-            's.goods_id',
-            's.package_id',
-            's.quantity',
-            's.add_time',
-            'g.name' => 'goods_name',
-            'g.price' => 'goods_price',
-            'g._price' => 'goods_market_price',
-            'g.unit' => 'goods_price_unit',
-            'g.thumb' => 'goods_thumb',
-            'p.name' => 'package_name',
-            'p.price' => 'package_price',
-            'p._price' => 'package_market_price',
-            'p.thumb' => 'package_thumb'
-        ))->where(array(
-            's.user_id' => $user_id
+        $result = $this->where(array(
+            'user_id' => $user_id
         ))->limit($offset, $pagesize)->select();
+        foreach ($result as &$v) {
+            if ($v['goods_id']) {
+                $v = array_merge($v, M('Goods')->field(array(
+                    'name' => 'goods_name',
+                    'price' => 'goods_price',
+                    '_price' => 'goods_market_price',
+                    'unit' => 'goods_price_unit',
+                    'thumb' => 'goods_thumb'
+                ))->where(array(
+                    'id' => $v['goods_id']
+                ))->find());
+            }
+            if ($v['package_id']) {
+                $v = array_merge($v, M('Package')->field(array(
+                    'name' => 'package_name',
+                    'price' => 'package_price',
+                    '_price' => 'package_market_price',
+                    'thumb'
+                ))->where(array(
+                    'id' => $v['package_id']
+                ))->find());
+            }
+            if ($v['custom_id']) {
+                $v = array_merge($v, M('Custom')->field(array(
+                    'name' => 'custom_name'
+                ))->where(array(
+                    'custom_id' => $v['custom_id']
+                ))->find());
+                $v['goods_list'] = D('CustomGoods')->getCustomGoodsByCustomId($v['custom_id']);
+            }
+        }
+        return $result;
     }
 
     /**
@@ -48,33 +62,28 @@ class ShoppingCarModel extends Model {
      *
      * @param int $user_id
      *            用户ID
-     * @param int|null $goods_id
-     *            商品ID
-     * @param int|null $package_id
-     *            套餐ID
-     * @param int $quantity
-     *            数量
+     * @param string $shopping_list
+     *            购物单
      * @return array
      */
-    public function addShoppingCar($user_id, $goods_id, $package_id, $quantity) {
-        $data = array();
-        $goods_id && $data['goods_id'] = $goods_id;
-        $package_id && $data['package_id'] = $package_id;
-        if (empty($data) || count($data) == 2) {
-            return array(
-                'status' => 0,
-                'result' => '添加失败'
+    public function addShoppingCar($user_id, $shopping_list) {
+        $add_time = time();
+        $shopping_list = ob2ar(json_decode($shopping_list));
+        $dataList = array();
+        foreach ($shopping_list as $v) {
+            $dataList[] = array(
+                'user_id' => $user_id,
+                'goods_id' => $v['goods_id'] ? $v['goods_id'] : null,
+                'package_id' => $v['package_id'] ? $v['package_id'] : null,
+                'custom_id' => $v['custom_id'] ? $v['custom_id'] : null,
+                'quantity' => $v['quantity'],
+                'add_time' => $add_time
             );
         }
-        $data['user_id'] = $user_id;
-        $data['quantity'] = $quantity;
-        $data['add_time'] = time();
-        if ($this->add($data)) {
+        if ($this->addAll($dataList)) {
             return array(
                 'status' => 1,
-                'result' => array(
-                    'shopping_car_id' => $this->getLastInsID()
-                )
+                'result' => '添加成功'
             );
         } else {
             return array(

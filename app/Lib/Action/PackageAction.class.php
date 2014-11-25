@@ -60,6 +60,27 @@ class PackageAction extends AdminAction {
     }
 
     /**
+     * 广告设置
+     */
+    public function advertisement() {
+        if ($this->isAjax()) {
+            $package_id = isset($_POST['package_id']) ? intval($_POST['package_id']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if ($type == 0) {
+                $this->ajaxReturn(D('Advertisement')->deleteAdvertisement(array(
+                    'package_id' => $package_id
+                )));
+            } else if ($type == 1) {
+                $this->ajaxReturn(D('Advertisement')->addAdvertisement(array(
+                    'package_id' => $package_id
+                )));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 删除套餐
      */
     public function delete() {

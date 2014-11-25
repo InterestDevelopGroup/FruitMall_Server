@@ -22,24 +22,19 @@ class CustomModel extends Model {
      */
     public function _getCustomList($user_id, $offset, $pagesize) {
         return array_map(function ($value) {
-            $value['stuff_list'] = M('CustomStuff')->table(M('CustomStuff')->getTableName() . " AS cs ")->join(array(
-                " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = cs.goods_id ",
-                " LEFT JOIN " . M('Package')->getTableName() . " AS p ON p.id = cs.package_id "
+            $value['goods_list'] = M('CustomGoods')->table(M('CustomGoods')->getTableName() . " AS cg ")->join(array(
+                " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = cg.goods_id "
             ))->field(array(
-                'cs.goods_id',
-                'cs.package_id',
-                'cs.quantity',
+                'cg.custom_goods_id',
+                'cg.goods_id',
+                'cg.quantity',
                 'g.name' => 'goods_name',
                 'g.price' => 'goods_price',
                 'g._price' => 'goods_market_price',
                 'g.unit' => 'goods_price_unit',
-                'g.thumb' => 'goods_thumb',
-                'p.name' => 'package_name',
-                'p.price' => 'package_price',
-                'p._price' => 'package_market_price',
-                'p.thumb' => 'package_thumb'
+                'g.thumb' => 'goods_thumb'
             ))->where(array(
-                'cs.custom_id' => $value['custom_id']
+                'cg.custom_id' => $value['custom_id']
             ))->select();
             return $value;
         }, $this->where(array(
@@ -54,19 +49,48 @@ class CustomModel extends Model {
      *            用户ID
      * @param string $name
      *            定制名称
+     * @param string $goods_list
+     *            商品列表
      * @return array
      */
-    public function addCustom($user_id, $name) {
+    public function addCustom($user_id, $name, $goods_list) {
+        $now = time();
+        // 开启事务
+        $this->startTrans();
         if ($this->add(array(
             'user_id' => $user_id,
             'name' => $name,
-            'create_time' => time()
+            'create_time' => $now
         ))) {
-            return array(
-                'status' => 1,
-                'result' => '添加成功'
-            );
+            $custom_id = $this->getLastInsID();
+            $goods_list = ob2ar(json_decode($goods_list));
+            $dataList = array();
+            foreach ($goods_list as $v) {
+                $dataList[] = array(
+                    'custom_id' => $custom_id,
+                    'goods_id' => $v['goods_id'],
+                    'quantity' => $v['quantity'],
+                    'add_time' => $now
+                );
+            }
+            if (M('CustomGoods')->addAll($dataList)) {
+                // 添加成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => 1,
+                    'result' => '添加成功'
+                );
+            } else {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '添加失败'
+                );
+            }
         } else {
+            // 添加失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => 0,
                 'result' => '添加失败'
@@ -90,7 +114,7 @@ class CustomModel extends Model {
                 $custom_id
             )
         ))->delete()) {
-            if (D('CustomStuff')->deleteCustomStuffByCustomId((array) $custom_id)) {
+            if (D('CustomGoods')->deleteCustomGoodsByCustomId((array) $custom_id)) {
                 // 删除成功，提交事务
                 $this->commit();
                 return array(

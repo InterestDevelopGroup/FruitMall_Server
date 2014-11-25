@@ -173,7 +173,8 @@ class GoodsModel extends Model {
             'g.*',
             'pc.name' => 'parent_category',
             'cc.name' => 'child_category',
-            't.name' => 'tag_name'
+            't.name' => 'tag_name',
+            "(SELECT COUNT(1) FROM " . M('Advertisement')->getTableName() . " WHERE goods_id = g.id)" => 'is_advertisement'
         ))->order($order . " " . $sort)->limit($offset, $pageSize);
         empty($keyword) || $this->where(array(
             'g.name' => array(

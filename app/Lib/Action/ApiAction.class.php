@@ -9,6 +9,23 @@
  */
 class ApiAction extends Action {
 
+    public function index() {
+        $this->ajaxReturn(array(
+            array(
+                'goods_id' => 1,
+                'quantity' => 10
+            ),
+            array(
+                'package_id' => 20,
+                'quantity' => 2
+            ),
+            array(
+                'custom_id' => 1,
+                'quantity' => 1
+            )
+        ));
+    }
+
     /**
      * 添加地址
      */
@@ -43,13 +60,14 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            if ($user_id < 1 || empty($name)) {
+            $goods_list = isset($_POST['goods_list']) ? trim($_POST['goods_list']) : $this->redirect('/');
+            if ($user_id < 1 || empty($name) || empty($goods_list)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Custom')->addCustom($user_id, $name));
+            $this->ajaxReturn(D('Custom')->addCustom($user_id, $name, $goods_list));
         } else {
             $this->redirect('/');
         }
@@ -58,19 +76,18 @@ class ApiAction extends Action {
     /**
      * 加入定制
      */
-    public function add_custom_stuff() {
+    public function add_custom_goods() {
         if ($this->isPost() || $this->isAjax()) {
             $custom_id = isset($_POST['custom_id']) ? intval($_POST['custom_id']) : $this->redirect('/');
-            $goods_id = (isset($_POST['goods_id']) && intval($_POST['goods_id'])) ? intval($_POST['goods_id']) : null;
-            $package_id = (isset($_POST['package_id']) && intval($_POST['package_id'])) ? intval($_POST['package_id']) : null;
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
             $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
-            if ($custom_id < 1 || $quantity < 1) {
+            if ($custom_id < 1 || $goods_id < 1 || $quantity < 1) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('CustomStuff')->addCustomStuff($custom_id, $goods_id, $package_id, $quantity));
+            $this->ajaxReturn(D('CustomGoods')->addCustomGoods($custom_id, $goods_id, $quantity));
         } else {
             $this->redirect('/');
         }
@@ -82,16 +99,14 @@ class ApiAction extends Action {
     public function add_shopping_car() {
         if ($this->isPost() || $this->isAjax()) {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
-            $goods_id = (isset($_POST['goods_id']) && intval($_POST['goods_id'])) ? intval($_POST['goods_id']) : null;
-            $package_id = (isset($_POST['package_id']) && intval($_POST['package_id'])) ? intval($_POST['package_id']) : null;
-            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
-            if ($user_id < 1 && $quantity < 1) {
+            $shopping_list = isset($_POST['shopping_list']) ? trim($_POST['shopping_list']) : $this->redirect('/');
+            if ($user_id < 1 && empty($shopping_list)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('ShoppingCar')->addShoppingCar($user_id, $goods_id, $package_id, $quantity));
+            $this->ajaxReturn(D('ShoppingCar')->addShoppingCar($user_id, $shopping_list));
         } else {
             $this->redirect('/');
         }
@@ -118,6 +133,39 @@ class ApiAction extends Action {
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
                 }, D('Address')->_getAddressList($user_id, $offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 广告列表
+     */
+    public function advertisement() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['advertisement_add_time'] = date("Y-m-d H:i:s", $value['advertisement_add_time']);
+                    if ($value['goods_id']) {
+                        $value['goods_add_time'] = $value['goods_add_time'] ? date("Y-m-d H:i:s", $value['goods_add_time']) : $value['goods_add_time'];
+                        $value['goods_update_time'] = $value['goods_update_time'] ? date("Y-m-d H:i:s", $value['goods_update_time']) : $value['goods_update_time'];
+                    }
+                    if ($value['package_id']) {
+                        $value['package_add_time'] = $value['package_add_time'] ? date("Y-m-d H:i:s", $value['package_add_time']) : $value['package_add_time'];
+                        $value['package_update_time'] = $value['package_update_time'] ? date("Y-m-d H:i:s", $value['package_update_time']) : $value['package_update_time'];
+                    }
+                    return $value;
+                }, D('Advertisement')->_getAdvertisement($offset, $pagesize))
             ));
         } else {
             $this->redirect('/');
@@ -284,18 +332,18 @@ class ApiAction extends Action {
     }
 
     /**
-     * 删除定制商品/套餐
+     * 删除定制商品
      */
-    public function delete_custom_stuff() {
+    public function delete_custom_goods() {
         if ($this->isPost() || $this->isAjax()) {
-            $custom_stuff_id = isset($_POST['custom_stuff_id']) ? explode(',', $_POST['custom_stuff_id']) : $this->redirect('/');
-            if (empty($custom_stuff_id)) {
+            $custom_goods_id = isset($_POST['custom_goods_id']) ? explode(',', $_POST['custom_goods_id']) : $this->redirect('/');
+            if (empty($custom_goods_id)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('CustomStuff')->deleteCustomStuff((array) $custom_stuff_id));
+            $this->ajaxReturn(D('CustomGoods')->deleteCustomGoods((array) $custom_goods_id));
         } else {
             $this->redirect('/');
         }
@@ -674,6 +722,25 @@ class ApiAction extends Action {
                 ));
             }
             $this->ajaxReturn(D('Address')->updateAddress($address_id, $consignee, $phone, $province, $city, $district, $community, $address, $_consignee, $_phone));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 更新定制商品
+     */
+    public function update_custom_goods() {
+        if ($this->isPost() || $this->isAjax()) {
+            $custom_goods_id = isset($_POST['custom_goods_id']) ? intval($_POST['custom_goods_id']) : $this->redirect('/');
+            $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : $this->redirect('/');
+            if ($custom_goods_id < 1 || $quantity < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('CustomGoods')->updateCustomGoods($custom_goods_id, $quantity));
         } else {
             $this->redirect('/');
         }

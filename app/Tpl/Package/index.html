@@ -32,7 +32,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "套餐名称", name: 'name', align: 'center', width: '24%', isSort: false},
+            {display: "套餐名称", name: 'name', align: 'center', width: '20%', isSort: false},
             {display: "价格", name: 'price', align: 'center', width: '12%'},
             {display: "市场价", name: '_price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
@@ -47,8 +47,15 @@ $(function(){
                     return value ? value : '暂无';
                 }
             },
-            {display: "操作", width:'8%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
+            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (parseInt(rowdata.is_advertisement)) {
+                        var str = '取消广告';
+                        var type = 0;
+                    } else {
+                        var str = '设为广告';
+                        var type = 1;
+                    }
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a> | <a href="javascript:void(0);" onclick="advertisement('+rowdata.id+', '+type+')">'+str+'</a>';
                 }
             }
             ],
@@ -73,6 +80,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>套餐名称：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.name + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.price + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._price ? record._price : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>是否广告：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.is_advertisement) ? '是' : '否') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>套餐简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
@@ -128,6 +136,19 @@ function del() {
 //编辑套餐
 function update(id) {
     top.f_addTab(null, '编辑套餐', '<{:U("package/update")}>/id/'+id);
+}
+
+//广告设置
+function advertisement(id, type) {
+    $.post("<{:U('package/advertisement')}>", {package_id: id, type: type}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+            location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
 }
 //]]>
 </script>

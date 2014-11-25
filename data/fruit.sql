@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-25 10:51:33
+Date: 2014-11-25 18:50:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -82,6 +82,24 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416821851', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416820910', '0', '1', null);
+
+-- ----------------------------
+-- Table structure for `fruit_advertisement`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_advertisement`;
+CREATE TABLE `fruit_advertisement` (
+  `advertisement_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
+  `package_id` int(11) DEFAULT NULL COMMENT '套餐ID',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`advertisement_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='广告表';
+
+-- ----------------------------
+-- Records of fruit_advertisement
+-- ----------------------------
+INSERT INTO `fruit_advertisement` VALUES ('2', '1', null, '1416895073');
+INSERT INTO `fruit_advertisement` VALUES ('4', null, '19', '1416895575');
 
 -- ----------------------------
 -- Table structure for `fruit_blacklist`
@@ -166,33 +184,32 @@ CREATE TABLE `fruit_custom` (
   `name` varchar(30) NOT NULL COMMENT '定制名称',
   `create_time` int(10) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='我的定制表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='我的定制表';
 
 -- ----------------------------
 -- Records of fruit_custom
 -- ----------------------------
-INSERT INTO `fruit_custom` VALUES ('4', '1', '測試定制1', '1416811035');
+INSERT INTO `fruit_custom` VALUES ('1', '1', '我的定制', '1416906869');
 
 -- ----------------------------
--- Table structure for `fruit_custom_stuff`
+-- Table structure for `fruit_custom_goods`
 -- ----------------------------
-DROP TABLE IF EXISTS `fruit_custom_stuff`;
-CREATE TABLE `fruit_custom_stuff` (
-  `custom_stuff_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+DROP TABLE IF EXISTS `fruit_custom_goods`;
+CREATE TABLE `fruit_custom_goods` (
+  `custom_goods_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `custom_id` int(11) NOT NULL COMMENT '定制ID',
-  `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
-  `package_id` int(11) DEFAULT NULL COMMENT '套餐ID',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
   `quantity` int(11) NOT NULL COMMENT '数量',
-  `add_time` int(10) NOT NULL COMMENT '加入定制时间',
-  PRIMARY KEY (`custom_stuff_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='定制商品/套餐表';
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`custom_goods_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='定制商品表';
 
 -- ----------------------------
--- Records of fruit_custom_stuff
+-- Records of fruit_custom_goods
 -- ----------------------------
-INSERT INTO `fruit_custom_stuff` VALUES ('5', '4', '1', null, '10', '1416811061');
-INSERT INTO `fruit_custom_stuff` VALUES ('6', '4', '2', null, '11', '1416811067');
-INSERT INTO `fruit_custom_stuff` VALUES ('9', '4', null, '19', '8', '1416811089');
+INSERT INTO `fruit_custom_goods` VALUES ('1', '1', '1', '10', '1416906869');
+INSERT INTO `fruit_custom_goods` VALUES ('2', '1', '2', '8', '1416906869');
+INSERT INTO `fruit_custom_goods` VALUES ('3', '1', '3', '6', '1416907013');
 
 -- ----------------------------
 -- Table structure for `fruit_default_address`
@@ -476,16 +493,18 @@ CREATE TABLE `fruit_shopping_car` (
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `goods_id` int(11) DEFAULT NULL COMMENT '商品ID',
   `package_id` int(11) DEFAULT NULL COMMENT '套餐ID',
+  `custom_id` int(11) DEFAULT NULL COMMENT '定制ID',
   `quantity` int(11) NOT NULL COMMENT '数量',
   `add_time` int(10) DEFAULT NULL COMMENT '添加时间',
   PRIMARY KEY (`shopping_car_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='购物车表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='购物车表';
 
 -- ----------------------------
 -- Records of fruit_shopping_car
 -- ----------------------------
-INSERT INTO `fruit_shopping_car` VALUES ('1', '1', '1', null, '10', '1416751241');
-INSERT INTO `fruit_shopping_car` VALUES ('4', '1', null, '19', '1', '1416751285');
+INSERT INTO `fruit_shopping_car` VALUES ('1', '1', '1', null, null, '10', '1416910517');
+INSERT INTO `fruit_shopping_car` VALUES ('2', '1', null, '20', null, '2', '1416910517');
+INSERT INTO `fruit_shopping_car` VALUES ('3', '1', null, null, '1', '1', '1416910517');
 
 -- ----------------------------
 -- Table structure for `fruit_tag`
@@ -516,8 +535,9 @@ CREATE TABLE `fruit_version` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '版本类型（0：android，1：ios）',
   `add_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='App版本管理表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='App版本管理表';
 
 -- ----------------------------
 -- Records of fruit_version
 -- ----------------------------
+INSERT INTO `fruit_version` VALUES ('1', '1.0.1', 'http://www.example.com/', '0', '1416885482');

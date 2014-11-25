@@ -32,8 +32,8 @@ $(function(){
             {display: "商品名称", name: 'name', align: 'center', width: '16%', isSort: false},
             {display: "大分类", name: 'parent_category', align: 'center', width: '12%', isSort: false},
             {display: "小分类", name: 'child_category', align: 'center', width: '12%', isSort: false},
-            {display: "单价", name: 'price', align: 'center', width: '12%'},
-            {display: "市场价", name: '_price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "单价", name: 'price', align: 'center', width: '8%'},
+            {display: "市场价", name: '_price', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
                         return '暂无';
                     } else {
@@ -41,10 +41,17 @@ $(function(){
                     }
                 }
             },
-            {display: "价格单位", name: 'unit', align: 'center', width: '12%'},
+            {display: "价格单位", name: 'unit', align: 'center', width: '8%'},
             {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
-            {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
+            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (parseInt(rowdata.is_advertisement)) {
+                        var str = '取消广告';
+                        var type = 0;
+                    } else {
+                        var str = '设为广告';
+                        var type = 1;
+                    }
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a> | <a href="javascript:void(0);" onclick="advertisement('+rowdata.id+', '+type+')">'+str+'</a>';
                 }
             }
             ],
@@ -72,21 +79,22 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.price + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._price ? record._price : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.unit + "</td></tr>");
-	out.push("<tr><td width='20%' align='right'>商品标签：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.tag_name ? record.tag_name : '暂无') + "</td></tr>");
-	out.push("<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.amount ? record.amount : '暂无') + "</td></tr>");
-	out.push("<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.weight ? record.weight : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>商品标签：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.tag_name ? record.tag_name : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.amount ? record.amount : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.weight ? record.weight : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>是否广告：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.is_advertisement) ? '是' : '否') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>商品简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
     out.push("</table>");
-	out.push('<div style="margin:10px;width:88%;">');
-	out.push("<h3>商品缩略图：</h3><div class='detail_image'><a href='"+record.thumb+"' title='点击查看原图' target='_blank'><img src='"+record.thumb+"' width='100%' /></a></div>");
-	out.push("<h3 style='clear:both'>商品介绍图：</h3>");
-	for (var i = 1; i <= 5; i++) {
-		var image = 'image_' + i;
-		out.push("<div class='detail_image'><a href='"+record[image]+"' title='点击查看原图' target='_blank'><img src='"+record[image]+"' width='100%' /></a></div>");
-	}
-	out.push('</div>');
+    out.push('<div style="margin:10px;width:88%;">');
+    out.push("<h3>商品缩略图：</h3><div class='detail_image'><a href='"+record.thumb+"' title='点击查看原图' target='_blank'><img src='"+record.thumb+"' width='100%' /></a></div>");
+    out.push("<h3 style='clear:both'>商品介绍图：</h3>");
+    for (var i = 1; i <= 5; i++) {
+        var image = 'image_' + i;
+        out.push("<div class='detail_image'><a href='"+record[image]+"' title='点击查看原图' target='_blank'><img src='"+record[image]+"' width='100%' /></a></div>");
+    }
+    out.push('</div>');
     $(container).html(out.join(''));
 }
 
@@ -123,6 +131,19 @@ function del() {
 //编辑商品
 function update(id) {
     top.f_addTab(null, '编辑商品', '<{:U("goods/update")}>/id/'+id);
+}
+
+//广告设置
+function advertisement(id, type) {
+    $.post("<{:U('goods/advertisement')}>", {goods_id: id, type: type}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+            location.reload(true);
+        } else {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
 }
 //]]>
 </script>

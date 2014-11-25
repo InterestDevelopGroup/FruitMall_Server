@@ -35,6 +35,27 @@ class GoodsAction extends AdminAction {
     }
 
     /**
+     * 广告设置
+     */
+    public function advertisement() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if ($type == 0) {
+                $this->ajaxReturn(D('Advertisement')->deleteAdvertisement(array(
+                    'goods_id' => $goods_id
+                )));
+            } else if ($type == 1) {
+                $this->ajaxReturn(D('Advertisement')->addAdvertisement(array(
+                    'goods_id' => $goods_id
+                )));
+            }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 删除商品
      */
     public function delete() {
