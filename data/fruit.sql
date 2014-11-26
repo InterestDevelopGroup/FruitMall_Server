@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-25 18:50:25
+Date: 2014-11-26 19:04:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416821851', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1416987846', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416820910', '0', '1', null);
 
 -- ----------------------------
@@ -173,6 +173,26 @@ CREATE TABLE `fruit_coupon` (
 -- ----------------------------
 INSERT INTO `fruit_coupon` VALUES ('1', '1', '10', 'recommend', '1416725505', '1419317505');
 INSERT INTO `fruit_coupon` VALUES ('2', '3', '10', 'register', '1416725505', '1419317505');
+
+-- ----------------------------
+-- Table structure for `fruit_coupon_rule`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_coupon_rule`;
+CREATE TABLE `fruit_coupon_rule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `description` varchar(30) NOT NULL COMMENT '描述',
+  `type` tinyint(1) NOT NULL COMMENT '类型（1：注册，2：推荐，3：满X送N）',
+  `score` int(11) NOT NULL COMMENT '面值',
+  `condition` int(11) DEFAULT NULL COMMENT '满X送N条件',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `expire_time` int(10) DEFAULT NULL COMMENT '过期时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='水果劵规则';
+
+-- ----------------------------
+-- Records of fruit_coupon_rule
+-- ----------------------------
+INSERT INTO `fruit_coupon_rule` VALUES ('4', '註冊', '1', '10', null, '1416999808', '10');
 
 -- ----------------------------
 -- Table structure for `fruit_custom`
@@ -305,7 +325,7 @@ CREATE TABLE `fruit_member` (
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
-INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416824495');
+INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416971613');
 INSERT INTO `fruit_member` VALUES ('3', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1416725505', '1416824481');
 
 -- ----------------------------
