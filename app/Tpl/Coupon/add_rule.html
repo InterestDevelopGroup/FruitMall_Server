@@ -1,0 +1,193 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>描述：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="description" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>类型：</td>
+        <td align="left" class="l-table-edit-td">
+        	<select id="type">
+            	<option value="0">--请选择--</option>
+                <option value="1">用户注册</option>
+                <option value="2">推荐好友</option>
+                <option value="3">满X送N</option>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr id="condition_box" style="display:none;">
+        <td align="right" class="l-table-edit-td"><span>*</span>X=：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="condition" />&nbsp;&nbsp;元</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>面值：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="score" />&nbsp;&nbsp;元</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">有效期：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="expire_time" />&nbsp;&nbsp;天</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#description").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '规则描述不能超过10个字');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckDescription();
+    });
+	$("#type").change(function() {
+		var type = parseInt($(this).val());
+		removeTip($(this).parent('td').next('td:last'));
+		if (type == 3) {
+			$("#condition_box").show();
+		} else {
+			$("#condition").val('');
+			$("#condition_box").hide();
+		}
+		ckType();
+	});
+	$("#condition").focus(function() {
+        addTip($(this).parent('td').next('td:last'), 'X必须为正整数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckCondition();
+    });
+	$("#score").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '面值必须为正整数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckScore();
+    });
+	$("#expire_time").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '有效期必须为正整数，不填则为永久有效');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckExpireTime();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测规则描述
+function ckDescription() {
+    var description = $.trim($("#description").val());
+    if (description.length == 0) {
+        addTip($("#description").parent('td').next('td:last'), '规则描述不能为空');
+        return false;
+    }
+    if (description.length > 10) {
+        addTip($("#description").parent('td').next('td:last'), '规则描述不能超过10个字');
+        return false;
+    }
+    return true;
+}
+
+//检测类型
+function ckType() {
+    var type = parseInt($("#type").val());
+    if (type == 0) {
+        addTip($("#type").parent('td').next('td:last'), '请选择类型');
+        return false;
+    }
+    return true;
+}
+
+//检测条件
+function ckCondition() {
+	var type = parseInt($("#type").val());
+	if (type == 3) {
+		var condition = $.trim($("#condition").val());
+		if (condition.length == 0) {
+			addTip($("#condition").parent('td').next('td:last'), 'X不能为空');
+			return false;
+		}
+		if (!/^[1-9][0-9]*$/.test(condition)) {
+			addTip($("#condition").parent('td').next('td:last'), 'X必须为正整数');
+    	    return false;
+		}
+		return true;
+	}
+	return true;
+}
+
+//检测面值
+function ckScore() {
+    var score = $.trim($("#score").val());
+    if (score.length == 0) {
+        addTip($("#score").parent('td').next('td:last'), '面值不能为空');
+        return false;
+    }
+	if (!/^[1-9][0-9]*$/.test(score)) {
+		addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
+        return false;
+	}
+    return true;
+}
+
+//检测有效期
+function ckExpireTime() {
+    var expire_time = $.trim($("#expire_time").val());
+    if (expire_time.length > 0) {
+		if (!/^[1-9][0-9]*$/.test(expire_time)) {
+			addTip($("#expire_time").parent('td').next('td:last'), '有效期必须为正整数，不填则为永久有效');
+    	    return false;
+		}
+    }
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckDescription()) return false;
+	if (!ckType()) return false;
+	if (!ckCondition()) return false;
+	if (!ckScore()) return false;
+	if (!ckExpireTime()) return false;
+    var description = $.trim($("#description").val());
+	var type = $("#type").val();
+	var condition = $.trim($("#condition").val());
+	var score = $.trim($("#score").val());
+	var expire_time = $.trim($("#expire_time").val());
+    return {
+		description: description,
+		type: type,
+		condition: condition,
+		score: score,
+		expire_time: expire_time
+	};
+}
+
+//提交表单
+function addRuleFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("coupon/add_rule")}>', checkForm(), function(data) {
+            window.parent.addRuleCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

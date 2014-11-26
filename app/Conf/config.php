@@ -95,6 +95,16 @@ $app_config = array(
                 )
             )
         ),
+        'Coupon' => array(
+            'text' => '水果劵',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有规则',
+                    'url' => '/coupon/rule'
+                )
+            )
+        ),
         'Order' => array(
             'text' => '订单',
             'default' => 'index',

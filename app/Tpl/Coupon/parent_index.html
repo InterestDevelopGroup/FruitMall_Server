@@ -1,0 +1,129 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left:0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>大分类
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <input class="btn btn-primary" type="button" value="添加大分类" onclick="javascript:add();">&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="删除大分类" onclick="javascript:del();">
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "分类名称", name: 'name', align: 'center', width: '30%', isSort: false},
+            {display: "商品数量", name: 'goods_amount', align: 'center', width: '16%'},
+            {display: "添加时间", name: 'add_time', align: 'center', width: '16%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
+					return value ? value : '从未更新';
+				}
+			},
+            {display: "操作", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+					return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
+                }
+            }
+            ],
+            url: '<{:U("Category/parent_index")}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change
+    });
+    $("#pageloading").hide();
+});
+
+//添加分类
+var addCategoryDialog;
+function add() {
+    addCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/parent_add")}>', height: 400, width: 600,
+        isDrag: false, title: '添加大分类',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addCategoryDialog.frame.addCategoryFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加分类回调
+function addCategoryCallback(obj) {
+    addCategoryDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+//删除分类
+function del() {
+    var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个分类', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要删除选中的分类吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("Category/parent_delete")}>', {id:id}, function(data) {
+                if (data.status) {
+                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                    location.reload(true);
+                } else {
+                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    return false;
+                }
+            }, 'json');
+        }
+    });
+}
+
+//编辑分类
+var updateCategoryDialog;
+function update(id) {
+    updateCategoryDialog = $.ligerDialog.open({
+        url: '<{:U("Category/parent_update")}>?id='+id, height: 400, width: 600,
+        isDrag: false, title: '编辑商品分类',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateCategoryDialog.frame.updateCategoryFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑分类回调
+function updateCategoryCallback(obj) {
+    updateCategoryDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />
