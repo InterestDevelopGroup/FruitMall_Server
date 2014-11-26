@@ -9,23 +9,6 @@
  */
 class ApiAction extends Action {
 
-    public function index() {
-        $this->ajaxReturn(array(
-            array(
-                'goods_id' => 1,
-                'quantity' => 10
-            ),
-            array(
-                'package_id' => 20,
-                'quantity' => 2
-            ),
-            array(
-                'custom_id' => 1,
-                'quantity' => 1
-            )
-        ));
-    }
-
     /**
      * 添加地址
      */
