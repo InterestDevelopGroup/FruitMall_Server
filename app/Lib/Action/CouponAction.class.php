@@ -51,6 +51,7 @@ class CouponAction extends AdminAction {
             if ($total) {
                 $rows = array_map(function ($value) {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
                 }, $couponRule->getCouponRuleList($page, $pageSize, $order, $sort));
             } else {
@@ -69,14 +70,20 @@ class CouponAction extends AdminAction {
      * 更新规则
      */
     public function update_rule() {
-        // $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
-        // if ($this->isAjax()) {
-        // $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-        // $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
-        // $this->ajaxReturn(D('ChildCategory')->updateChildCategory($id, $name, $parent_id));
-        // } else {
-        // $this->display();
-        // }
+        $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
+        if ($this->isAjax()) {
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            $score = isset($_POST['score']) ? intval($_POST['score']) : $this->redirect('/');
+            $condition = isset($_POST['condition']) ? trim($_POST['condition']) : $this->redirect('/');
+            $expire_time = isset($_POST['expire_time']) ? trim($_POST['expire_time']) : $this->redirect('/');
+            $this->ajaxReturn(D('CouponRule')->updateCouponRule($id, $description, $type, $score, $condition, $expire_time));
+        } else {
+            $this->assign('rule', M('CouponRule')->where(array(
+                'id' => $id
+            ))->find());
+            $this->display();
+        }
     }
 
 }

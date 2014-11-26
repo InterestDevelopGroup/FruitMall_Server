@@ -108,4 +108,58 @@ class CouponRuleModel extends Model {
         }
     }
 
+    /**
+     * 更新规则
+     *
+     * @param int $id
+     *            规则ID
+     * @param string $description
+     *            描述
+     * @param int $type
+     *            类型（1：注册，2：推荐，3：满X送N）
+     * @param int $score
+     *            面值
+     * @param string $condition
+     *            X值（只有type=3时才传此值）
+     * @param string $expire_time
+     *            有效期（不传则为永久有效）
+     * @return array
+     */
+    public function updateCouponRule($id, $description, $type, $score, $condition, $expire_time) {
+        if ($type != 3) {
+            if ($this->where(array(
+                'type' => $type,
+                'id' => array(
+                    'neq',
+                    $id
+                )
+            ))->count()) {
+                return array(
+                    'status' => false,
+                    'msg' => '该类型的规则只能添加一条'
+                );
+            }
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'description' => $description,
+            'type' => $type,
+            'score' => $score,
+            'condition' => strlen($condition) ? intval($condition) : null,
+            'expire_time' => strlen($expire_time) ? intval($expire_time) : null,
+            'update_time' => time()
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
+            );
+        }
+    }
+
 }

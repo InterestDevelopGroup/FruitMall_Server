@@ -198,6 +198,12 @@ $app_config = array(
             'delete' => 'shipping|delete',
             'update' => 'shipping|update'
         ),
+        'coupon' => array(
+            'rule' => 'coupon|rule',
+            'add_rule' => 'coupon|add_rule',
+            'delete_rule' => 'coupon|delete_rule',
+            'update_rule' => 'coupon|update_rule'
+        ),
         'order' => array(
             'index' => 'order|index',
             'delete' => 'order|delete',
@@ -276,6 +282,13 @@ $app_config = array(
             'delete' => '删除地址',
             'update' => '更新地址'
         ),
+        'coupon' => array(
+            'coupon' => '水果劵',
+            'rule' => '所有规则',
+            'add_rule' => '添加规则',
+            'delete_rule' => '删除规则',
+            'update_rule' => '更新规则'
+        ),
         'order' => array(
             'order' => '订单',
             'index' => '订单一览',
@@ -321,6 +334,9 @@ $app_config = array(
         'shipping|index',
         'shipping|add',
         'shipping|update',
+        'coupon|rule',
+        'coupon|add_rule',
+        'coupon|update_rule',
         'order|index',
         'order|update_status',
         'version|android',

@@ -46,13 +46,13 @@ $(function(){
                 }
             },
             {display: "操作", align: 'center', width:'12%', render: function(rowdata, rowindex, value) {
-					if (rowdata.id == 1) {
-						return '---';
-					} else {
-                    	var action = parseInt(rowdata.status) ? '禁用' : '启用';
-                    	var status = parseInt(rowdata.status) ? 0 : 1;
-                    	return '<a href="javascript:vid(0);" onclick="update_admin_status('+rowdata.id+', '+ status +')">'+action+'</a> | <a href="javascript:void(0);" onclick="set_privileges(' + rowdata.id + ')">设置权限</a>';
-					}
+                    if (rowdata.id == 1) {
+                        return '---';
+                    } else {
+                        var action = parseInt(rowdata.status) ? '禁用' : '启用';
+                        var status = parseInt(rowdata.status) ? 0 : 1;
+                        return '<a href="javascript:vid(0);" onclick="update_admin_status('+rowdata.id+', '+ status +')">'+action+'</a> | <a href="javascript:void(0);" onclick="set_privileges(' + rowdata.id + ')">设置权限</a>';
+                    }
                 }
             }
             ],
@@ -179,22 +179,22 @@ function update_admin_status(id, status) {
     if (!isPromise()) {
         return false;
     }
-	if (status) {
-		var action = '启用';
-	} else {
-		var action = '禁用';
-	}
+    if (status) {
+        var action = '启用';
+    } else {
+        var action = '禁用';
+    }
     ajaxUpdateAdmin({action: action, url: '<{:U("Administrator/update")}>', post_data: {id: id, status: status}});
 }
 
 //设置权限
 var privDialog;
 function set_privileges(id) {
-	if (!isPromise()) {
+    if (!isPromise()) {
         return false;
     }
     privDialog = $.ligerDialog.open({
-        url: '<{:U("Administrator/set_privileges")}>?id='+id, height: 500, width: 600,
+        url: '<{:U("Administrator/set_privileges")}>?id='+id, height: 600, width: 600,
         title : '设置权限', isDrag : false,
         buttons: [{text: '提交', onclick: function (item, dialog) {privDialog.frame.setPrivFormSubmit(id);}},
                   {text: '取消', onclick: function (item, dialog) {dialog.close();}}]
