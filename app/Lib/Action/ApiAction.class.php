@@ -242,13 +242,20 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
+            $result = array();
+            $result['coupon'] = array_map(function ($value) {
+                $value['publish_time'] = date("Y-m-d H:i:s", $value['publish_time']);
+                $value['expire_time'] = $value['expire_time'] ? date("Y-m-d H:i:s", $value['expire_time']) : $value['expire_time'];
+                return $value;
+            }, D('Coupon')->_getCouponList($user_id, $offset, $pagesize));
+            $result['rule'] = array_map(function ($value) {
+                $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                return $value;
+            }, D('CouponRuleContent')->_getCouponRuleContent());
             $this->ajaxReturn(array(
                 'status' => 1,
-                'result' => array_map(function ($value) {
-                    $value['publish_time'] = date("Y-m-d H:i:s", $value['publish_time']);
-                    $value['expire_time'] = $value['expire_time'] ? date("Y-m-d H:i:s", $value['expire_time']) : $value['expire_time'];
-                    return $value;
-                }, D('Coupon')->_getCouponList($user_id, $offset, $pagesize))
+                'result' => $result
             ));
         } else {
             $this->redirect('/');

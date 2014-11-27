@@ -102,6 +102,14 @@ $app_config = array(
                 'index' => array(
                     'text' => '所有规则',
                     'url' => '/coupon/rule'
+                ),
+                'how_to_get' => array(
+                    'text' => '编辑获取规则',
+                    'url' => '/coupon/how_to_get'
+                ),
+                'how_to_use' => array(
+                    'text' => '编辑使用规则',
+                    'url' => '/coupon/how_to_use'
                 )
             )
         ),
@@ -202,7 +210,9 @@ $app_config = array(
             'rule' => 'coupon|rule',
             'add_rule' => 'coupon|add_rule',
             'delete_rule' => 'coupon|delete_rule',
-            'update_rule' => 'coupon|update_rule'
+            'update_rule' => 'coupon|update_rule',
+            'how_to_get' => 'coupon|how_to_get',
+            'how_to_use' => 'coupon|how_to_use'
         ),
         'order' => array(
             'index' => 'order|index',
@@ -287,7 +297,9 @@ $app_config = array(
             'rule' => '所有规则',
             'add_rule' => '添加规则',
             'delete_rule' => '删除规则',
-            'update_rule' => '更新规则'
+            'update_rule' => '更新规则',
+            'how_to_get' => '编辑获取规则',
+            'how_to_use' => '编辑使用规则'
         ),
         'order' => array(
             'order' => '订单',
@@ -337,6 +349,8 @@ $app_config = array(
         'coupon|rule',
         'coupon|add_rule',
         'coupon|update_rule',
+        'coupon|how_to_get',
+        'coupon|how_to_use',
         'order|index',
         'order|update_status',
         'version|android',
@@ -352,16 +366,6 @@ $app_config = array(
     'SMS' => array(
         'sn' => 'SDK-WSS-010-07201',
         'pwd' => 'wddydg'
-    ),
-    'coupon_rule' => array(
-        'register' => array(
-            'score' => 10,
-            'expire' => 2592000
-        ),
-        'recommend' => array(
-            'score' => 10,
-            'expire' => 2592000
-        )
     )
 );
 return array_merge(require 'config.php', $app_config);

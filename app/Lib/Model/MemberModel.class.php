@@ -253,7 +253,18 @@ class MemberModel extends Model {
         ))) {
             $id = $this->getLastInsID();
             if ($recommend) {
-                if (!D('Coupon')->addCoupon($recommend, 'recommend')) {
+                $_recommend = $this->where(array(
+                    'phone' => $recommend
+                ))->find();
+                if (!$_recommend) {
+                    // 推荐人不存在，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '推荐失败'
+                    );
+                }
+                if (!D('Coupon')->addCoupon($_recommend['id'], 2)) {
                     // 添加失败，回滚事务
                     $this->rollback();
                     return array(
@@ -262,7 +273,7 @@ class MemberModel extends Model {
                     );
                 }
             }
-            if (!D('Coupon')->addCoupon($id, 'register')) {
+            if (!D('Coupon')->addCoupon($id, 1)) {
                 // 添加失败，回滚事务
                 $this->rollback();
                 return array(

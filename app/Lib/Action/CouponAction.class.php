@@ -38,6 +38,36 @@ class CouponAction extends AdminAction {
     }
 
     /**
+     * 编辑获取规则
+     */
+    public function how_to_get() {
+        if ($this->isAjax()) {
+            $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
+            $this->ajaxReturn(D('CouponRuleContent')->addCouponRuleContent($content, 1));
+        } else {
+            $this->assign('ruleContent', M('CouponRuleContent')->where(array(
+                'type' => 1
+            ))->find());
+            $this->display();
+        }
+    }
+
+    /**
+     * 编辑使用规则
+     */
+    public function how_to_use() {
+        if ($this->isAjax()) {
+            $content = isset($_POST['content']) ? trim($_POST['content']) : $this->redirect('/');
+            $this->ajaxReturn(D('CouponRuleContent')->addCouponRuleContent($content, 2));
+        } else {
+            $this->assign('ruleContent', M('CouponRuleContent')->where(array(
+                'type' => 2
+            ))->find());
+            $this->display();
+        }
+    }
+
+    /**
      * 所有规则
      */
     public function rule() {

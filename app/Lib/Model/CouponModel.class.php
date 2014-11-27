@@ -29,35 +29,43 @@ class CouponModel extends Model {
     /**
      * 添加水果劵
      *
-     * @param mix $user
-     *            接受水果劵的用户ID/手机
-     * @param string $rule
-     *            水果劵规则
+     * @param int $user_id
+     *            用户ID
+     * @param int $rule_type
+     *            水果劵规则（1：注册，2：推荐，3：满X送N，4：手动赠送）
+     * @param int|null $score
+     *            面值
+     * @param int|null $expire_time
+     *            有效期
      * @return boolean
      */
-    public function addCoupon($user, $rule, $score = null, $expire = null) {
-        $_add = function ($user_id) use($rule, $score, $expire) {
-            $publish_time = time();
-            if (!$score) {
-                $coupon_rule = C('coupon_rule');
-                $score = $coupon_rule[$rule]['score'];
-            }
-            if (!$expire) {
-                $coupon_rule = C('coupon_rule');
-                $expire = $coupon_rule[$rule]['expire'];
-            }
-            $data = array(
+    public function addCoupon($user_id, $rule_type, $score = null, $expire_time = null) {
+        $_add = function ($score, $expire_time) use($user_id, $rule_type) {
+            return array(
                 'user_id' => $user_id,
                 'score' => $score,
-                'type' => $rule,
-                'publish_time' => $publish_time,
-                'expire_time' => $publish_time + $expire
+                'type' => $rule_type,
+                'publish_time' => time(),
+                'expire_time' => $expire_time ? ($expire_time * 24 * 3600 + strtotime(date("Y-m-d"))) : $expire_time
             );
-            return $data;
         };
-        switch ($rule) {
-            case 'handsel' :
-                if ($this->add($_add($user))) {
+        switch ($rule_type) {
+            case 1 :
+            case 2 :
+                $coupon_rule = M('CouponRule')->where(array(
+                    'type' => $rule_type
+                ))->find();
+                if (!$coupon_rule) {
+                    return true;
+                }
+                if ($this->add($_add($coupon_rule['score'], $coupon_rule['expire_time']))) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+            case 4 :
+                if ($this->add($_add($score, $expire_time))) {
                     return array(
                         'status' => true,
                         'msg' => '赠送成功'
@@ -67,25 +75,6 @@ class CouponModel extends Model {
                         'status' => false,
                         'msg' => '赠送失败'
                     );
-                }
-            case 'recommend' :
-                $user_info = M('Member')->where(array(
-                    'phone' => $user
-                ))->find();
-                if (empty($user_info)) {
-                    return false;
-                }
-                if ($this->add($_add($user_info['id']))) {
-                    return true;
-                } else {
-                    return false;
-                }
-                break;
-            case 'register' :
-                if ($this->add($_add($user))) {
-                    return true;
-                } else {
-                    return false;
                 }
                 break;
         }

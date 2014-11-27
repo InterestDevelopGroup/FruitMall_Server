@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-27 10:34:42
+Date: 2014-11-27 17:11:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,7 +57,7 @@ CREATE TABLE `fruit_admin_priv` (
 -- Records of fruit_admin_priv
 -- ----------------------------
 INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
-INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,category|parent_index,category|child_index,tag|index,package|index,shipping|index,order|index,version|android,feedback|index,returns|index');
+INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,category|parent_index,category|child_index,tag|index,package|index,shipping|index,coupon|rule,order|index,version|android,feedback|index,returns|index');
 
 -- ----------------------------
 -- Table structure for `fruit_admin_user`
@@ -80,8 +80,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417010123', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1416820910', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417072084', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417078579', '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_advertisement`
@@ -162,17 +162,18 @@ CREATE TABLE `fruit_coupon` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `score` int(11) NOT NULL COMMENT '水果劵分数',
-  `type` varchar(20) NOT NULL COMMENT '水果劵类型',
+  `type` tinyint(1) NOT NULL COMMENT '水果劵类型（1：注册，2：推荐，3：满X送N，4：手动赠送）',
   `publish_time` int(11) NOT NULL COMMENT '发劵时间',
   `expire_time` int(11) DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='水果劵表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='水果劵表';
 
 -- ----------------------------
 -- Records of fruit_coupon
 -- ----------------------------
-INSERT INTO `fruit_coupon` VALUES ('1', '1', '10', 'recommend', '1416725505', '1419317505');
-INSERT INTO `fruit_coupon` VALUES ('2', '3', '10', 'register', '1416725505', '1419317505');
+INSERT INTO `fruit_coupon` VALUES ('1', '1', '10', '2', '1417073018', '1419609600');
+INSERT INTO `fruit_coupon` VALUES ('2', '8', '10', '1', '1417073018', '1419609600');
+INSERT INTO `fruit_coupon` VALUES ('3', '1', '5', '4', '1417073039', '1417881600');
 
 -- ----------------------------
 -- Table structure for `fruit_coupon_rule`
@@ -196,6 +197,25 @@ CREATE TABLE `fruit_coupon_rule` (
 INSERT INTO `fruit_coupon_rule` VALUES ('5', '推荐', '2', '10', null, '1417011945', '1417012481', '30');
 INSERT INTO `fruit_coupon_rule` VALUES ('6', '满500送10', '3', '10', '500', '1417012042', '1417012528', '60');
 INSERT INTO `fruit_coupon_rule` VALUES ('7', '注册', '1', '10', null, '1417012714', null, '30');
+
+-- ----------------------------
+-- Table structure for `fruit_coupon_rule_content`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_coupon_rule_content`;
+CREATE TABLE `fruit_coupon_rule_content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `type` tinyint(1) NOT NULL COMMENT '类型（1：获取规则，2：使用规则）',
+  `content` text NOT NULL COMMENT '规则内容',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='规则内容表';
+
+-- ----------------------------
+-- Records of fruit_coupon_rule_content
+-- ----------------------------
+INSERT INTO `fruit_coupon_rule_content` VALUES ('1', '1', '<p>獲取規則</p>', '1417077998', '1417078330');
+INSERT INTO `fruit_coupon_rule_content` VALUES ('2', '2', '<p>使用規則</p>', '1417078269', null);
 
 -- ----------------------------
 -- Table structure for `fruit_custom`
@@ -323,13 +343,13 @@ CREATE TABLE `fruit_member` (
   `register_time` int(10) NOT NULL COMMENT '注册时间',
   `last_time` int(10) DEFAULT NULL COMMENT '上一次登录时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='会员表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='会员表';
 
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
 INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416971613');
-INSERT INTO `fruit_member` VALUES ('3', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1416725505', '1416824481');
+INSERT INTO `fruit_member` VALUES ('8', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1417073018', null);
 
 -- ----------------------------
 -- Table structure for `fruit_order`

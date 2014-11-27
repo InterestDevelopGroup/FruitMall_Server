@@ -17,7 +17,7 @@ class MemberAction extends AdminAction {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $score = isset($_POST['score']) ? intval($_POST['score']) : $this->redirect('/');
             $expire = isset($_POST['expire']) ? intval($_POST['expire']) : $this->redirect('/');
-            $this->ajaxReturn(D('Coupon')->addCoupon($user_id, 'handsel', $score, $expire * 24 * 3600));
+            $this->ajaxReturn(D('Coupon')->addCoupon($user_id, 4, $score, $expire));
         } else {
             $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
             $this->assign('id', $id);
