@@ -95,6 +95,20 @@ $app_config = array(
                 )
             )
         ),
+        'Branch' => array(
+            'text' => '分店管理',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有分店',
+                    'url' => '/branch/index'
+                ),
+                'add' => array(
+                    'text' => '添加分店',
+                    'url' => '/branch/add'
+                )
+            )
+        ),
         'Coupon' => array(
             'text' => '水果劵',
             'default' => 'index',
