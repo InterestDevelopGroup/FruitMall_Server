@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-					小区（社区）、建筑名：
+                    小区（社区）、建筑名：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="community" value="<{$shippingAddress['community']}>" />
@@ -47,24 +47,10 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-					栋、期、座：
+                    栋、期、座：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="building" value="<{$shippingAddress['building']}>" />
-                </td>
-                <td align="left" class="tipmsg"></td>
-            </tr>
-            <tr>
-                <td align="right" class="l-table-edit-td">
-                    分店：
-                </td>
-                <td align="left" class="l-table-edit-td">
-                    <select id="branch_id">
-                    	<option value="0">--请选择--</option>
-                        <volist name="branch" id="val">
-                        <option value="<{$val['id']}>" <if condition="$shippingAddress['branch_id'] eq $val['id']">selected</if>><{$val['name']}></option>
-                        </volist>
-                    </select>
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -160,19 +146,17 @@ function checkForm() {
     var district = $.trim($("#district").val());
     var road_number = $.trim($("#road_number").val());
     var community = $.trim($("#community").val());
-	var building = $.trim($("#building").val());
-	var branch_id = $("#branch_id").val();
-	var shipping_fee = $.trim($("#shipping_fee").val());
-	var discount = $.trim($("#discount").val());
-	return {
+    var building = $.trim($("#building").val());
+    var shipping_fee = $.trim($("#shipping_fee").val());
+    var discount = $.trim($("#discount").val());
+    return {
         city: city,
         district: district,
         road_number: road_number,
         community: community,
-		building: building,
-		branch_id: branch_id,
-		shipping_fee: shipping_fee,
-		discount: discount
+        building: building,
+        shipping_fee: shipping_fee,
+        discount: discount
     };
 }
 

@@ -19,12 +19,10 @@ class ShippingAction extends AdminAction {
             $road_number = isset($_POST['road_number']) ? trim($_POST['road_number']) : $this->redirect('/');
             $community = isset($_POST['community']) ? trim($_POST['community']) : $this->redirect('/');
             $building = isset($_POST['building']) ? trim($_POST['building']) : $this->redirect('/');
-            $branch_id = isset($_POST['branch_id']) ? intval($_POST['branch_id']) : $this->redirect('/');
             $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : $this->redirect('/');
             $discount = isset($_POST['discount']) ? trim($_POST['discount']) : $this->redirect('/');
-            $this->ajaxReturn(D('ShippingAddress')->addShippingAddress($city, $district, $road_number, $community, $building, $branch_id, $shipping_fee, $discount));
+            $this->ajaxReturn(D('ShippingAddress')->addShippingAddress($city, $district, $road_number, $community, $building, $shipping_fee, $discount));
         } else {
-            $this->assign('branch', M('Branch')->select());
             $this->display();
         }
     }
@@ -81,15 +79,13 @@ class ShippingAction extends AdminAction {
             $road_number = isset($_POST['road_number']) ? trim($_POST['road_number']) : $this->redirect('/');
             $community = isset($_POST['community']) ? trim($_POST['community']) : $this->redirect('/');
             $building = isset($_POST['building']) ? trim($_POST['building']) : $this->redirect('/');
-            $branch_id = isset($_POST['branch_id']) ? intval($_POST['branch_id']) : $this->redirect('/');
             $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : $this->redirect('/');
             $discount = isset($_POST['discount']) ? trim($_POST['discount']) : $this->redirect('/');
-            $this->ajaxReturn(D('ShippingAddress')->updateShippingAddress($id, $city, $district, $road_number, $community, $building, $branch_id, $shipping_fee, $discount));
+            $this->ajaxReturn(D('ShippingAddress')->updateShippingAddress($id, $city, $district, $road_number, $community, $building, $shipping_fee, $discount));
         } else {
             $this->assign('shippingAddress', M('ShippingAddress')->where(array(
                 'id' => $id
             ))->find());
-            $this->assign('branch', M('Branch')->select());
             $this->display();
         }
     }

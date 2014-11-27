@@ -22,15 +22,13 @@ class ShippingAddressModel extends Model {
      *            小区（社区）、建筑名
      * @param string|null $building
      *            栋、几期、座
-     * @param int $branch_id
-     *            分店ID
      * @param float $shipping_fee
      *            送货费
      * @param string|null $discount
      *            价格调整比例
      * @return array
      */
-    public function addShippingAddress($city, $district, $road_number, $community, $building, $branch_id, $shipping_fee, $discount) {
+    public function addShippingAddress($city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
         $data = array(
             'city' => $city,
             'shipping_fee' => $shipping_fee,
@@ -40,7 +38,6 @@ class ShippingAddressModel extends Model {
         strlen($road_number) && $data['road_number'] = $road_number;
         strlen($community) && $data['community'] = $community;
         strlen($building) && $data['building'] = $building;
-        $branch_id && $data['branch_id'] = $branch_id;
         strlen($discount) && $data['discount'] = $discount;
         if ($this->add($data)) {
             return array(
@@ -105,12 +102,7 @@ class ShippingAddressModel extends Model {
      */
     public function getShippingAddressList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
-        return $this->table($this->getTableName() . " AS s ")->join(array(
-            " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON s.branch_id = b.id "
-        ))->field(array(
-            's.*',
-            'b.name' => 'branch'
-        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**
@@ -128,15 +120,13 @@ class ShippingAddressModel extends Model {
      *            小区（社区）、建筑名
      * @param string|null $building
      *            栋、几期、座
-     * @param int $branch_id
-     *            分店ID
      * @param float $shipping_fee
      *            送货费
      * @param string $discount
      *            价格调整比例
      * @return array
      */
-    public function updateShippingAddress($id, $city, $district, $road_number, $community, $building, $branch_id, $shipping_fee, $discount) {
+    public function updateShippingAddress($id, $city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
         $data = array(
             'city' => $city,
             'shipping_fee' => $shipping_fee,
@@ -146,7 +136,6 @@ class ShippingAddressModel extends Model {
         strlen($road_number) && $data['road_number'] = $road_number;
         strlen($community) && $data['community'] = $community;
         strlen($building) && $data['building'] = $building;
-        $branch_id && $data['branch_id'] = $branch_id;
         strlen($discount) && $data['discount'] = $discount;
         if ($this->where(array(
             'id' => $id

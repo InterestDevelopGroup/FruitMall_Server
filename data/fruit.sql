@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-27 17:11:25
+Date: 2014-11-27 18:43:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417072084', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417084785', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417078579', '0', '1', null);
 
 -- ----------------------------
@@ -125,7 +125,6 @@ CREATE TABLE `fruit_branch` (
   `name` varchar(255) NOT NULL COMMENT '分店名称',
   `admin_id` int(11) DEFAULT NULL COMMENT '分店管理员ID',
   `courier` text COMMENT '送货人员',
-  `range` text COMMENT '配送范围',
   `remark` text COMMENT '备注',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
@@ -514,18 +513,18 @@ CREATE TABLE `fruit_shipping_address` (
   `road_number` varchar(255) DEFAULT NULL COMMENT '路牌号',
   `community` varchar(255) DEFAULT NULL COMMENT '小区（社区）、建筑名',
   `building` varchar(255) DEFAULT NULL COMMENT '栋、几期、座',
-  `branch_id` int(11) DEFAULT NULL COMMENT '分店ID',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `discount` decimal(4,2) DEFAULT NULL COMMENT '价格调整比例',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
 
 -- ----------------------------
 -- Records of fruit_shipping_address
 -- ----------------------------
-INSERT INTO `fruit_shipping_address` VALUES ('2', '廣州市', '天河區', '189號', '羊城花園', '康苑八座401', null, '10.00', '20.00', '1415874727', '1415874737');
+INSERT INTO `fruit_shipping_address` VALUES ('2', '廣州市', '天河區', '189號', '羊城花園', '康苑八座401', '10.00', '20.00', '1415874727', '1415874737');
+INSERT INTO `fruit_shipping_address` VALUES ('3', '廣州市', '天河區', '190號', '羊城花園', '10棟', '20.00', '19.00', '1417084819', '1417084845');
 
 -- ----------------------------
 -- Table structure for `fruit_shopping_car`
