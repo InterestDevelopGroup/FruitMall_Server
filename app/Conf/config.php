@@ -81,6 +81,16 @@ $app_config = array(
                 )
             )
         ),
+        'Courier' => array(
+            'text' => '送货人员',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '所有送货人员',
+                    'url' => '/courier/index'
+                )
+            )
+        ),
         'Shipping' => array(
             'text' => '配送地址',
             'default' => 'index',

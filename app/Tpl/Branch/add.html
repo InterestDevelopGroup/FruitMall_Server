@@ -1,0 +1,223 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>添加分店
+                </div>
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>名称：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="name" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>配送地址：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input class="btn btn-primary" type="button" value="添加" onclick="javascript:add_shipping_address();" />
+                </td>
+                <td align="left" class="tipmsg" id="shipping_address_tips"></td>
+            </tr>
+            <tr>
+            	<td>&nbsp;</td>
+                <td colspan="2" id="shipping_address"></td>
+            </tr>
+            
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>送货人员：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input class="btn btn-primary" type="button" value="添加" onclick="javascript:add_courier();" />
+                </td>
+                <td align="left" class="tipmsg" id="couriers_tips"></td>
+            </tr>
+            <tr>
+            	<td>&nbsp;</td>
+                <td colspan="2" id="couriers"></td>
+            </tr>
+            
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>管理员：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <select id="admin_id">
+                    	<option value="0">--请选择--</option>
+                        <volist name="admin" id="val">
+                        <option value="id"><{$val['real_name']}></option>
+                        </volist>
+                    </select>
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    备注：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="remark" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+        </table>
+    </div>
+    <div id="add_branch_button"><input class="btn btn-primary" type="button" value="添加" onclick="addBranchSubmit();" /></div>
+</div>
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.required{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#add_branch_button{width:100%;text-align:center;margin:12px auto}
+-->
+</style>
+<script type="text/javascript">
+//<![CDATA[
+var shipping_address_id = new Array();
+var courier_id = new Array();
+$(function() {
+    $("#name").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckName();
+    });
+    $("#admin_id").change(function() {
+		removeTip($(this).parent('td').next('td:last'));
+		ckAdminId();
+	});
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1 + tip + tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测分店名称
+function ckName() {
+    var name = $.trim($("#name").val());
+    if (name.length == 0) {
+        addTip($("#name").parent('td').next('td:last'), '分店名称不能为空');
+        return false;
+    }
+    return true;
+}
+
+//检测管理员
+function ckAdminId() {
+	var admin_id = $("#admin_id").val();
+	if (admin_id == 0) {
+		addTip($("#admin_id").parent('td').next('td:last'), '请为该分店选择一个管理员');
+		return false;
+	}
+	return true;
+}
+
+//检测配送地址
+function ckShippingAddress() {
+    if (shipping_address_id.length == 0) {
+        addTip($("#shipping_address_tips"), '请至少添加一个配送地址');
+        return false;
+    }
+    return true;
+}
+
+//检测送货人员
+function ckCourier() {
+    if (courier_id.length == 0) {
+        addTip($("#courier_tips"), '请至少添加一个送货人员');
+        return false;
+    }
+    return true;
+}
+
+//检测表单 
+function checkForm() {
+    if (!ckName()) return false;
+    if (!ckAdminId()) return false;
+    if (!ckShippingAddress()) return false;
+    if (!ckCourier()) return false;
+    var name = $.trim($("#name").val());
+    var admin_id = $("#admin_id").val();
+	var remark = $.trim($("#remark").val());
+    return {
+        name : name,
+        admin_id : admin_id,
+		shipping_address_id: shipping_address_id,
+		courier_id: courier_id,
+        remark : remark
+    };
+}
+
+//提交表单
+function addBranchSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("branch/add")}>', checkForm(), function(data) {
+            if (data.status) {
+                $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                location.reload(true);
+            } else {
+                $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                return false;
+            }
+        }, 'json');
+    }
+}
+
+//添加配送地址
+var addShippingAddress;
+function add_shipping_address() {
+    //removeTip($("#package_goods_tips"));
+    addShippingAddress = $.ligerDialog.open({
+        url: '<{:U("branch/add_shipping_address")}>', height: 460, width:800,
+        isDrag: false, title: '添加配送地址',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addShippingAddress.frame.addShippingAddressFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加配送地址回调
+function addShippingAddressCallback(obj) {
+    addShippingAddress.close();
+    /*var str = '<div class="per_package_goods">' +
+                '<div class="per_package_goods_del" onclick="delete_package_goods($(this), ' + obj.goods.id + ');"></div>' +
+                '<div class="per_package_goods_main">' +
+                '<div class="per_package_goods_image">' +
+                '<img src="'+obj.goods.thumb+'" />' +
+                '</div>' +
+                '<div class="per_package_goods_name">' +
+                obj.goods.name + 
+                '</div>' +
+                '<div class="per_package_goods_amount">' +
+                '数量：<input type="text" id="per_goods_amount_'+obj.goods.id+'" />' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+	*/
+    //$("#shipping_address").append(str);
+	//shipping_address_id.push(parseInt(obj.goods.id));
+}
+
+//删除套餐商品
+function delete_package_goods($this, goods_id) {
+    var index = package_goods_id.indexOf(parseInt(goods_id));
+    package_goods_id.splice(index, 1);
+    $this.parent().remove();
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

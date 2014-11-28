@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-11-27 18:43:55
+Date: 2014-11-28 19:09:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,7 +80,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417084785', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417143867', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417078579', '0', '1', null);
 
 -- ----------------------------
@@ -123,8 +123,7 @@ DROP TABLE IF EXISTS `fruit_branch`;
 CREATE TABLE `fruit_branch` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '分店名称',
-  `admin_id` int(11) DEFAULT NULL COMMENT '分店管理员ID',
-  `courier` text COMMENT '送货人员',
+  `admin_id` int(11) NOT NULL COMMENT '分店管理员ID',
   `remark` text COMMENT '备注',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
@@ -215,6 +214,24 @@ CREATE TABLE `fruit_coupon_rule_content` (
 -- ----------------------------
 INSERT INTO `fruit_coupon_rule_content` VALUES ('1', '1', '<p>獲取規則</p>', '1417077998', '1417078330');
 INSERT INTO `fruit_coupon_rule_content` VALUES ('2', '2', '<p>使用規則</p>', '1417078269', null);
+
+-- ----------------------------
+-- Table structure for `fruit_courier`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_courier`;
+CREATE TABLE `fruit_courier` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `real_name` varchar(30) NOT NULL COMMENT '真实姓名',
+  `phone` char(11) NOT NULL COMMENT '手机',
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='送货人员表';
+
+-- ----------------------------
+-- Records of fruit_courier
+-- ----------------------------
+INSERT INTO `fruit_courier` VALUES ('1', 'cs', '14', '1417145300', '1417145363');
 
 -- ----------------------------
 -- Table structure for `fruit_custom`

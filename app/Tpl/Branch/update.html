@@ -1,0 +1,453 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>编辑套餐
+                </div>
+            </div>
+        </div>
+        <table cellpadding="0" cellspacing="0" class="l-table-edit">
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>名称：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="name" value="<{$package['name']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>套餐商品：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input class="btn btn-primary" type="button" value="添加" onclick="javascript:add_goods();" />
+                </td>
+                <td align="left" class="tipmsg" id="package_goods_tips"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td colspan="2" id="package_goods">
+                    <volist name="package_goods_list" id="val">
+                    <div class="per_package_goods">
+                        <div class="per_package_goods_del" onclick="delete_package_goods($(this), <{$val['goods_id']}>);"></div>
+                        <div class="per_package_goods_main">
+                            <div class="per_package_goods_image">
+                                <img src="http://<{$_SERVER['HTTP_HOST']}><{$val['thumb']}>" />
+                            </div>
+                            <div class="per_package_goods_name">
+                                <{$val['name']}>
+                            </div>
+                            <div class="per_package_goods_amount">
+                                数量：<input type="text" id="per_goods_amount_<{$val['goods_id']}>" value="<{$val['amount']}>" />
+                            </div>
+                        </div>
+                    </div>
+                    </volist>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>价格：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="price" value="<{$package['price']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    市场价：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="_price" value="<{$package['_price']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    套餐简介：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <textarea id="desc"><{$package['description']}></textarea>
+                </td>
+                <td align="left" class="tipmsg" id="desc_tip"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>套餐缩略图：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <span class="btn btn-success fileinput-button" style="color: #fff;">
+                        &nbsp;&nbsp;选择图片
+                        <input id="thumb" type="file" name="files[]" />
+                        <input type="hidden" id="thumb_image" value="<{$package['thumb']}>" />
+                    </span><br /><br />
+                    <div id="thumb_progress" class="progress" style="display: none;">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div>
+                </td>
+                <td align="left" class="tipmsg" id="thumb_tip"></td>
+            </tr>
+            <tr>
+                <td id="thumb_result" colspan="3">
+                    <div class="image-preview">
+                        <a href="http://<{$_SERVER['HTTP_HOST']}><{$package['thumb']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
+                            <img src="http://<{$_SERVER['HTTP_HOST']}><{$package['thumb']}>" border="0" />
+                        </a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$package['thumb']}>', $(this), 1);" class="image-preview-delete" title="删除"></a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>套餐介绍图：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <span class="btn btn-success fileinput-button" style="color: #fff;">
+                        &nbsp;&nbsp;选择图片
+                        <input id="introduction" type="file" name="files[]" multiple />
+                    </span><br /><br />
+                    <div id="introduction_progress" class="progress" style="display: none;">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div></td>
+                <td align="left" class="tipmsg" id="introduction_tip"></td>
+            </tr>
+            <tr>
+                <td id="introduction_result" colspan="3">
+                    <?php for($i = 0; $i < count($introduction_image); $i++) : ?>
+                    <div class="image-preview">
+                        <a href="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" target="_blank" title="点击查看原图" class="image-preview-outter">
+                            <img src="http://<{$_SERVER['HTTP_HOST']}><{$introduction_image[$i]}>" border="0" />
+                        </a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$introduction_image[$i]}>', $(this), 2);" class="image-preview-delete" title="删除"></a>
+                    </div>
+                    <?php endfor; ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="add_goods_button"><input class="btn btn-primary" type="button" value="保存" onclick="updatePackageSubmit();" /></div>
+</div>
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.required{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#add_goods_button{width:100%;text-align:center;margin:12px auto}.per_package_goods{width:160px;height:160px;display:inline-block;margin-top:12px;margin-left:12px;position:relative;}.per_package_goods_del{width:16px;height:16px;position:absolute;background-image:url(/Public/images/delete.png);background-color:#fff;background-repeat:no-repeat;right:0px;top:0px;cursor:pointer;}.per_package_goods_main{width:160px;height:160px;overflow:hidden;}.per_package_goods_image{width:160px;height:90px;overflow:hidden;}.per_package_goods_name{width:160px;height:24px;line-height:24px;overflow:hidden;}.per_package_goods_amount{width:160px;height:32px;line-height:32px;overflow:hidden;}.per_package_goods_amount input{width:100px;}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+-->
+</style>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="__PUBLIC__/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+CKEDITOR.disableAutoInline = true;
+var image_count = <{$image_count}>;
+var package_goods_id = <{$package_goods_id}>;
+$(function() {
+    var editor = $("#desc").ckeditor({
+        width         : 700,
+        height        : 300,
+        language      : 'zh-cn',
+        filebrowserUploadUrl: '<{:U("package/upload_image")}>'
+    });
+    $("#name").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckName();
+    });
+    $("#price").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '单价最多保留两位小数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckPrice();
+    });
+    $("#_price").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ck_Price();
+    });
+    // 上传缩略图
+    $('#thumb').fileupload({
+        maxNumberOfFiles : 1,
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("package/upload")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#thumb_progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#thumb_progress").hide();
+                $("#thumb_tip").empty();
+                $("#thumb_image").val(data.result.filename);
+                $("#thumb_result").html("<div class='image-preview'>"
+                                        + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                        + "<img src='"+data.result.src+"' border='0' />"
+                                        + "</a>"
+                                        + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                        + data.result.filename
+                                        + "\', $(this), 1);\" class='image-preview-delete' title='删除'>"
+                                        + "</a>" + "</div>");
+            } else {
+                $("#thumb_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#thumb_progress .progress-bar').css('width', progress + '%');
+        }
+    });
+    // 上传介绍图
+    $('#introduction').fileupload({
+        maxNumberOfFiles : 5,
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("package/upload")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#introduction_progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#introduction_progress").hide();
+                $("#introduction_tip").empty();
+                if (image_count.length < 5) {
+                    image_count.push(data.result.filename);
+                    $("#introduction_result").append("<div class='image-preview'>"
+                                            + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                            + "<img src='"+data.result.src+"' border='0' />"
+                                            + "</a>"
+                                            + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                            + data.result.filename
+                                            + "\', $(this), 2);\" class='image-preview-delete' title='删除'>"
+                                            + "</a>" + "</div>");
+                } else {
+                    delete_excess_image(data.result.filename);
+                }
+            } else {
+                $("#introduction_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#introduction_progress .progress-bar').css('width', progress + '%');
+        }
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1 + tip + tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测套餐名称
+function ckName() {
+    var name = $.trim($("#name").val());
+    if (name.length <= 0) {
+        addTip($("#name").parent('td').next('td:last'), '套餐名称不能为空');
+        return false;
+    }
+    return true;
+}
+
+//检测原价
+function ckPrice() {
+    var price = $.trim($("#price").val());
+    if (price.length <= 0) {
+        addTip($("#price").parent('td').next('td:last'), '单价不能为空');
+        return false;
+    }
+    var priceReg = /^\d+(\.\d{1,2})?$/;
+    if (!priceReg.test(price)) {
+        addTip($("#price").parent('td').next('td:last'), '单价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
+        return false;
+    }
+    if (parseFloat(price) > 99999999.99) {
+        addTip($("#price").parent('td').next('td:last'), '原价已经超过范围');
+        return false;
+    }
+    return true;
+}
+
+//检测现价
+function ck_Price() {
+    var _price = $.trim($("#_price").val());
+    if (_price.length > 0) {
+        var priceReg = /^\d+(\.\d{1,2})?$/;
+        if (!priceReg.test(_price)) {
+            addTip($("#_price").parent('td').next('td:last'), '市场价最多只能保留两位小数，<br />不能包含非数字和\'.\'以外的字符');
+            return false;
+        }
+        if (parseFloat(_price) > 99999999.99) {
+            addTip($("#_price").parent('td').next('td:last'), '市场价已经超过范围');
+            return false;
+        }
+        return true;
+    }
+    return true;
+}
+
+//检测缩略图
+function ckThumb() {
+    var thumb_image = $.trim($("#thumb_image").val());
+    if (thumb_image.length == 0) {
+        addTip($("#thumb_tip"), '请至少上传一张套餐缩略图片');
+        return false;
+    }
+    return true;
+}
+
+//检测介绍图片
+function ckIntroductionImage() {
+    if (image_count.length != 5) {
+        addTip($("#introduction_tip"), '请上传5张套餐介绍图片');
+        return false;
+    }
+    return true;
+}
+
+//检测套餐商品
+function ckPackageGoods() {
+    if (package_goods_id.length == 0) {
+        addTip($("#package_goods_tips"), '请至少添加一个套餐商品');
+        return false;
+    }
+    return true;
+}
+
+//检测套餐商品数量
+function ckPackageGoodsAmount() {
+    for (var i = 0; i < package_goods_id.length; i++) {
+        var goods_amount = parseInt($("#per_goods_amount_" + package_goods_id[i]).val());
+        if (goods_amount == 0 || isNaN(goods_amount)) {
+            addTip($("#package_goods_tips"), '请指定套餐商品的数量');
+            return false;
+        }
+    }
+    removeTip($("#package_goods_tips"));
+    return true;
+}
+
+//检测表单 
+function checkForm() {
+    if (!ckName()) return false;
+    if (!ckPrice()) return false;
+    if (!ck_Price()) return false;
+    if (!ckThumb()) return false;
+    if (!ckIntroductionImage()) return false;
+    if (!ckPackageGoods()) return false;
+    if (!ckPackageGoodsAmount()) return false;
+    var name = $.trim($("#name").val());
+    var price = $.trim($("#price").val());
+    var _price = $.trim($("#_price").val());
+    var thumb_image = $.trim($("#thumb_image").val());
+    var description = $.trim($("#desc").val());
+    var package_goods = [];
+    for (var i = 0; i < package_goods_id.length; i++) {
+        package_goods.push({
+            goods_id: package_goods_id[i],
+            goods_amount: parseInt($("#per_goods_amount_" + package_goods_id[i]).val())
+        });
+    }
+    return {
+        name : name,
+        price : price,
+        _price : _price,
+        thumb_image: thumb_image,
+        introduction_image : image_count,
+        package_goods: package_goods,
+        description : description
+    };
+}
+
+//提交表单
+function updatePackageSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("package/update")}>?id=<{$package["id"]}>', checkForm(), function(data) {
+            if (data.status) {
+                $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                location.reload(true);
+            } else {
+                $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                return false;
+            }
+        }, 'json');
+    }
+}
+
+//删除图片
+function delete_image(filename, obj, type) {
+    $.post('<{:U("package/delete_image")}>', {
+        filename : filename
+    }, function(data) {
+        if (data.status) {
+            obj.parent().remove();
+            if (type == 1) {
+                $("#thumb_image").val('');
+            } else {
+                var index = image_count.indexOf(filename);
+                image_count.splice(index, 1);
+            }
+        } else {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+            return false;
+        }
+    }, 'json');
+}
+
+//删除多余的图片
+function delete_excess_image(filename) {
+    $.post("<{:U('package/delete_image')}>", {filename: filename});
+}
+
+//添加套餐商品
+var addGoods;
+function add_goods() {
+    removeTip($("#package_goods_tips"));
+    addGoods = $.ligerDialog.open({
+        url: '<{:U("package/add_goods")}>', height: 700, width:800,
+        isDrag: false, title: '添加商品',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addGoods.frame.addGoodsFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加套餐商品回调
+function addGoodsCallback(obj) {
+    addGoods.close();
+    var str = '<div class="per_package_goods">' +
+                '<div class="per_package_goods_del" onclick="delete_package_goods($(this), ' + obj.goods.id + ');"></div>' +
+                '<div class="per_package_goods_main">' +
+                '<div class="per_package_goods_image">' +
+                '<img src="'+obj.goods.thumb+'" />' +
+                '</div>' +
+                '<div class="per_package_goods_name">' +
+                obj.goods.name + 
+                '</div>' +
+                '<div class="per_package_goods_amount">' +
+                '数量：<input type="text" id="per_goods_amount_'+obj.goods.id+'" />' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+    $("#package_goods").append(str);
+    package_goods_id.push(parseInt(obj.goods.id));
+}
+
+//删除套餐商品
+function delete_package_goods($this, goods_id) {
+    var index = package_goods_id.indexOf(parseInt(goods_id));
+    package_goods_id.splice(index, 1);
+    $this.parent().remove();
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

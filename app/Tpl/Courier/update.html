@@ -1,0 +1,94 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>真实名称：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="real_name" value="<{$courier['real_name']}>" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>手机：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="phone" value="<{$courier['phone']}>" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#real_name").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '真实姓名不能超过10个中文字');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckRealName();
+    });
+	$("#phone").change(function() {
+		removeTip($(this).parent('td').next('td:last'));
+        ckPhone();
+	});
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测真实姓名
+function ckRealName() {
+    var real_name = $.trim($("#real_name").val());
+    if (real_name.length == 0) {
+        addTip($("#real_name").parent('td').next('td:last'), '真实姓名不能为空');
+        return false;
+    }
+    if (real_name.length > 10) {
+        addTip($("#real_name").parent('td').next('td:last'), '真实姓名不能超过10个中文字');
+        return false;
+    }
+    return true;
+}
+
+//检测手机
+function ckPhone() {
+    var phone = $.trim($("#phone").val());
+    if (phone.length == 0) {
+        addTip($("#phone").parent('td').next('td:last'), '手机不能为空');
+        return false;
+    }
+	if (phone.length > 11) {
+		addTip($("#phone").parent('td').next('td:last'), '请填写正确的手机号码');
+        return false;
+	}
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckRealName()) return false;
+	if (!ckPhone()) return false;
+    var real_name = $.trim($("#real_name").val());
+	var phone = $.trim($("#phone").val());
+    return {real_name: real_name, phone: phone};
+}
+
+//提交表单
+function updateCourierFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("Courier/update")}>?id=<{$courier["id"]}>', checkForm(), function(data) {
+            window.parent.updateCourierCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

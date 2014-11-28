@@ -17,10 +17,16 @@ class BranchAction extends AdminAction {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $admin_id = isset($_POST['admin_id']) ? intval($_POST['admin_id']) : $this->redirect('/');
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : $this->redirect('/');
-            $shipping_addresses = isset($_POST['shipping_addresses']) ? (array) $_POST['shipping_addresses'] : $this->redirect('/');
-            $couriers = isset($_POST['couriers']) ? (array) $_POST['couriers'] : $this->redirect('/');
-            $this->ajaxReturn(D('Branch')->addPackage($name, $admin_id, $remark, $shipping_addresses, $couriers));
+            $shipping_addresses_id = isset($_POST['shipping_addresses_id']) ? (array) $_POST['shipping_addresses_id'] : $this->redirect('/');
+            $courier_id = isset($_POST['courier_id']) ? (array) $_POST['courier_id'] : $this->redirect('/');
+            $this->ajaxReturn(D('Branch')->addBranch($name, $admin_id, $remark, $shipping_addresses_id, $courier_id));
         } else {
+            $this->assign('admin', M('AdminUser')->where(array(
+                'type' => array(
+                    'neq',
+                    1
+                )
+            ))->select());
             $this->display();
         }
     }
@@ -28,34 +34,34 @@ class BranchAction extends AdminAction {
     /**
      * 添加配送地址
      */
-    // public function add_shipping_address() {
-    // if ($this->isAjax()) {
-    // $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
-    // $this->ajaxReturn(array(
-    // 'status' => true,
-    // 'goods' => M('Goods')->field(array(
-    // 'id',
-    // 'name',
-    // 'thumb'
-    // ))->where(array(
-    // 'id' => $goods_id
-    // ))->find()
-    // ));
-    // } else {
-    // import('ORG.Util.Page');
-    // $goods = M('Goods');
-    // $count = $goods->count();
-    // $page = new Page($count, 12);
-    // $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
-    // $page->setConfig('header', '个商品');
-    // $show = $page->show();
-    // $goodsList = $goods->limit($page->firstRow, $page->listRows)->select();
-    // $this->assign('goodsList', $goodsList);
-    // $this->assign('count', ceil($count / 12));
-    // $this->assign('page', $show);
-    // $this->display();
-    // }
-    // }
+    public function add_shipping_address() {
+        if ($this->isAjax()) {
+            // $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            // $this->ajaxReturn(array(
+            // 'status' => true,
+            // 'goods' => M('Goods')->field(array(
+            // 'id',
+            // 'name',
+            // 'thumb'
+            // ))->where(array(
+            // 'id' => $goods_id
+            // ))->find()
+            // ));
+        } else {
+            import('ORG.Util.Page');
+            $shippingAddress = M('ShippingAddress');
+            $count = $shippingAddress->count();
+            $page = new Page($count, 1);
+            $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
+            $page->setConfig('header', '个地址');
+            $show = $page->show();
+            $shippingAddressList = $shippingAddress->limit($page->firstRow, $page->listRows)->select();
+            $this->assign('shippingAddressList', $shippingAddressList);
+            $this->assign('count', ceil($count / 1));
+            $this->assign('page', $show);
+            $this->display();
+        }
+    }
 
     /**
      * 删除分店
@@ -107,13 +113,16 @@ class BranchAction extends AdminAction {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $admin_id = isset($_POST['admin_id']) ? intval($_POST['admin_id']) : $this->redirect('/');
             $remark = isset($_POST['remark']) ? trim($_POST['remark']) : $this->redirect('/');
-            $shipping_addresses = isset($_POST['shipping_addresses']) ? (array) $_POST['shipping_addresses'] : $this->redirect('/');
-            $couriers = isset($_POST['couriers']) ? (array) $_POST['couriers'] : $this->redirect('/');
-            $this->ajaxReturn(D('Branch')->updateBranch($id, $name, $admin_id, $remark, $shipping_addresses, $couriers));
+            $shipping_addresses_id = isset($_POST['shipping_addresses_id']) ? (array) $_POST['shipping_addresses_id'] : $this->redirect('/');
+            $courier_id = isset($_POST['courier_id']) ? (array) $_POST['courier_id'] : $this->redirect('/');
+            $this->ajaxReturn(D('Branch')->updateBranch($id, $name, $admin_id, $remark, $shipping_addresses_id, $courier_id));
         } else {
-            $this->assign('branch', M('Branch')->where(array(
-                'id' => $id
-            ))->find());
+            $this->assign('admin', M('AdminUser')->where(array(
+                'type' => array(
+                    'neq',
+                    1
+                )
+            ))->select());
             $this->display();
         }
     }
