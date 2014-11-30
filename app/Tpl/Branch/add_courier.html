@@ -1,0 +1,60 @@
+<include file="./Public/html/header.html" />
+<div class="courier_list_main">
+    <div class="courier_list_main_box">
+    	<table>
+        	<tr>
+            	<th width="10%">&nbsp;</th>
+            	<th width="45%">真实姓名</th>
+                <th width="45%">手机</th>
+            </tr>
+            <volist name="courierList" id="val">
+            <tr>
+            	<td><input type="radio" value="<{$val['id']}>" name="courier" /></td>
+                <td><{$val['real_name']}></td>
+                <td><{$val['phone']}></td>
+            </tr>
+            </volist>
+        </table>
+    </div>
+    <div class="page">
+    	<{$page}>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$(".courier_list_main_box table tr:even").css({"background":"#ddd"});
+	$(".courier_list_main_box table tr:odd").css({"background":"#f0f"});
+});
+
+//检测送货人员
+function ckCourierId() {
+	var courier_id = $("input[name='courier']").val() ? $("input[name='courier']").val() : 0;
+	if (courier_id == 0) {
+		$.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
+		return false;
+	}
+	return true;
+}
+
+//检测数据
+function checkData() {
+	if (!ckCourierId()) return false;
+	var courier_id = $("input[name='courier']").val();
+	return {courier_id: courier_id};
+}
+
+//提交数据
+function addCourierFormSubmit() {
+	if (checkData()) {
+		$.post("<{:U('branch/add_courier')}>", checkData(), function(data) {
+			window.parent.addCourierCallback(data);
+		}, 'json');
+	}
+}
+</script>
+<style type="text/css">
+<!--
+.courier_list_main{height:360px;width:96%;margin:12px auto}.courier_list_main_box{width:100%;height:320px;margin:6px auto}.courier_list_main_box table{width:100%}.courier_list_main_box table tr{line-height:22px}.courier_list_main_box table tr td,.courier_list_main_box table tr th{border:1px #fff solid;border-collapse:collapse;text-align:center}.page{text-align:center;padding:10px 35px;color:#303030}.page a{display:inline-block;padding:5px 10px;text-align:center;background:#fff;color:#303030;border:1px solid #e7e7e7;margin-right:5px}.page span.current{padding:5px 10px;background:#cc0102;color:#fff;display:inline-block;border:1px solid #e7e7e7;margin-right:5px}
+-->
+</style>
+<include file="./Public/html/footer.html" />

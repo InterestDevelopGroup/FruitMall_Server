@@ -60,17 +60,31 @@ class ShippingAddressModel extends Model {
      * @return array
      */
     public function deleteShippingAddress(array $id) {
+        // 开启事务
+        $this->startTrans();
         if ($this->where(array(
             'id' => array(
                 'in',
                 $id
             )
         ))->delete()) {
+            if (!D('BranchShippingAddress')->deleteShippingAddressByShippingAddressId($id)) {
+                // 删除失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => false,
+                    'msg' => '删除失败'
+                );
+            }
+            // 删除成功，提交事务
+            $this->commit();
             return array(
                 'status' => true,
                 'msg' => '删除成功'
             );
         } else {
+            // 删除失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '删除失败'

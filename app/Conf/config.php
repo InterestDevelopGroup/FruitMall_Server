@@ -147,6 +147,16 @@ $app_config = array(
                 )
             )
         ),
+        'Notification' => array(
+            'text' => '推送消息',
+            'default' => 'index',
+            'children' => array(
+                'index' => array(
+                    'text' => '消息一览',
+                    'url' => '/notification/index'
+                )
+            )
+        ),
         'Version' => array(
             'text' => 'App版本管理',
             'default' => 'android',
@@ -224,11 +234,23 @@ $app_config = array(
             'delete' => 'package|delete',
             'update' => 'package|update'
         ),
+        'courier' => array(
+            'index' => 'courier|index',
+            'add' => 'courier|add',
+            'delete' => 'courier|delete',
+            'update' => 'courier|update'
+        ),
         'shipping' => array(
             'index' => 'shipping|index',
             'add' => 'shipping|add',
             'delete' => 'shipping|delete',
             'update' => 'shipping|update'
+        ),
+        'branch' => array(
+            'index' => 'branch|index',
+            'add' => 'branch|add',
+            'delete' => 'branch|delete',
+            'update' => 'branch|update'
         ),
         'coupon' => array(
             'rule' => 'coupon|rule',
@@ -242,6 +264,13 @@ $app_config = array(
             'index' => 'order|index',
             'delete' => 'order|delete',
             'update_status' => 'order|update_status'
+        ),
+        'notification' => array(
+            'index' => 'notification|index',
+            'add' => 'notification|add',
+            'delete' => 'notification|delete',
+            'update' => 'notification|update',
+            'push' => 'notification|push'
         ),
         'version' => array(
             'android' => 'version|android',
@@ -265,6 +294,9 @@ $app_config = array(
         'tag|update' => 'tag|delete_image,tag|upload',
         'package|add' => 'package|delete_image,package|upload,package|upload_image',
         'package|update' => 'package|delete_image,package|upload,package|upload_image',
+        'branch|index' => 'branch|getbranchcourier,branch|getbranchshippingaddress',
+        'branch|add' => 'branch|add_courier,branch|add_shipping_address',
+        'branch|update' => 'branch|add_courier,branch|add_shipping_address',
         'order|index' => 'order|getorderdetail'
     ),
     // 权限对应翻译
@@ -309,12 +341,26 @@ $app_config = array(
             'delete' => '删除套餐',
             'update' => '更新套餐'
         ),
+        'courier' => array(
+            'courier' => '送货人员',
+            'index' => '所有送货人员',
+            'add' => '添加送货人员',
+            'delete' => '删除送货人员',
+            'update' => '更新送货人员'
+        ),
         'shipping' => array(
             'shipping' => '配送地址',
             'index' => '所有地址',
             'add' => '添加地址',
             'delete' => '删除地址',
             'update' => '更新地址'
+        ),
+        'branch' => array(
+            'branch' => '分店管理',
+            'index' => '所有分店',
+            'add' => '添加分店',
+            'delete' => '删除分店',
+            'update' => '更新分店'
         ),
         'coupon' => array(
             'coupon' => '水果劵',
@@ -330,6 +376,14 @@ $app_config = array(
             'index' => '订单一览',
             'delete' => '删除订单',
             'update_status' => '更新订单状态'
+        ),
+        'notification' => array(
+            'notification' => '消息推送',
+            'index' => '消息一览',
+            'add' => '添加消息',
+            'delete' => '删除消息',
+            'update' => '更新消息',
+            'push' => '推送消息'
         ),
         'version' => array(
             'version' => 'App版本管理',
@@ -367,9 +421,15 @@ $app_config = array(
         'package|index',
         'package|add',
         'package|update',
+        'courier|index',
+        'courier|add',
+        'courier|delete',
         'shipping|index',
         'shipping|add',
         'shipping|update',
+        'branch|index',
+        'branch|add',
+        'branch|update',
         'coupon|rule',
         'coupon|add_rule',
         'coupon|update_rule',
@@ -377,6 +437,9 @@ $app_config = array(
         'coupon|how_to_use',
         'order|index',
         'order|update_status',
+        'notification|index',
+        'notification|add',
+        'notification|update',
         'version|android',
         'feedback|index',
         'returns|index'
@@ -390,6 +453,10 @@ $app_config = array(
     'SMS' => array(
         'sn' => 'SDK-WSS-010-07201',
         'pwd' => 'wddydg'
+    ),
+    'jPush' => array(
+        'appkey' => 'b92de7913397e73b42598e11',
+        'secret' => '487117ebe1a28e2f9c79ca58'
     )
 );
 return array_merge(require 'config.php', $app_config);

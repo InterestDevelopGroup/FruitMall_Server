@@ -194,7 +194,7 @@ function set_privileges(id) {
         return false;
     }
     privDialog = $.ligerDialog.open({
-        url: '<{:U("Administrator/set_privileges")}>?id='+id, height: 600, width: 600,
+        url: '<{:U("Administrator/set_privileges")}>?id='+id, height: 800, width: 600,
         title : '设置权限', isDrag : false,
         buttons: [{text: '提交', onclick: function (item, dialog) {privDialog.frame.setPrivFormSubmit(id);}},
                   {text: '取消', onclick: function (item, dialog) {dialog.close();}}]

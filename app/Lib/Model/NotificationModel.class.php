@@ -1,27 +1,27 @@
 <?php
 
 /**
- * fruit_courier表模型
-*
-* @author Zonkee
-* @version 1.0.0
-* @since 1.0.0
-*/
-class CourierModel extends Model {
+ * fruit_notification 表模型
+ *
+ * @author Zonkee
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+class NotificationModel extends Model {
 
     /**
-     * 添加送货人员
+     * 添加消息
      *
-     * @param string $real_name
-     *            真实姓名
-     * @param int $phone
-     *            手机
+     * @param string $title
+     *            标题
+     * @param string $content
+     *            内容
      * @return array
      */
-    public function addCourier($real_name, $phone) {
+    public function addNotification($title, $content) {
         if ($this->add(array(
-            'real_name' => $real_name,
-            'phone' => $phone,
+            'title' => $title,
+            'content' => $content,
             'add_time' => time()
         ))) {
             return array(
@@ -37,38 +37,24 @@ class CourierModel extends Model {
     }
 
     /**
-     * 删除送货员
+     * 删除消息
      *
      * @param array $id
-     *            送货员ID
+     *            消息ID
      * @return array
      */
-    public function deleteCourier(array $id) {
-        // 开启事务
-        $this->startTrans();
+    public function deleteNotification(array $id) {
         if ($this->where(array(
             'id' => array(
                 'in',
                 $id
             )
         ))->delete()) {
-            if (!D('BranchCourier')->deleteCourierByCourierId($id)) {
-                // 删除失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '删除失败'
-                );
-            }
-            // 删除成功，提交事务
-            $this->commit();
             return array(
                 'status' => true,
                 'msg' => '删除成功'
             );
         } else {
-            // 删除失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '删除失败'
@@ -77,16 +63,16 @@ class CourierModel extends Model {
     }
 
     /**
-     * 获取送货员总数
+     * 获取消息总数
      *
      * @return int
      */
-    public function getCourierCount() {
+    public function getNotificationCount() {
         return (int) $this->count();
     }
 
     /**
-     * 获取送货员列表
+     * 获取消息列表
      *
      * @param int $page
      *            当前页
@@ -96,30 +82,29 @@ class CourierModel extends Model {
      *            排序字段
      * @param string $sort
      *            排序方式
-     * @return array
      */
-    public function getCourierList($page, $pageSize, $order, $sort) {
+    public function getNotificationList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
         return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**
-     * 更新小分类
+     * 更新消息
      *
      * @param int $id
-     *            送货员ID
-     * @param string $real_name
-     *            真实姓名
-     * @param int $phone
-     *            手机
+     *            消息ID
+     * @param string $title
+     *            标题
+     * @param string $content
+     *            内容
      * @return array
      */
-    public function updateCourier($id, $real_name, $phone) {
+    public function updateNotification($id, $title, $content) {
         if ($this->where(array(
             'id' => $id
         ))->save(array(
-            'real_name' => $real_name,
-            'phone' => $phone,
+            'title' => $title,
+            'content' => $content,
             'update_time' => time()
         ))) {
             return array(
@@ -129,7 +114,7 @@ class CourierModel extends Model {
         } else {
             return array(
                 'status' => false,
-                'msg' => '更新失败'
+                'msg' => '添加失败'
             );
         }
     }

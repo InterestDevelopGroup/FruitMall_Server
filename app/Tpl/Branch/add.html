@@ -18,7 +18,6 @@
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
-            
             <tr>
                 <td align="right" class="l-table-edit-td">
                     <span class="required">*</span>配送地址：
@@ -30,9 +29,21 @@
             </tr>
             <tr>
             	<td>&nbsp;</td>
-                <td colspan="2" id="shipping_address"></td>
+                <td colspan="2" id="shipping_address">
+                	<table id="shipping_address_table">
+                        <tr>
+                            <th width="10%">市</th>
+                            <th width="10%">区</th>
+                            <th width="12%">路牌号</th>
+                            <th width="15%">小区（社区）、建筑名</th>
+                            <th width="15%">栋、几期、座</th>
+                            <th width="12%">送货费</th>
+                            <th width="15%">价格调整比例</th>
+                            <th width="6%">操作</th>
+                        </tr>
+                    </table>
+                </td>
             </tr>
-            
             <tr>
                 <td align="right" class="l-table-edit-td">
                     <span class="required">*</span>送货人员：
@@ -40,13 +51,20 @@
                 <td align="left" class="l-table-edit-td">
                     <input class="btn btn-primary" type="button" value="添加" onclick="javascript:add_courier();" />
                 </td>
-                <td align="left" class="tipmsg" id="couriers_tips"></td>
+                <td align="left" class="tipmsg" id="courier_tips"></td>
             </tr>
             <tr>
             	<td>&nbsp;</td>
-                <td colspan="2" id="couriers"></td>
+                <td colspan="2" id="couriers">
+                	<table id="couriers_table">
+                        <tr>
+                            <th width="40%">真实姓名</th>
+                            <th width="40%">手机</th>
+                            <th width="20%">操作</th>
+                        </tr>
+                    </table>
+                </td>
             </tr>
-            
             <tr>
                 <td align="right" class="l-table-edit-td">
                     <span class="required">*</span>管理员：
@@ -55,7 +73,7 @@
                     <select id="admin_id">
                     	<option value="0">--请选择--</option>
                         <volist name="admin" id="val">
-                        <option value="id"><{$val['real_name']}></option>
+                        <option value="<{$val['id']}>"><{$val['real_name']}></option>
                         </volist>
                     </select>
                 </td>
@@ -66,7 +84,7 @@
                     备注：
                 </td>
                 <td align="left" class="l-table-edit-td">
-                    <input type="text" id="remark" />
+                    <textarea id="remark"></textarea>
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -76,7 +94,7 @@
 </div>
 <style type="text/css">
 <!--
-body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.required{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}#add_branch_button{width:100%;text-align:center;margin:12px auto}
+body{font-size:12px}.l-table-edit-td{padding:10px 20px}.l-table-edit-td input{width:130px}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px}.l-verify-tip{left:230px;top:120px}.required{color:#f30;padding-left:5px}.tipmsg{color:#f30}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px}.image-preview-outter{display:block}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px}#add_branch_button{width:100%;text-align:center;margin:12px auto}#shipping_address{width:900px}#shipping_address table{width:100%}#couriers_table{width:400px}#shipping_address table tr,#couriers table tr{line-height:22px}#shipping_address table tr td,#shipping_address table tr th,#couriers table tr td,#couriers table tr th{border:1px #fff solid;border-collapse:collapse;text-align:center}#remark{width:300px;height:100px;resize:none;}
 -->
 </style>
 <script type="text/javascript">
@@ -92,6 +110,8 @@ $(function() {
 		removeTip($(this).parent('td').next('td:last'));
 		ckAdminId();
 	});
+	table_color('shipping_address');
+	table_color('couriers');
 });
 
 //添加提示
@@ -181,7 +201,6 @@ function addBranchSubmit() {
 //添加配送地址
 var addShippingAddress;
 function add_shipping_address() {
-    //removeTip($("#package_goods_tips"));
     addShippingAddress = $.ligerDialog.open({
         url: '<{:U("branch/add_shipping_address")}>', height: 460, width:800,
         isDrag: false, title: '添加配送地址',
@@ -193,30 +212,83 @@ function add_shipping_address() {
 //添加配送地址回调
 function addShippingAddressCallback(obj) {
     addShippingAddress.close();
-    /*var str = '<div class="per_package_goods">' +
-                '<div class="per_package_goods_del" onclick="delete_package_goods($(this), ' + obj.goods.id + ');"></div>' +
-                '<div class="per_package_goods_main">' +
-                '<div class="per_package_goods_image">' +
-                '<img src="'+obj.goods.thumb+'" />' +
-                '</div>' +
-                '<div class="per_package_goods_name">' +
-                obj.goods.name + 
-                '</div>' +
-                '<div class="per_package_goods_amount">' +
-                '数量：<input type="text" id="per_goods_amount_'+obj.goods.id+'" />' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-	*/
-    //$("#shipping_address").append(str);
-	//shipping_address_id.push(parseInt(obj.goods.id));
+	removeTip($("#shipping_address_tips"));
+	if (!obj.status) {
+		addTip($("#shipping_address_tips"), obj.result);
+		return false;
+	}
+	if ($.inArray(parseInt(obj.result.id), shipping_address_id) != -1) {
+		addTip($("#shipping_address_tips"), '您已经添加过该地址了！');
+		return false;
+	}
+	var str = '<tr>' + 
+				'<td>' + obj.result.city + '</td>' +
+				'<td>' + obj.result.district + '</td>' +
+				'<td>' + obj.result.road_number + '</td>' +
+				'<td>' + obj.result.community + '</td>' +
+				'<td>' + obj.result.building + '</td>' +
+				'<td>' + obj.result.shipping_fee + '</td>' +
+				'<td>' + obj.result.discount + '</td>' +
+				'<td><a href="javascript:void(0);" onclick="delete_shipping_address($(this), '+obj.result.id+')">删除</a></td>' +
+				'</tr>';
+    $("#shipping_address_table").append(str);
+	table_color('shipping_address');
+	shipping_address_id.push(parseInt(obj.result.id));
 }
 
-//删除套餐商品
-function delete_package_goods($this, goods_id) {
-    var index = package_goods_id.indexOf(parseInt(goods_id));
-    package_goods_id.splice(index, 1);
-    $this.parent().remove();
+//删除配送地址
+function delete_shipping_address($this, address_id) {
+    var index = shipping_address_id.indexOf(parseInt(address_id));
+    shipping_address_id.splice(index, 1);
+    $this.parent().parent().remove();
+	table_color('shipping_address');
+}
+
+//添加送货人员
+var addCourier;
+function add_courier() {
+    addCourier = $.ligerDialog.open({
+        url: '<{:U("branch/add_courier")}>', height: 460, width:600,
+        isDrag: false, title: '添加送货人员',
+        buttons: [{text: '确定', onclick: function(item, dialog) {addCourier.frame.addCourierFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//添加送货人员回调
+function addCourierCallback(obj) {
+    addCourier.close();
+	removeTip($("#courier_tips"));
+	if (!obj.status) {
+		addTip($("#courier_tips"), obj.result);
+		return false;
+	}
+	if ($.inArray(parseInt(obj.result.id), courier_id) != -1) {
+		addTip($("#courier_tips"), '您已经添加过该送货员了！');
+		return false;
+	}
+	var str = '<tr>' +
+				'<td>' + obj.result.real_name + '</td>' +
+				'<td>' + obj.result.phone + '</td>' + 
+				'<td><a href="javascript:void(0);" onclick="delete_courier($(this), ' + obj.result.id + ')">删除</a></td>' +
+				'</tr>';
+    $("#couriers_table").append(str);
+	table_color('couriers');
+	courier_id.push(parseInt(obj.result.id));
+}
+
+//删除送货人员
+function delete_courier($this, id) {
+    var index = courier_id.indexOf(parseInt(id));
+    courier_id.splice(index, 1);
+    $this.parent().parent().remove();
+	table_color('couriers');
+}
+
+//table颜色
+function table_color(id) {
+	$("#" + id + " table tr:even").css({"background":"#ddd"});
+	$("#" + id + " table tr:odd").css({"background":"#f0f"});
 }
 //]]>
 </script>

@@ -1,21 +1,5 @@
 <include file="./Public/html/header.html" />
 <div class="address_list_main">
-	<!--<h3 class="goods_tips">温馨提示：选取商品后请输入商品的数量在确认</h3>-->
-	<!--<div class="goods_list_main_box">
-    	<volist name="goodsList" id="val">
-		<div class="per_goods">
-        	<div class="per_goods_img">
-            	<a href="javascript:void(0);">
-                	<img src="<{$val['thumb']}>" width="100%" />
-                </a>
-                <div class="per_goods_cover" rel="<{$val['id']}>"></div>
-            </div>
-            <div class="per_goods_name">
-            	<{$val['name']}>
-            </div>
-        </div>
-        </volist>
-    </div>-->
     <div class="address_list_main_box">
     	<table>
         	<tr>
@@ -30,7 +14,7 @@
             </tr>
             <volist name="shippingAddressList" id="val">
             <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
+            	<td><input type="radio" value="<{$val['id']}>" name="shipping_address" /></td>
                 <td><{$val['city']}></td>
                 <td><{$val['district']}></td>
                 <td><{$val['road_number']}></td>
@@ -40,147 +24,23 @@
                 <td><{$val['discount']}></td>
             </tr>
             </volist>
-            <!--
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            <tr>
-            	<td><input type="radio" name="shipping_address" /></td>
-                <td>广州市</td>
-                <td>天河区</td>
-                <td>190</td>
-                <td>羊城花園</td>
-                <td>康苑八座401</td>
-                <td>10.00</td>
-                <td>20%</td>
-            </tr>
-            -->
         </table>
     </div>
-    <div class="goods_list_main_page page">
+    <div class="page">
     	<{$page}>
     </div>
 </div>
 <script type="text/javascript">
-var goods_id = 0, goods_amount;
 $(function() {
 	$(".address_list_main_box table tr:even").css({"background":"#ddd"});
 	$(".address_list_main_box table tr:odd").css({"background":"#f0f"});
-	/*
-	$(".per_goods_img").mouseover(function() {
-		$(this).find(".per_goods_cover").show();
-	}).mouseleave(function() {
-		$(this).find(".per_goods_cover").hide();
-	});
-	$(".per_goods_cover").bind('click', function() {
-		$(this).parent().append('<div class="goods_sel"></div>');
-		$(".goods_sel").not($(this).next()).remove();
-		goods_id = parseInt($(this).attr('rel'));
-	});
-	*/
 });
 
-//检测商品ID
-function ckGoodsId() {
-	if (goods_id == 0) {
-		$.ligerDialog.alert('请选择一个商品', '温馨提示(^_^)', 'warn');
+//检测配送地址
+function ckShippingAddressId() {
+	var shipping_address_id = $("input[name='shipping_address']").val() ? $("input[name='shipping_address']").val() : 0;
+	if (shipping_address_id == 0) {
+		$.ligerDialog.alert('请选择一个地址', '温馨提示(^_^)', 'warn');
 		return false;
 	}
 	return true;
@@ -188,28 +48,23 @@ function ckGoodsId() {
 
 //检测数据
 function checkData() {
-	if (!ckGoodsId()) return false;
-	return {goods_id: goods_id};
+	if (!ckShippingAddressId()) return false;
+	var shipping_address_id = $("input[name='shipping_address']").val();
+	return {shipping_address_id: shipping_address_id};
 }
 
 //提交数据
-function addGoodsFormSubmit() {
+function addShippingAddressFormSubmit() {
 	if (checkData()) {
-		$.post("<{:U('package/add_goods')}>", checkData(), function(data) {
-			window.parent.addGoodsCallback(data);
+		$.post("<{:U('branch/add_shipping_address')}>", checkData(), function(data) {
+			window.parent.addShippingAddressCallback(data);
 		}, 'json');
 	}
 }
 </script>
 <style type="text/css">
 <!--
-.address_list_main{height:360px;width:96%;margin:12px auto;}
-.address_list_main_box{width:100%;height:320px;margin:6px auto;}
-.address_list_main_box table tr{line-height:22px;}
-.address_list_main_box table tr td,.address_list_main_box table tr th{border:1px #fff solid;border-collapse:collapse;text-align:center;}
-.page{text-align:center;padding:10px 35px;color:#303030;}
-.page a{display:inline-block;padding:5px 10px;text-align:center;background:#fff;color:#303030;border:1px solid #e7e7e7;margin-right:5px;}
-.page span.current{padding:5px 10px;background:#cc0102;color:#fff;display:inline-block;border:1px solid #e7e7e7;margin-right:5px;}
+.address_list_main{height:360px;width:96%;margin:12px auto}.address_list_main_box{width:100%;height:320px;margin:6px auto}.address_list_main_box table tr{line-height:22px}.address_list_main_box table tr td,.address_list_main_box table tr th{border:1px #fff solid;border-collapse:collapse;text-align:center}.page{text-align:center;padding:10px 35px;color:#303030}.page a{display:inline-block;padding:5px 10px;text-align:center;background:#fff;color:#303030;border:1px solid #e7e7e7;margin-right:5px}.page span.current{padding:5px 10px;background:#cc0102;color:#fff;display:inline-block;border:1px solid #e7e7e7;margin-right:5px}
 -->
 </style>
 <include file="./Public/html/footer.html" />

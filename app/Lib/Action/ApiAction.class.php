@@ -485,6 +485,32 @@ class ApiAction extends Action {
     }
 
     /**
+     * 消息中心
+     */
+    public function notification() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['send_time'] = date("Y-m-d H:i:s", $value['send_time']);
+                    return $value;
+                }, D('SendHistory')->getSendHistory($user_id, $offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 提交订单
      */
     public function order() {
