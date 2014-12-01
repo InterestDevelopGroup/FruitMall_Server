@@ -119,6 +119,7 @@ class OrderModel extends Model {
             $order = ob2ar(json_decode($order));
             $order_goods = array();
             $order_package = array();
+            $order_custom = array();
             foreach ($order as $v) {
                 if ($v['goods_id']) {
                     $order_goods[] = array(
@@ -130,6 +131,13 @@ class OrderModel extends Model {
                 if ($v['package_id']) {
                     $order_package[] = array(
                         'package_id' => $v['package_id'],
+                        'order_id' => $order_id,
+                        'amount' => $v['amount']
+                    );
+                }
+                if ($v['custom_id']) {
+                    $order_custom[] = array(
+                        'custom_id' => $v['custom_id'],
                         'order_id' => $order_id,
                         'amount' => $v['amount']
                     );
@@ -147,6 +155,16 @@ class OrderModel extends Model {
             }
             if ($order_package) {
                 if (!M('OrderPackage')->addAll($order_package)) {
+                    // 添加失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '未知错误'
+                    );
+                }
+            }
+            if ($order_custom) {
+                if (!M('OrderCustom')->addAll($order_custom)) {
                     // 添加失败，回滚事务
                     $this->rollback();
                     return array(
@@ -190,30 +208,38 @@ class OrderModel extends Model {
                 // 删除订单商品失败，回滚事务
                 $this->rollback();
                 return array(
-                    'status' => false,
-                    'msg' => '删除失败'
+                    'status' => 0,
+                    'result' => '删除失败'
                 );
             }
             if (!D('OrderPackage')->deleteOrderPackage($id)) {
                 // 删除订单套餐失败，回滚事务
                 $this->rollback();
                 return array(
-                    'status' => false,
-                    'msg' => '删除失败'
+                    'status' => 0,
+                    'result' => '删除失败'
+                );
+            }
+            if (!D('OrderCustom')->deleteOrderCustom($id)) {
+                // 删除订单套餐失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '删除失败'
                 );
             }
             // 删除成功，提交事务
             $this->commit();
             return array(
-                'status' => true,
-                'msg' => '删除成功'
+                'status' => 1,
+                'result' => '删除成功'
             );
         } else {
             // 删除失败，回滚事务
             $this->rollback();
             return array(
-                'status' => false,
-                'msg' => '删除失败'
+                'status' => 0,
+                'result' => '删除失败'
             );
         }
     }

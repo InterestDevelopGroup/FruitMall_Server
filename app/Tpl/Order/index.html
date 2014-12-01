@@ -181,11 +181,11 @@ function del() {
     $.ligerDialog.confirm('您确定要删除选中的订单吗？', function(yes) {
         if (yes) {
             $.post('<{:U("order/delete")}>', {id:id}, function(data) {
-                if (data.status) {
-                    $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                if (parseInt(data.status)) {
+                    $.ligerDialog.alert(data.result, '成功了(^_^)', 'success');
                     location.reload(true);
                 } else {
-                    $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                    $.ligerDialog.alert(data.result, '出错了(>_<)', 'error');
                     return false;
                 }
             }, 'json');

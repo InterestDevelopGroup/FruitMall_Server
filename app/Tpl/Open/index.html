@@ -1071,6 +1071,34 @@
                     <td><div class="failed_return_35"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">删除订单</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/delete_order</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int order_id: 'x,x'（订单ID，多个ID之间使用英文半角逗号分开）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_36"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_36"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1153,6 +1181,8 @@ $(function() {
     $(".failed_return_34").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_35").JSONView({"status":1,"result":[{"id":"1","sendno":"1","notification_id":"1","title":"\u6d4b\u8bd5","content":"\u8fd9\u662f\u4e00\u4e2a\u6d4b\u8bd5","send_time":"2014-11-12 13:00:18"}]});
     $(".failed_return_35").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_36").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
+    $(".failed_return_36").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

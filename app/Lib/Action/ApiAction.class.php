@@ -340,6 +340,24 @@ class ApiAction extends Action {
     }
 
     /**
+     * 删除订单
+     */
+    public function delete_order() {
+        if ($this->isPost() || $this->isAjax()) {
+            $order_id = isset($_POST['order_id']) ? explode(',', $_POST['order_id']) : $this->redirect('/');
+            if (empty($order_id)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Order')->deleteOrder((array) $order_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 删除购物车商品或套餐
      */
     public function delete_shopping_car() {
