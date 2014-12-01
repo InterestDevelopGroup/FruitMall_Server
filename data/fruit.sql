@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-01 00:18:15
+Date: 2014-12-01 10:32:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -607,7 +607,7 @@ CREATE TABLE `fruit_shipping_address` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
 
 -- ----------------------------
 -- Records of fruit_shipping_address
