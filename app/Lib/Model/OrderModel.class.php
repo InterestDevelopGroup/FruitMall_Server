@@ -196,6 +196,21 @@ class OrderModel extends Model {
      * @return array
      */
     public function deleteOrder(array $id) {
+        if ($this->where(array(
+            'order_id' => array(
+                'in',
+                $id
+            ),
+            'status' => array(
+                'neq',
+                1
+            )
+        ))->count()) {
+            return array(
+                'status' => 0,
+                'result' => '该订单状态不允许取消订单'
+            );
+        }
         // 开启事务
         $this->startTrans();
         if ($this->where(array(
@@ -359,6 +374,57 @@ class OrderModel extends Model {
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id ",
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
         ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
+    }
+
+    public function printOrder($order_id) {
+        $result = $this->table($this->getTableName() . " AS o ")->join(array(
+            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
+        ))->where(array(
+            'order_id' => $order_id
+        ))->field(array(
+            'o.order_id',
+            'a.consignee',
+            'a.phone',
+            'a.address'
+        ))->select();
+        foreach ($result as &$v) {
+            $v['goods_list'] = D('OrderGoods')->table(D('OrderGoods')->getTableName() . " AS og ")->join(array(
+                " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON og.goods_id = g.id "
+            ))->field(array(
+                'og.amount',
+                'g.name',
+                'g.price'
+            ))->where(array(
+                'og.order_id' => $v['order_id']
+            ))->select();
+            $v['package_list'] = D('OrderPackage')->table(D('OrderPackage')->getTableName() . " AS op ")->join(array(
+                " LEFT JOIN " . M('Package')->getTableName() . " AS p ON op.package_id = p.id "
+            ))->field(array(
+                'op.amount',
+                'p.name',
+                'p.price'
+            ))->where(array(
+                'op.order_id' => $v['order_id']
+            ))->select();
+            $v['custom_list'] = D('OrderCustom')->table(D('OrderCustom')->getTableName() . " AS oc")->join(array(
+                " LEFT JOIN " . M('Custom')->getTableName() . " AS c ON oc.custom_id = c.custom_id "
+            ))->field(array(
+                'oc.amount',
+                'c.name',
+                "(
+                SELECT
+                    sum(cg.quantity * g.price)
+                FROM
+                    fruit_custom_goods AS cg
+                LEFT JOIN
+                    fruit_goods AS g ON cg.goods_id = g.id
+                WHERE
+                    cg.custom_id = oc.custom_id)" => 'price'
+            ))->where(array(
+                'oc.order_id' => $v['order_id']
+            ))->select();
+        }
+        return $result;
     }
 
     /**

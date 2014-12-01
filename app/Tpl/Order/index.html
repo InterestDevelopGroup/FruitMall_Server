@@ -37,8 +37,8 @@ $(function(){
                     return value ? value : '暂无';
                 }
             },
-            {display: "送货费", name: 'shipping_fee', align: 'center', width: '12%'},
-            {display: "订单状态", name: 'status', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "送货费", name: 'shipping_fee', align: 'center', width: '8%'},
+            {display: "订单状态", name: 'status', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
                         case 1 :
                             return '待确定';
@@ -51,8 +51,8 @@ $(function(){
                     }
                 }
             },
-            {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.order_id+')">编辑</a>';
+            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.order_id+')">编辑</a> | <a href="javascript:void(0);" onclick="print_order('+rowdata.order_id+')">打印订单</a>';
                 }
             }
             ],
@@ -215,6 +215,66 @@ function updateOrderStatusCallback(obj) {
         return false;
     }
 }
+
+//打印订单
+function print_order(order_id) {
+    $.ajax({
+        url: "<{:U('order/print_order')}>",
+        async:false,
+        data: {order_id: order_id},
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            if (data.status) {
+                var str = '<table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[0].consignee+'</td><td width="50%">联系电话：'+data.result[0].phone+'</td></tr>';
+                str += '<tr style="line-height:30px;"><td colspan="2">收货地址：'+data.result[0].address+'</td></tr></table>';
+                var stuff = '<h3>货物清单：</h3><table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
+                var total_amount = 0;
+                if (data.result[0].goods_list) {
+                    var goods_list = data.result[0].goods_list;
+                    for (var i in goods_list) {
+                        stuff += '<tr><td>'+(goods_list[i].name ? goods_list[i].name : '该商品已经删除')+'</td><td>'+(goods_list[i].amount ? goods_list[i].amount : '该商品已经删除')+'</td><td>'+(goods_list[i].price ? goods_list[i].price : '该商品已经删除')+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += goods_list[i].amount * goods_list[i].price;
+                    }
+                }
+                if (data.result[0].package_list) {
+                    var package_list = data.result[0].package_list;
+                    for (var i in package_list) {
+                        stuff += '<tr><td>'+(package_list[i].name ? package_list[i].name : '该套餐已经删除')+'</td><td>'+(package_list[i].amount ? package_list[i].amount : '该套餐已经删除')+'</td><td>'+(package_list[i].price ? package_list[i].price : '该套餐已经删除')+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += package_list[i].amount * package_list[i].price;
+                    }
+                }
+                
+                if (data.result[0].custom_list) {
+                    var custom_list = data.result[0].custom_list;
+                    for (var i in custom_list) {
+                        stuff += '<tr><td>'+(custom_list[i].name ? custom_list[i].name : '该定制已经删除')+'</td><td>'+(custom_list[i].amount ? custom_list[i].amount : '该定制已经删除')+'</td><td>'+(custom_list[i].price ? custom_list[i].price : '该定制已经删除')+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += custom_list[i].amount * custom_list[i].price;
+                    }
+                }
+                stuff += '<tr><td colspan="4">总价：'+parseFloat(total_amount).toFixed(2)+'</td></tr>';
+                stuff += '</table>';
+                str += stuff;
+                var iframe = document.createElement('IFRAME');
+                var doc = null;
+                iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');
+                document.body.appendChild(iframe);
+                doc = iframe.contentWindow.document;
+                doc.write(str);
+                doc.close();
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                if (navigator.userAgent.indexOf("MSIE") > 0){
+                    document.body.removeChild(iframe);
+                }
+            } else {
+                $.ligerDialog.alert(obj.result, '出错了(>_<)', 'error');
+                return false;
+            }
+        }
+    });
+}
+
 //]]>
 </script>
 <include file="./Public/html/footer.html" />

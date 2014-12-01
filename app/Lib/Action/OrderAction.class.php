@@ -64,6 +64,18 @@ class OrderAction extends AdminAction {
         }
     }
 
+    public function print_order() {
+        if ($this->isAjax()) {
+            $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : $this->redirect('/');
+            $this->ajaxReturn(array(
+                'status' => true,
+                'result' => D('Order')->printOrder($order_id)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
     /**
      * 更新订单状态
      */

@@ -29,6 +29,15 @@ class ReturnsModel extends Model {
      * @return array
      */
     public function addReturns($user_id, $order_number, $reason, $image_1, $image_2, $image_3, $postscript) {
+        if (!M('Order')->where(array(
+            'order_number' => $order_number,
+            'status' => 3
+        ))->count()) {
+            return array(
+                'status' => 1,
+                'result' => '该状态的订单不能申请退货'
+            );
+        }
         $image_1 = $image_1 ? base64Code2Image($image_1) : $image_1;
         $image_2 = $image_2 ? base64Code2Image($image_2) : $image_2;
         $image_3 = $image_3 ? base64Code2Image($image_3) : $image_3;
