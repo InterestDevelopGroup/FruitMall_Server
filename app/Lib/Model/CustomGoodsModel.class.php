@@ -103,6 +103,8 @@ class CustomGoodsModel extends Model {
         return $this->table($this->getTableName() . " AS cg ")->join(array(
             " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON cg.goods_id = g.id "
         ))->field(array(
+            'cg.goods_id',
+            'cg.quantity',
             'g.name' => 'goods_name',
             'g.price' => 'goods_price',
             'g._price' => 'goods_market_price',

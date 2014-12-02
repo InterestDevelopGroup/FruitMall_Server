@@ -51,7 +51,12 @@ class ShoppingCarModel extends Model {
                 ))->where(array(
                     'custom_id' => $v['custom_id']
                 ))->find());
+                $v['custom_price'] = 0;
                 $v['goods_list'] = D('CustomGoods')->getCustomGoodsByCustomId($v['custom_id']);
+                foreach ($v['goods_list'] as $v_1) {
+                    $v['custom_price'] += $v_1['goods_price'] * $v_1['quantity'];
+                }
+                $v['custom_price'] = number_format($v['custom_price'], 2);
             }
         }
         return $result;
