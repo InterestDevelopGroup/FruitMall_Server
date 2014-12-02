@@ -460,6 +460,7 @@ class ApiAction extends Action {
         if ($this->isPost() || $this->isAjax()) {
             $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
             $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $user_id = (isset($_POST['user_id']) && intval($_POST['user_id'])) ? intval($_POST['user_id']) : null;
             $p_cate_id = (isset($_POST['p_cate_id']) && intval($_POST['p_cate_id'])) ? intval($_POST['p_cate_id']) : null;
             $c_cate_id = (isset($_POST['c_cate_id']) && intval($_POST['c_cate_id'])) ? intval($_POST['c_cate_id']) : null;
             $tag = (isset($_POST['tag']) && isset($_POST['tag'])) ? intval($_POST['tag']) : null;
@@ -476,7 +477,7 @@ class ApiAction extends Action {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
-                }, D('Goods')->_getGoodsList($offset, $pagesize, $p_cate_id, $c_cate_id, $tag, $keyword))
+                }, D('Goods')->_getGoodsList($offset, $pagesize, $user_id, $p_cate_id, $c_cate_id, $tag, $keyword))
             ));
         } else {
             $this->redirect('/');

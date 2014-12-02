@@ -16,6 +16,8 @@ class GoodsModel extends Model {
      *            偏移量
      * @param int $pagesize
      *            条数
+     * @param int $user_id
+     *            用户ID
      * @param int|null $p_cate_id
      *            大分类ID
      * @param int|null $c_cate_id
@@ -25,7 +27,7 @@ class GoodsModel extends Model {
      * @param string|null $keyword
      *            关键字
      */
-    public function _getGoodsList($offset, $pagesize, $p_cate_id, $c_cate_id, $tag, $keyword) {
+    public function _getGoodsList($offset, $pagesize, $user_id, $p_cate_id, $c_cate_id, $tag, $keyword) {
         $where = array();
         $p_cate_id && $where['g.p_cate_id'] = $p_cate_id;
         $c_cate_id && $where['g.c_cate_id'] = $c_cate_id;
@@ -35,16 +37,18 @@ class GoodsModel extends Model {
             "%{$keyword}%"
         );
         empty($where) || $this->where($where);
-        return $this->table($this->getTableName() . " AS g ")->join(array(
-            " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
-            " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
-            " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON t.id = g.tag "
-        ))->field(array(
+        $fields = array(
             'g.*',
             'pc.name' => 'parent_category',
             'cc.name' => 'child_category',
             't.name' => 'tag_name'
-        ))->limit($offset, $pagesize)->select();
+        );
+        $user_id && $fields["(SELECT quantity FROM " . M('ShoppingCar')->getTableName() . " WHERE goods_id = g.id)"] = 'shopping_car_amount';
+        return $this->table($this->getTableName() . " AS g ")->join(array(
+            " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
+            " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
+            " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON t.id = g.tag "
+        ))->field($fields)->limit($offset, $pagesize)->select();
     }
 
     /**
