@@ -684,6 +684,32 @@ class ApiAction extends Action {
     }
 
     /**
+     * 配送地址
+     */
+    public function shipping_address() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('ShippingAddress')->_getShippingAddressList($offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 获取购物车列表
      */
     public function shopping_car() {

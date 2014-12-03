@@ -1102,6 +1102,35 @@
                     <td><div class="failed_return_36"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">配送地址列表</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/shipping_address</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取条数，非负整数）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_37"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_37"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1186,6 +1215,8 @@ $(function() {
     $(".failed_return_35").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_36").JSONView({"status":1,"result":"\u5220\u9664\u6210\u529f"});
     $(".failed_return_36").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_37").JSONView({"status":1,"result":[{"id":"2","city":"\u5ee3\u5dde\u5e02","district":"\u5929\u6cb3\u5340","road_number":"189\u865f","community":"\u7f8a\u57ce\u82b1\u5712","building":"\u5eb7\u82d1\u516b\u5ea7401","shipping_fee":"10.00","discount":"20.00","add_time":"2014-11-13 18:32:07","update_time":"2014-11-13 18:32:17"},{"id":"3","city":"\u5e7f\u5dde\u5e02","district":"\u5929\u6cb3\u533a","road_number":"211","community":"\u84dd\u5929\u82b1\u56ed","building":"12","shipping_fee":"14.00","discount":"12.00","add_time":"2014-12-03 15:55:42","update_time":null}]});
+    $(".failed_return_37").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>

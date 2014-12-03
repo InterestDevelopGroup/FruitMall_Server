@@ -10,6 +10,19 @@
 class ShippingAddressModel extends Model {
 
     /**
+     * 获取配送地址列表（API）
+     *
+     * @param int $offset
+     *            条数
+     * @param int $pagesize
+     *            偏移量
+     * @return array
+     */
+    public function _getShippingAddressList($offset, $pagesize) {
+        return $this->limit($offset, $pagesize)->select();
+    }
+
+    /**
      * 添加配送地址
      *
      * @param string $city
