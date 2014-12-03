@@ -34,7 +34,7 @@ class ReturnsModel extends Model {
             'status' => 3
         ))->count()) {
             return array(
-                'status' => 1,
+                'status' => 0,
                 'result' => '该状态的订单不能申请退货'
             );
         }
