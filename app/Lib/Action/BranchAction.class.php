@@ -152,13 +152,13 @@ class BranchAction extends AdminAction {
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $branch = D('Branch');
-            $total = $branch->getBranchCount($keyword);
+            $total = $branch->getBranchCount($keyword, $this->admin_info);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $branch->getBranchList($page, $pageSize, $order, $sort, $keyword));
+                }, $branch->getBranchList($page, $pageSize, $order, $sort, $keyword, $this->admin_info));
             } else {
                 $rows = null;
             }

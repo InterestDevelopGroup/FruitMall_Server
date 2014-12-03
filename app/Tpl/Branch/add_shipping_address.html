@@ -1,10 +1,10 @@
 <include file="./Public/html/header.html" />
 <div class="address_list_main">
     <div class="address_list_main_box">
-    	<table>
-        	<tr>
-            	<th width="5%">&nbsp;</th>
-            	<th width="10%">市</th>
+        <table>
+            <tr>
+                <th width="5%">&nbsp;</th>
+                <th width="10%">市</th>
                 <th width="10%">区</th>
                 <th width="15%">路牌号</th>
                 <th width="15%">小区（社区）、建筑名</th>
@@ -14,7 +14,7 @@
             </tr>
             <volist name="shippingAddressList" id="val">
             <tr>
-            	<td><input type="radio" value="<{$val['id']}>" name="shipping_address" /></td>
+                <td><input type="radio" value="<{$val['id']}>" name="shipping_address" /></td>
                 <td><{$val['city']}></td>
                 <td><{$val['district']}></td>
                 <td><{$val['road_number']}></td>
@@ -27,39 +27,39 @@
         </table>
     </div>
     <div class="page">
-    	<{$page}>
+        <{$page}>
     </div>
 </div>
 <script type="text/javascript">
 $(function() {
-	$(".address_list_main_box table tr:even").css({"background":"#ddd"});
-	$(".address_list_main_box table tr:odd").css({"background":"#f0f"});
+    $(".address_list_main_box table tr:even").css({"background":"#ddd"});
+    $(".address_list_main_box table tr:odd").css({"background":"#f0f"});
 });
 
 //检测配送地址
 function ckShippingAddressId() {
-	var shipping_address_id = $("input[name='shipping_address']").val() ? $("input[name='shipping_address']").val() : 0;
-	if (shipping_address_id == 0) {
-		$.ligerDialog.alert('请选择一个地址', '温馨提示(^_^)', 'warn');
-		return false;
-	}
-	return true;
+    var shipping_address_id = $("input[name='shipping_address']").filter(':checked').val() ? $("input[name='shipping_address']").filter(':checked').val() : 0;
+    if (shipping_address_id == 0) {
+        $.ligerDialog.alert('请选择一个地址', '温馨提示(^_^)', 'warn');
+        return false;
+    }
+    return true;
 }
 
 //检测数据
 function checkData() {
-	if (!ckShippingAddressId()) return false;
-	var shipping_address_id = $("input[name='shipping_address']").val();
-	return {shipping_address_id: shipping_address_id};
+    if (!ckShippingAddressId()) return false;
+    var shipping_address_id = $("input[name='shipping_address']").filter(':checked').val();
+    return {shipping_address_id: shipping_address_id};
 }
 
 //提交数据
 function addShippingAddressFormSubmit() {
-	if (checkData()) {
-		$.post("<{:U('branch/add_shipping_address')}>", checkData(), function(data) {
-			window.parent.addShippingAddressCallback(data);
-		}, 'json');
-	}
+    if (checkData()) {
+        $.post("<{:U('branch/add_shipping_address')}>", checkData(), function(data) {
+            window.parent.addShippingAddressCallback(data);
+        }, 'json');
+    }
 }
 </script>
 <style type="text/css">

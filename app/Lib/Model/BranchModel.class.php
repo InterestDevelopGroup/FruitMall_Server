@@ -122,13 +122,11 @@ class BranchModel extends Model {
      *            关键字
      * @return int
      */
-    public function getBranchCount($keyword) {
-        empty($keyword) || $this->where(array(
-            "name" => array(
-                "like",
-                "%{$keyword}%"
-            )
-        ));
+    public function getBranchCount($keyword, $adminInfo) {
+        $where = array();
+        $adminInfo['type'] || $where['admin_id'] = $adminInfo['id'];
+        empty($keyword) || $where['name'] = array("like", "%{$keyword}%");
+        empty($where) || $this->where($where);
         return (int) $this->count();
     }
 
@@ -147,14 +145,12 @@ class BranchModel extends Model {
      *            关键字
      * @return array
      */
-    public function getBranchList($page, $pageSize, $order, $sort, $keyword) {
+    public function getBranchList($page, $pageSize, $order, $sort, $keyword, $adminInfo) {
         $offset = ($page - 1) * $pageSize;
-        empty($keyword) || $this->where(array(
-            "b.name" => array(
-                "like",
-                "%{$keyword}%"
-            )
-        ));
+        $where = array();
+        $adminInfo['type'] || $where['admin_id'] = $adminInfo['id'];
+        empty($keyword) || $where['name'] = array("like", "%{$keyword}%");
+        empty($where) || $this->where($where);
         return $this->table($this->getTableName() . " AS b ")->join(array(
             " LEFT JOIN " . M('AdminUser')->getTableName() . " AS au ON au.id = b.admin_id "
         ))->field(array(

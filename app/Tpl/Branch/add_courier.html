@@ -1,15 +1,15 @@
 <include file="./Public/html/header.html" />
 <div class="courier_list_main">
     <div class="courier_list_main_box">
-    	<table>
-        	<tr>
-            	<th width="10%">&nbsp;</th>
-            	<th width="45%">真实姓名</th>
+        <table>
+            <tr>
+                <th width="10%">&nbsp;</th>
+                <th width="45%">真实姓名</th>
                 <th width="45%">手机</th>
             </tr>
             <volist name="courierList" id="val">
             <tr>
-            	<td><input type="radio" value="<{$val['id']}>" name="courier" /></td>
+                <td><input type="radio" value="<{$val['id']}>" name="courier" /></td>
                 <td><{$val['real_name']}></td>
                 <td><{$val['phone']}></td>
             </tr>
@@ -17,39 +17,39 @@
         </table>
     </div>
     <div class="page">
-    	<{$page}>
+        <{$page}>
     </div>
 </div>
 <script type="text/javascript">
 $(function() {
-	$(".courier_list_main_box table tr:even").css({"background":"#ddd"});
-	$(".courier_list_main_box table tr:odd").css({"background":"#f0f"});
+    $(".courier_list_main_box table tr:even").css({"background":"#ddd"});
+    $(".courier_list_main_box table tr:odd").css({"background":"#f0f"});
 });
 
 //检测送货人员
 function ckCourierId() {
-	var courier_id = $("input[name='courier']").val() ? $("input[name='courier']").val() : 0;
-	if (courier_id == 0) {
-		$.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
-		return false;
-	}
-	return true;
+    var courier_id = $("input[name='courier']").filter(':checked').val() ? $("input[name='courier']").filter(':checked').val() : 0;
+    if (courier_id == 0) {
+        $.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
+        return false;
+    }
+    return true;
 }
 
 //检测数据
 function checkData() {
-	if (!ckCourierId()) return false;
-	var courier_id = $("input[name='courier']").val();
-	return {courier_id: courier_id};
+    if (!ckCourierId()) return false;
+    var courier_id = $("input[name='courier']").filter(':checked').val();
+    return {courier_id: courier_id};
 }
 
 //提交数据
 function addCourierFormSubmit() {
-	if (checkData()) {
-		$.post("<{:U('branch/add_courier')}>", checkData(), function(data) {
-			window.parent.addCourierCallback(data);
-		}, 'json');
-	}
+    if (checkData()) {
+        $.post("<{:U('branch/add_courier')}>", checkData(), function(data) {
+            window.parent.addCourierCallback(data);
+        }, 'json');
+    }
 }
 </script>
 <style type="text/css">
