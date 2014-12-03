@@ -537,8 +537,10 @@ class ApiAction extends Action {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
             $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : $this->redirect('/');
             $order = isset($_POST['order']) ? trim($_POST['order']) : $this->redirect('/');
+            $coupon_id = (isset($_POST['coupon_id']) && intval($_POST['coupon_id'])) ? intval($_POST['coupon_id']) : null;
             $shipping_time = (isset($_POST['shipping_time']) && !empty($_POST['shipping_time'])) ? trim($_POST['shipping_time']) : null;
             $shipping_fee = isset($_POST['shipping_fee']) ? floatval($_POST['shipping_fee']) : $this->redirect('/');
+            $total_amount = isset($_POST['total_amount']) ? floatval($_POST['total_amount']) : $this->redirect('/');
             $remark = (isset($_POST['remark']) && !empty($_POST['remark'])) ? trim($_POST['remark']) : null;
             if ($user_id < 1 || $address_id < 1 || empty($order)) {
                 $this->ajaxReturn(array(
@@ -546,7 +548,7 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Order')->addOrder($user_id, $address_id, $order, $shipping_time, $shipping_fee, $remark));
+            $this->ajaxReturn(D('Order')->addOrder($user_id, $address_id, $order, $coupon_id, $shipping_time, $shipping_fee, $total_amount, $remark));
         } else {
             $this->redirect('/');
         }

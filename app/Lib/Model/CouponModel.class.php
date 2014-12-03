@@ -80,4 +80,76 @@ class CouponModel extends Model {
         }
     }
 
+    /**
+     * 使用水果劵
+     *
+     * @param int $coupon_id
+     *            水果劵ID
+     * @param float $total_amount
+     *            订单总金额
+     * @return array
+     */
+    public function useCoupon($coupon_id, $total_amount) {
+        $coupon = $this->where(array(
+            'id' => $coupon_id
+        ))->find();
+        // 不存在水果劵
+        if (!$coupon) {
+            return array(
+                'status' => 0,
+                'result' => '水果劵不存在'
+            );
+        }
+        // 水果劵已经过期
+        if ($coupon['expire_time'] && $coupon['expire_time'] < time()) {
+            return array(
+                'status' => 0,
+                'result' => '水果劵已经过期'
+            );
+        }
+        // 获取使用规则
+        $usage = M('CouponUsage')->field(array(
+            'condition' => '_condition',
+            'score'
+        ))->where(array(
+            'condition' => array(
+                'elt',
+                $total_amount
+            )
+        ))->order("_condition DESC")->find();
+        if ($usage['score'] >= $coupon['score']) {
+            // 允许使用面值>=水果劵面值，删除水果劵
+            if ($this->where(array(
+                'id' => $coupon['id']
+            ))->delete()) {
+                return array(
+                    'status' => 1,
+                    'result' => $coupon['score']
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'result' => '使用水果劵失败'
+                );
+            }
+        } else {
+            // 允许使用面值<水果劵面值，更新水果劵面值
+            if ($this->where(array(
+                'id' => $coupon['id']
+            ))->save(array(
+                'score' => $coupon['score'] - $usage['score']
+            ))) {
+                return array(
+                    'status' => 1,
+                    'result' => $usage['score']
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'result' => '使用水果劵失败'
+                );
+            }
+        }
+    }
+
 }

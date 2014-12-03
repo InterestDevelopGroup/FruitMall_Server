@@ -1,0 +1,127 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>描述：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="description" value="<{$usage['description']}>" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>使用条件：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="condition" value="<{$usage['condition']}>" />&nbsp;&nbsp;元</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>面值：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="score" value="<{$usage['score']}>" />&nbsp;&nbsp;元</td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#description").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '规则描述不能超过10个字');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckDescription();
+    });
+	$("#condition").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '必须消费满该条件才能使用水果劵，必须为正整数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckCondition();
+    });
+	$("#score").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '允许使用水果劵的面值，必须为正整数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckScore();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测规则描述
+function ckDescription() {
+    var description = $.trim($("#description").val());
+    if (description.length == 0) {
+        addTip($("#description").parent('td').next('td:last'), '规则描述不能为空');
+        return false;
+    }
+    if (description.length > 10) {
+        addTip($("#description").parent('td').next('td:last'), '规则描述不能超过10个字');
+        return false;
+    }
+    return true;
+}
+
+//检测条件
+function ckCondition() {
+	var condition = $.trim($("#condition").val());
+    if (condition.length == 0) {
+        addTip($("#condition").parent('td').next('td:last'), '使用条件不能为空');
+        return false;
+    }
+	if (!/^[1-9][0-9]*$/.test(condition)) {
+		addTip($("#condition").parent('td').next('td:last'), '使用条件必须为正整数');
+        return false;
+	}
+    return true;
+}
+
+//检测面值
+function ckScore() {
+    var score = $.trim($("#score").val());
+    if (score.length == 0) {
+        addTip($("#score").parent('td').next('td:last'), '面值不能为空');
+        return false;
+    }
+	if (!/^[1-9][0-9]*$/.test(score)) {
+		addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
+        return false;
+	}
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckDescription()) return false;
+	if (!ckCondition()) return false;
+	if (!ckScore()) return false;
+    var description = $.trim($("#description").val());
+	var condition = $.trim($("#condition").val());
+	var score = $.trim($("#score").val());
+    return {
+		description: description,
+		condition: condition,
+		score: score
+	};
+}
+
+//提交表单
+function updateUsageFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("coupon/update_usage")}>?id=<{$usage["id"]}>', checkForm(), function(data) {
+            window.parent.updateUsageCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

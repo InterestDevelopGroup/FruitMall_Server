@@ -52,6 +52,7 @@ class OrderModel extends Model {
             'o.shipping_time',
             'o.shipping_fee',
             'o.remark',
+            'o.coupon',
             'o.add_time',
             'o.update_time',
             'a.consignee',
@@ -79,6 +80,11 @@ class OrderModel extends Model {
                     $v['total_amount'] += ($v_1['price'] * $v_1['quantity']);
                 }
             }
+            if ($v['order_custom']) {
+                foreach ($v['order_custom'] as $v_1) {
+                    $v['total_amount'] += ($v_1['price'] * $v_1['quantity']);
+                }
+            }
         }
         return $order_list;
     }
@@ -102,7 +108,17 @@ class OrderModel extends Model {
      *            备注
      * @return array
      */
-    public function addOrder($user_id, $address_id, $order, $shipping_time, $shipping_fee, $remark) {
+    public function addOrder($user_id, $address_id, $order, $coupon_id, $shipping_time, $shipping_fee, $total_amount, $remark) {
+        if ($coupon_id) {
+            $_use = D('Coupon')->useCoupon($coupon_id, $total_amount);
+            if ($_use['status']) {
+                $coupon = $_use['result'];
+            } else {
+                return $_use;
+            }
+        } else {
+            $coupon = null;
+        }
         // 开启事务
         $this->startTrans();
         if ($this->add(array(
@@ -113,6 +129,7 @@ class OrderModel extends Model {
             'shipping_time' => $shipping_time,
             'shipping_fee' => $shipping_fee,
             'remark' => $remark,
+            'coupon' => $coupon,
             'add_time' => time()
         ))) {
             $order_id = $this->getLastInsID();
@@ -282,6 +299,7 @@ class OrderModel extends Model {
      */
     public function getOrderDetail($order_id) {
         $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
+            'og.goods_id',
             'og.amount' => 'quantity',
             'g.name',
             'g.price',
@@ -309,6 +327,7 @@ class OrderModel extends Model {
             'og.order_id' => $order_id
         ))->select();
         $order_package = M('OrderPackage')->table(M('OrderPackage')->getTableName() . " AS op ")->field(array(
+            'op.package_id',
             'op.amount' => 'quantity',
             'p.name',
             'p.price',
@@ -325,9 +344,28 @@ class OrderModel extends Model {
         ))->where(array(
             'op.order_id' => $order_id
         ))->select();
+        $order_custom = M('OrderCustom')->table(M('OrderCustom')->getTableName() . " AS oc")->join(array(
+            " LEFT JOIN " . M('Custom')->getTableName() . " AS c ON oc.custom_id = c.custom_id "
+        ))->field(array(
+            'oc.custom_id',
+            'oc.amount' => 'quantity',
+            'c.name',
+            "(
+                SELECT
+                    sum(cg.quantity * g.price)
+                FROM
+                    fruit_custom_goods AS cg
+                LEFT JOIN
+                    fruit_goods AS g ON cg.goods_id = g.id
+                WHERE
+                    cg.custom_id = oc.custom_id)" => 'price'
+        ))->where(array(
+            'oc.order_id' => $order_id
+        ))->select();
         return array(
             'order_goods' => $order_goods,
-            'order_package' => $order_package
+            'order_package' => $order_package,
+            'order_custom' => $order_custom
         );
     }
 
@@ -376,6 +414,13 @@ class OrderModel extends Model {
         ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
+    /**
+     * 打印订单
+     *
+     * @param int $order_id
+     *            订单ID
+     * @return array
+     */
     public function printOrder($order_id) {
         $result = $this->table($this->getTableName() . " AS o ")->join(array(
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "

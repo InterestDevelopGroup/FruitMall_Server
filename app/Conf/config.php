@@ -124,8 +124,12 @@ $app_config = array(
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => '所有规则',
+                    'text' => '获取规则',
                     'url' => '/coupon/rule'
+                ),
+                'use' => array(
+                    'text' => '使用规则',
+                    'url' => '/coupon/usage'
                 ),
                 'how_to_get' => array(
                     'text' => '编辑获取规则',
@@ -257,6 +261,10 @@ $app_config = array(
             'add_rule' => 'coupon|add_rule',
             'delete_rule' => 'coupon|delete_rule',
             'update_rule' => 'coupon|update_rule',
+            'usage' => 'coupon|usage',
+            'add_usage' => 'coupon|add_usage',
+            'delete_usage' => 'coupon|delete_usage',
+            'update_usage' => 'coupon|update_usage',
             'how_to_get' => 'coupon|how_to_get',
             'how_to_use' => 'coupon|how_to_use'
         ),
@@ -364,10 +372,14 @@ $app_config = array(
         ),
         'coupon' => array(
             'coupon' => '水果劵',
-            'rule' => '所有规则',
-            'add_rule' => '添加规则',
-            'delete_rule' => '删除规则',
-            'update_rule' => '更新规则',
+            'rule' => '获取规则',
+            'add_rule' => '添加获取规则',
+            'delete_rule' => '删除获取规则',
+            'update_rule' => '更新获取规则',
+            'usage' => '使用规则',
+            'add_usage' => '添加使用规则',
+            'delete_usage' => '删除使用规则',
+            'update_usage' => '更新使用规则',
             'how_to_get' => '编辑获取规则',
             'how_to_use' => '编辑使用规则'
         ),
@@ -433,6 +445,9 @@ $app_config = array(
         'coupon|rule',
         'coupon|add_rule',
         'coupon|update_rule',
+        'coupon|usage',
+        'coupon|add_usage',
+        'coupon|update_usage',
         'coupon|how_to_get',
         'coupon|how_to_use',
         'order|index',
