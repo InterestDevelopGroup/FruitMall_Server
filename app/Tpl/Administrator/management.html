@@ -26,8 +26,8 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "帐号", name: 'username', align: 'center', width: '10%', isSort: true},
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '10%', isSort: true},
+            {display: "帐号", name: 'username', align: 'center', width: '12%', isSort: true},
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: true},
             {display: "邮箱", name: 'email', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
@@ -41,8 +41,12 @@ $(function(){
                     return parseInt(value) ? '正常' : '禁用';
                 }
             },
-            {display: "简介", name: 'desc', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
-                    return value ? value : '暂无';
+            {display: "分店", name: 'branch', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (rowdata.type == 1) {
+                        return '---';
+                    } else {
+                        return value ? value : '暂无';
+                    }
                 }
             },
             {display: "操作", align: 'center', width:'12%', render: function(rowdata, rowindex, value) {
@@ -73,6 +77,11 @@ $(function(){
 });
 //明细
 function f_onShowDetail(record, container, callback) {
+    if (record.type == 1) {
+        var branch = '---';
+    } else {
+        var branch = record.branch ? record.branch : '暂无';
+    }
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>帐号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>真实姓名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.real_name + "</td></tr>");
@@ -81,6 +90,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>上次登录时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.last_time ? record.last_time : '从未登陆') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.status) ? '正常' : '禁用') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>类型：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.type) ? '系统管理员' : '普通管理员') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>分店：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + branch + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>简介：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.desc ? record.desc : '暂无') + "</td></tr>");
     out.push('</table>');
     $(container).html(out.join(''));

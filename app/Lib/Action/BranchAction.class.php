@@ -36,9 +36,12 @@ class BranchAction extends AdminAction {
      */
     public function add_courier() {
         if ($this->isAjax()) {
-            $courier_id = isset($_POST['courier_id']) ? intval($_POST['courier_id']) : $this->redirect('/');
+            $courier_id = isset($_POST['courier_id']) ? (array) ($_POST['courier_id']) : $this->redirect('/');
             if (M('BranchCourier')->where(array(
-                'courier_id' => $courier_id
+                'courier_id' => array(
+                    'in',
+                    $courier_id
+                )
             ))->count()) {
                 $this->ajaxReturn(array(
                     'status' => false,
@@ -48,8 +51,11 @@ class BranchAction extends AdminAction {
                 $this->ajaxReturn(array(
                     'status' => true,
                     'result' => M('Courier')->where(array(
-                        'id' => $courier_id
-                    ))->find()
+                        'id' => array(
+                            'in',
+                            $courier_id
+                        )
+                    ))->select()
                 ));
             }
         } else {
@@ -73,9 +79,12 @@ class BranchAction extends AdminAction {
      */
     public function add_shipping_address() {
         if ($this->isAjax()) {
-            $shipping_address_id = isset($_POST['shipping_address_id']) ? intval($_POST['shipping_address_id']) : $this->redirect('/');
+            $shipping_address_id = isset($_POST['shipping_address_id']) ? (array) ($_POST['shipping_address_id']) : $this->redirect('/');
             if (M('BranchShippingAddress')->where(array(
-                'shipping_address_id' => $shipping_address_id
+                'shipping_address_id' => array(
+                    'in',
+                    $shipping_address_id
+                )
             ))->count()) {
                 $this->ajaxReturn(array(
                     'status' => false,
@@ -85,8 +94,11 @@ class BranchAction extends AdminAction {
                 $this->ajaxReturn(array(
                     'status' => true,
                     'result' => M('ShippingAddress')->where(array(
-                        'id' => $shipping_address_id
-                    ))->find()
+                        'id' => array(
+                            'in',
+                            $shipping_address_id
+                        )
+                    ))->select()
                 ));
             }
         } else {

@@ -205,18 +205,22 @@ class AdminUserModel extends Model {
      *            排序方式
      */
     public function getAdminList($page, $pageSize, $order, $sort) {
-        return $this->field(array(
-            'id',
-            'username',
-            'password',
-            'real_name',
-            'email',
-            'add_time',
-            'last_time',
-            'type',
-            'status',
-            'desc'
-        ))->limit(($page - 1) * $pageSize, $pageSize)->order($order . " " . $sort)->select();
+        $offset = ($page - 1) * $pageSize;
+        return $this->table($this->getTableName() . " AS au ")->field(array(
+            'au.id',
+            'au.username',
+            'au.password',
+            'au.real_name',
+            'au.email',
+            'au.add_time',
+            'au.last_time',
+            'au.type',
+            'au.status',
+            'au.desc',
+            'b.name' => 'branch'
+        ))->join(array(
+            " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.admin_id = au.id "
+        ))->limit($offset, $pageSize)->order($order . " " . $sort)->select();
     }
 
     /**

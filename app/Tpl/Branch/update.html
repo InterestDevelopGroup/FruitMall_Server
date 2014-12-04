@@ -28,9 +28,9 @@
                 <td align="left" class="tipmsg" id="shipping_address_tips"></td>
             </tr>
             <tr>
-            	<td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td colspan="2" id="shipping_address">
-                	<table id="shipping_address_table">
+                    <table id="shipping_address_table">
                         <tr>
                             <th width="10%">市</th>
                             <th width="10%">区</th>
@@ -66,9 +66,9 @@
                 <td align="left" class="tipmsg" id="courier_tips"></td>
             </tr>
             <tr>
-            	<td>&nbsp;</td>
+                <td>&nbsp;</td>
                 <td colspan="2" id="couriers">
-                	<table id="couriers_table">
+                    <table id="couriers_table">
                         <tr>
                             <th width="40%">真实姓名</th>
                             <th width="40%">手机</th>
@@ -90,7 +90,7 @@
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <select id="admin_id">
-                    	<option value="0">--请选择--</option>
+                        <option value="0">--请选择--</option>
                         <volist name="admin" id="val">
                         <option value="<{$val['id']}>" <if condition="$branch['admin_id'] eq $val['id']">selected</if>><{$val['real_name']}></option>
                         </volist>
@@ -126,11 +126,11 @@ $(function() {
         ckName();
     });
     $("#admin_id").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
-		ckAdminId();
-	});
-	table_color('shipping_address');
-	table_color('couriers');
+        removeTip($(this).parent('td').next('td:last'));
+        ckAdminId();
+    });
+    table_color('shipping_address');
+    table_color('couriers');
 });
 
 //添加提示
@@ -158,12 +158,12 @@ function ckName() {
 
 //检测管理员
 function ckAdminId() {
-	var admin_id = $("#admin_id").val();
-	if (admin_id == 0) {
-		addTip($("#admin_id").parent('td').next('td:last'), '请为该分店选择一个管理员');
-		return false;
-	}
-	return true;
+    var admin_id = $("#admin_id").val();
+    if (admin_id == 0) {
+        addTip($("#admin_id").parent('td').next('td:last'), '请为该分店选择一个管理员');
+        return false;
+    }
+    return true;
 }
 
 //检测配送地址
@@ -192,12 +192,12 @@ function checkForm() {
     if (!ckCourier()) return false;
     var name = $.trim($("#name").val());
     var admin_id = $("#admin_id").val();
-	var remark = $.trim($("#remark").val());
+    var remark = $.trim($("#remark").val());
     return {
         name : name,
         admin_id : admin_id,
-		shipping_address_id: shipping_address_id,
-		courier_id: courier_id,
+        shipping_address_id: shipping_address_id,
+        courier_id: courier_id,
         remark : remark
     };
 }
@@ -231,28 +231,31 @@ function add_shipping_address() {
 //添加配送地址回调
 function addShippingAddressCallback(obj) {
     addShippingAddress.close();
-	removeTip($("#shipping_address_tips"));
-	if (!obj.status) {
-		addTip($("#shipping_address_tips"), obj.result);
-		return false;
-	}
-	if ($.inArray(parseInt(obj.result.id), shipping_address_id) != -1) {
-		addTip($("#shipping_address_tips"), '您已经添加过该地址了！');
-		return false;
-	}
-	var str = '<tr>' + 
-				'<td>' + obj.result.city + '</td>' +
-				'<td>' + obj.result.district + '</td>' +
-				'<td>' + obj.result.road_number + '</td>' +
-				'<td>' + obj.result.community + '</td>' +
-				'<td>' + obj.result.building + '</td>' +
-				'<td>' + obj.result.shipping_fee + '</td>' +
-				'<td>' + obj.result.discount + '</td>' +
-				'<td><a href="javascript:void(0);" onclick="delete_shipping_address($(this), '+obj.result.id+')">删除</a></td>' +
-				'</tr>';
+    removeTip($("#shipping_address_tips"));
+    if (!obj.status) {
+        addTip($("#shipping_address_tips"), obj.result);
+        return false;
+    }
+    var str = '';
+    for (var i in obj.result) {
+        if ($.inArray(parseInt(obj.result[i].id), shipping_address_id) != -1) {
+            addTip($("#shipping_address_tips"), '您已经添加过该地址了！');
+            return false;
+        }
+        str += '<tr>' + 
+                '<td>' + obj.result[i].city + '</td>' +
+                '<td>' + obj.result[i].district + '</td>' +
+                '<td>' + obj.result[i].road_number + '</td>' +
+                '<td>' + obj.result[i].community + '</td>' +
+                '<td>' + obj.result[i].building + '</td>' +
+                '<td>' + obj.result[i].shipping_fee + '</td>' +
+                '<td>' + obj.result[i].discount + '</td>' +
+                '<td><a href="javascript:void(0);" onclick="delete_shipping_address($(this), '+obj.result[i].id+')">删除</a></td>' +
+                '</tr>';
+        shipping_address_id.push(parseInt(obj.result[i].id));
+    }
     $("#shipping_address_table").append(str);
-	table_color('shipping_address');
-	shipping_address_id.push(parseInt(obj.result.id));
+    table_color('shipping_address');
 }
 
 //删除配送地址
@@ -260,7 +263,7 @@ function delete_shipping_address($this, address_id) {
     var index = shipping_address_id.indexOf(parseInt(address_id));
     shipping_address_id.splice(index, 1);
     $this.parent().parent().remove();
-	table_color('shipping_address');
+    table_color('shipping_address');
 }
 
 //添加送货人员
@@ -277,23 +280,26 @@ function add_courier() {
 //添加送货人员回调
 function addCourierCallback(obj) {
     addCourier.close();
-	removeTip($("#courier_tips"));
-	if (!obj.status) {
-		addTip($("#courier_tips"), obj.result);
-		return false;
-	}
-	if ($.inArray(parseInt(obj.result.id), courier_id) != -1) {
-		addTip($("#courier_tips"), '您已经添加过该送货员了！');
-		return false;
-	}
-	var str = '<tr>' +
-				'<td>' + obj.result.real_name + '</td>' +
-				'<td>' + obj.result.phone + '</td>' + 
-				'<td><a href="javascript:void(0);" onclick="delete_courier($(this), ' + obj.result.id + ')">删除</a></td>' +
-				'</tr>';
+    removeTip($("#courier_tips"));
+    if (!obj.status) {
+        addTip($("#courier_tips"), obj.result);
+        return false;
+    }
+    var str = '';
+    for (var i in obj.result) {
+        if ($.inArray(parseInt(obj.result[i].id), courier_id) != -1) {
+            addTip($("#courier_tips"), '您已经添加过该送货员了！');
+            return false;
+        }
+        str += '<tr>' +
+                '<td>' + obj.result[i].real_name + '</td>' +
+                '<td>' + obj.result[i].phone + '</td>' + 
+                '<td><a href="javascript:void(0);" onclick="delete_courier($(this), ' + obj.result[i].id + ')">删除</a></td>' +
+                '</tr>';
+        courier_id.push(parseInt(obj.result[i].id));
+    }
     $("#couriers_table").append(str);
-	table_color('couriers');
-	courier_id.push(parseInt(obj.result.id));
+    table_color('couriers');
 }
 
 //删除送货人员
@@ -301,13 +307,13 @@ function delete_courier($this, id) {
     var index = courier_id.indexOf(parseInt(id));
     courier_id.splice(index, 1);
     $this.parent().parent().remove();
-	table_color('couriers');
+    table_color('couriers');
 }
 
 //table颜色
 function table_color(id) {
-	$("#" + id + " table tr:even").css({"background":"#ddd"});
-	$("#" + id + " table tr:odd").css({"background":"#f0f"});
+    $("#" + id + " table tr:even").css({"background":"#ddd"});
+    $("#" + id + " table tr:odd").css({"background":"#f0f"});
 }
 //]]>
 </script>

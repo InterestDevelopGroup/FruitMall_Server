@@ -3,7 +3,7 @@
     <div class="address_list_main_box">
         <table>
             <tr>
-                <th width="5%">&nbsp;</th>
+                <th width="5%"><input type="checkbox" name="a_shipping_address" /></th>
                 <th width="10%">市</th>
                 <th width="10%">区</th>
                 <th width="15%">路牌号</th>
@@ -14,7 +14,7 @@
             </tr>
             <volist name="shippingAddressList" id="val">
             <tr>
-                <td><input type="radio" value="<{$val['id']}>" name="shipping_address" /></td>
+                <td><input type="checkbox" value="<{$val['id']}>" name="shipping_address" /></td>
                 <td><{$val['city']}></td>
                 <td><{$val['district']}></td>
                 <td><{$val['road_number']}></td>
@@ -34,22 +34,38 @@
 $(function() {
     $(".address_list_main_box table tr:even").css({"background":"#ddd"});
     $(".address_list_main_box table tr:odd").css({"background":"#f0f"});
+	$("input[name=a_shipping_address]").change(function() {
+		var obj = $(this);
+		$("input[name=shipping_address]").each(function(index, element) {
+			element.checked = obj.is(":checked");
+		});
+	});
 });
 
 //检测配送地址
 function ckShippingAddressId() {
-    var shipping_address_id = $("input[name='shipping_address']").filter(':checked').val() ? $("input[name='shipping_address']").filter(':checked').val() : 0;
-    if (shipping_address_id == 0) {
-        $.ligerDialog.alert('请选择一个地址', '温馨提示(^_^)', 'warn');
+	var shipping_address_id = new Array();
+	$("input[name=shipping_address]").each(function(index, element) {
+		if (element.checked) {
+			shipping_address_id.push(parseInt(element.value));
+		}
+	});
+	if (shipping_address_id.length == 0) {
+		$.ligerDialog.alert('请选择一个地址', '温馨提示(^_^)', 'warn');
         return false;
-    }
-    return true;
+	}
+	return true;
 }
 
 //检测数据
 function checkData() {
     if (!ckShippingAddressId()) return false;
-    var shipping_address_id = $("input[name='shipping_address']").filter(':checked').val();
+	var shipping_address_id = new Array();
+	$("input[name=shipping_address]").each(function(index, element) {
+		if (element.checked) {
+			shipping_address_id.push(parseInt(element.value));
+		}
+	});
     return {shipping_address_id: shipping_address_id};
 }
 

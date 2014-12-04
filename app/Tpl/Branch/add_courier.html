@@ -3,13 +3,13 @@
     <div class="courier_list_main_box">
         <table>
             <tr>
-                <th width="10%">&nbsp;</th>
+                <th width="10%"><input type="checkbox" name="a_courier" /></th>
                 <th width="45%">真实姓名</th>
                 <th width="45%">手机</th>
             </tr>
             <volist name="courierList" id="val">
             <tr>
-                <td><input type="radio" value="<{$val['id']}>" name="courier" /></td>
+                <td><input type="checkbox" value="<{$val['id']}>" name="courier" /></td>
                 <td><{$val['real_name']}></td>
                 <td><{$val['phone']}></td>
             </tr>
@@ -24,22 +24,38 @@
 $(function() {
     $(".courier_list_main_box table tr:even").css({"background":"#ddd"});
     $(".courier_list_main_box table tr:odd").css({"background":"#f0f"});
+	$("input[name=a_courier]").change(function() {
+		var obj = $(this);
+		$("input[name=courier]").each(function(index, element) {
+			element.checked = obj.is(":checked");
+		});
+	});
 });
 
 //检测送货人员
 function ckCourierId() {
-    var courier_id = $("input[name='courier']").filter(':checked').val() ? $("input[name='courier']").filter(':checked').val() : 0;
-    if (courier_id == 0) {
-        $.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
+    var courier_id = new Array();
+	$("input[name=courier]").each(function(index, element) {
+		if (element.checked) {
+			courier_id.push(parseInt(element.value));
+		}
+	});
+	if (courier_id.length == 0) {
+		$.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
         return false;
-    }
-    return true;
+	}
+	return true;
 }
 
 //检测数据
 function checkData() {
     if (!ckCourierId()) return false;
-    var courier_id = $("input[name='courier']").filter(':checked').val();
+    var courier_id = new Array();
+	$("input[name=courier]").each(function(index, element) {
+		if (element.checked) {
+			courier_id.push(parseInt(element.value));
+		}
+	});
     return {courier_id: courier_id};
 }
 

@@ -37,14 +37,14 @@ $(function(){
                     return value ? value : '暂无';
                 }
             },
-			{display: "备注", name: 'remark', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
+            {display: "备注", name: 'remark', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
             {display: "操作", width:'10%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-					return '<a href="javascript:void(0);" onclick="update(' + rowdata.id + ')">编辑</a>'
-				}
-			}
+                    return '<a href="javascript:void(0);" onclick="update(' + rowdata.id + ')">编辑</a>'
+                }
+            }
             ],
             url: '<{:U("branch/index")}>?keyword=<{$keyword}>',
             dataAction: 'server',
@@ -71,40 +71,40 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>备注：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.remark ? record.remark : '暂无') + "</td></tr>");
     out.push("</table>");
     $(container).html(out.join(''));
-	$.ajax({
-		url: "<{:U('branch/getBranchShippingAddress')}>",
+    $.ajax({
+        url: "<{:U('branch/getBranchShippingAddress')}>",
         type: 'POST',
         data: {branch_id : record.id},
         dataType: "json",
         async: false,
         success: function(data) {
-			$(container).append('<h3 style="margin:10px;">分店配送地址：</h3>');
-			var str = '<table class="shipping_address_list_table" style="width:90%;margin:10px;"><tr><th width="10%">市</th><th width="15%">区</th><th width="15%">路牌号</th><th width="15%">小区（社区）、建筑名</th><th width="15%">栋、几期、座</th><th width="15%">送货费</th><th width="15%">价格调整比例</th></tr>';
-			for (var i in data) {
-				str += '<tr><td>' + data[i].city + '</td><td>' + data[i].district + '</td><td>' + data[i].road_number + '</td><td>' + data[i].community + '</td><td>' + data[i].building + '</td><td>' + data[i].shipping_fee + '</td><td>' + data[i].discount + '%</td></tr>';
-			}
-			str += '</table>';
-			$(container).append(str);
-			table_color('shipping_address_list_table');
-		}
-	});
-	$.ajax({
-		url: "<{:U('branch/getBranchCourier')}>",
+            $(container).append('<h3 style="margin:10px;">分店配送地址：</h3>');
+            var str = '<table class="shipping_address_list_table" style="width:90%;margin:10px;"><tr><th width="10%">市</th><th width="15%">区</th><th width="15%">路牌号</th><th width="15%">小区（社区）、建筑名</th><th width="15%">栋、几期、座</th><th width="15%">送货费</th><th width="15%">价格调整比例</th></tr>';
+            for (var i in data) {
+                str += '<tr><td>' + data[i].city + '</td><td>' + data[i].district + '</td><td>' + data[i].road_number + '</td><td>' + data[i].community + '</td><td>' + data[i].building + '</td><td>' + data[i].shipping_fee + '</td><td>' + data[i].discount + '%</td></tr>';
+            }
+            str += '</table>';
+            $(container).append(str);
+            table_color('shipping_address_list_table');
+        }
+    });
+    $.ajax({
+        url: "<{:U('branch/getBranchCourier')}>",
         type: 'POST',
         data: {branch_id : record.id},
         dataType: "json",
         async: false,
         success: function(data) {
-			$(container).append('<h3 style="margin:10px;">分店送货人员：</h3>');
-			var str = '<table class="courier_list_table" style="width:400px;margin:10px;"><tr><th width="50%">真实姓名</th><th width="50%">手机</th></tr>';
-			for (var i in data) {
-				str += '<tr><td>' + data[i].real_name + '</td><td>' + data[i].phone + '</td></tr>';
-			}
-			str += '</table>';
-			$(container).append(str);
-			table_color('courier_list_table');
-		}
-	});
+            $(container).append('<h3 style="margin:10px;">分店送货人员：</h3>');
+            var str = '<table class="courier_list_table" style="width:400px;margin:10px;"><tr><th width="50%">真实姓名</th><th width="50%">手机</th></tr>';
+            for (var i in data) {
+                str += '<tr><td>' + data[i].real_name + '</td><td>' + data[i].phone + '</td></tr>';
+            }
+            str += '</table>';
+            $(container).append(str);
+            table_color('courier_list_table');
+        }
+    });
 }
 
 //删除分店
@@ -144,8 +144,8 @@ function update(id) {
 
 //table颜色
 function table_color(className) {
-	$("." + className + " tr:even").css({"background":"#ddd"});
-	$("." + className + " tr:odd").css({"background":"#f0f"});
+    $("." + className + " tr:even").css({"background":"#ddd"});
+    $("." + className + " tr:odd").css({"background":"#f0f"});
 }
 //]]>
 </script>
