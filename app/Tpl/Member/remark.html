@@ -1,0 +1,67 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td">备注：</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="remark" value="<{$member['remark']}>" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#remark").focus(function() {
+		addTip($(this).parent('td').next('td:last'), '用户备注不能超过10个字');
+	}).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckRemark();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测备注
+function ckRemark() {
+    var remark = $.trim($("#remark").val());
+	if (remark.length != 0) {
+		if (remark.length > 10) {
+        	addTip($("#remark").parent('td').next('td:last'), '用户备注不能超过10个字');
+        	return false;			
+		}
+	}
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckRemark()) return false;
+    var remark = $.trim($("#remark").val());
+    return {remark: remark, user_id: <{$member['id']}>};
+}
+
+//提交表单
+function remarkFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("member/remark")}>', checkForm(), function(data) {
+            window.parent.remarkCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

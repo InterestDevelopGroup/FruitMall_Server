@@ -31,7 +31,10 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "分店名称", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "管理员", name: 'admin', align: 'center', width: '16%'},
+            {display: "管理员", name: 'admin', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
             {display: "添加时间", name: 'add_time', align: 'center', width: '16%'},
             {display: "更新时间", name: 'update_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';

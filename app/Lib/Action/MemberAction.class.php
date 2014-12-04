@@ -62,6 +62,33 @@ class MemberAction extends AdminAction {
     }
 
     /**
+     * ajax获取用户地址列表
+     */
+    public function getUserAddressList() {
+        if ($this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Address')->_getAddressList($user_id, null, null));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * ajax获取用户定制列表
+     */
+    public function getUserCustomList() {
+        if ($this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $this->ajaxReturn(array_map(function ($value) {
+                $value['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
+                return $value;
+            }, D('Custom')->_getCustomList($user_id, null, null)));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 会员一览
      */
     public function index() {
@@ -88,6 +115,23 @@ class MemberAction extends AdminAction {
             ));
         } else {
             $this->assign('keyword', $keyword);
+            $this->display();
+        }
+    }
+
+    /**
+     * 用户备注
+     */
+    public function remark() {
+        if ($this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $remark = isset($_POST['remark']) ? trim($_POST['remark']) : $this->redirect('/');
+            $this->ajaxReturn(D('Member')->remark($user_id, $remark));
+        } else {
+            $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
+            $this->assign('member', M('Member')->where(array(
+                'id' => $id
+            ))->find());
             $this->display();
         }
     }

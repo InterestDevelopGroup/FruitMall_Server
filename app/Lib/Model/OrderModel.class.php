@@ -53,6 +53,7 @@ class OrderModel extends Model {
             'o.shipping_fee',
             'o.remark',
             'o.coupon',
+            'o.total_amount',
             'o.add_time',
             'o.update_time',
             'a.consignee',
@@ -69,22 +70,6 @@ class OrderModel extends Model {
         ))->where($where)->limit($offset, $pagesize)->select();
         foreach ($order_list as &$v) {
             $v = array_merge($v, $this->getOrderDetail($v['order_id']));
-            $v['total_amount'] = $v['shipping_fee'];
-            if ($v['order_goods']) {
-                foreach ($v['order_goods'] as $v_1) {
-                    $v['total_amount'] += ($v_1['price'] * $v_1['quantity']);
-                }
-            }
-            if ($v['order_package']) {
-                foreach ($v['order_package'] as $v_1) {
-                    $v['total_amount'] += ($v_1['price'] * $v_1['quantity']);
-                }
-            }
-            if ($v['order_custom']) {
-                foreach ($v['order_custom'] as $v_1) {
-                    $v['total_amount'] += ($v_1['price'] * $v_1['quantity']);
-                }
-            }
         }
         return $order_list;
     }
@@ -130,6 +115,7 @@ class OrderModel extends Model {
             'shipping_fee' => $shipping_fee,
             'remark' => $remark,
             'coupon' => $coupon,
+            'total_amount' => $total_amount,
             'add_time' => time()
         ))) {
             $order_id = $this->getLastInsID();

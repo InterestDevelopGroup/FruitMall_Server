@@ -22,19 +22,31 @@
         </div>
     </div>
 </div>
+<style type="text/css">
+.address_list_table tr{line-height:22px;}
+.address_list_table tr td,.address_list_table tr th{border-collapse:collapse;text-align:center;border:1px #fff solid;}
+.per_custom_goods{width:160px;height:160px;overflow:hidden;display:inline-block;margin-top:12px;margin-left:12px;}
+.per_custom_goods_img{width:160px;height:90px;overflow:hidden;}
+.per_custom_name{width:160px;height:22px;margin-top:4px;line-height:22px;overflow:hidden;}
+.per_custom_amount{width:160px;height:20px;line-height:20px;margin-top:4px;overflow:hidden;}
+</style>
 <script type="text/javascript">
 //<![CDATA[
 var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "用户名", name: 'username', align: 'center', width: '14%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "用户名", name: 'username', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
             {display: "手机", name: 'phone', align: 'center', width: '12%', isSort: false},
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '10%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
+                }
+            },
+			{display: "备注", name: 'remark', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '---';
                 }
             },
             {display: "性别", name: 'sex', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
@@ -48,18 +60,18 @@ $(function(){
                     }
                 }
             },
-            {display: "拒收次数", name: 'refuse_amount', align: 'center', width: '8%', isSort: false},
+            {display: "拒收次数", name: 'refuse_amount', align: 'center', width: '6%', isSort: false},
             {display: "是否黑名单", name: 'is_blacklist', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '是' : '否';
                 }
             },
-            {display: "注册时间", name: 'register_time', align: 'center', width: '12%'},
-            {display: "上一次登录时间", name: 'last_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
-                    return value ? value : '从未登录';
-                }
-            },
-			{display: "操作", align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
-					return '<a href="javascript:void(0);" onclick="addCoupon('+rowdata.id+')">送水果劵</a>';
+			{display: "订单数", name: 'order_amount', align: 'center', width: '6%'},
+			{display: "订单总金额", name: 'total_amount', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
+					return value ? value : '0.00';
+				}
+			},
+			{display: "操作", align: 'center', width: '10%', render: function(rowdata, rowindex, value) {
+					return '<a href="javascript:void(0);" onclick="addCoupon('+rowdata.id+')">送水果劵</a> | <a href="javascript:void(0);" onclick="remark('+rowdata.id+')">备注</a>';
 				}
 			}
             ],
@@ -99,6 +111,8 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>性别：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + sex + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>拒收次数：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.refuse_amount + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>是否黑名单：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.is_blacklist) ? '是' : '否') + "</td></tr>");
+	out.push("<tr><td width='20%' align='right'>订单数：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_amount + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单总金额：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.total_amount ? record.total_amount : '0.00') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>注册时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.register_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>上一次登录时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.last_time ? record.last_time : '从未登录') + "</td></tr>");
     out.push("</table>");
@@ -108,6 +122,58 @@ function f_onShowDetail(record, container, callback) {
         out.push('<div><a href="' + record.avatar + '" title="点击查看原图" target="_blank"><img src="' + record.avatar + '" width="200" /></a></div>');
     }
     $(container).html(out.join(''));
+	//收货地址
+	$.ajax({
+		url: "<{:U('member/getUserAddressList')}>",
+		type: "post",
+		data: {user_id: record.id},
+		dataType: "json",
+		async: false,
+		success: function(data) {
+			var str = '<h3 style="margin:10px;">收货地址：</h3>';
+            str += '<table class="address_list_table" style="width:90%;margin:10px;"><tr><th width="10%">收货人</th><th width="10%">手机</th><th width="5%">省</th><th width="5%">市</th><th width="5%">区</th><th width="10%">小区</th><th width="25%">详细地址</th><th width="10%">备用收货人</th><th width="10%">备用收货人手机</th><th width="10%">默认收货地址</th></tr>';
+            for (var i in data) {
+                str += '<tr><td>' + data[i].consignee + '</td><td>' + data[i].phone + '</td><td>' + data[i].province + '</td><td>' + data[i].city + '</td><td>' + data[i].district + '</td><td>' + data[i].community + '</td><td>' + data[i].address + '</td><td>' + data[i]._consignee + '</td><td>' + data[i]._phone + '</td><td>' + (parseInt(data[i].is_default) ? '是' : '否') + '</td></tr>';
+            }
+            str += '</table>';
+            $(container).append(str);
+            table_color('address_list_table');
+		}
+	});
+	//定制列表
+	$.ajax({
+		url: "<{:U('member/getUserCustomList')}>",
+		type: "post",
+		data: {user_id: record.id},
+		dataType: "json",
+		async: false,
+		success: function(data) {
+			var str = '<h3 style="margin:10px;">定制列表：</h3>';
+			for (var i in data) {
+				str += '<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">';
+				str += '<tr><td width="10%" align="right">定制名称：</td><td width="90%">&nbsp;&nbsp;' + data[i].name + '</td></tr>';
+				str += '<tr><td width="10%" align="right">创建时间：</td><td width="90%">&nbsp;&nbsp;' + data[i].create_time + '</td></tr>';
+				var goods_list = '';
+				for (var j in data[i].goods_list) {
+					goods_list += '<div class="per_custom_goods">' +
+									'<div class="per_custom_goods_img">' +
+									'<img src="' + data[i].goods_list[j].goods_thumb + '" />' +
+                					'</div>' +
+                					'<div class="per_custom_name">' +
+                					data[i].goods_list[j].goods_name +
+                					'</div>' +
+									'<div class="per_custom_amount">' +
+                					'数量：' + data[i].goods_list[j].quantity +
+                					'</div>' +
+									'</div>';
+					
+				}
+				str += '<tr><td width="10%" align="right">商品列表：</td><td width="90%">' + goods_list + '</td></tr>';
+				str += '</table>';
+			}
+            $(container).append(str);
+		}
+	});
 }
 
 //删除用户
@@ -215,6 +281,37 @@ function addCouponCallback(obj) {
         $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
         return false;
     }
+}
+
+//用户备注
+var remarkDialog;
+function remark(id) {
+	remarkDialog = $.ligerDialog.open({
+        url: '<{:U("member/remark")}>?id='+id, height: 400, width: 600,
+        isDrag: false, title: '用户备注',
+        buttons: [{text: '确定', onclick: function(item, dialog) {remarkDialog.frame.remarkFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//用户备注回调
+function remarkCallback(obj) {
+	remarkDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+
+
+//table颜色
+function table_color(className) {
+    $("." + className + " tr:even").css({"background":"#ddd"});
+    $("." + className + " tr:odd").css({"background":"#f0f"});
 }
 //]]>
 </script>

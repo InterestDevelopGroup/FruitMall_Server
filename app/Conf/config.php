@@ -208,7 +208,8 @@ $app_config = array(
             'delete' => 'member|delete',
             'addblacklist' => 'member|addblacklist',
             'deleteblacklist' => 'member|deleteblacklist',
-            'add_coupon' => 'member|add_coupon'
+            'add_coupon' => 'member|add_coupon',
+            'remark' => 'member|remark'
         ),
         'goods' => array(
             'index' => 'goods|index',
@@ -296,6 +297,7 @@ $app_config = array(
     ),
     // 子权限
     'child_priv' => array(
+        'member|index' => 'member|getuseraddresslist,member|getusercustomlist',
         'goods|add' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
         'goods|update' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
         'tag|add' => 'tag|delete_image,tag|upload',
@@ -315,7 +317,8 @@ $app_config = array(
             'delete' => '删除会员',
             'addblacklist' => '拉入黑名单',
             'deleteblacklist' => '移出黑名单',
-            'add_coupon' => '送水果劵'
+            'add_coupon' => '送水果劵',
+            'remark' => '用户备注'
         ),
         'goods' => array(
             'goods' => '商品',
@@ -418,6 +421,8 @@ $app_config = array(
     'menu_priv' => array(
         'administrator|management',
         'member|index',
+        'member|add_coupon',
+        'member|remark',
         'goods|index',
         'goods|add',
         'goods|update',

@@ -151,10 +151,13 @@ class MemberModel extends Model {
             'real_name',
             'avatar',
             'sex',
+            'remark',
             'register_time',
             'last_time',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id AND status = 4)" => 'refuse_amount',
-            "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = m.id)" => 'is_blacklist'
+            "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = m.id)" => 'is_blacklist',
+            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'order_amount',
+            "(SELECT SUM(total_amount) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'total_amount'
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
@@ -293,6 +296,34 @@ class MemberModel extends Model {
             return array(
                 'status' => 0,
                 'result' => '未知错误'
+            );
+        }
+    }
+
+    /**
+     * 用户备注
+     *
+     * @param int $user_id
+     *            用户ID
+     * @param string $remark
+     *            用户备注
+     * @return array
+     */
+    public function remark($user_id, $remark) {
+        $remark = strlen($remark) ? $remark : null;
+        if ($this->where(array(
+            'id' => $user_id
+        ))->save(array(
+            'remark' => $remark
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '备注成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '备注失败'
             );
         }
     }

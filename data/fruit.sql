@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-03 17:05:23
+Date: 2014-12-04 18:44:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -51,7 +51,7 @@ CREATE TABLE `fruit_admin_priv` (
   `admin_id` int(10) NOT NULL COMMENT '管理员ID',
   `priv` text NOT NULL COMMENT '管理员权限',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='管理员权限表';
 
 -- ----------------------------
 -- Records of fruit_admin_priv
@@ -59,6 +59,7 @@ CREATE TABLE `fruit_admin_priv` (
 INSERT INTO `fruit_admin_priv` VALUES ('1', '1', 'all');
 INSERT INTO `fruit_admin_priv` VALUES ('4', '4', 'index|all,login|all,goods|index,category|parent_index,category|child_index,tag|index,package|index,courier|index,shipping|index,branch|index,coupon|rule,coupon|usage,coupon|add_usage,coupon|update_usage,order|index,notification|index,version|android,feedback|index,returns|index');
 INSERT INTO `fruit_admin_priv` VALUES ('5', '5', 'index|all,login|all,branch|index,branch|update');
+INSERT INTO `fruit_admin_priv` VALUES ('7', '7', 'index|all,login|all');
 
 -- ----------------------------
 -- Table structure for `fruit_admin_user`
@@ -76,14 +77,15 @@ CREATE TABLE `fruit_admin_user` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态(1：正常，0：禁用)',
   `desc` varchar(255) DEFAULT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='后台管理员表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台管理员表';
 
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417593430', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417663651', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417597288', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1417597300', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
 
 -- ----------------------------
 -- Table structure for `fruit_advertisement`
@@ -130,13 +132,14 @@ CREATE TABLE `fruit_branch` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='分店表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='分店表';
 
 -- ----------------------------
 -- Records of fruit_branch
 -- ----------------------------
 INSERT INTO `fruit_branch` VALUES ('8', '测试分店1', '4', '这是一个测试', '1417332317', '1417335657');
 INSERT INTO `fruit_branch` VALUES ('9', 'demo测试', '5', 'demo测试分店', '1417594348', null);
+INSERT INTO `fruit_branch` VALUES ('11', '分店4', '7', '测试', '1417674464', '1417676707');
 
 -- ----------------------------
 -- Table structure for `fruit_branch_courier`
@@ -148,13 +151,15 @@ CREATE TABLE `fruit_branch_courier` (
   `courier_id` int(11) NOT NULL COMMENT '送货员ID',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='分店送货人员表';
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='分店送货人员表';
 
 -- ----------------------------
 -- Records of fruit_branch_courier
 -- ----------------------------
 INSERT INTO `fruit_branch_courier` VALUES ('12', '8', '3', '1417335657');
 INSERT INTO `fruit_branch_courier` VALUES ('13', '9', '4', '1417594348');
+INSERT INTO `fruit_branch_courier` VALUES ('24', '11', '5', '1417676707');
+INSERT INTO `fruit_branch_courier` VALUES ('25', '11', '6', '1417676707');
 
 -- ----------------------------
 -- Table structure for `fruit_branch_shipping_address`
@@ -166,13 +171,15 @@ CREATE TABLE `fruit_branch_shipping_address` (
   `shipping_address_id` int(11) NOT NULL COMMENT '送货地址ID',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='分店送货地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='分店送货地址表';
 
 -- ----------------------------
 -- Records of fruit_branch_shipping_address
 -- ----------------------------
 INSERT INTO `fruit_branch_shipping_address` VALUES ('12', '8', '2', '1417335657');
 INSERT INTO `fruit_branch_shipping_address` VALUES ('13', '9', '3', '1417594348');
+INSERT INTO `fruit_branch_shipping_address` VALUES ('22', '11', '4', '1417676707');
+INSERT INTO `fruit_branch_shipping_address` VALUES ('23', '11', '5', '1417676707');
 
 -- ----------------------------
 -- Table structure for `fruit_child_category`
@@ -288,13 +295,15 @@ CREATE TABLE `fruit_courier` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='送货人员表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='送货人员表';
 
 -- ----------------------------
 -- Records of fruit_courier
 -- ----------------------------
 INSERT INTO `fruit_courier` VALUES ('3', '测试送货员', '13800138000', '1417335640', null);
 INSERT INTO `fruit_courier` VALUES ('4', 'demo送货员', '13900000000', '1417593388', null);
+INSERT INTO `fruit_courier` VALUES ('5', 'test', '13412345678', '1417669712', '1417669776');
+INSERT INTO `fruit_courier` VALUES ('6', 'test1', '13812345678', '1417669753', '1417669770');
 
 -- ----------------------------
 -- Table structure for `fruit_custom`
@@ -419,6 +428,7 @@ CREATE TABLE `fruit_member` (
   `real_name` varchar(30) DEFAULT NULL COMMENT '真实姓名',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像',
   `sex` tinyint(1) DEFAULT '0' COMMENT '用户性别（0：保密，1：男，2：女）',
+  `remark` varchar(30) DEFAULT NULL COMMENT '用户备注',
   `register_time` int(10) NOT NULL COMMENT '注册时间',
   `last_time` int(10) DEFAULT NULL COMMENT '上一次登录时间',
   PRIMARY KEY (`id`)
@@ -427,8 +437,8 @@ CREATE TABLE `fruit_member` (
 -- ----------------------------
 -- Records of fruit_member
 -- ----------------------------
-INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '1415763408', '1416971613');
-INSERT INTO `fruit_member` VALUES ('8', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '1417073018', null);
+INSERT INTO `fruit_member` VALUES ('1', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', 'CMCC', '中国移动', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '1', '测试1', '1415763408', '1416971613');
+INSERT INTO `fruit_member` VALUES ('8', '13437563074', 'e10adc3949ba59abbe56e057f20f883e', null, null, null, '0', '测试2', '1417073018', null);
 
 -- ----------------------------
 -- Table structure for `fruit_notification`
@@ -462,20 +472,21 @@ CREATE TABLE `fruit_order` (
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `coupon` int(11) DEFAULT NULL COMMENT '使用水果劵',
+  `total_amount` decimal(10,2) NOT NULL COMMENT '订单金额',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`),
   KEY `us` (`user_id`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of fruit_order
 -- ----------------------------
-INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '12:00-18:00', '12.50', 'nothing', null, '1415960111', '1416300350');
-INSERT INTO `fruit_order` VALUES ('2', '1', '5', '14111752489899', '4', '12:00-18:00', '22.50', '下订单测试', null, '1416193396', '1416300829');
-INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '1', null, '42.50', null, null, '1416473921', null);
-INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '3', '12:00-18:00', '15.00', 'nothing', null, '1417402742', '1417412464');
-INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '1', null, '15.00', null, '6', '1417587149', null);
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '12:00-18:00', '12.50', 'nothing', null, '216.00', '1415960111', '1416300350');
+INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '1', null, '42.50', null, null, '228.00', '1416473921', null);
+INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '3', '12:00-18:00', '15.00', 'nothing', null, '252.00', '1417402742', '1417412464');
+INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '1', null, '15.00', null, '6', '252.00', '1417587149', null);
+INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '1', null, '12.00', null, null, '264.00', '1417678902', null);
 
 -- ----------------------------
 -- Table structure for `fruit_order_custom`
@@ -505,18 +516,19 @@ CREATE TABLE `fruit_order_goods` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
 
 -- ----------------------------
 -- Records of fruit_order_goods
 -- ----------------------------
 INSERT INTO `fruit_order_goods` VALUES ('1', '1', '1', '10');
 INSERT INTO `fruit_order_goods` VALUES ('2', '2', '1', '8');
-INSERT INTO `fruit_order_goods` VALUES ('3', '1', '2', '10');
 INSERT INTO `fruit_order_goods` VALUES ('4', '1', '3', '10');
 INSERT INTO `fruit_order_goods` VALUES ('5', '2', '3', '8');
 INSERT INTO `fruit_order_goods` VALUES ('6', '3', '4', '6');
 INSERT INTO `fruit_order_goods` VALUES ('7', '3', '5', '6');
+INSERT INTO `fruit_order_goods` VALUES ('10', '1', '7', '10');
+INSERT INTO `fruit_order_goods` VALUES ('11', '2', '7', '12');
 
 -- ----------------------------
 -- Table structure for `fruit_order_package`
@@ -533,7 +545,6 @@ CREATE TABLE `fruit_order_package` (
 -- ----------------------------
 -- Records of fruit_order_package
 -- ----------------------------
-INSERT INTO `fruit_order_package` VALUES ('1', '3', '2', '1');
 INSERT INTO `fruit_order_package` VALUES ('2', '20', '3', '1');
 INSERT INTO `fruit_order_package` VALUES ('3', '20', '4', '2');
 INSERT INTO `fruit_order_package` VALUES ('4', '20', '5', '2');
@@ -618,13 +629,14 @@ CREATE TABLE `fruit_returns` (
   `postscript` varchar(255) DEFAULT NULL COMMENT '补充说明',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='退货表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='退货表';
 
 -- ----------------------------
 -- Records of fruit_returns
 -- ----------------------------
 INSERT INTO `fruit_returns` VALUES ('1', '1', '14111752489899', '有烂果', '/uploads/2014/11/18/a7628e2eb56c480e1b5dd1aa7daaa47f3c17cbb0.png', '/uploads/2014/11/18/5eadf5ad6542cf4e5e2278909d901b752281066a.png', null, '补充说明', '1416279982');
 INSERT INTO `fruit_returns` VALUES ('2', '1', '14120154499810', '不喜欢', null, null, null, null, '1417413308');
+INSERT INTO `fruit_returns` VALUES ('3', '1', '14120154499810', '货不对板', null, null, null, null, '1417603509');
 
 -- ----------------------------
 -- Table structure for `fruit_send_history`
@@ -661,13 +673,15 @@ CREATE TABLE `fruit_shipping_address` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
 
 -- ----------------------------
 -- Records of fruit_shipping_address
 -- ----------------------------
 INSERT INTO `fruit_shipping_address` VALUES ('2', '廣州市', '天河區', '189號', '羊城花園', '康苑八座401', '10.00', '20.00', '1415874727', '1415874737');
 INSERT INTO `fruit_shipping_address` VALUES ('3', '广州市', '天河区', '211', '蓝天花园', '12', '14.00', '12.00', '1417593342', null);
+INSERT INTO `fruit_shipping_address` VALUES ('4', '广州市', '越秀区', '120', '某小区', '8', '12.00', '13.00', '1417671083', null);
+INSERT INTO `fruit_shipping_address` VALUES ('5', '广州市', '白云区', '14', '某小区', '4', '12.00', '13.00', '1417673983', null);
 
 -- ----------------------------
 -- Table structure for `fruit_shopping_car`
