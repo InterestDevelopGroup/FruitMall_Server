@@ -215,7 +215,10 @@ $app_config = array(
             'index' => 'goods|index',
             'add' => 'goods|add',
             'delete' => 'goods|delete',
-            'update' => 'goods|update'
+            'update' => 'goods|update',
+            'advertisement' => 'goods|advertisement',
+            'update_status' => 'goods|update_status',
+            'update_priority' => 'goods|update_priority'
         ),
         'category' => array(
             'parent_index' => 'category|parent_index',
@@ -325,7 +328,10 @@ $app_config = array(
             'index' => '所有商品',
             'add' => '添加商品',
             'delete' => '删除商品',
-            'update' => '更新商品'
+            'update' => '更新商品',
+            'advertisement' => '取消/设置广告',
+            'update_status' => '上下架',
+            'update_priority' => '更新权重'
         ),
         'category' => array(
             'category' => '商品分类',
@@ -426,6 +432,7 @@ $app_config = array(
         'goods|index',
         'goods|add',
         'goods|update',
+        'goods|update_priority',
         'category|parent_index',
         'category|parent_add',
         'category|parent_update',

@@ -71,9 +71,76 @@ class ShoppingCarModel extends Model {
      *            购物单
      * @return array
      */
-    public function addShoppingCar($user_id, $shopping_list) {
+    public function addShoppingCar($user_id, array $shopping_list) {
+        // 判断商品是否已经存在，开启事务
+        $this->startTrans();
+        foreach ($shopping_list as $k => &$v) {
+            if ($v['goods_id'] && $this->where(array(
+                'user_id' => $user_id,
+                'goods_id' => $v['goods_id']
+            ))->count()) {
+                if (!$this->where(array(
+                    'user_id' => $user_id,
+                    'goods_id' => $v['goods_id']
+                ))->setInc('quantity', $v['quantity'])) {
+                    // 更新失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '添加失败'
+                    );
+                } else {
+                    unset($shopping_list[$k]);
+                }
+            }
+            if ($v['package_id'] && $this->where(array(
+                'user_id' => $user_id,
+                'package_id' => $v['package_id']
+            ))->count()) {
+                if (!$this->where(array(
+                    'user_id' => $user_id,
+                    'package_id' => $v['package_id']
+                ))->setInc('quantity', $v['quantity'])) {
+                    // 更新失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '添加失败'
+                    );
+                } else {
+                    unset($shopping_list[$k]);
+                }
+            }
+            if ($v['custom_id'] && $this->where(array(
+                'user_id' => $user_id,
+                'custom_id' => $v['custom_id']
+            ))->count()) {
+                if (!$this->where(array(
+                    'user_id' => $user_id,
+                    'custom_id' => $v['custom_id']
+                ))->setInc('quantity', $v['quantity'])) {
+                    // 更新失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '添加失败'
+                    );
+                } else {
+                    unset($shopping_list[$k]);
+                }
+            }
+        }
+        // 更新成功，提交事务
+        $this->commit();
+        // 没有新增数据
+        if (empty($shopping_list)) {
+            return array(
+                'status' => 1,
+                'result' => '添加成功'
+            );
+        }
+        // 有新增数据
         $add_time = time();
-        $shopping_list = ob2ar(json_decode($shopping_list));
         $dataList = array();
         foreach ($shopping_list as $v) {
             $dataList[] = array(

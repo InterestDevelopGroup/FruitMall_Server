@@ -169,6 +169,36 @@ class GoodsAction extends AdminAction {
     }
 
     /**
+     * 更新商品权重
+     */
+    public function update_priority() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $priority = isset($_POST['priority']) ? intval($_POST['priority']) : $this->redirect('/');
+            $this->ajaxReturn(D('Goods')->updateGoodsPriority($goods_id, $priority));
+        } else {
+            $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
+            $this->assign('goods', M('Goods')->where(array(
+                'id' => $id
+            ))->find());
+            $this->display();
+        }
+    }
+
+    /**
+     * 更新商品状态
+     */
+    public function update_status() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
+            $this->ajaxReturn(D('Goods')->updateGoodsStatus($goods_id, $status));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 上传商品图片
      */
     public function upload() {

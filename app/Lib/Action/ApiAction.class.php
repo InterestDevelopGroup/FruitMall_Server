@@ -82,8 +82,8 @@ class ApiAction extends Action {
     public function add_shopping_car() {
         if ($this->isPost() || $this->isAjax()) {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
-            $shopping_list = isset($_POST['shopping_list']) ? trim($_POST['shopping_list']) : $this->redirect('/');
-            if ($user_id < 1 && empty($shopping_list)) {
+            $shopping_list = isset($_POST['shopping_list']) ? json_decode(trim($_POST['shopping_list']), true) : $this->redirect('/');
+            if ($user_id < 1 || empty($shopping_list)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'

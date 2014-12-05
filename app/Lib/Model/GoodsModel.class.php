@@ -48,7 +48,7 @@ class GoodsModel extends Model {
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
             " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
             " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON t.id = g.tag "
-        ))->field($fields)->limit($offset, $pagesize)->select();
+        ))->field($fields)->order("g.priority DESC")->limit($offset, $pagesize)->select();
     }
 
     /**
@@ -247,6 +247,60 @@ class GoodsModel extends Model {
             return array(
                 'status' => false,
                 'msg' => '商品更新失败'
+            );
+        }
+    }
+
+    /**
+     * 更新权重
+     *
+     * @param int $goods_id
+     *            商品ID
+     * @param int $priority
+     *            权重
+     * @return array
+     */
+    public function updateGoodsPriority($goods_id, $priority) {
+        if ($this->where(array(
+            'id' => $goods_id
+        ))->save(array(
+            'priority' => $priority
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
+            );
+        }
+    }
+
+    /**
+     * 更新商品状态
+     *
+     * @param int $goods_id
+     *            商品ID
+     * @param int $status
+     *            商品状态
+     * @return array
+     */
+    public function updateGoodsStatus($goods_id, $status) {
+        if ($this->where(array(
+            'id' => $goods_id
+        ))->save(array(
+            'status' => $status
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
             );
         }
     }
