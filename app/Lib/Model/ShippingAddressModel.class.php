@@ -36,13 +36,13 @@ class ShippingAddressModel extends Model {
         ))->group("shipping_fee")->order("shipping_fee ASC")->limit($offset, $pagesize)->select();
         foreach ($shipping_fee_range as &$v) {
             $v['shipping_address_list'] = $this->field(array(
-                'id ',
-                'city ',
-                'district ',
-                'road_number ',
-                'community ',
-                'building ',
-                'discount '
+                'id',
+                'city',
+                'district',
+                'road_number',
+                'community',
+                'building',
+                'discount'
             ))->where(array(
                 'shipping_fee' => $v['shipping_fee']
             ))->select();

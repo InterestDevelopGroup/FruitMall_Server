@@ -27,11 +27,11 @@ $(function(){
             {display: "商品数量", name: 'goods_amount', align: 'center', width: '16%'},
             {display: "添加时间", name: 'add_time', align: 'center', width: '16%'},
             {display: "更新时间", name: 'update_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
-					return value ? value : '从未更新';
-				}
-			},
+                    return value ? value : '从未更新';
+                }
+            },
             {display: "操作", align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
-					return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
                 }
             }
             ],

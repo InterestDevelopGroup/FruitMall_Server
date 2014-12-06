@@ -13,7 +13,7 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
     <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>内容：</td>
         <td align="left" class="l-table-edit-td">
-        	<textarea id="content" style="resize: none;" onfocus="javascript:checkLength(this, 'content_tip');" onkeydown="javascript:checkLength(this, 'content_tip');" onkeyup="javascript:checkLength(this, 'content_tip');" maxLength="80"><{$notification['content']}></textarea>
+            <textarea id="content" style="resize: none;" onfocus="javascript:checkLength(this, 'content_tip');" onkeydown="javascript:checkLength(this, 'content_tip');" onkeyup="javascript:checkLength(this, 'content_tip');" maxLength="80"><{$notification['content']}></textarea>
         </td>
         <td align="left" class="tipmsg" id="content_tip"></td>
     </tr>
@@ -70,24 +70,24 @@ function checkLength(obj, id) {
 
 //检测内容
 function ckContent() {
-	var content = $.trim($("#content").val());
-	if (content.length == 0) {
-		addTip($("#content_tip"), '内容不能为空');
-		return false;
-	}
-	return true;
+    var content = $.trim($("#content").val());
+    if (content.length == 0) {
+        addTip($("#content_tip"), '内容不能为空');
+        return false;
+    }
+    return true;
 }
 
 //检测表单
 function checkForm() {
     if (!ckTitle()) return false;
-	if (!ckContent()) return false;
+    if (!ckContent()) return false;
     var title = $.trim($("#title").val());
-	var content = $.trim($("#content").val());
+    var content = $.trim($("#content").val());
     return {
-		title: title,
-		content: content
-	};
+        title: title,
+        content: content
+    };
 }
 
 //提交表单

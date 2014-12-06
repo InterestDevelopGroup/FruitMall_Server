@@ -24,38 +24,38 @@
 $(function() {
     $(".courier_list_main_box table tr:even").css({"background":"#ddd"});
     $(".courier_list_main_box table tr:odd").css({"background":"#f0f"});
-	$("input[name=a_courier]").change(function() {
-		var obj = $(this);
-		$("input[name=courier]").each(function(index, element) {
-			element.checked = obj.is(":checked");
-		});
-	});
+    $("input[name=a_courier]").change(function() {
+        var obj = $(this);
+        $("input[name=courier]").each(function(index, element) {
+            element.checked = obj.is(":checked");
+        });
+    });
 });
 
 //检测送货人员
 function ckCourierId() {
     var courier_id = new Array();
-	$("input[name=courier]").each(function(index, element) {
-		if (element.checked) {
-			courier_id.push(parseInt(element.value));
-		}
-	});
-	if (courier_id.length == 0) {
-		$.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
+    $("input[name=courier]").each(function(index, element) {
+        if (element.checked) {
+            courier_id.push(parseInt(element.value));
+        }
+    });
+    if (courier_id.length == 0) {
+        $.ligerDialog.alert('请选择一个送货人员', '温馨提示(^_^)', 'warn');
         return false;
-	}
-	return true;
+    }
+    return true;
 }
 
 //检测数据
 function checkData() {
     if (!ckCourierId()) return false;
     var courier_id = new Array();
-	$("input[name=courier]").each(function(index, element) {
-		if (element.checked) {
-			courier_id.push(parseInt(element.value));
-		}
-	});
+    $("input[name=courier]").each(function(index, element) {
+        if (element.checked) {
+            courier_id.push(parseInt(element.value));
+        }
+    });
     return {courier_id: courier_id};
 }
 

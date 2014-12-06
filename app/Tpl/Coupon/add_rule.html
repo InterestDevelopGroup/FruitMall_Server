@@ -13,8 +13,8 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
     <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>类型：</td>
         <td align="left" class="l-table-edit-td">
-        	<select id="type">
-            	<option value="0">--请选择--</option>
+            <select id="type">
+                <option value="0">--请选择--</option>
                 <option value="1">用户注册</option>
                 <option value="2">推荐好友</option>
                 <option value="3">满X送N</option>
@@ -47,30 +47,30 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckDescription();
     });
-	$("#type").change(function() {
-		var type = parseInt($(this).val());
-		removeTip($(this).parent('td').next('td:last'));
-		if (type == 3) {
-			$("#condition_box").show();
-		} else {
-			$("#condition").val('');
-			$("#condition_box").hide();
-		}
-		ckType();
-	});
-	$("#condition").focus(function() {
+    $("#type").change(function() {
+        var type = parseInt($(this).val());
+        removeTip($(this).parent('td').next('td:last'));
+        if (type == 3) {
+            $("#condition_box").show();
+        } else {
+            $("#condition").val('');
+            $("#condition_box").hide();
+        }
+        ckType();
+    });
+    $("#condition").focus(function() {
         addTip($(this).parent('td').next('td:last'), 'X必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckCondition();
     });
-	$("#score").focus(function() {
+    $("#score").focus(function() {
         addTip($(this).parent('td').next('td:last'), '面值必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckScore();
     });
-	$("#expire_time").focus(function() {
+    $("#expire_time").focus(function() {
         addTip($(this).parent('td').next('td:last'), '有效期必须为正整数，不填则为永久有效');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -117,20 +117,20 @@ function ckType() {
 
 //检测条件
 function ckCondition() {
-	var type = parseInt($("#type").val());
-	if (type == 3) {
-		var condition = $.trim($("#condition").val());
-		if (condition.length == 0) {
-			addTip($("#condition").parent('td').next('td:last'), 'X不能为空');
-			return false;
-		}
-		if (!/^[1-9][0-9]*$/.test(condition)) {
-			addTip($("#condition").parent('td').next('td:last'), 'X必须为正整数');
-    	    return false;
-		}
-		return true;
-	}
-	return true;
+    var type = parseInt($("#type").val());
+    if (type == 3) {
+        var condition = $.trim($("#condition").val());
+        if (condition.length == 0) {
+            addTip($("#condition").parent('td').next('td:last'), 'X不能为空');
+            return false;
+        }
+        if (!/^[1-9][0-9]*$/.test(condition)) {
+            addTip($("#condition").parent('td').next('td:last'), 'X必须为正整数');
+            return false;
+        }
+        return true;
+    }
+    return true;
 }
 
 //检测面值
@@ -140,10 +140,10 @@ function ckScore() {
         addTip($("#score").parent('td').next('td:last'), '面值不能为空');
         return false;
     }
-	if (!/^[1-9][0-9]*$/.test(score)) {
-		addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
+    if (!/^[1-9][0-9]*$/.test(score)) {
+        addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
         return false;
-	}
+    }
     return true;
 }
 
@@ -151,10 +151,10 @@ function ckScore() {
 function ckExpireTime() {
     var expire_time = $.trim($("#expire_time").val());
     if (expire_time.length > 0) {
-		if (!/^[1-9][0-9]*$/.test(expire_time)) {
-			addTip($("#expire_time").parent('td').next('td:last'), '有效期必须为正整数，不填则为永久有效');
-    	    return false;
-		}
+        if (!/^[1-9][0-9]*$/.test(expire_time)) {
+            addTip($("#expire_time").parent('td').next('td:last'), '有效期必须为正整数，不填则为永久有效');
+            return false;
+        }
     }
     return true;
 }
@@ -162,22 +162,22 @@ function ckExpireTime() {
 //检测表单
 function checkForm() {
     if (!ckDescription()) return false;
-	if (!ckType()) return false;
-	if (!ckCondition()) return false;
-	if (!ckScore()) return false;
-	if (!ckExpireTime()) return false;
+    if (!ckType()) return false;
+    if (!ckCondition()) return false;
+    if (!ckScore()) return false;
+    if (!ckExpireTime()) return false;
     var description = $.trim($("#description").val());
-	var type = $("#type").val();
-	var condition = $.trim($("#condition").val());
-	var score = $.trim($("#score").val());
-	var expire_time = $.trim($("#expire_time").val());
+    var type = $("#type").val();
+    var condition = $.trim($("#condition").val());
+    var score = $.trim($("#score").val());
+    var expire_time = $.trim($("#expire_time").val());
     return {
-		description: description,
-		type: type,
-		condition: condition,
-		score: score,
-		expire_time: expire_time
-	};
+        description: description,
+        type: type,
+        condition: condition,
+        score: score,
+        expire_time: expire_time
+    };
 }
 
 //提交表单

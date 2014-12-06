@@ -32,9 +32,9 @@ $(function(){
             {display: "商品数量", name: 'goods_amount', align: 'center', width: '20%', isSort: false},
             {display: "添加时间", name: 'add_time', align: 'center', width: '20%'},
             {display: "更新时间", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
-					return value ? value : '从未更新';
-				}
-			},
+                    return value ? value : '从未更新';
+                }
+            },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
                 }
@@ -63,10 +63,10 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("</table>");
-	out.push('<div style="width:90%;margin:10px;">');
+    out.push('<div style="width:90%;margin:10px;">');
     out.push('<h3>标签图片：</h3>');
     out.push('<div style="width:160px;height:90px;overflow:hidden;"><a href="' + record.image + '" title="点击查看原图" target="_blank"><img src="' + record.image + '" width="160" /></a></div>');
-	out.push('</div>');
+    out.push('</div>');
     $(container).html(out.join(''));
 }
 
@@ -83,7 +83,7 @@ function add() {
 
 //添加分类回调
 function addTagCallback(obj) {
-	addTagDialog.close();
+    addTagDialog.close();
     if (obj.status) {
         $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
         location.reload(true);

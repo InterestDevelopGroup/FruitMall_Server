@@ -15,8 +15,8 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 //<![CDATA[
 $(function() {
     $("#remark").focus(function() {
-		addTip($(this).parent('td').next('td:last'), '用户备注不能超过10个字');
-	}).blur(function() {
+        addTip($(this).parent('td').next('td:last'), '用户备注不能超过10个字');
+    }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckRemark();
     });
@@ -38,12 +38,12 @@ function removeTip(my) {
 //检测备注
 function ckRemark() {
     var remark = $.trim($("#remark").val());
-	if (remark.length != 0) {
-		if (remark.length > 10) {
-        	addTip($("#remark").parent('td').next('td:last'), '用户备注不能超过10个字');
-        	return false;			
-		}
-	}
+    if (remark.length != 0) {
+        if (remark.length > 10) {
+            addTip($("#remark").parent('td').next('td:last'), '用户备注不能超过10个字');
+            return false;            
+        }
+    }
     return true;
 }
 

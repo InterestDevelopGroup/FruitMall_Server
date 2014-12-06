@@ -82,14 +82,14 @@ function removeTip(my) {
 //检测用户名
 function ckUserName() {
     var username = $.trim($("#username").val());
-	if (username.length <= 0) {
-		addTip($("#username").parent('td').next('td:last'), '用户名不能为空');
+    if (username.length <= 0) {
+        addTip($("#username").parent('td').next('td:last'), '用户名不能为空');
         return false;
-	}
-	if (username.length > 0 && username.length < 4) {
-		addTip($("#username").parent('td').next('td:last'), '用户名不能少于4个字符');
+    }
+    if (username.length > 0 && username.length < 4) {
+        addTip($("#username").parent('td').next('td:last'), '用户名不能少于4个字符');
         return false;
-	}
+    }
     if (username.length > 20) {
         addTip($("#username").parent('td').next('td:last'), '用户名不能超过20个字符');
         return false;
@@ -100,14 +100,14 @@ function ckUserName() {
 //检测密码
 function ckPassword() {
     var password = $.trim($("#password").val());
-	if (password.length <= 0) {
+    if (password.length <= 0) {
         addTip($("#password").parent('td').next('td:last'), '密码不能为空');
-        return false;		
-	}
-	if (password.length > 0 && password.length < 6) {
+        return false;        
+    }
+    if (password.length > 0 && password.length < 6) {
         addTip($("#password").parent('td').next('td:last'), '密码不能少于6个字符');
-        return false;		
-	}
+        return false;        
+    }
     if (password.length > 16) {
         addTip($("#password").parent('td').next('td:last'), '密码不能超过16个字符');
         return false;

@@ -46,10 +46,10 @@ function ckPriority() {
         addTip($("#priority").parent('td').next('td:last'), '权重长度不能超过11位');
         return false;
     }
-	if (!/^[1-9][0-9]*$/.test(priority)) {
-		addTip($("#priority").parent('td').next('td:last'), '权重必须为正整数');
-		return false;
-	}
+    if (!/^[1-9][0-9]*$/.test(priority)) {
+        addTip($("#priority").parent('td').next('td:last'), '权重必须为正整数');
+        return false;
+    }
     return true;
 }
 

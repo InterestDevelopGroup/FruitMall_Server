@@ -128,7 +128,7 @@
                 <td align="left" class="tipmsg" id="thumb_tip"></td>
             </tr>
             <tr>
-            	<td id="thumb_result" colspan="3"></td>
+                <td id="thumb_result" colspan="3"></td>
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
@@ -145,7 +145,7 @@
                 <td align="left" class="tipmsg" id="introduction_tip"></td>
             </tr>
             <tr>
-            	<td id="introduction_result" colspan="3"></td>
+                <td id="introduction_result" colspan="3"></td>
             </tr>
         </table>
     </div>
@@ -163,7 +163,7 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 CKEDITOR.disableAutoInline = true;
 var image_count = new Array();
 $(function() {
-	var editor = $("#desc").ckeditor({
+    var editor = $("#desc").ckeditor({
         width         : 700,
         height        : 300,
         language      : 'zh-cn',
@@ -184,30 +184,30 @@ $(function() {
         ck_Price();
     });
     $("#unit").focus(function() {
-		addTip($(this).parent('td').next('td:last'), '价格单位示例：元/斤');
-	}).blur(function() {
+        addTip($(this).parent('td').next('td:last'), '价格单位示例：元/斤');
+    }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUnit();
     });
-	$("#p_cate_id").change(function() {
-		var p_cate_id = $(this).val();
-		$.post("<{:U('Category/getChildCategoryByParentId')}>", {parent_id: p_cate_id}, function(data) {
-			str = '<option value="0">--请选择--</option>';
-			if (data) {
-				for (var i in data) {
-					str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
-				}
-			}
-			$("#c_cate_id").html(str);
-		}, 'json');
-		removeTip($(this).parent('td').next('td:last'));
-		ckPCateId();
-	});
-	$("#c_cate_id").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
-		ckCCateId();
-	});
-	// 上传缩略图
+    $("#p_cate_id").change(function() {
+        var p_cate_id = $(this).val();
+        $.post("<{:U('Category/getChildCategoryByParentId')}>", {parent_id: p_cate_id}, function(data) {
+            str = '<option value="0">--请选择--</option>';
+            if (data) {
+                for (var i in data) {
+                    str += '<option value="' + data[i].id + '">' + data[i].name + '</option>';
+                }
+            }
+            $("#c_cate_id").html(str);
+        }, 'json');
+        removeTip($(this).parent('td').next('td:last'));
+        ckPCateId();
+    });
+    $("#c_cate_id").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckCCateId();
+    });
+    // 上传缩略图
     $('#thumb').fileupload({
         maxNumberOfFiles : 1,
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
@@ -221,16 +221,16 @@ $(function() {
         done : function(e, data) {
             if (data.result.status) {
                 $("#thumb_progress").hide();
-				$("#thumb_tip").empty();
-				$("#thumb_image").val(data.result.filename);
-				$("#thumb_result").html("<div class='image-preview'>"
-										+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-										+ "<img src='"+data.result.src+"' border='0' />"
-										+ "</a>"
-										+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
-										+ data.result.filename
-										+ "\', $(this), 1);\" class='image-preview-delete' title='删除'>"
-										+ "</a>" + "</div>");
+                $("#thumb_tip").empty();
+                $("#thumb_image").val(data.result.filename);
+                $("#thumb_result").html("<div class='image-preview'>"
+                                        + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                        + "<img src='"+data.result.src+"' border='0' />"
+                                        + "</a>"
+                                        + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                        + data.result.filename
+                                        + "\', $(this), 1);\" class='image-preview-delete' title='删除'>"
+                                        + "</a>" + "</div>");
             } else {
                 $("#thumb_tip").html(data.result.msg);
             }
@@ -240,8 +240,8 @@ $(function() {
             $('#thumb_progress .progress-bar').css('width', progress + '%');
         }
     });
-	// 上传介绍图
-	$('#introduction').fileupload({
+    // 上传介绍图
+    $('#introduction').fileupload({
         maxNumberOfFiles : 5,
         acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
         maxFileSize : 2097152,
@@ -254,20 +254,20 @@ $(function() {
         done : function(e, data) {
             if (data.result.status) {
                 $("#introduction_progress").hide();
-				$("#introduction_tip").empty();
-				if (image_count.length < 5) {
-					image_count.push(data.result.filename);
-					$("#introduction_result").append("<div class='image-preview'>"
-											+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-											+ "<img src='"+data.result.src+"' border='0' />"
-											+ "</a>"
-											+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
-											+ data.result.filename
-											+ "\', $(this), 2);\" class='image-preview-delete' title='删除'>"
-											+ "</a>" + "</div>");
-				} else {
-					delete_excess_image(data.result.filename);
-				}
+                $("#introduction_tip").empty();
+                if (image_count.length < 5) {
+                    image_count.push(data.result.filename);
+                    $("#introduction_result").append("<div class='image-preview'>"
+                                            + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                            + "<img src='"+data.result.src+"' border='0' />"
+                                            + "</a>"
+                                            + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                            + data.result.filename
+                                            + "\', $(this), 2);\" class='image-preview-delete' title='删除'>"
+                                            + "</a>" + "</div>");
+                } else {
+                    delete_excess_image(data.result.filename);
+                }
             } else {
                 $("#introduction_tip").html(data.result.msg);
             }
@@ -351,32 +351,32 @@ function ckUnit() {
 
 //检测大分类
 function ckPCateId() {
-	var p_cate_id = $("#p_cate_id").val();
-	if (p_cate_id == 0) {
-		addTip($("#p_cate_id").parent('td').next('td:last'), '请选择一个大分类');
+    var p_cate_id = $("#p_cate_id").val();
+    if (p_cate_id == 0) {
+        addTip($("#p_cate_id").parent('td').next('td:last'), '请选择一个大分类');
         return false;
-	}
-	return true;
+    }
+    return true;
 }
 
 //检测小分类
 function ckCCateId() {
-	var c_cate_id = $("#c_cate_id").val();
-	if (c_cate_id == 0) {
-		addTip($("#c_cate_id").parent('td').next('td:last'), '请选择一个小分类');
+    var c_cate_id = $("#c_cate_id").val();
+    if (c_cate_id == 0) {
+        addTip($("#c_cate_id").parent('td').next('td:last'), '请选择一个小分类');
         return false;
-	}
-	return true;
+    }
+    return true;
 }
 
 //检测缩略图
 function ckThumb() {
-	var thumb_image = $.trim($("#thumb_image").val());
-	if (thumb_image.length == 0) {
-		addTip($("#thumb_tip"), '请至少上传一张商品缩略图片');
+    var thumb_image = $.trim($("#thumb_image").val());
+    if (thumb_image.length == 0) {
+        addTip($("#thumb_tip"), '请至少上传一张商品缩略图片');
         return false;
-	}
-	return true;
+    }
+    return true;
 }
 
 //检测介绍图片
@@ -394,32 +394,32 @@ function checkForm() {
     if (!ckPrice()) return false;
     if (!ck_Price()) return false;
     if (!ckUnit()) return false;
-	if (!ckPCateId()) return false;
-	if (!ckCCateId()) return false;
+    if (!ckPCateId()) return false;
+    if (!ckCCateId()) return false;
     if (!ckThumb()) return false;
-	if (!ckIntroductionImage()) return false;
+    if (!ckIntroductionImage()) return false;
     var name = $.trim($("#name").val());
     var price = $.trim($("#price").val());
     var _price = $.trim($("#_price").val());
     var unit = $.trim($("#unit").val());
     var p_cate_id = $("#p_cate_id").val();
-	var c_cate_id = $("#c_cate_id").val();
-	var tag = $("#tag").val();
-	var amount = $.trim($("#amount").val());
-	var weight = $.trim($("#weight").val());
-	var thumb_image = $.trim($("#thumb_image").val());
+    var c_cate_id = $("#c_cate_id").val();
+    var tag = $("#tag").val();
+    var amount = $.trim($("#amount").val());
+    var weight = $.trim($("#weight").val());
+    var thumb_image = $.trim($("#thumb_image").val());
     var description = $.trim($("#desc").val());
-	return {
+    return {
         name : name,
         price : price,
         _price : _price,
         unit: unit,
-		p_cate_id: p_cate_id,
-		c_cate_id: c_cate_id,
-		tag: tag,
-		amount: amount,
-		weight: weight,
-		thumb_image: thumb_image,
+        p_cate_id: p_cate_id,
+        c_cate_id: c_cate_id,
+        tag: tag,
+        amount: amount,
+        weight: weight,
+        thumb_image: thumb_image,
         introduction_image : image_count,
         description : description
     };
@@ -447,12 +447,12 @@ function delete_image(filename, obj, type) {
     }, function(data) {
         if (data.status) {
             obj.parent().remove();
-			if (type == 1) {
-				$("#thumb_image").val('');
-			} else {
-            	var index = image_count.indexOf(filename);
-           		image_count.splice(index, 1);
-			}
+            if (type == 1) {
+                $("#thumb_image").val('');
+            } else {
+                var index = image_count.indexOf(filename);
+                   image_count.splice(index, 1);
+            }
         } else {
             $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
             return false;
@@ -462,7 +462,7 @@ function delete_image(filename, obj, type) {
 
 //删除多余的图片
 function delete_excess_image(filename) {
-	$.post("<{:U('Goods/delete_image')}>", {filename: filename});
+    $.post("<{:U('Goods/delete_image')}>", {filename: filename});
 }
 //]]>
 </script>

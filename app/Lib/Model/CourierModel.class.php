@@ -100,7 +100,12 @@ class CourierModel extends Model {
      */
     public function getCourierList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
-        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return $this->table($this->getTableName() . " AS c ")->field(array(
+            'c.*',
+            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status > 2)" => 'sent_amount',
+            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status <= 2)" => 'unsend_amount',
+            "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount'
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

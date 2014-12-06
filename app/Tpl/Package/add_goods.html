@@ -1,62 +1,62 @@
 <include file="./Public/html/header.html" />
 <div class="goods_list_main">
-	<h3 class="goods_tips">温馨提示：选取商品后请输入商品的数量在确认</h3>
-	<div class="goods_list_main_box">
-    	<volist name="goodsList" id="val">
-		<div class="per_goods">
-        	<div class="per_goods_img">
-            	<a href="javascript:void(0);">
-                	<img src="<{$val['thumb']}>" width="100%" />
+    <h3 class="goods_tips">温馨提示：选取商品后请输入商品的数量在确认</h3>
+    <div class="goods_list_main_box">
+        <volist name="goodsList" id="val">
+        <div class="per_goods">
+            <div class="per_goods_img">
+                <a href="javascript:void(0);">
+                    <img src="<{$val['thumb']}>" width="100%" />
                 </a>
                 <div class="per_goods_cover" rel="<{$val['id']}>"></div>
             </div>
             <div class="per_goods_name">
-            	<{$val['name']}>
+                <{$val['name']}>
             </div>
         </div>
         </volist>
     </div>
     <div class="goods_list_main_page page">
-    	<{$page}>
+        <{$page}>
     </div>
 </div>
 <script type="text/javascript">
 var goods_id = 0, goods_amount;
 $(function() {
-	$(".per_goods_img").mouseover(function() {
-		$(this).find(".per_goods_cover").show();
-	}).mouseleave(function() {
-		$(this).find(".per_goods_cover").hide();
-	});
-	$(".per_goods_cover").bind('click', function() {
-		$(this).parent().append('<div class="goods_sel"></div>');
-		$(".goods_sel").not($(this).next()).remove();
-		goods_id = parseInt($(this).attr('rel'));
-	});
+    $(".per_goods_img").mouseover(function() {
+        $(this).find(".per_goods_cover").show();
+    }).mouseleave(function() {
+        $(this).find(".per_goods_cover").hide();
+    });
+    $(".per_goods_cover").bind('click', function() {
+        $(this).parent().append('<div class="goods_sel"></div>');
+        $(".goods_sel").not($(this).next()).remove();
+        goods_id = parseInt($(this).attr('rel'));
+    });
 });
 
 //检测商品ID
 function ckGoodsId() {
-	if (goods_id == 0) {
-		$.ligerDialog.alert('请选择一个商品', '温馨提示(^_^)', 'warn');
-		return false;
-	}
-	return true;
+    if (goods_id == 0) {
+        $.ligerDialog.alert('请选择一个商品', '温馨提示(^_^)', 'warn');
+        return false;
+    }
+    return true;
 }
 
 //检测数据
 function checkData() {
-	if (!ckGoodsId()) return false;
-	return {goods_id: goods_id};
+    if (!ckGoodsId()) return false;
+    return {goods_id: goods_id};
 }
 
 //提交数据
 function addGoodsFormSubmit() {
-	if (checkData()) {
-		$.post("<{:U('package/add_goods')}>", checkData(), function(data) {
-			window.parent.addGoodsCallback(data);
-		}, 'json');
-	}
+    if (checkData()) {
+        $.post("<{:U('package/add_goods')}>", checkData(), function(data) {
+            window.parent.addGoodsCallback(data);
+        }, 'json');
+    }
 }
 </script>
 <style type="text/css">

@@ -56,7 +56,38 @@ class OrderAction extends AdminAction {
     }
 
     /**
-     * 订单一览
+     * 历史订单一览
+     */
+    public function history() {
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        if ($this->isAjax()) {
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
+            $orderModel = D('Order');
+            $total = $orderModel->getOrderCount($keyword, 1);
+            if ($total) {
+                $rows = array_map(function ($v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    return $v;
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1));
+            } else {
+                $rows = null;
+            }
+            $this->ajaxReturn(array(
+                'Rows' => $rows,
+                'Total' => $total
+            ));
+        } else {
+            $this->assign('keyword', $keyword);
+            $this->display();
+        }
+    }
+
+    /**
+     * 新订单一览
      */
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
@@ -66,13 +97,13 @@ class OrderAction extends AdminAction {
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $orderModel = D('Order');
-            $total = $orderModel->getOrderCount($keyword);
+            $total = $orderModel->getOrderCount($keyword, 2);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 2));
             } else {
                 $rows = null;
             }

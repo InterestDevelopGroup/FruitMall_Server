@@ -25,9 +25,9 @@
                 <foreach name="val" key="key_1" item="val_1">
                     <li class="paddingT15" style="float:left;padding-left:20px; list-style:none;">
                     <label>
-                    	<input type="checkbox" value="<{$val_1}>" name="priv[<{$key_1}>]"
+                        <input type="checkbox" value="<{$val_1}>" name="priv[<{$key_1}>]"
                         <foreach name="_privileges" item="val_2">
-                        	<if condition="strcmp($val_1, $val_2) eq 0">checked</if>
+                            <if condition="strcmp($val_1, $val_2) eq 0">checked</if>
                         </foreach>
                          />
                         <?php echo $language[$_key][$key_1]; ?>
@@ -51,25 +51,25 @@ $(function() {
             v.checked = obj.is(":checked");
         });
     });
-	// 初始化
-	$('[id^="h_"]').each(function(index, element) {
+    // 初始化
+    $('[id^="h_"]').each(function(index, element) {
         var obj = $(element);
-		var t = [];
-		var p = $(element).attr('id').split('_')[1];
-		$("#"+p+" input").each(function(i, e) {
+        var t = [];
+        var p = $(element).attr('id').split('_')[1];
+        $("#"+p+" input").each(function(i, e) {
             if (e.checked) {
-				t.push(1);
-			} else {
-				t.push(0);
-			}
+                t.push(1);
+            } else {
+                t.push(0);
+            }
         });
-		obj.attr('checked', !($.inArray(0, t) >= 0));
+        obj.attr('checked', !($.inArray(0, t) >= 0));
     });
 });
 
 //提交设置权限表单
 function setPrivFormSubmit(id) {
-	// 带上初始化权限
+    // 带上初始化权限
     var priv = ['index|all', 'login|all'];
     $("input[name^=priv]:checked").each(function(i, v) {
         priv.push(v.value);

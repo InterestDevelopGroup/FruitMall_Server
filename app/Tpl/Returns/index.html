@@ -56,20 +56,20 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>补充说明：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.postscript ? record.postscript : '---') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>申请时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("</table>");
-	var str = "";
-	if (record.image_1) {
-		str += "<div class='detail_image'><a href='"+record.image_1+"' title='点击查看原图' target='_blank'><img src='"+record.image_1+"' width='100%' /></a></div>";
-	}
-	if (record.image_2) {
-		str += "<div class='detail_image'><a href='"+record.image_2+"' title='点击查看原图' target='_blank'><img src='"+record.image_2+"' width='100%' /></a></div>";
-	}
-	if (record.image_3) {
-		str += "<div class='detail_image'><a href='"+record.image_3+"' title='点击查看原图' target='_blank'><img src='"+record.image_3+"' width='100%' /></a></div>";
-	}
-	if (str.length) {
-		out.push('<div style="margin:10px;width:88%;"><h3>说明图片：</h3>' + str + '</div>');
-		out.push("");
-	}
+    var str = "";
+    if (record.image_1) {
+        str += "<div class='detail_image'><a href='"+record.image_1+"' title='点击查看原图' target='_blank'><img src='"+record.image_1+"' width='100%' /></a></div>";
+    }
+    if (record.image_2) {
+        str += "<div class='detail_image'><a href='"+record.image_2+"' title='点击查看原图' target='_blank'><img src='"+record.image_2+"' width='100%' /></a></div>";
+    }
+    if (record.image_3) {
+        str += "<div class='detail_image'><a href='"+record.image_3+"' title='点击查看原图' target='_blank'><img src='"+record.image_3+"' width='100%' /></a></div>";
+    }
+    if (str.length) {
+        out.push('<div style="margin:10px;width:88%;"><h3>说明图片：</h3>' + str + '</div>');
+        out.push("");
+    }
     $(container).html(out.join(''));
 }
 

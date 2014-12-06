@@ -46,7 +46,7 @@ $(function(){
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
             onAfterChangeColumnWidth:f_change,
-			detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
     });
     $("#pageloading").hide();
 });
@@ -74,7 +74,7 @@ function add() {
 
 //添加消息回调
 function addNotificationCallback(obj) {
-	addNotificationDialog.close();
+    addNotificationDialog.close();
     if (obj.status) {
         $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
         location.reload(true);
@@ -139,13 +139,13 @@ function updateNotificationCallback(obj) {
 
 //推送
 function push(id) {
-	$.post("<{:U('notification/push')}>", {id: id}, function(data) {
-		if (data.status) {
-			$.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
-		} else {
-			$.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
-		}
-	}, 'json');
+    $.post("<{:U('notification/push')}>", {id: id}, function(data) {
+        if (data.status) {
+            $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+        } else {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+        }
+    }, 'json');
 }
 //]]>
 </script>

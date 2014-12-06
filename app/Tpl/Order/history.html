@@ -4,7 +4,7 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>新订单一览
+                    <span class="icon icon8"></span>历史订单一览
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@ $(function(){
                 }
             }
             ],
-            url: '<{:U("order/index")}>?keyword=<{$keyword}>',
+            url: '<{:U("order/history")}>?keyword=<{$keyword}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',

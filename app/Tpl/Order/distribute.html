@@ -8,8 +8,8 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
     <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>送货员：</td>
         <td align="left" class="l-table-edit-td">
-        	<select id="courier_id">
-            	<option value="0">--请选择--</option>
+            <select id="courier_id">
+                <option value="0">--请选择--</option>
                 <volist name="courier" id="val">
                 <option value="<{$val['id']}>"><{$val['real_name']}></option>
                 </volist>
@@ -21,10 +21,10 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
-	$("#courier_id").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
+    $("#courier_id").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
         ckCourierId();
-	});
+    });
 });
 
 //添加提示
@@ -52,8 +52,8 @@ function ckCourierId() {
 
 //检测表单
 function checkForm() {
-	if (!ckCourierId()) return false;
-	var courier_id = $("#courier_id").val();
+    if (!ckCourierId()) return false;
+    var courier_id = $("#courier_id").val();
     return {courier_id: courier_id, id: <{$id}>};
 }
 

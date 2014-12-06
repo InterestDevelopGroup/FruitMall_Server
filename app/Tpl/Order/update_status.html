@@ -8,8 +8,8 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
     <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>订单状态：</td>
         <td align="left" class="l-table-edit-td">
-        	<select id="status">
-            	<option value="0">--请选择--</option>
+            <select id="status">
+                <option value="0">--请选择--</option>
                 <option value="1" <if condition="$order['status'] eq 1">selected</if>>待确定</option>
                 <option value="2" <if condition="$order['status'] eq 2">selected</if>>配送中</option>
                 <option value="3" <if condition="$order['status'] eq 3">selected</if>>已收货</option>
@@ -23,9 +23,9 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 //<![CDATA[
 $(function() {
     $("#status").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
-		ckStatus();
-	});
+        removeTip($(this).parent('td').next('td:last'));
+        ckStatus();
+    });
 });
 
 //添加提示
@@ -44,10 +44,10 @@ function removeTip(my) {
 //检测订单状态
 function ckStatus() {
     var status = $("#status").val();
-	if (status == 0) {
-		addTip($("#status").parent('td').next('td:last'), '请选择一个订单状态');
+    if (status == 0) {
+        addTip($("#status").parent('td').next('td:last'), '请选择一个订单状态');
         return false;
-	}
+    }
     return true;
 }
 

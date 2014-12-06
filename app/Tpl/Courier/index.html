@@ -23,15 +23,18 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '20%', isSort: false},
-			{display: "手机", name: 'phone', align: 'center', width: '20%', isSort: false},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '20%'},
-			{display: "更新时间", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
-					return value ? value : '从未更新';
-				}
-			},
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: false},
+            {display: "手机", name: 'phone', align: 'center', width: '12%', isSort: false},
+            {display: "已送货次数", name: 'sent_amount', align: 'center', width: '12%', isSort: false},
+            {display: "待送货次数", name: 'unsend_amount', align: 'center', width: '12%', isSort: false},
+            {display: "投诉次数", name: 'complain_amount', align: 'center', width: '12%', isSort: false},
+            {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+                    return value ? value : '从未更新';
+                }
+            },
             {display: "操作", align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
-					return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+');">编辑</a>';
                 }
             }
             ],

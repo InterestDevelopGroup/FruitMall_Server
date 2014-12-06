@@ -30,13 +30,13 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckDescription();
     });
-	$("#condition").focus(function() {
+    $("#condition").focus(function() {
         addTip($(this).parent('td').next('td:last'), '必须消费满该条件才能使用水果劵，必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckCondition();
     });
-	$("#score").focus(function() {
+    $("#score").focus(function() {
         addTip($(this).parent('td').next('td:last'), '允许使用水果劵的面值，必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
@@ -73,15 +73,15 @@ function ckDescription() {
 
 //检测条件
 function ckCondition() {
-	var condition = $.trim($("#condition").val());
+    var condition = $.trim($("#condition").val());
     if (condition.length == 0) {
         addTip($("#condition").parent('td').next('td:last'), '使用条件不能为空');
         return false;
     }
-	if (!/^[1-9][0-9]*$/.test(condition)) {
-		addTip($("#condition").parent('td').next('td:last'), '使用条件必须为正整数');
+    if (!/^[1-9][0-9]*$/.test(condition)) {
+        addTip($("#condition").parent('td').next('td:last'), '使用条件必须为正整数');
         return false;
-	}
+    }
     return true;
 }
 
@@ -92,26 +92,26 @@ function ckScore() {
         addTip($("#score").parent('td').next('td:last'), '面值不能为空');
         return false;
     }
-	if (!/^[1-9][0-9]*$/.test(score)) {
-		addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
+    if (!/^[1-9][0-9]*$/.test(score)) {
+        addTip($("#score").parent('td').next('td:last'), '面值必须为正整数');
         return false;
-	}
+    }
     return true;
 }
 
 //检测表单
 function checkForm() {
     if (!ckDescription()) return false;
-	if (!ckCondition()) return false;
-	if (!ckScore()) return false;
+    if (!ckCondition()) return false;
+    if (!ckScore()) return false;
     var description = $.trim($("#description").val());
-	var condition = $.trim($("#condition").val());
-	var score = $.trim($("#score").val());
+    var condition = $.trim($("#condition").val());
+    var score = $.trim($("#score").val());
     return {
-		description: description,
-		condition: condition,
-		score: score
-	};
+        description: description,
+        condition: condition,
+        score: score
+    };
 }
 
 //提交表单

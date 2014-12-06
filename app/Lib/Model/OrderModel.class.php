@@ -269,11 +269,15 @@ class OrderModel extends Model {
      *            关键字
      * @return int
      */
-    public function getOrderCount($keyword) {
-        empty($keyword) || $this->where(array(
-            'order_number' => $keyword
-        ));
-        return (int) $this->select();
+    public function getOrderCount($keyword, $type) {
+        $where = array(
+            'status' => ($type == 1) ? array(
+                'neq',
+                1
+            ) : 1
+        );
+        empty($keyword) || $where['order_number'] = $keyword;
+        return (int) $this->where($where)->select();
     }
 
     /**
@@ -369,11 +373,15 @@ class OrderModel extends Model {
      * @param string $keyword
      *            关键字
      */
-    public function getOrderList($page, $pageSize, $order, $sort, $keyword) {
+    public function getOrderList($page, $pageSize, $order, $sort, $keyword, $type) {
         $offset = ($page - 1) * $pageSize;
-        empty($keyword) || $this->where(array(
-            'order_number' => $keyword
-        ));
+        $where = array(
+            'status' => ($type == 1) ? array(
+                'neq',
+                1
+            ) : 1
+        );
+        empty($keyword) || $where['order_number'] = $keyword;
         return $this->table($this->getTableName() . " AS o ")->field(array(
             'o.order_id',
             'o.user_id',
@@ -400,7 +408,7 @@ class OrderModel extends Model {
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id ",
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id ",
             " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id "
-        ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
+        ))->where($where)->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

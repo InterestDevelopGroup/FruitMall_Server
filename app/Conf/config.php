@@ -146,8 +146,12 @@ $app_config = array(
             'default' => 'index',
             'children' => array(
                 'index' => array(
-                    'text' => '订单一览',
+                    'text' => '新订单一览',
                     'url' => '/order/index'
+                ),
+                'history' => array(
+                    'text' => '历史订单一览',
+                    'url' => '/order/history'
                 )
             )
         ),
@@ -274,6 +278,7 @@ $app_config = array(
         ),
         'order' => array(
             'index' => 'order|index',
+            'history' => 'order|history',
             'delete' => 'order|delete',
             'update_status' => 'order|update_status',
             'sure' => 'order|sure',
@@ -313,7 +318,8 @@ $app_config = array(
         'branch|index' => 'branch|getbranchcourier,branch|getbranchshippingaddress',
         'branch|add' => 'branch|add_courier,branch|add_shipping_address',
         'branch|update' => 'branch|add_courier,branch|add_shipping_address',
-        'order|index' => 'order|getorderdetail'
+        'order|index' => 'order|getorderdetail',
+        'order|history' => 'order|getorderdetail',
     ),
     // 权限对应翻译
     'priv_language' => array(
@@ -397,7 +403,8 @@ $app_config = array(
         ),
         'order' => array(
             'order' => '订单',
-            'index' => '订单一览',
+            'index' => '新订单一览',
+            'history' => '历史订单一览',
             'delete' => '删除订单',
             'update_status' => '更新订单状态',
             'sure' => '确认订单',
@@ -469,6 +476,7 @@ $app_config = array(
         'coupon|how_to_get',
         'coupon|how_to_use',
         'order|index',
+        'order|history',
         'order|update_status',
         'order|distribute',
         'notification|index',

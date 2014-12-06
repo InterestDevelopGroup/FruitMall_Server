@@ -43,7 +43,7 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
     });
-	$("#fileupload").fileupload({
+    $("#fileupload").fileupload({
         maxNumberOfFiles: 1,
         acceptFileTypes: /(\.|\/)(jpe?g|png|bmp)$/i,
         maxFileSize: 2097152,
@@ -57,13 +57,13 @@ $(function() {
             if (data.result.status) {
                 $("#progress").hide();
                 $("#image_tip").html("<div class='image-preview'>"
-										+ "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-										+ "<img src='"+data.result.src+"' border='0' />"
-										+ "</a>"
-										+ "<a href='javascript:void(0);' onclick=\"delete_image(\'"
-										+ data.result.filename
-										+ "\', $(this));\" class='image-preview-delete' title='删除'>"
-										+ "</a>" + "</div>");
+                                        + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                        + "<img src='"+data.result.src+"' border='0' />"
+                                        + "</a>"
+                                        + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                        + data.result.filename
+                                        + "\', $(this));\" class='image-preview-delete' title='删除'>"
+                                        + "</a>" + "</div>");
                 $("#image").val(data.result.filename);
             } else {
                 $("#image_tip").html(data.result.msg);
@@ -120,9 +120,9 @@ function ckImage() {
 //检测表单
 function checkForm() {
     if (!ckName()) return false;
-	if (!ckImage()) return false;
+    if (!ckImage()) return false;
     var name = $.trim($("#name").val());
-	var image = $.trim($("#image").val());
+    var image = $.trim($("#image").val());
     return {name: name, image: image};
 }
 

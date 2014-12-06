@@ -25,10 +25,10 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckRealName();
     });
-	$("#phone").change(function() {
-		removeTip($(this).parent('td').next('td:last'));
+    $("#phone").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
         ckPhone();
-	});
+    });
 });
 
 //添加提示
@@ -65,19 +65,19 @@ function ckPhone() {
         addTip($("#phone").parent('td').next('td:last'), '手机不能为空');
         return false;
     }
-	if (phone.length > 11) {
-		addTip($("#phone").parent('td').next('td:last'), '请填写正确的手机号码');
+    if (phone.length > 11) {
+        addTip($("#phone").parent('td').next('td:last'), '请填写正确的手机号码');
         return false;
-	}
+    }
     return true;
 }
 
 //检测表单
 function checkForm() {
     if (!ckRealName()) return false;
-	if (!ckPhone()) return false;
+    if (!ckPhone()) return false;
     var real_name = $.trim($("#real_name").val());
-	var phone = $.trim($("#phone").val());
+    var phone = $.trim($("#phone").val());
     return {real_name: real_name, phone: phone};
 }
 

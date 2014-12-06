@@ -12,7 +12,7 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
     </tr>
     <tr>
         <td align="right" class="l-table-edit-td">有效期：</td>
-		<td align="left" class="l-table-edit-td"><input type="text" id="expire" />&nbsp;&nbsp;天</td>
+        <td align="left" class="l-table-edit-td"><input type="text" id="expire" />&nbsp;&nbsp;天</td>
         <td align="left" class="tipmsg"></td>
     </tr>
 </table>
@@ -52,7 +52,7 @@ function ckScore() {
 function checkForm() {
     if (!ckScore()) return false;
     var score = $.trim($("#score").val());
-	var expire = $("#expire").val();
+    var expire = $("#expire").val();
     return {score: score, expire: expire, user_id: <{$id}>};
 }
 

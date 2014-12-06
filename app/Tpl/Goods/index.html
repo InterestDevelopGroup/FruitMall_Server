@@ -48,7 +48,7 @@ $(function(){
                     return parseInt(value) ? '上架' : '下架';
                 }
             },
-			{display: "权重", name: 'priority', align: 'center', width: '4%'},
+            {display: "权重", name: 'priority', align: 'center', width: '4%'},
             {display: "操作", width:'20%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     if (parseInt(rowdata.is_advertisement)) {
                         var str = '取消广告';
@@ -162,7 +162,7 @@ function advertisement(id, type) {
 
 //更新商品状态
 function update_status(id, status) {
-	$.post("<{:U('goods/update_status')}>", {goods_id: id, status: status}, function(data) {
+    $.post("<{:U('goods/update_status')}>", {goods_id: id, status: status}, function(data) {
         if (data.status) {
             $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
             location.reload(true);
