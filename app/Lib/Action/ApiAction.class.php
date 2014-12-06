@@ -739,6 +739,28 @@ class ApiAction extends Action {
     }
 
     /**
+     * 按运费分类配送地址
+     */
+    public function shipping_address_group() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('ShippingAddress')->_getShippingAddressGroup($offset, $pagesize)
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 获取购物车列表
      */
     public function shopping_car() {

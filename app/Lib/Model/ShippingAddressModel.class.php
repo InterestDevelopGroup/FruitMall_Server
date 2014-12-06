@@ -13,13 +13,41 @@ class ShippingAddressModel extends Model {
      * 获取配送地址列表（API）
      *
      * @param int $offset
-     *            条数
-     * @param int $pagesize
      *            偏移量
+     * @param int $pagesize
+     *            条数
      * @return array
      */
     public function _getShippingAddressList($offset, $pagesize) {
         return $this->limit($offset, $pagesize)->select();
+    }
+
+    /**
+     * 按运费分类配送地址
+     *
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     */
+    public function _getShippingAddressGroup($offset, $pagesize) {
+        $shipping_fee_range = $this->field(array(
+            'shipping_fee'
+        ))->group("shipping_fee")->order("shipping_fee ASC")->limit($offset, $pagesize)->select();
+        foreach ($shipping_fee_range as &$v) {
+            $v['shipping_address_list'] = $this->field(array(
+                'id ',
+                'city ',
+                'district ',
+                'road_number ',
+                'community ',
+                'building ',
+                'discount '
+            ))->where(array(
+                'shipping_fee' => $v['shipping_fee']
+            ))->select();
+        }
+        return $shipping_fee_range;
     }
 
     /**
