@@ -275,7 +275,10 @@ $app_config = array(
         'order' => array(
             'index' => 'order|index',
             'delete' => 'order|delete',
-            'update_status' => 'order|update_status'
+            'update_status' => 'order|update_status',
+            'sure' => 'order|sure',
+            'print_order'=> 'order|print_order',
+            'distribute' => 'order|distribute'
         ),
         'notification' => array(
             'index' => 'notification|index',
@@ -396,7 +399,10 @@ $app_config = array(
             'order' => '订单',
             'index' => '订单一览',
             'delete' => '删除订单',
-            'update_status' => '更新订单状态'
+            'update_status' => '更新订单状态',
+            'sure' => '确认订单',
+            'print_order'=> '打印订单',
+            'distribute' => '指定送货员'
         ),
         'notification' => array(
             'notification' => '消息推送',
@@ -464,6 +470,7 @@ $app_config = array(
         'coupon|how_to_use',
         'order|index',
         'order|update_status',
+        'order|distribute',
         'notification|index',
         'notification|add',
         'notification|update',

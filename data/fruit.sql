@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-05 15:40:36
+Date: 2014-12-06 13:53:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -82,8 +82,8 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417764440', '1', '1', '系统管理员，勿删！');
-INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417764415', '0', '1', null);
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1417844895', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1417844917', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1417597300', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
 
@@ -475,6 +475,7 @@ CREATE TABLE `fruit_order` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `coupon` int(11) DEFAULT NULL COMMENT '使用水果劵',
   `total_amount` decimal(10,2) NOT NULL COMMENT '订单金额',
+  `courier_id` int(11) DEFAULT NULL COMMENT '送货员ID',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`),
@@ -484,11 +485,11 @@ CREATE TABLE `fruit_order` (
 -- ----------------------------
 -- Records of fruit_order
 -- ----------------------------
-INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '12:00-18:00', '12.50', 'nothing', null, '216.00', '1415960111', '1416300350');
-INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '1', null, '42.50', null, null, '228.00', '1416473921', null);
-INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '3', '12:00-18:00', '15.00', 'nothing', null, '252.00', '1417402742', '1417412464');
-INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '1', null, '15.00', null, '6', '252.00', '1417587149', null);
-INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '1', null, '12.00', null, null, '264.00', '1417678902', null);
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '12:00-18:00', '12.50', 'nothing', null, '216.00', '5', '1415960111', '1417766759');
+INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '2', null, '42.50', null, null, '228.00', '5', '1416473921', '1417766629');
+INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '3', '12:00-18:00', '15.00', 'nothing', null, '252.00', '5', '1417402742', '1417412464');
+INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '2', null, '15.00', null, '6', '252.00', '5', '1417587149', '1417766764');
+INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '2', null, '12.00', null, null, '264.00', '5', '1417678902', '1417766764');
 
 -- ----------------------------
 -- Table structure for `fruit_order_custom`

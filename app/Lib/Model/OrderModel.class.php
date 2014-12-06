@@ -393,10 +393,13 @@ class OrderModel extends Model {
             'a.district',
             'a.address',
             'a._consignee',
-            'a._phone'
+            'a._phone',
+            'c.real_name' => 'courier',
+            "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = o.user_id)" => 'is_blacklist'
         ))->join(array(
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id ",
-            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
+            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id ",
+            " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id "
         ))->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
@@ -459,17 +462,50 @@ class OrderModel extends Model {
     }
 
     /**
+     * 更新订单送货员
+     *
+     * @param array $order_id
+     *            订单ID
+     * @param int $courier_id
+     *            送货员ID
+     * @return array
+     */
+    public function updateOrderCourier(array $order_id, $courier_id) {
+        if ($this->where(array(
+            'order_id' => array(
+                'in',
+                $order_id
+            )
+        ))->save(array(
+            'courier_id' => $courier_id
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '指定成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '指定失败'
+            );
+        }
+    }
+
+    /**
      * 更新订单状态
      *
-     * @param int $order_id
+     * @param array $order_id
      *            订单ID
      * @param int $status
      *            订单状态（1：待确定，2：配送中，3：已收货，4：拒收）
      * @return array
      */
-    public function updateOrderStatus($order_id, $status) {
+    public function updateOrderStatus(array $order_id, $status) {
         if ($this->where(array(
-            'order_id' => $order_id
+            'order_id' => array(
+                'in',
+                $order_id
+            )
         ))->save(array(
             'status' => $status,
             'update_time' => time()

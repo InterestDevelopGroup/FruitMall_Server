@@ -22,6 +22,28 @@ class OrderAction extends AdminAction {
     }
 
     /**
+     * 指定送货员
+     */
+    public function distribute() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, $_POST['id']) : $this->redirect('/');
+            $courier_id = isset($_POST['courier_id']) ? intval($_POST['courier_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Order')->updateOrderCourier($id, $courier_id));
+        } else {
+            $id = isset($_GET['id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, explode(',', $_GET['id'])) : $this->redirect('/');
+            $this->assign('id', json_encode($id));
+            $this->assign('courier', M('Courier')->select());
+            $this->display();
+        }
+    }
+
+    /**
      * 获取订单详细
      */
     public function getOrderDetail() {
@@ -64,6 +86,9 @@ class OrderAction extends AdminAction {
         }
     }
 
+    /**
+     * 打印订单
+     */
     public function print_order() {
         if ($this->isAjax()) {
             $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : $this->redirect('/');
@@ -77,13 +102,25 @@ class OrderAction extends AdminAction {
     }
 
     /**
+     * 确认订单
+     */
+    public function sure() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Order')->updateOrderStatus((array) $id, 2));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 更新订单状态
      */
     public function update_status() {
         $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
         if ($this->isAjax()) {
             $status = (isset($_POST['status']) && intval($_POST['status'])) ? intval($_POST['status']) : $this->redirect('/');
-            $this->ajaxReturn(D('Order')->updateOrderStatus($id, $status));
+            $this->ajaxReturn(D('Order')->updateOrderStatus((array) $id, $status));
         } else {
             $this->assign('order', M('Order')->where(array(
                 'order_id' => $id

@@ -156,6 +156,35 @@ class ApiAction extends Action {
     }
 
     /**
+     * 可用的水果劵
+     */
+    public function available_coupon() {
+        if ($this->isPost() || $this->isAjax()) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $total_amount = isset($_POST['total_amount']) ? floatval($_POST['total_amount']) : $this->redirect('/');
+            if ($user_id < 1 || $offset < 0 || $pagesize < 0 || $total_amount < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $result = D('Coupon')->getAvailableCoupon($user_id, $total_amount, $offset, $pagesize);
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['publish_time'] = date("Y-m-d H:i:s", $value['publish_time']);
+                    $value['expire_time'] = $value['expire_time'] ? date("Y-m-d H:i:s", $value['expire_time']) : $value['expire_time'];
+                    return $value;
+                }, D('Coupon')->getAvailableCoupon($user_id, $total_amount, $offset, $pagesize))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 修改用户手机
      */
     public function change_phone() {

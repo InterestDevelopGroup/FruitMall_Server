@@ -81,6 +81,38 @@ class CouponModel extends Model {
     }
 
     /**
+     * 获取可用的水果劵列表
+     *
+     * @param int $user_id
+     *            用户ID
+     * @param float $total_amount
+     *            总金额
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @return array
+     */
+    public function getAvailableCoupon($user_id, $total_amount, $offset, $pagesize) {
+        $coupon_usgae = M('CouponUsage')->field(array(
+            'condition' => '_condition',
+            'score'
+        ))->where(array(
+            'condition' => array(
+                'elt',
+                $total_amount
+            )
+        ))->order("_condition DESC")->find();
+        return $this->where(array(
+            'user_id' => $user_id,
+            'score' => array(
+                'elt',
+                intval($coupon_usgae['score'])
+            )
+        ))->limit($offset, $pagesize)->select();
+    }
+
+    /**
      * 使用水果劵
      *
      * @param int $coupon_id
