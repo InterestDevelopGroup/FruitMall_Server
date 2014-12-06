@@ -1131,6 +1131,37 @@
                     <td><div class="failed_return_37"></div></td>
                 </tr>
             </table>
+            <table border="1" style="width:96%;">
+                <tr>
+                    <td width="20%">接口：</td>
+                    <td width="80%">可用水果劵列表</td>
+                </tr>
+                <tr>
+                    <td>请求地址：</td>
+                    <td>/api/available_coupon</td>
+                </tr>
+                <tr>
+                    <td>请求方式：</td>
+                    <td>HTTP/POST</td>
+                </tr>
+                <tr>
+                    <td>请求参数：</td>
+                    <td>
+                        int user_id: 0（用户ID）<br />
+                        float total_amount: 0（总金额）<br />
+                        int offset: 0（偏移量，非负整数）<br />
+                        int pagesize: 10（获取条数，非负整数）
+                    </td>
+                </tr>
+                <tr>
+                    <td>成功返回：</td>
+                    <td><div class="success_return_38"></div></td>
+                </tr>
+                <tr>
+                    <td>失败返回：</td>
+                    <td><div class="failed_return_38"></div></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -1217,6 +1248,8 @@ $(function() {
     $(".failed_return_36").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
     $(".success_return_37").JSONView({"status":1,"result":[{"id":"2","city":"\u5ee3\u5dde\u5e02","district":"\u5929\u6cb3\u5340","road_number":"189\u865f","community":"\u7f8a\u57ce\u82b1\u5712","building":"\u5eb7\u82d1\u516b\u5ea7401","shipping_fee":"10.00","discount":"20.00","add_time":"2014-11-13 18:32:07","update_time":"2014-11-13 18:32:17"},{"id":"3","city":"\u5e7f\u5dde\u5e02","district":"\u5929\u6cb3\u533a","road_number":"211","community":"\u84dd\u5929\u82b1\u56ed","building":"12","shipping_fee":"14.00","discount":"12.00","add_time":"2014-12-03 15:55:42","update_time":null}]});
     $(".failed_return_37").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
+    $(".success_return_38").JSONView({"status":1,"result":[{"id":"1","user_id":"1","score":"4","type":"2","publish_time":"2014-11-27 15:23:38","expire_time":"2014-12-27 00:00:00"},{"id":"3","user_id":"1","score":"5","type":"4","publish_time":"2014-11-27 15:23:59","expire_time":"2014-12-07 00:00:00"},{"id":"5","user_id":"1","score":"5","type":"4","publish_time":"2014-12-03 11:39:16","expire_time":null}]});
+    $(".failed_return_38").JSONView({"status":0,"result":"\u53c2\u6570\u9519\u8bef"});
 });
 //]]>
 </script>
