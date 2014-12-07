@@ -82,9 +82,9 @@ function f_onShowDetail(record, container, callback) {
         async: false,
         success: function(data) {
             $(container).append('<h3 style="margin:10px;">分店配送地址：</h3>');
-            var str = '<table class="shipping_address_list_table" style="width:90%;margin:10px;"><tr><th width="10%">市</th><th width="15%">区</th><th width="15%">路牌号</th><th width="15%">小区（社区）、建筑名</th><th width="15%">栋、几期、座</th><th width="15%">送货费</th><th width="15%">价格调整比例</th></tr>';
+            var str = '<table class="shipping_address_list_table" style="width:90%;margin:10px;"><tr><th width="10%">省</th><th width="10%">市</th><th width="10%">区</th><th width="10%">路牌号</th><th width="15%">小区（社区）、建筑名</th><th width="15%">栋、几期、座</th><th width="15%">送货费</th><th width="15%">价格调整比例</th></tr>';
             for (var i in data) {
-                str += '<tr><td>' + data[i].city + '</td><td>' + data[i].district + '</td><td>' + data[i].road_number + '</td><td>' + data[i].community + '</td><td>' + data[i].building + '</td><td>' + data[i].shipping_fee + '</td><td>' + data[i].discount + '%</td></tr>';
+                str += '<tr><td>' + data[i].province + '</td><td>' + data[i].city + '</td><td>' + data[i].district + '</td><td>' + data[i].road_number + '</td><td>' + data[i].community + '</td><td>' + data[i].building + '</td><td>' + data[i].shipping_fee + '</td><td>' + data[i].discount + '%</td></tr>';
             }
             str += '</table>';
             $(container).append(str);

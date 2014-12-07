@@ -4,17 +4,19 @@
         <table>
             <tr>
                 <th width="5%"><input type="checkbox" name="a_shipping_address" /></th>
+                <th width="10%">省</th>
                 <th width="10%">市</th>
                 <th width="10%">区</th>
-                <th width="15%">路牌号</th>
+                <th width="10%">路牌号</th>
                 <th width="15%">小区（社区）、建筑名</th>
                 <th width="15%">栋、几期、座</th>
-                <th width="15%">送货费</th>
+                <th width="10%">送货费</th>
                 <th width="15%">价格调整比例</th>
             </tr>
             <volist name="shippingAddressList" id="val">
             <tr>
                 <td><input type="checkbox" value="<{$val['id']}>" name="shipping_address" /></td>
+                <td><{$val['province']}></td>
                 <td><{$val['city']}></td>
                 <td><{$val['district']}></td>
                 <td><{$val['road_number']}></td>

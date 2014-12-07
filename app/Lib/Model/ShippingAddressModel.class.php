@@ -37,6 +37,7 @@ class ShippingAddressModel extends Model {
         foreach ($shipping_fee_range as &$v) {
             $v['shipping_address_list'] = $this->field(array(
                 'id',
+                'province',
                 'city',
                 'district',
                 'road_number',
@@ -53,6 +54,8 @@ class ShippingAddressModel extends Model {
     /**
      * 添加配送地址
      *
+     * @param string $province
+     *            省
      * @param string $city
      *            市
      * @param string|null $district
@@ -69,8 +72,9 @@ class ShippingAddressModel extends Model {
      *            价格调整比例
      * @return array
      */
-    public function addShippingAddress($city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
+    public function addShippingAddress($province, $city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
         $data = array(
+            'province' => $province,
             'city' => $city,
             'shipping_fee' => $shipping_fee,
             'add_time' => time()
@@ -163,6 +167,8 @@ class ShippingAddressModel extends Model {
     /**
      * 更新配送地址
      *
+     * @param string $province
+     *            省
      * @param int $id
      *            地址ID
      * @param string $city
@@ -181,8 +187,9 @@ class ShippingAddressModel extends Model {
      *            价格调整比例
      * @return array
      */
-    public function updateShippingAddress($id, $city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
+    public function updateShippingAddress($id, $province, $city, $district, $road_number, $community, $building, $shipping_fee, $discount) {
         $data = array(
+            'province' => $province,
             'city' => $city,
             'shipping_fee' => $shipping_fee,
             'update_time' => time()

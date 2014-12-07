@@ -11,6 +11,15 @@
         <table cellpadding="0" cellspacing="0" class="l-table-edit">
             <tr>
                 <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>省：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="province" value="<{$shippingAddress['province']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
                     <span class="required">*</span>市：
                 </td>
                 <td align="left" class="l-table-edit-td">
@@ -84,6 +93,10 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
+    $("#province").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckProvince();
+    });
     $("#city").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckCity();
@@ -109,10 +122,20 @@ function removeTip(my) {
     my.find(".tip_msg").remove();
 }
 
+//检测省
+function ckProvince() {
+    var province = $.trim($("#province").val());
+    if (province.length == 0) {
+        addTip($("#province").parent('td').next('td:last'), '省不能为空');
+        return false;
+    }
+    return true;
+}
+
 //检测市
 function ckCity() {
     var city = $.trim($("#city").val());
-    if (city.length <= 0) {
+    if (city.length == 0) {
         addTip($("#city").parent('td').next('td:last'), '市不能为空');
         return false;
     }
@@ -140,8 +163,10 @@ function ckShippingFee() {
 
 //检测表单 
 function checkForm() {
+    if (!ckProvince()) return false;
     if (!ckCity()) return false;
     if (!ckShippingFee()) return false;
+    var province = $.trim($("#province").val());
     var city = $.trim($("#city").val());
     var district = $.trim($("#district").val());
     var road_number = $.trim($("#road_number").val());
@@ -150,6 +175,7 @@ function checkForm() {
     var shipping_fee = $.trim($("#shipping_fee").val());
     var discount = $.trim($("#discount").val());
     return {
+        province: province,
         city: city,
         district: district,
         road_number: road_number,

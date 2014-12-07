@@ -25,6 +25,7 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
+            {display: "省", name: 'province', align: 'center', width: '8%', isSort: false},
             {display: "市", name: 'city', align: 'center', width: '8%', isSort: false},
             {display: "区", name: 'district', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ?  value : '暂无';
@@ -38,18 +39,13 @@ $(function(){
                     return value ?  value : '暂无';
                 }
             },
-            {display: "栋、期、座", name: 'building', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "栋、期、座", name: 'building', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     return value ?  value : '暂无';
                 }
             },
             {display: "送货费", name: 'shipping_fee', align: 'center', width: '8%', isSort: false},
-            {display: "价格调整比例", name: 'discount', align: 'center', width: '10%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "价格调整比例", name: 'discount', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ?  value + '%' : '暂无';
-                }
-            },
-            {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
-            {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
-                    return value ? value : '从未更新';
                 }
             },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
@@ -75,6 +71,7 @@ $(function(){
 //商品明细
 function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>省：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.province + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>市：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.city + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>区：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.district ? record.district : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>路牌号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.road_number ? record.road_number : '暂无') + "</td></tr>");
