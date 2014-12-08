@@ -247,12 +247,13 @@ class MemberModel extends Model {
                 'result' => '该手机已经注册'
             );
         }
+        $register_time = time();
         // 开启事务
         $this->startTrans();
         if ($this->add(array(
             'phone' => $phone,
             'password' => md5($password),
-            'register_time' => time()
+            'register_time' => $register_time
         ))) {
             $id = $this->getLastInsID();
             if ($recommend) {
@@ -288,7 +289,17 @@ class MemberModel extends Model {
             $this->commit();
             return array(
                 'status' => 1,
-                'result' => '注册成功'
+                'result' => array(
+                    'id' => $id,
+                    'phone' => $phone,
+                    'username' => null,
+                    'real_name' => null,
+                    'avatar' => null,
+                    'sex' => 0,
+                    'remark' => null,
+                    'register_time' => date("Y-m-d H:i:s", $register_time),
+                    'last_time' => null
+                )
             );
         } else {
             // 注册失败，回滚事务
