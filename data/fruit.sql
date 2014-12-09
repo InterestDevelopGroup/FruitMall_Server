@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-09 14:29:57
+Date: 2014-12-09 14:50:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -565,7 +565,7 @@ INSERT INTO `fruit_order_package` VALUES ('4', '20', '5', '2');
 -- ----------------------------
 DROP TABLE IF EXISTS `fruit_package`;
 CREATE TABLE `fruit_package` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '套餐名字',
   `price` decimal(10,2) NOT NULL COMMENT '套餐价格',
   `_price` decimal(10,2) DEFAULT NULL COMMENT '市场价',
