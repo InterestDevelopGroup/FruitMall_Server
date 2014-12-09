@@ -23,27 +23,43 @@ class ShoppingCarModel extends Model {
         $result = $this->where(array(
             'user_id' => $user_id
         ))->limit($offset, $pagesize)->select();
-        foreach ($result as &$v) {
+        foreach ($result as $k => &$v) {
             if ($v['goods_id']) {
-                $v = array_merge($v, M('Goods')->field(array(
-                    'name' => 'goods_name',
-                    'price' => 'goods_price',
-                    '_price' => 'goods_market_price',
-                    'unit' => 'goods_price_unit',
-                    'thumb' => 'goods_thumb'
-                ))->where(array(
-                    'id' => $v['goods_id']
-                ))->find());
+                if (M('Goods')->where(array(
+                    'id' => $v['goods_id'],
+                    'is_delete' => 0
+                ))->count()) {
+                    $v = array_merge($v, M('Goods')->field(array(
+                        'name' => 'goods_name',
+                        'price' => 'goods_price',
+                        '_price' => 'goods_market_price',
+                        'unit' => 'goods_price_unit',
+                        'thumb' => 'goods_thumb'
+                    ))->where(array(
+                        'id' => $v['goods_id'],
+                        'is_delete' => 0
+                    ))->find());
+                } else {
+                    array_splice($result, $k, 1);
+                }
             }
             if ($v['package_id']) {
-                $v = array_merge($v, M('Package')->field(array(
-                    'name' => 'package_name',
-                    'price' => 'package_price',
-                    '_price' => 'package_market_price',
-                    'thumb'
-                ))->where(array(
-                    'id' => $v['package_id']
-                ))->find());
+                if (M('Package')->where(array(
+                    'id' => $v['package_id'],
+                    'is_delete' => 0
+                ))->count()) {
+                    $v = array_merge($v, M('Package')->field(array(
+                        'name' => 'package_name',
+                        'price' => 'package_price',
+                        '_price' => 'package_market_price',
+                        'thumb'
+                    ))->where(array(
+                        'id' => $v['package_id'],
+                        'is_delete' => 0
+                    ))->find());
+                } else {
+                    array_splice($result, $k, 1);
+                }
             }
             if ($v['custom_id']) {
                 $v = array_merge($v, M('Custom')->field(array(

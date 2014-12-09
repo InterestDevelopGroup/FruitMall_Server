@@ -20,12 +20,13 @@ class PackageModel extends Model {
      *            关键字
      */
     public function _getPackageList($offset, $pagesize, $keyword) {
-        empty($keyword) || $this->where(array(
-            "name" => array(
-                "like",
-                "%{$keyword}%"
-            )
-        ));
+        $where = array(
+            'is_delete' => 0
+        );
+        empty($keyword) || $where['name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
         return array_map(function ($value) {
             $value['goods_list'] = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
                 " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = pg.goods_id "
@@ -35,10 +36,11 @@ class PackageModel extends Model {
                 'g.name',
                 'g.thumb'
             ))->where(array(
-                'pg.package_id' => $value['id']
+                'pg.package_id' => $value['id'],
+                'g.is_delete' => 0
             ))->select();
             return $value;
-        }, $this->limit($offset, $pagesize)->select());
+        }, $this->limit($offset, $pagesize)->where($where)->select());
     }
 
     /**
@@ -109,37 +111,19 @@ class PackageModel extends Model {
      * @return array
      */
     public function deletePackage(array $id) {
-        // 开启事务
-        $this->startTrans();
         if ($this->where(array(
             'id' => array(
                 'in',
                 $id
             )
-        ))->delete()) {
-            if (M('PackageGoods')->where(array(
-                'package_id' => array(
-                    'in',
-                    $id
-                )
-            ))->delete()) {
-                // 删除成功，提交事务
-                $this->commit();
-                return array(
-                    'status' => true,
-                    'msg' => '删除成功'
-                );
-            } else {
-                // 删除失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => false,
-                    'msg' => '删除失败'
-                );
-            }
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
         } else {
-            // 删除失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => false,
                 'msg' => '删除失败'
@@ -155,13 +139,14 @@ class PackageModel extends Model {
      * @return int
      */
     public function getPackageCount($keyword) {
-        empty($keyword) || $this->where(array(
-            "name" => array(
-                "like",
-                "%{$keyword}%"
-            )
-        ));
-        return (int) $this->count();
+        $where = array(
+            'is_delete' => 0
+        );
+        empty($keyword) || $where['name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
+        return (int) $this->where($where)->count();
     }
 
     /**
@@ -181,12 +166,13 @@ class PackageModel extends Model {
      */
     public function getPackageList($page, $pageSize, $order, $sort, $keyword) {
         $offset = ($page - 1) * $pageSize;
-        empty($keyword) || $this->where(array(
-            "name" => array(
-                "like",
-                "%{$keyword}%"
-            )
-        ));
+        $where = array(
+            'is_delete' => 0
+        );
+        empty($keyword) || $where['name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
         return array_map(function ($value) {
             $value['goods_list'] = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
                 " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = pg.goods_id "
@@ -196,13 +182,14 @@ class PackageModel extends Model {
                 'g.name',
                 'g.thumb'
             ))->where(array(
-                'pg.package_id' => $value['id']
+                'pg.package_id' => $value['id'],
+                'g.is_delete' => 0
             ))->select();
             return $value;
         }, $this->table($this->getTableName() . " AS p ")->field(array(
             'p.*',
             "(SELECT COUNT(1) FROM " . M('Advertisement')->getTableName() . " WHERE package_id = p.id)" => 'is_advertisement'
-        ))->limit($offset, $pagesize)->select());
+        ))->where($where)->limit($offset, $pagesize)->select());
     }
 
     /**

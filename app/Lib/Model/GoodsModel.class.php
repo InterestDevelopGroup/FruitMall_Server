@@ -28,7 +28,9 @@ class GoodsModel extends Model {
      *            关键字
      */
     public function _getGoodsList($offset, $pagesize, $user_id, $p_cate_id, $c_cate_id, $tag, $keyword) {
-        $where = array();
+        $where = array(
+            'g.is_delete' => 0
+        );
         $p_cate_id && $where['g.p_cate_id'] = $p_cate_id;
         $c_cate_id && $where['g.c_cate_id'] = $c_cate_id;
         $tag && $where['g.tag'] = $tag;
@@ -122,7 +124,9 @@ class GoodsModel extends Model {
                 'in',
                 $id
             )
-        ))->delete()) {
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
             return array(
                 'status' => true,
                 'msg' => '删除成功'
@@ -143,13 +147,14 @@ class GoodsModel extends Model {
      * @return int
      */
     public function getGoodsCount($keyword) {
-        empty($keyword) || $this->where(array(
-            'name' => array(
-                'like',
-                "%{$keyword}%"
-            )
-        ));
-        return (int) $this->count();
+        $where = array(
+            'is_delete' => 0
+        );
+        empty($keyword) || $where['name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
+        return (int) $this->where($where)->count();
     }
 
     /**
@@ -169,7 +174,14 @@ class GoodsModel extends Model {
      */
     public function getGoodsList($page, $pageSize, $order, $sort, $keyword) {
         $offset = ($page - 1) * $pageSize;
-        $this->table($this->getTableName() . " AS g ")->join(array(
+        $where = array(
+            'g.is_delete' => 0
+        );
+        empty($keyword) || $where['g.name'] = array(
+            "like",
+            "%{$keyword}%"
+        );
+        return $this->table($this->getTableName() . " AS g ")->join(array(
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
             " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
             " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON t.id = g.tag "
@@ -179,14 +191,7 @@ class GoodsModel extends Model {
             'cc.name' => 'child_category',
             't.name' => 'tag_name',
             "(SELECT COUNT(1) FROM " . M('Advertisement')->getTableName() . " WHERE goods_id = g.id)" => 'is_advertisement'
-        ))->order($order . " " . $sort)->limit($offset, $pageSize);
-        empty($keyword) || $this->where(array(
-            'g.name' => array(
-                'like',
-                "%{$keyword}%"
-            )
-        ));
-        return $this->select();
+        ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

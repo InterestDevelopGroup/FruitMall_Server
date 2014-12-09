@@ -46,12 +46,16 @@ class PackageAction extends AdminAction {
         } else {
             import('ORG.Util.Page');
             $goods = M('Goods');
-            $count = $goods->count();
+            $count = $goods->where(array(
+                'is_delete' => 0
+            ))->count();
             $page = new Page($count, 12);
             $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
             $page->setConfig('header', '个商品');
             $show = $page->show();
-            $goodsList = $goods->limit($page->firstRow, $page->listRows)->select();
+            $goodsList = $goods->where(array(
+                'is_delete' => 0
+            ))->limit($page->firstRow, $page->listRows)->select();
             $this->assign('goodsList', $goodsList);
             $this->assign('count', ceil($count / 12));
             $this->assign('page', $show);

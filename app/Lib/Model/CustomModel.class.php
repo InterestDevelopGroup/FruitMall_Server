@@ -34,7 +34,8 @@ class CustomModel extends Model {
                 'g.unit' => 'goods_price_unit',
                 'g.thumb' => 'goods_thumb'
             ))->where(array(
-                'cg.custom_id' => $value['custom_id']
+                'cg.custom_id' => $value['custom_id'],
+                'g.is_delete' => 0
             ))->select();
             return $value;
         }, $this->where(array(

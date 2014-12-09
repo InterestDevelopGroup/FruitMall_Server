@@ -931,11 +931,26 @@ class ApiAction extends Action {
     public function validate_code() {
         if ($this->isPost() || $this->isAjax()) {
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
-            if (empty($phone)) {
+            $type = isset($_POST['type']) ? intval($_POST['type']) : null;
+            if (empty($phone) || !in_array($type, array(
+                1,
+                2,
+                null
+            ))) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
+            }
+            if ($type == 1 || is_null($type)) {
+                if (M('Member')->where(array(
+                    'phone' => $phone
+                ))->count()) {
+                    $this->ajaxReturn(array(
+                        'status' => 0,
+                        'result' => '该手机已注册，请直接登陆'
+                    ));
+                }
             }
             $validate_code = rand(1000, 9999);
             if (sendSms($phone, "您好，您的验证码是{$validate_code}【鲜果送】")) {

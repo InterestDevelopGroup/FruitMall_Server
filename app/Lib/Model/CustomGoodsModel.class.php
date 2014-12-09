@@ -111,7 +111,8 @@ class CustomGoodsModel extends Model {
             'g.unit' => 'goods_price_unit',
             'g.thumb' => 'goods_thumb'
         ))->where(array(
-            'custom_id' => $custom_id
+            'custom_id' => $custom_id,
+            'g.is_delete' => 0
         ))->select();
     }
 
