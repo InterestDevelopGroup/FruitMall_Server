@@ -14,7 +14,8 @@
                 <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="删除用户" onclick="javascript:del();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="拉入黑名单" onclick="javascript:addBlacklist();" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="移出黑名单" onclick="javascript:delBlacklist();" />
+                <input class="btn btn-primary" type="button" value="移出黑名单" onclick="javascript:delBlacklist();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="送水果劵" onclick="javascript:addCoupon();" />&nbsp;&nbsp;
             </form>
         </div>
         <div>
@@ -71,7 +72,7 @@ $(function(){
                 }
             },
             {display: "操作", align: 'center', width: '10%', render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="addCoupon('+rowdata.id+')">送水果劵</a> | <a href="javascript:void(0);" onclick="remark('+rowdata.id+')">备注</a>';
+                    return '<a href="javascript:void(0);" onclick="remark('+rowdata.id+')">备注</a>';
                 }
             }
             ],
@@ -262,9 +263,14 @@ function delBlacklist() {
 
 //送水果劵
 var addCouponDialog;
-function addCoupon(id) {
+function addCoupon() {
+	var data = getCheckedData('id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个用户', '温馨提示', 'warn');
+        return false;
+    }
     addCouponDialog = $.ligerDialog.open({
-        url: '<{:U("member/add_coupon")}>?id='+id, height: 400, width: 600,
+        url: '<{:U("member/add_coupon")}>?id='+data, height: 400, width: 600,
         isDrag: false, title: '送水果劵',
         buttons: [{text: '确定', onclick: function(item, dialog) {addCouponDialog.frame.addCouponFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]

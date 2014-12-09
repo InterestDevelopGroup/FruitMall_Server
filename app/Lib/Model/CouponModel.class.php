@@ -81,6 +81,42 @@ class CouponModel extends Model {
     }
 
     /**
+     * 给指定用户赠送水果劵
+     *
+     * @param array $user_id
+     *            指定的用户ID
+     * @param int $score
+     *            水果劵面值
+     * @param string $expire
+     *            过期时间（传空为永久有效）
+     * @return array
+     */
+    public function addCouponToSpecialUser(array $user_id, $score, $expire) {
+        $len = count($user_id);
+        $dataList = array();
+        for ($i = 0; $i < $len; $i++) {
+            $dataList[] = array(
+                'user_id' => $user_id[$i],
+                'score' => $score,
+                'type' => 4,
+                'publish_time' => time(),
+                'expire_time' => strlen($expire) ? (intval($expire) * 24 * 3600 + strtotime(date("Y-m-d"))) : null
+            );
+        }
+        if ($this->addAll($dataList)) {
+            return array(
+                'status' => true,
+                'msg' => '赠送成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '赠送失败'
+            );
+        }
+    }
+
+    /**
      * 获取可用的水果劵列表
      *
      * @param int $user_id

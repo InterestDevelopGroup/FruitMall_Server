@@ -14,13 +14,19 @@ class MemberAction extends AdminAction {
      */
     public function add_coupon() {
         if ($this->isAjax()) {
-            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            $user_id = isset($_POST['user_id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, $_POST['user_id']) : $this->redirect('/');
             $score = isset($_POST['score']) ? intval($_POST['score']) : $this->redirect('/');
-            $expire = isset($_POST['expire']) ? intval($_POST['expire']) : $this->redirect('/');
-            $this->ajaxReturn(D('Coupon')->addCoupon($user_id, 4, $score, $expire ? $expire : null));
+            $expire = isset($_POST['expire']) ? trim($_POST['expire']) : $this->redirect('/');
+            $this->ajaxReturn(D('Coupon')->addCouponToSpecialUser($user_id, $score, $expire));
         } else {
-            $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
-            $this->assign('id', $id);
+            $id = isset($_GET['id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, explode(',', $_GET['id'])) : $this->redirect('/');
+            $this->assign('id', json_encode($id));
             $this->display();
         }
     }
