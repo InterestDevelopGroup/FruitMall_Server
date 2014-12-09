@@ -4,17 +4,17 @@
         <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
             <div class="title clearfix">
                 <div class="l title-cnt">
-                    <span class="icon icon8"></span>会员一览
+                    <span class="icon icon8"></span>黑名单
                 </div>
             </div>
         </div>
         <div class="top_4">
-            <form method="get">
+            <!--<form method="get">
                 关键字：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="拉入黑名单" onclick="javascript:addBlacklist();" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="送水果劵" onclick="javascript:addCoupon();" />&nbsp;&nbsp;
-            </form>
+                <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;-->
+                <input class="btn btn-primary" type="button" value="删除用户" onclick="javascript:del();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="移出黑名单" onclick="javascript:delBlacklist();" />&nbsp;&nbsp;
+            <!--</form>-->
         </div>
         <div>
             <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
@@ -70,7 +70,8 @@ $(function(){
                 }
             }
             ],
-            url: '<{:U("member/index")}>?keyword=<{$keyword}>',
+            //url: '<{:U("member/index")}>?keyword=<{$keyword}>',
+			url: '<{:U("member/blacklist")}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',

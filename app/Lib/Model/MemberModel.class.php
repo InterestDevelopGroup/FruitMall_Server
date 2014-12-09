@@ -110,16 +110,24 @@ class MemberModel extends Model {
      *
      * @param string $keyword
      *            查询关键字
+     * @param int $is_blacklist
+     *            是否黑名单
      * @return int
      */
-    public function getMemberCount($keyword) {
-        empty($keyword) || $this->where(array(
-            'username' => array(
-                'like',
-                "%{$keyword}%"
+    public function getMemberCount($keyword, $is_blacklist) {
+        $where = array(
+            'b.id' => array(
+                'exp',
+                $is_blacklist ? " is not null " : " is null "
             )
-        ));
-        return (int) $this->count();
+        );
+        empty($keyword) || $where['m.username'] = array(
+            "like",
+            "%{$keyword}%"
+        );
+        return (int) $this->table($this->getTableName() . " AS m ")->join(array(
+            " LEFT JOIN " . M('Blacklist')->getTableName() . " AS b ON m.id = b.user_id "
+        ))->where($where)->count();
     }
 
     /**
@@ -136,29 +144,34 @@ class MemberModel extends Model {
      * @param string $keyword
      *            查询关键字
      */
-    public function getMemberList($page, $pageSize, $order, $sort, $keyword) {
+    public function getMemberList($page, $pageSize, $order, $sort, $keyword, $is_blacklist) {
         $offset = ($page - 1) * $pageSize;
-        empty($keyword) || $this->where(array(
-            'username' => array(
-                'like',
-                "%{$keyword}%"
+        $where = array(
+            'b.id' => array(
+                'exp',
+                $is_blacklist ? " is not null " : " is null "
             )
-        ));
+        );
+        empty($keyword) || $where['m.username'] = array(
+            "like",
+            "%{$keyword}%"
+        );
         return $this->table($this->getTableName() . " AS m ")->field(array(
-            'id',
-            'phone',
-            'username',
-            'real_name',
-            'avatar',
-            'sex',
-            'remark',
-            'register_time',
-            'last_time',
+            'm.id',
+            'm.phone',
+            'm.username',
+            'm.real_name',
+            'm.avatar',
+            'm.sex',
+            'm.remark',
+            'm.register_time',
+            'm.last_time',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id AND status = 4)" => 'refuse_amount',
-            "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = m.id)" => 'is_blacklist',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'order_amount',
             "(SELECT SUM(total_amount) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'total_amount'
-        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        ))->join(array(
+            " LEFT JOIN " . M('Blacklist')->getTableName() . " AS b ON m.id = b.user_id "
+        ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

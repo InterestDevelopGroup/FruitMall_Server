@@ -26,6 +26,10 @@ $app_config = array(
                 'index' => array(
                     'text' => '会员一览',
                     'url' => '/member/index'
+                ),
+                'blacklist' => array(
+                    'text' => '黑名单',
+                    'url' => '/member/blacklist'
                 )
             )
         ),
@@ -209,6 +213,7 @@ $app_config = array(
     'priv' => array(
         'member' => array(
             'index' => 'member|index',
+            'blacklist' => 'member|blacklist',
             'delete' => 'member|delete',
             'addblacklist' => 'member|addblacklist',
             'deleteblacklist' => 'member|deleteblacklist',
@@ -282,7 +287,7 @@ $app_config = array(
             'delete' => 'order|delete',
             'update_status' => 'order|update_status',
             'sure' => 'order|sure',
-            'print_order'=> 'order|print_order',
+            'print_order' => 'order|print_order',
             'distribute' => 'order|distribute'
         ),
         'notification' => array(
@@ -309,6 +314,7 @@ $app_config = array(
     // 子权限
     'child_priv' => array(
         'member|index' => 'member|getuseraddresslist,member|getusercustomlist',
+        'member|blacklist' => 'member|getuseraddresslist,member|getusercustomlist',
         'goods|add' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
         'goods|update' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
         'tag|add' => 'tag|delete_image,tag|upload',
@@ -319,13 +325,14 @@ $app_config = array(
         'branch|add' => 'branch|add_courier,branch|add_shipping_address',
         'branch|update' => 'branch|add_courier,branch|add_shipping_address',
         'order|index' => 'order|getorderdetail',
-        'order|history' => 'order|getorderdetail',
+        'order|history' => 'order|getorderdetail'
     ),
     // 权限对应翻译
     'priv_language' => array(
         'member' => array(
             'member' => '会员',
             'index' => '会员一览',
+            'blacklist' => '黑名单',
             'delete' => '删除会员',
             'addblacklist' => '拉入黑名单',
             'deleteblacklist' => '移出黑名单',
@@ -408,7 +415,7 @@ $app_config = array(
             'delete' => '删除订单',
             'update_status' => '更新订单状态',
             'sure' => '确认订单',
-            'print_order'=> '打印订单',
+            'print_order' => '打印订单',
             'distribute' => '指定送货员'
         ),
         'notification' => array(
@@ -440,6 +447,7 @@ $app_config = array(
     'menu_priv' => array(
         'administrator|management',
         'member|index',
+        'member|blacklist',
         'member|add_coupon',
         'member|remark',
         'goods|index',

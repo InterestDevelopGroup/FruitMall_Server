@@ -44,6 +44,35 @@ class MemberAction extends AdminAction {
     }
 
     /**
+     * 黑名单
+     */
+    public function blacklist() {
+        if ($this->isAjax()) {
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
+            $member = D('Member');
+            $total = $member->getMemberCount($keyword, 1);
+            if ($total) {
+                $rows = array_map(function ($v) {
+                    $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
+                    $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
+                    return $v;
+                }, $member->getMemberList($page, $pageSize, $order, $sort, $keyword, 1));
+            } else {
+                $rows = null;
+            }
+            $this->ajaxReturn(array(
+                'Rows' => $rows,
+                'Total' => $total
+            ));
+        } else {
+            $this->display();
+        }
+    }
+
+    /**
      * 删除用户
      */
     public function delete() {
@@ -105,13 +134,13 @@ class MemberAction extends AdminAction {
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $member = D('Member');
-            $total = $member->getMemberCount($keyword);
+            $total = $member->getMemberCount($keyword, 0);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['register_time'] = date("Y-m-d H:i:s", $v['register_time']);
                     $v['last_time'] = $v['last_time'] ? date("Y-m-d H:i:s", $v['last_time']) : $v['last_time'];
                     return $v;
-                }, $member->getMemberList($page, $pageSize, $order, $sort, $keyword));
+                }, $member->getMemberList($page, $pageSize, $order, $sort, $keyword, 0));
             } else {
                 $rows = null;
             }
