@@ -31,7 +31,7 @@ class TagModel extends Model {
         ));
         $result = $this->table($this->getTableName() . " AS t ")->field(array(
             't.*',
-            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE tag = t.id)" => 'goods_amount'
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE tag = t.id AND is_delete = 0)" => 'goods_amount'
         ))->limit($offset, $pagesize)->select();
         if ($goods_amount && !empty($result)) {
             foreach ($result as &$v) {
@@ -39,7 +39,7 @@ class TagModel extends Model {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
-                }, D('Goods')->_getGoodsList(0, $goods_amount, null, null, $v['id'], null));
+                }, D('Goods')->_getGoodsList(0, $goods_amount, null, null, null, $v['id'], null));
             }
         }
         return $result;
