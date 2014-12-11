@@ -34,6 +34,9 @@ class PackageModel extends Model {
                 'pg.goods_id',
                 'pg.amount',
                 'g.name',
+                'g.price',
+                'g._price',
+                'g.unit',
                 'g.thumb'
             ))->where(array(
                 'pg.package_id' => $value['id'],

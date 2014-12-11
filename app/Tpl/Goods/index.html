@@ -11,6 +11,23 @@
         <div class="top_4">
             <form method="get">
                 关键字：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                大分类：<select name="p_cate_id">
+                	<option value="0">--请选择--</option>
+                    <volist name="parentCategory" id="val">
+                    <option value="<{$val['id']}>" <if condition="$p_cate_id eq $val['id']">selected</if>><{$val['name']}></option>
+                    </volist>
+                </select>&nbsp;&nbsp;
+                小分类：<select name="c_cate_id">
+                	<option value="0">--请选择--</option>
+                    <volist name="childCategory" id="val">
+                    <option value="<{$val['id']}>" <if condition="$c_cate_id eq $val['id']">selected</if>><{$val['name']}></option>
+                    </volist>
+                </select>&nbsp;&nbsp;
+                状态：<select name="status">
+                	<option value="-1" <if condition="$status eq -1">selected</if>>全部</option>
+                    <option value="0" <if condition="$status eq 0">selected</if>>下架</option>
+                    <option value="1" <if condition="$status eq 1">selected</if>>上架</option>
+                </select>&nbsp;&nbsp;
                 <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="删除商品" onclick="javascript:del();" />
             </form>
@@ -26,12 +43,22 @@
 <script type="text/javascript">
 //<![CDATA[
 var grid;
+var tag_data = <{$tag}>;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "商品名称", name: 'name', align: 'center', width: '12%', isSort: false},
-            {display: "大分类", name: 'parent_category', align: 'center', width: '10%', isSort: false},
-            {display: "小分类", name: 'child_category', align: 'center', width: '10%', isSort: false},
+            {display: "大分类", name: 'parent_category', align: 'center', width: '8%', isSort: false},
+            {display: "小分类", name: 'child_category', align: 'center', width: '8%', isSort: false},
+			{display: "标签", name: 'tag_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+					return value ? value : '暂无';
+				}, editor: {
+					type: 'select',
+					data: tag_data,
+					valueField: 'text',
+					cancelable: false
+				}
+			},
             {display: "单价", name: 'price', align: 'center', width: '6%'},
             {display: "市场价", name: '_price', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
@@ -49,7 +76,7 @@ $(function(){
                 }
             },
             {display: "权重", name: 'priority', align: 'center', width: '4%'},
-            {display: "操作", width:'20%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "操作", width:'18%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     if (parseInt(rowdata.is_advertisement)) {
                         var str = '取消广告';
                         var type = 0;
@@ -68,11 +95,15 @@ $(function(){
                 }
             }
             ],
-            url: '<{:U("goods/index")}>?keyword=<{$keyword}>',
+            url: '<{:U("goods/index")}>?keyword=<{$keyword}>&p_cate_id=<{$p_cate_id}>&c_cate_id=<{$c_cate_id}>&status=<{$status}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',
-            checkbox: true,
+			
+			enabledEdit: true,
+			onBeforeSubmitEdit: f_onBeforeSubmitEdit,
+
+			checkbox: true,
             frozenCheckbox: false,
             selectRowButtonOnly: true,
             pageSize:20,
@@ -83,6 +114,20 @@ $(function(){
     });
     $("#pageloading").hide();
 });
+
+function f_onBeforeSubmitEdit(e) {
+	$.post('<{:U("goods/update_tag")}>', {id: e.record.id, tag: e.value}, function(data) {
+		if (!data.status) {
+			$.ligerDialog.alert(data.msg, '出错了(>_<)', 'error', function(yes) {
+				if (yes) {
+					window.location.reload(true);
+				}
+			});
+		}
+	}, 'json');
+}
+
+
 //商品明细
 function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];

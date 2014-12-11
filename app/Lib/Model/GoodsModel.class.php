@@ -29,7 +29,8 @@ class GoodsModel extends Model {
      */
     public function _getGoodsList($offset, $pagesize, $user_id, $p_cate_id, $c_cate_id, $tag, $keyword) {
         $where = array(
-            'g.is_delete' => 0
+            'g.is_delete' => 0,
+            'g.status' => 1
         );
         $p_cate_id && $where['g.p_cate_id'] = $p_cate_id;
         $c_cate_id && $where['g.c_cate_id'] = $c_cate_id;
@@ -143,10 +144,16 @@ class GoodsModel extends Model {
      * 获取商品总数
      *
      * @param string $keyword
-     *            关键字
+     *            查询关键字
+     * @param int $p_cate_id
+     *            大分类
+     * @param int $c_cate_id
+     *            小分类
+     * @param int $status
+     *            状态
      * @return int
      */
-    public function getGoodsCount($keyword) {
+    public function getGoodsCount($keyword, $p_cate_id, $c_cate_id, $status) {
         $where = array(
             'is_delete' => 0
         );
@@ -154,6 +161,11 @@ class GoodsModel extends Model {
             "like",
             "%{$keyword}%"
         );
+        $p_cate_id && $where['p_cate_id'] = $p_cate_id;
+        $c_cate_id && $where['c_cate_id'] = $c_cate_id;
+        if ($status != -1) {
+            $where['status'] = $status;
+        }
         return (int) $this->where($where)->count();
     }
 
@@ -170,9 +182,14 @@ class GoodsModel extends Model {
      *            排序方式
      * @param string $keyword
      *            关键字
-     * @return array
+     * @param int $p_cate_id
+     *            大分类
+     * @param int $c_cate_id
+     *            小分类
+     * @param int $status
+     *            状态
      */
-    public function getGoodsList($page, $pageSize, $order, $sort, $keyword) {
+    public function getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $status) {
         $offset = ($page - 1) * $pageSize;
         $where = array(
             'g.is_delete' => 0
@@ -181,6 +198,11 @@ class GoodsModel extends Model {
             "like",
             "%{$keyword}%"
         );
+        $p_cate_id && $where['g.p_cate_id'] = $p_cate_id;
+        $c_cate_id && $where['g.c_cate_id'] = $c_cate_id;
+        if ($status != -1) {
+            $where['g.status'] = $status;
+        }
         return $this->table($this->getTableName() . " AS g ")->join(array(
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = g.p_cate_id ",
             " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON cc.id = g.c_cate_id ",
@@ -301,6 +323,41 @@ class GoodsModel extends Model {
             return array(
                 'status' => true,
                 'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
+            );
+        }
+    }
+
+    /**
+     * 更新商品标签
+     *
+     * @param int $id
+     *            商品ID
+     * @param string $tag
+     *            标签
+     * @return array
+     */
+    public function updateGoodsTag($id, $tag) {
+        if ($tag == "暂无") {
+            $tag_id = null;
+        } else {
+            $tag = M('Tag')->where(array(
+                'name' => $tag
+            ))->find();
+            $tag_id = $tag['id'];
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'tag' => $tag_id
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => $this->getLastSql()
             );
         } else {
             return array(

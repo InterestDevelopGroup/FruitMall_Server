@@ -227,6 +227,7 @@ $app_config = array(
             'update' => 'goods|update',
             'advertisement' => 'goods|advertisement',
             'update_status' => 'goods|update_status',
+            'update_tag' => 'goods|update_tag',
             'update_priority' => 'goods|update_priority'
         ),
         'category' => array(
@@ -347,6 +348,7 @@ $app_config = array(
             'update' => '更新商品',
             'advertisement' => '取消/设置广告',
             'update_status' => '上下架',
+            'update_tag' => '更新商品标签',
             'update_priority' => '更新权重'
         ),
         'category' => array(

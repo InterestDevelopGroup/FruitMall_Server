@@ -100,20 +100,23 @@ class GoodsAction extends AdminAction {
      */
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $p_cate_id = isset($_GET['p_cate_id']) ? intval($_GET['p_cate_id']) : 0;
+        $c_cate_id = isset($_GET['c_cate_id']) ? intval($_GET['c_cate_id']) : 0;
+        $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $goods = D('Goods');
-            $total = $goods->getGoodsCount($keyword);
+            $total = $goods->getGoodsCount($keyword, $p_cate_id, $c_cate_id, $status);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['description'] = strip_tags($v['description']);
                     return $v;
-                }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword));
+                }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $status));
             } else {
                 $rows = null;
             }
@@ -123,6 +126,20 @@ class GoodsAction extends AdminAction {
             ));
         } else {
             $this->assign('keyword', $keyword);
+            $this->assign('p_cate_id', $p_cate_id);
+            $this->assign('c_cate_id', $c_cate_id);
+            $this->assign('status', $status);
+            $this->assign('parentCategory', M('ParentCategory')->select());
+            $this->assign('childCategory', M('ChildCategory')->select());
+            $tag = M('Tag')->field(array(
+                'id',
+                'name' => 'text'
+            ))->select();
+            array_unshift($tag, array(
+                'id' => 0,
+                'text' => '暂无'
+            ));
+            $this->assign('tag', json_encode($tag));
             $this->display();
         }
     }
@@ -193,6 +210,19 @@ class GoodsAction extends AdminAction {
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
             $status = isset($_POST['status']) ? intval($_POST['status']) : $this->redirect('/');
             $this->ajaxReturn(D('Goods')->updateGoodsStatus($goods_id, $status));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 更新商品标签
+     */
+    public function update_tag() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $tag = isset($_POST['tag']) ? trim($_POST['tag']) : $this->redirect('/');
+            $this->ajaxReturn(D('Goods')->updateGoodsTag($id, $tag));
         } else {
             $this->redirect('/');
         }
