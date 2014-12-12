@@ -23,10 +23,14 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "分类名称", name: 'name', align: 'center', width: '30%', isSort: false},
-            {display: "商品数量", name: 'goods_amount', align: 'center', width: '16%'},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '16%'},
-            {display: "更新时间", name: 'update_time', align: 'center', width: '16%', render: function(rowdata, rowindex, value) {
+            {display: "分类名称", name: 'name', align: 'center', width: '12%', isSort: false},
+            {display: "商品数量", name: 'goods_amount', align: 'center', width: '6%'},
+            {display: "描述", name: 'description', align: 'center', width: '46%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     return value ? value : '从未更新';
                 }
             },
@@ -40,14 +44,28 @@ $(function(){
             method: 'get',
             width: '100%',
             checkbox: true,
+            frozenCheckbox: false,
             selectRowButtonOnly: true,
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
-            onAfterChangeColumnWidth:f_change
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
     });
     $("#pageloading").hide();
 });
+
+//明细
+function f_onShowDetail(record, container, callback) {
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>分类名称：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.name + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>商品数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.goods_amount + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>描述：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
+    out.push("</table>");
+    $(container).html(out.join(''));
+}
 
 //添加分类
 var addCategoryDialog;

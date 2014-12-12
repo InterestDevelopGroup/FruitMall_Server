@@ -50,11 +50,11 @@ class TagModel extends Model {
      *
      * @param string $name
      *            标签名字
-     * @param string $image
-     *            标签图片
+     * @param string $description
+     *            标签描述
      * @return array
      */
-    public function addTag($name, $image) {
+    public function addTag($name, $description) {
         if ($this->where(array(
             'name' => $name
         ))->count()) {
@@ -65,7 +65,7 @@ class TagModel extends Model {
         }
         if ($this->add(array(
             'name' => $name,
-            'image' => $image,
+            'description' => $description,
             'add_time' => time()
         ))) {
             return array(
@@ -143,11 +143,11 @@ class TagModel extends Model {
      *            标签ID
      * @param string $name
      *            标签名
-     * @param string $image
-     *            标签图片
+     * @param string $description
+     *            标签描述
      * @return array
      */
-    public function updateTag($id, $name, $image) {
+    public function updateTag($id, $name, $description) {
         if ($this->where(array(
             'name' => $name,
             'id' => array(
@@ -164,7 +164,7 @@ class TagModel extends Model {
             'id' => $id
         ))->save(array(
             'name' => $name,
-            'image' => $image,
+            'description' => $description,
             'update_time' => time()
         ))) {
             return array(

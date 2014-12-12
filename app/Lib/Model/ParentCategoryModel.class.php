@@ -29,6 +29,7 @@ class ParentCategoryModel extends Model {
         return $this->table($this->getTableName() . " AS pc ")->field(array(
             'id',
             'name',
+            'description',
             'add_time',
             'update_time',
             "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
@@ -40,9 +41,11 @@ class ParentCategoryModel extends Model {
      *
      * @param string $name
      *            大分类名称
+     * @param string $description
+     *            描述
      * @return array
      */
-    public function addParentCategory($name) {
+    public function addParentCategory($name, $description) {
         if ($this->where(array(
             'name' => $name
         ))->count()) {
@@ -53,6 +56,7 @@ class ParentCategoryModel extends Model {
         }
         if ($this->add(array(
             'name' => $name,
+            'description' => strlen($description) ? $description : null,
             'add_time' => time()
         ))) {
             return array(
@@ -182,6 +186,7 @@ class ParentCategoryModel extends Model {
         return $this->table($this->getTableName() . " AS pc ")->field(array(
             'id',
             'name',
+            'description',
             'add_time',
             'update_time',
             "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
@@ -195,9 +200,11 @@ class ParentCategoryModel extends Model {
      *            大分类ID
      * @param string $name
      *            大分类名称
+     * @param string $description
+     *            描述
      * @return array
      */
-    public function updateParentCategory($id, $name) {
+    public function updateParentCategory($id, $name, $description) {
         if ($this->where(array(
             'name' => $name,
             'id' => array(
@@ -214,6 +221,7 @@ class ParentCategoryModel extends Model {
             'id' => $id
         ))->save(array(
             'name' => $name,
+            'description' => strlen($description) ? $description : null,
             'update_time' => time()
         ))) {
             return array(

@@ -15,8 +15,8 @@ class TagAction extends AdminAction {
     public function add() {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
-            $this->ajaxReturn(D('Tag')->addTag($name, $image));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn(D('Tag')->addTag($name, $description));
         } else {
             $this->display();
         }
@@ -29,34 +29,6 @@ class TagAction extends AdminAction {
         if ($this->isAjax()) {
             $id = isset($_POST['id']) ? explode(',', $_POST['id']) : $this->redirect('/');
             $this->ajaxReturn(D('Tag')->deleteTag((array) $id));
-        } else {
-            $this->redirect('/');
-        }
-    }
-
-    /**
-     * 删除图片
-     */
-    public function delete_image() {
-        if ($this->isAjax()) {
-            $filename = isset($_POST['filename']) ? $_SERVER['DOCUMENT_ROOT'] . $_POST['filename'] : $this->redirect('/');
-            if (file_exists($filename)) {
-                if (unlink($filename)) {
-                    $this->ajaxReturn(array(
-                        'status' => true
-                    ));
-                } else {
-                    $this->ajaxReturn(array(
-                        'status' => false,
-                        'msg' => '删除失败'
-                    ));
-                }
-            } else {
-                $this->ajaxReturn(array(
-                    'status' => false,
-                    'msg' => '图片已经删除'
-                ));
-            }
         } else {
             $this->redirect('/');
         }
@@ -100,24 +72,13 @@ class TagAction extends AdminAction {
         $tag = D('Tag');
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            $image = isset($_POST['image']) ? trim($_POST['image']) : $this->redirect('/');
-            $this->ajaxReturn($tag->updateTag($id, $name, $image));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn($tag->updateTag($id, $name, $description));
         } else {
             $this->assign('tag', $tag->where(array(
                 'id' => $id
             ))->find());
             $this->display();
-        }
-    }
-
-    /**
-     * 上传标签图片
-     */
-    public function upload() {
-        if (!empty($_FILES)) {
-            $this->ajaxReturn(upload($_FILES, C('MAX_SIZE'), C('ALLOW_EXTENSIONS')));
-        } else {
-            $this->redirect('/');
         }
     }
 

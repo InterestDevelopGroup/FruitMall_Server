@@ -161,7 +161,10 @@ class ShippingAddressModel extends Model {
      */
     public function getShippingAddressList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
-        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return $this->table($this->getTableName() . " AS sa ")->field(array(
+            'sa.*',
+            "(SELECT b.name FROM " . M('BranchShippingAddress')->getTableName() . " AS bsa LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = bsa.branch_id WHERE bsa.shipping_address_id = sa.id)" => 'branch'
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

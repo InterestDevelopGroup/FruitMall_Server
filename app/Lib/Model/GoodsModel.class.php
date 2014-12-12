@@ -315,11 +315,13 @@ class GoodsModel extends Model {
      * @return array
      */
     public function updateGoodsStatus($goods_id, $status) {
+        $data = array(
+            'status' => $status
+        );
+        $status || $data['priority'] = 0;
         if ($this->where(array(
             'id' => $goods_id
-        ))->save(array(
-            'status' => $status
-        ))) {
+        ))->save($data)) {
             return array(
                 'status' => true,
                 'msg' => '更新成功'

@@ -32,6 +32,7 @@ class ChildCategoryModel extends Model {
         return $this->table($this->getTableName() . " AS cc ")->field(array(
             'cc.id',
             'cc.name',
+            'cc.description',
             'pc.name' => 'parent',
             'cc.parent_id',
             'cc.add_time',
@@ -49,9 +50,11 @@ class ChildCategoryModel extends Model {
      *            小分类名称
      * @param int $parent_id
      *            大分类ID
+     * @param string $description
+     *            描述
      * @return array
      */
-    public function addChildCategory($name, $parent_id) {
+    public function addChildCategory($name, $parent_id, $description) {
         if ($this->where(array(
             'name' => $name
         ))->count()) {
@@ -63,6 +66,7 @@ class ChildCategoryModel extends Model {
         if ($this->add(array(
             'name' => $name,
             'parent_id' => $parent_id,
+            'description' => strlen($description) ? $description : null,
             'add_time' => time()
         ))) {
             return array(
@@ -164,6 +168,7 @@ class ChildCategoryModel extends Model {
         return $this->table($this->getTableName() . " AS cc ")->field(array(
             'cc.id',
             'cc.name',
+            'cc.description',
             'pc.name' => 'parent',
             'cc.parent_id',
             'cc.add_time',
@@ -183,9 +188,11 @@ class ChildCategoryModel extends Model {
      *            小分类名称
      * @param int $parent_id
      *            大分类ID
+     * @param string $description
+     *            描述
      * @return array
      */
-    public function updateChildCategory($id, $name, $parent_id) {
+    public function updateChildCategory($id, $name, $parent_id, $description) {
         if ($this->where(array(
             'name' => $name,
             'id' => array(
@@ -203,6 +210,7 @@ class ChildCategoryModel extends Model {
         ))->save(array(
             'name' => $name,
             'parent_id' => $parent_id,
+            'description' => strlen($description) ? $description : null,
             'update_time' => time()
         ))) {
             return array(

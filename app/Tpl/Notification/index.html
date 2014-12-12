@@ -24,10 +24,14 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "标题", name: 'title', align: 'center', width: '16%', isSort: false},
-            {display: "内容", name: 'content', align: 'left', width: '40%', isSort: false},
+            {display: "内容", name: 'content', align: 'left', width: '30%', isSort: false},
             {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
             {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render:function(rowdata, rowindex, value) {
                     return value ? value : '从未更新';
+                }
+            },
+            {display: "推送时间", name: 'send_time', align: 'center', width: '12%', render:function(rowdata, rowindex, value) {
+                    return value ? value : '从未推送';
                 }
             },
             {display: "操作", align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
@@ -58,6 +62,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>内容：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.content + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>推送时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.send_time ? record.send_time : '从未推送') + "</td></tr>");
     $(container).html(out.join(''));
 }
 

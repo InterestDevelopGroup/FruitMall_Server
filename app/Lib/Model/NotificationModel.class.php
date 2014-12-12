@@ -85,7 +85,10 @@ class NotificationModel extends Model {
      */
     public function getNotificationList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
-        return $this->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        return $this->table($this->getTableName() . " AS n ")->field(array(
+            'n.*',
+            "(SELECT send_time FROM " . M('send_history')->getTableName() . " WHERE notification_id = n.id ORDER BY id DESC LIMIT 1)" => 'send_time'
+        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**

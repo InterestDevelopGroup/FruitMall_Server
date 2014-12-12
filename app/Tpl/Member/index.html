@@ -257,7 +257,7 @@ function delBlacklist() {
 //送水果劵
 var addCouponDialog;
 function addCoupon() {
-	var data = getCheckedData('id');
+    var data = getCheckedData('id');
     if (data.length <= 0) {
         $.ligerDialog.alert('请至少选中一个用户', '温馨提示', 'warn');
         return false;

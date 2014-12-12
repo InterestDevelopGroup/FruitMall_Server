@@ -12,19 +12,19 @@
             <form method="get">
                 关键字：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
                 大分类：<select name="p_cate_id">
-                	<option value="0">--请选择--</option>
+                    <option value="0">--请选择--</option>
                     <volist name="parentCategory" id="val">
                     <option value="<{$val['id']}>" <if condition="$p_cate_id eq $val['id']">selected</if>><{$val['name']}></option>
                     </volist>
                 </select>&nbsp;&nbsp;
                 小分类：<select name="c_cate_id">
-                	<option value="0">--请选择--</option>
+                    <option value="0">--请选择--</option>
                     <volist name="childCategory" id="val">
                     <option value="<{$val['id']}>" <if condition="$c_cate_id eq $val['id']">selected</if>><{$val['name']}></option>
                     </volist>
                 </select>&nbsp;&nbsp;
                 状态：<select name="status">
-                	<option value="-1" <if condition="$status eq -1">selected</if>>全部</option>
+                    <option value="-1" <if condition="$status eq -1">selected</if>>全部</option>
                     <option value="0" <if condition="$status eq 0">selected</if>>下架</option>
                     <option value="1" <if condition="$status eq 1">selected</if>>上架</option>
                 </select>&nbsp;&nbsp;
@@ -48,17 +48,17 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "商品名称", name: 'name', align: 'center', width: '12%', isSort: false},
-            {display: "大分类", name: 'parent_category', align: 'center', width: '8%', isSort: false},
-            {display: "小分类", name: 'child_category', align: 'center', width: '8%', isSort: false},
-			{display: "标签", name: 'tag_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
-					return value ? value : '暂无';
-				}, editor: {
-					type: 'select',
-					data: tag_data,
-					valueField: 'text',
-					cancelable: false
-				}
-			},
+            {display: "大分类", name: 'parent_category', align: 'center', width: '10%', isSort: false},
+            {display: "小分类", name: 'child_category', align: 'center', width: '10%', isSort: false},
+            {display: "标签", name: 'tag_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }, editor: {
+                    type: 'select',
+                    data: tag_data,
+                    valueField: 'text',
+                    cancelable: false
+                }
+            },
             {display: "单价", name: 'price', align: 'center', width: '6%'},
             {display: "市场价", name: '_price', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
@@ -76,7 +76,7 @@ $(function(){
                 }
             },
             {display: "权重", name: 'priority', align: 'center', width: '4%'},
-            {display: "操作", width:'18%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     if (parseInt(rowdata.is_advertisement)) {
                         var str = '取消广告';
                         var type = 0;
@@ -91,7 +91,7 @@ $(function(){
                         var _str = '上架';
                         var status = 1;
                     }
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a> | <a href="javascript:void(0);" onclick="advertisement('+rowdata.id+', '+type+')">'+str+'</a> | <a href="javascript:void(0);" onclick="update_status('+rowdata.id+', '+status+')">'+_str+'</a> | <a href="javascript:void(0);" onclick="update_priority('+rowdata.id+')">修改权重</a>';
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a> | <a href="javascript:void(0);" onclick="advertisement('+rowdata.id+', '+type+')">'+str+'</a> | <a href="javascript:void(0);" onclick="update_status('+rowdata.id+', '+status+')">'+_str+'</a>';
                 }
             }
             ],
@@ -99,11 +99,11 @@ $(function(){
             dataAction: 'server',
             method: 'get',
             width: '100%',
-			
-			enabledEdit: true,
-			onBeforeSubmitEdit: f_onBeforeSubmitEdit,
+            
+            enabledEdit: true,
+            onBeforeSubmitEdit: f_onBeforeSubmitEdit,
 
-			checkbox: true,
+            checkbox: true,
             frozenCheckbox: false,
             selectRowButtonOnly: true,
             pageSize:20,
@@ -116,15 +116,15 @@ $(function(){
 });
 
 function f_onBeforeSubmitEdit(e) {
-	$.post('<{:U("goods/update_tag")}>', {id: e.record.id, tag: e.value}, function(data) {
-		if (!data.status) {
-			$.ligerDialog.alert(data.msg, '出错了(>_<)', 'error', function(yes) {
-				if (yes) {
-					window.location.reload(true);
-				}
-			});
-		}
-	}, 'json');
+    $.post('<{:U("goods/update_tag")}>', {id: e.record.id, tag: e.value}, function(data) {
+        if (!data.status) {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error', function(yes) {
+                if (yes) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }, 'json');
 }
 
 

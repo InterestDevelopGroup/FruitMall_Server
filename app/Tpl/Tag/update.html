@@ -1,7 +1,7 @@
 <include file="./Public/html/header.html" />
 <style type="text/css">
 <!--
-body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}.image-preview{position:relative;margin-top:16px;width:160px;height:90px;overflow:hidden;float:left;margin-left:12px;}.image-preview-outter{display:block;}.image-preview-delete{display:block;position:absolute;top:0px;left:144px;background:url(/Public/images/delete.png) no-repeat;background-color:#fff;width:16px;height:16px;}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}.progress{height:20px;margin-bottom:20px;overflow:hidden;background-color:#f5f5f5;border-radius:4px;-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}.progress-bar{float:left;width:0;height:100%;font-size:12px;line-height:20px;color:#fff;text-align:center;background-color:#428bca;-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-transition:width .6s ease;transition:width .6s ease}.progress-striped .progress-bar{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-size:40px 40px}.progress.active .progress-bar{-webkit-animation:progress-bar-stripes 2s linear infinite;animation:progress-bar-stripes 2s linear infinite}.progress-bar-success{background-color:#5cb85c}.progress-striped .progress-bar-success{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-info{background-color:#5bc0de}.progress-striped .progress-bar-info{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-warning{background-color:#f0ad4e}.progress-striped .progress-bar-warning{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}.progress-bar-danger{background-color:#d9534f}.progress-striped .progress-bar-danger{background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,0.15)25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent);background-image:linear-gradient(45deg,rgba(255,255,255,0.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,transparent 75%,transparent)}
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}#description{height:100px;}
 -->
 </style>
 <table cellpadding="0" cellspacing="0" class="l-table-edit">
@@ -11,27 +11,11 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="tipmsg"></td>
     </tr>
     <tr>
-        <td align="right" class="l-table-edit-td"><span>*</span>标签图片：</td>
+        <td align="right" class="l-table-edit-td">描述：</td>
         <td align="left" class="l-table-edit-td">
-            <span class="btn btn-success fileinput-button" style="color:#fff;">
-                &nbsp;&nbsp;选择图片
-                <input id="fileupload" type="file" name="files[]" />
-                <input id="image" type="hidden" value="<{$tag['image']}>" />
-            </span>
-            <br>
-            <br>
-            <div id="progress" class="progress" style="display:none;">
-                <div class="progress-bar progress-bar-success"></div>
-            </div>
+            <textarea id="description" style="resize: none;" onfocus="javascript:checkLength(this, 'description_tip');" onkeydown="javascript:checkLength(this, 'description_tip');" onkeyup="javascript:checkLength(this, 'description_tip');" maxLength="100"><{$tag['description']}></textarea>
         </td>
-        <td align="left" class="tipmsg" id="image_tip">
-            <div class="image-preview">
-                <a href="http://<{$_SERVER['HTTP_HOST']}><{$tag['image']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
-                    <img src="http://<{$_SERVER['HTTP_HOST']}><{$tag['image']}>" border="0" />
-                </a>
-                <a href="javascript:void(0);" onclick="delete_image('<{$tag['image']}>', $(this));" class="image-preview-delete" title="删除"></a>
-            </div>
-        </td>
+        <td align="left" class="tipmsg" id="description_tip"></td>
     </tr>
 </table>
 <script type="text/javascript">
@@ -42,40 +26,6 @@ $(function() {
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckName();
-    });
-    $("#fileupload").fileupload({
-        maxNumberOfFiles: 1,
-        acceptFileTypes: /(\.|\/)(jpe?g|png|bmp)$/i,
-        maxFileSize: 2097152,
-        minFileSize: 1,
-        url: '<{:U("tag/upload")}>',
-        dataType: 'json',
-        send: function (e, data) {
-            $("#progress").show();
-        },
-        done: function (e, data) {
-            if (data.result.status) {
-                $("#progress").hide();
-                $("#image_tip").html("<div class='image-preview'>"
-                                        + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
-                                        + "<img src='"+data.result.src+"' border='0' />"
-                                        + "</a>"
-                                        + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
-                                        + data.result.filename
-                                        + "\', $(this));\" class='image-preview-delete' title='删除'>"
-                                        + "</a>" + "</div>");
-                $("#image").val(data.result.filename);
-            } else {
-                $("#image_tip").html(data.result.msg);
-            }
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .progress-bar').css(
-                'width',
-                progress + '%'
-            );
-        }
     });
 });
 
@@ -106,24 +56,24 @@ function ckName() {
     return true;
 }
 
-
-//检测图片
-function ckImage() {
-    var image = $.trim($("#image").val());
-    if (image.length <= 0) {
-        addTip($("#image_tip"), '标签图片不能为空');
-        return false;
+//检测长度
+function checkLength(obj, id) {
+    var maxLength = obj.maxLength;
+    var desc = obj.value;
+    if (desc.length <= maxLength) {
+        $("#"+id).html('还剩下'+ (maxLength - desc.length) + '个字');
     }
-    return true;
+    obj.onblur = function() {
+        $("#"+id).empty();
+    }
 }
 
 //检测表单
 function checkForm() {
     if (!ckName()) return false;
-    if (!ckImage()) return false;
     var name = $.trim($("#name").val());
-    var image = $.trim($("#image").val());
-    return {name: name, image: image};
+    var description = $.trim($("#description").val());
+    return {name: name, description: description};
 }
 
 //提交表单
@@ -133,19 +83,6 @@ function updateTagFormSubmit() {
             window.parent.updateTagCallback(data);
         }, 'json');
     }
-}
-
-//删除图片
-function delete_image(filename) {
-    $.post('<{:U("tag/delete_image")}>', {filename: filename}, function(data) {
-        if (data.status) {
-            $("#image_tip").empty();
-            $("#image").val("");
-        } else {
-            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
-            return false;
-        }
-    }, 'json');
 }
 //]]>
 </script>

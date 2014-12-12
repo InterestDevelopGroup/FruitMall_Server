@@ -49,6 +49,7 @@ class NotificationAction extends AdminAction {
                 $rows = array_map(function ($value) {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    $value['send_time'] = $value['send_time'] ? date("Y-m-d H:i:s", $value['send_time']) : $value['send_time'];
                     return $value;
                 }, $notification->getNotificationList($page, $pageSize, $order, $sort));
             } else {

@@ -16,7 +16,8 @@ class CategoryAction extends AdminAction {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('ChildCategory')->addChildCategory($name, $parent_id));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn(D('ChildCategory')->addChildCategory($name, $parent_id, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->select());
             $this->display();
@@ -72,7 +73,8 @@ class CategoryAction extends AdminAction {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('ChildCategory')->updateChildCategory($id, $name, $parent_id));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn(D('ChildCategory')->updateChildCategory($id, $name, $parent_id, $description));
         } else {
             $this->assign('childCategory', M('ChildCategory')->where(array(
                 'id' => $id
@@ -105,7 +107,8 @@ class CategoryAction extends AdminAction {
     public function parent_add() {
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            $this->ajaxReturn(D('ParentCategory')->addParentCategory($name));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn(D('ParentCategory')->addParentCategory($name, $description));
         } else {
             $this->display();
         }
@@ -159,7 +162,8 @@ class CategoryAction extends AdminAction {
         $id = isset($_GET['id']) && intval($_GET['id']) ? intval($_GET['id']) : $this->redirect('/');
         if ($this->isAjax()) {
             $name = isset($_POST['name']) ? trim($_POST['name']) : $this->redirect('/');
-            $this->ajaxReturn(D('ParentCategory')->updateParentCategory($id, $name));
+            $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
+            $this->ajaxReturn(D('ParentCategory')->updateParentCategory($id, $name, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->where(array(
                 'id' => $id

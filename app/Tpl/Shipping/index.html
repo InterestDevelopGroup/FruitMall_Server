@@ -48,6 +48,10 @@ $(function(){
                     return value ?  value + '%' : '暂无';
                 }
             },
+            {display: "所在分店", name: 'branch', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
                 }
@@ -79,6 +83,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>栋、期、座：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.building ? record.building : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>送货费：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping_fee + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>价格调整比例：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.discount ? (record.discount + '%') : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>所在分店：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.branch ? record.branch : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("</table>");

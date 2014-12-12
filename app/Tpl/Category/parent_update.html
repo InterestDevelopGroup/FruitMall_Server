@@ -1,7 +1,7 @@
 <include file="./Public/html/header.html" />
 <style type="text/css">
 <!--
-body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}#description{height:100px;}
 -->
 </style>
 <table cellpadding="0" cellspacing="0" class="l-table-edit">
@@ -9,6 +9,13 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="right" class="l-table-edit-td"><span>*</span>名称：</td>
         <td align="left" class="l-table-edit-td"><input type="text" id="name" value="<{$parentCategory['name']}>" /></td>
         <td align="left" class="tipmsg"></td>
+    </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td">描述：</td>
+        <td align="left" class="l-table-edit-td">
+            <textarea id="description" style="resize: none;" onfocus="javascript:checkLength(this, 'description_tip');" onkeydown="javascript:checkLength(this, 'description_tip');" onkeyup="javascript:checkLength(this, 'description_tip');" maxLength="100"><{$parentCategory['description']}></textarea>
+        </td>
+        <td align="left" class="tipmsg" id="description_tip"></td>
     </tr>
 </table>
 <script type="text/javascript">
@@ -49,11 +56,24 @@ function ckName() {
     return true;
 }
 
+//检测长度
+function checkLength(obj, id) {
+    var maxLength = obj.maxLength;
+    var desc = obj.value;
+    if (desc.length <= maxLength) {
+        $("#"+id).html('还剩下'+ (maxLength - desc.length) + '个字');
+    }
+    obj.onblur = function() {
+        $("#"+id).empty();
+    }
+}
+
 //检测表单
 function checkForm() {
     if (!ckName()) return false;
     var name = $.trim($("#name").val());
-    return {name: name};
+    var description = $.trim($("#description").val());
+    return {name: name, description: description};
 }
 
 //提交表单

@@ -19,6 +19,15 @@ class CourierModel extends Model {
      * @return array
      */
     public function addCourier($real_name, $phone) {
+        if ($this->where(array(
+            'real_name' => $real_name,
+            'phone' => $phone
+        ))->count()) {
+            return array(
+                'status' => false,
+                'msg' => '该送货员已经存在'
+            );
+        }
         if ($this->add(array(
             'real_name' => $real_name,
             'phone' => $phone,
@@ -104,7 +113,8 @@ class CourierModel extends Model {
             'c.*',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status > 2)" => 'sent_amount',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status <= 2)" => 'unsend_amount',
-            "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount'
+            "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount',
+            "(SELECT b.name FROM " . M('BranchCourier')->getTableName() . " AS bc LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = bc.branch_id WHERE courier_id = c.id)" => 'branch'
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
@@ -120,6 +130,19 @@ class CourierModel extends Model {
      * @return array
      */
     public function updateCourier($id, $real_name, $phone) {
+        if ($this->where(array(
+            'id' => array(
+                'neq',
+                $id
+            ),
+            'real_name' => $real_name,
+            'phone' => $phone
+        ))->count()) {
+            return array(
+                'status' => false,
+                'msg' => '该送货员已经存在'
+            );
+        }
         if ($this->where(array(
             'id' => $id
         ))->save(array(

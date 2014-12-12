@@ -28,10 +28,14 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "标签名", name: 'name', align: 'center', width: '20%', isSort: false},
-            {display: "商品数量", name: 'goods_amount', align: 'center', width: '20%', isSort: false},
-            {display: "添加时间", name: 'add_time', align: 'center', width: '20%'},
-            {display: "更新时间", name: 'update_time', align: 'center', width: '20%', render: function(rowdata, rowindex, value) {
+            {display: "标签名", name: 'name', align: 'center', width: '12%', isSort: false},
+            {display: "商品数量", name: 'goods_amount', align: 'center', width: '12%', isSort: false},
+            {display: "描述", name: 'description', align: 'center', width: '40%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "添加时间", name: 'add_time', align: 'center', width: '12%'},
+            {display: "更新时间", name: 'update_time', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     return value ? value : '从未更新';
                 }
             },
@@ -60,13 +64,10 @@ function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>标签名称：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.name + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>商品数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.goods_amount + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>标签描述：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.description ? record.description : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>添加时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
     out.push("</table>");
-    out.push('<div style="width:90%;margin:10px;">');
-    out.push('<h3>标签图片：</h3>');
-    out.push('<div style="width:160px;height:90px;overflow:hidden;"><a href="' + record.image + '" title="点击查看原图" target="_blank"><img src="' + record.image + '" width="160" /></a></div>');
-    out.push('</div>');
     $(container).html(out.join(''));
 }
 

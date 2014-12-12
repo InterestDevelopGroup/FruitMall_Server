@@ -52,11 +52,11 @@ class ShippingAction extends AdminAction {
             $shippingAddress = D('ShippingAddress');
             $total = $shippingAddress->getShippingAddressCount();
             if ($total) {
-                $rows = $shippingAddress->getShippingAddressList($page, $pageSize, $order, $sort);
-                foreach ($rows as &$v) {
-                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
-                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
-                }
+                $rows = array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, $shippingAddress->getShippingAddressList($page, $pageSize, $order, $sort));
             } else {
                 $rows = null;
             }
