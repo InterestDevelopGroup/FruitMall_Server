@@ -88,6 +88,16 @@ class MemberModel extends Model {
                 'result' => '该手机尚未注册'
             );
         }
+        // 密码修改前后没有变化
+        if ($this->where(array(
+            'phone' => $phone,
+            'password' => md5($new_password)
+        ))->count()) {
+            return array(
+                'status' => 1,
+                'result' => '修改密码成功'
+            );
+        }
         if ($this->where(array(
             'phone' => $phone
         ))->save(array(
@@ -369,24 +379,7 @@ class MemberModel extends Model {
      * @return array
      */
     public function updateMember($id, $username, $real_name, $avatar, $sex) {
-        $data = array();
-        $username && $data['username'] = $username;
-        $real_name && $data['real_name'] = $real_name;
-        $avatar && $data['avatar'] = base64Code2Image($avatar);
-        !is_null($sex) && in_array($sex, array(
-            0,
-            1,
-            2
-        )) && $data['sex'] = $sex;
-        if (empty($data)) {
-            return array(
-                'status' => 0,
-                'result' => '参数错误'
-            );
-        }
-        if ($this->where(array(
-            'id' => $id
-        ))->save($data)) {
+        $getResult = function () use($id) {
             $result = $this->field(array(
                 'id',
                 'phone',
@@ -401,9 +394,37 @@ class MemberModel extends Model {
             ))->find();
             $result['register_time'] = date("Y-m-d H:i:s", $result['register_time']);
             $result['last_time'] = $result['last_time'] ? date("Y-m-d H:i:s", $result['last_time']) : $result['last_time'];
+            return $result;
+        };
+        $data = array();
+        $username && $data['username'] = $username;
+        $real_name && $data['real_name'] = $real_name;
+        $avatar && $data['avatar'] = base64Code2Image($avatar);
+        !is_null($sex) && in_array($sex, array(
+            0,
+            1,
+            2
+        )) && $data['sex'] = $sex;
+        if (empty($data)) {
             return array(
                 'status' => 1,
-                'result' => $result
+                'result' => $getResult()
+            );
+        }
+        // 修改前后没有变化
+        $where = $data['id'] = $id;
+        if ($this->where($where)->count()) {
+            return array(
+                'status' => 1,
+                'result' => $getResult()
+            );
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save($data)) {
+            return array(
+                'status' => 1,
+                'result' => $getResult()
             );
         } else {
             return array(

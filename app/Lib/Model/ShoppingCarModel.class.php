@@ -217,6 +217,16 @@ class ShoppingCarModel extends Model {
      * @return array
      */
     public function updateShoppingCar($shopping_car_id, $quantity) {
+        // 数量更新前后没有变化
+        if ($this->where(array(
+            'shopping_car_id' => $shopping_car_id,
+            'quantity' => $quantity
+        ))->count()) {
+            return array(
+                'status' => 1,
+                'result' => '更新成功'
+            );
+        }
         if ($this->where(array(
             'shopping_car_id' => $shopping_car_id
         ))->save(array(

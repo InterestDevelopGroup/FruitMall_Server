@@ -143,12 +143,6 @@ class AddressModel extends Model {
         $address && $data['address'] = $address;
         $_consignee && $data['_consignee'] = $_consignee;
         $_phone && $data['_phone'] = $_phone;
-        if (empty($data)) {
-            return array(
-                'status' => 0,
-                'result' => '参数错误'
-            );
-        }
         $data['update_time'] = time();
         if ($this->where(array(
             'address_id' => $address_id
