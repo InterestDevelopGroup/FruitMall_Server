@@ -48,10 +48,19 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>单价：
+                    <span class="required">*</span>总价：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="price" value="<{$goods['price']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>单价：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="single_price" value="<{$goods['single_price']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -66,10 +75,19 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
-                    <span class="required">*</span>价格单位：
+                    <span class="required">*</span>总价单位：
                 </td>
                 <td align="left" class="l-table-edit-td">
                     <input type="text" id="unit" value="<{$goods['unit']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>单价单位：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="single_unit" value="<{$goods['single_unit']}>" />
                 </td>
                 <td align="left" class="tipmsg"></td>
             </tr>
@@ -193,20 +211,32 @@ $(function() {
         ckName();
     });
     $("#price").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '单价最多保留两位小数');
+        addTip($(this).parent('td').next('td:last'), '总价最多保留两位小数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckPrice();
+    });
+    $("#single_price").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '单价最多保留两位小数');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckSinglePrice();
     });
     $("#_price").blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ck_Price();
     });
     $("#unit").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '价格单位示例：元/斤');
+        addTip($(this).parent('td').next('td:last'), '总价单位示例：元/斤');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckUnit();
+    });
+    $("#single_unit").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '单价单位示例：元/斤');
+    }).blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckSingleUnit();
     });
     $("#p_cate_id").change(function() {
         var p_cate_id = $(this).val();
@@ -321,20 +351,39 @@ function ckName() {
     return true;
 }
 
-//检测原价
+//检测总价
 function ckPrice() {
     var price = $.trim($("#price").val());
     if (price.length <= 0) {
-        addTip($("#price").parent('td').next('td:last'), '单价不能为空');
+        addTip($("#price").parent('td').next('td:last'), '总价不能为空');
         return false;
     }
     var priceReg = /^\d+(\.\d{1,2})?$/;
     if (!priceReg.test(price)) {
-        addTip($("#price").parent('td').next('td:last'), '单价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
+        addTip($("#price").parent('td').next('td:last'), '总价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
         return false;
     }
     if (parseFloat(price) > 99999999.99) {
-        addTip($("#price").parent('td').next('td:last'), '原价已经超过范围');
+        addTip($("#price").parent('td').next('td:last'), '总价已经超过范围');
+        return false;
+    }
+    return true;
+}
+
+//检测单价
+function ckSinglePrice() {
+    var single_price = $.trim($("#single_price").val());
+    if (single_price.length <= 0) {
+        addTip($("#single_price").parent('td').next('td:last'), '单价不能为空');
+        return false;
+    }
+    var priceReg = /^\d+(\.\d{1,2})?$/;
+    if (!priceReg.test(single_price)) {
+        addTip($("#single_price").parent('td').next('td:last'), '单价最多只能保留两位小数，不能包含非数字和\'.\'以外的字符');
+        return false;
+    }
+    if (parseFloat(single_price) > 99999999.99) {
+        addTip($("#single_price").parent('td').next('td:last'), '单价已经超过范围');
         return false;
     }
     return true;
@@ -358,11 +407,21 @@ function ck_Price() {
     return true;
 }
 
-//检测价格单位
+//检测总价单位
 function ckUnit() {
     var unit = $.trim($("#unit").val());
     if (unit.length <= 0) {
-        addTip($("#unit").parent('td').next('td:last'), '价格单位不能为空');
+        addTip($("#unit").parent('td').next('td:last'), '总价单位不能为空');
+        return false;
+    }
+    return true;
+}
+
+//检测单价单位
+function ckSingleUnit() {
+    var single_unit = $.trim($("#single_unit").val());
+    if (single_unit.length <= 0) {
+        addTip($("#single_unit").parent('td').next('td:last'), '单价单位不能为空');
         return false;
     }
     return true;
@@ -411,16 +470,20 @@ function ckIntroductionImage() {
 function checkForm() {
     if (!ckName()) return false;
     if (!ckPrice()) return false;
+    if (!ckSinglePrice()) return false;
     if (!ck_Price()) return false;
     if (!ckUnit()) return false;
+    if (!ckSingleUnit()) return false;
     if (!ckPCateId()) return false;
     if (!ckCCateId()) return false;
     if (!ckThumb()) return false;
     if (!ckIntroductionImage()) return false;
     var name = $.trim($("#name").val());
     var price = $.trim($("#price").val());
+    var single_price = $.trim($("#single_price").val());
     var _price = $.trim($("#_price").val());
     var unit = $.trim($("#unit").val());
+    var single_unit = $.trim($("#single_unit").val());
     var p_cate_id = $("#p_cate_id").val();
     var c_cate_id = $("#c_cate_id").val();
     var tag = $("#tag").val();
@@ -431,8 +494,10 @@ function checkForm() {
     return {
         name : name,
         price : price,
+        single_price: single_price,
         _price : _price,
         unit: unit,
+        single_unit: single_unit,
         p_cate_id: p_cate_id,
         c_cate_id: c_cate_id,
         tag: tag,

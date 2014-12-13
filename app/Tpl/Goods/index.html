@@ -59,7 +59,8 @@ $(function(){
                     cancelable: false
                 }
             },
-            {display: "单价", name: 'price', align: 'center', width: '6%'},
+            {display: "总价", name: 'price', align: 'center', width: '6%'},
+            {display: "单价", name: 'single_price', align: 'center', width: '6%'},
             {display: "市场价", name: '_price', align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
                     if (value == null) {
                         return '暂无';
@@ -68,7 +69,8 @@ $(function(){
                     }
                 }
             },
-            {display: "价格单位", name: 'unit', align: 'center', width: '6%'},
+            {display: "总价单位", name: 'unit', align: 'center', width: '6%'},
+            {display: "单价单位", name: 'single_unit', align: 'center', width: '6%'},
             {display: "每盒个数", name: 'amount', align: 'center', width: '6%'},
             {display: "每盒重量", name: 'weight', align: 'center', width: '6%'},
             {display: "商品状态", name: 'status', align: 'center', width: '6%', render: function (rowdata, rowindex, value) {

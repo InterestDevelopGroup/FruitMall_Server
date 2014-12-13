@@ -81,11 +81,13 @@ class GoodsModel extends Model {
      *            简介
      * @return array
      */
-    public function addGoods($name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
+    public function addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
+            'single_price' => $single_price,
             'unit' => $unit,
+            'single_unit' => $single_unit,
             'p_cate_id' => $p_cate_id,
             'c_cate_id' => $c_cate_id,
             'thumb' => $thumb_image,
@@ -245,11 +247,13 @@ class GoodsModel extends Model {
      *            简介
      * @return array
      */
-    public function updateGoods($id, $name, $price, $_price, $unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
+    public function updateGoods($id, $name, $price, $single_price, $_price, $unit, $single_unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
+            'single_price' => $single_price,
             'unit' => $unit,
+            'single_unit' => $single_unit,
             'p_cate_id' => $p_cate_id,
             'c_cate_id' => $c_cate_id,
             'thumb' => $thumb_image,
