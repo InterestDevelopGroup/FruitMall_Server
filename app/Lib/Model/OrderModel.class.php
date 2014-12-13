@@ -98,6 +98,7 @@ class OrderModel extends Model {
             $_use = D('Coupon')->useCoupon($coupon_id, $total_amount);
             if ($_use['status']) {
                 $coupon = $_use['result'];
+                $total_amount = $total_amount - $coupon;
             } else {
                 return $_use;
             }
