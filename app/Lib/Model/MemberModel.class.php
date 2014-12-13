@@ -211,6 +211,7 @@ class MemberModel extends Model {
                     ))->field(array(
                         'a.address_id',
                         'a.consignee',
+                        'a.phone' => 'consignee_phone',
                         'a.province',
                         'a.city',
                         'a.district',
