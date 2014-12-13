@@ -27,8 +27,8 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "用户名", name: 'username', align: 'center', width: '20%', isSort: false},
-            {display: "订单号", name: 'order_number', align: 'center', width: '20%', isSort: false},
+            {display: "用户名", name: 'username', align: 'center', width: '12%', isSort: false},
+            {display: "订单号", name: 'order_number', align: 'center', width: '12%', isSort: false},
             {display: "送货服务", name: 'shipping_service', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '赞' : '踩';
                 }
@@ -41,6 +41,7 @@ $(function(){
                     return parseInt(value) ? '赞' : '踩';
                 }
             },
+            {display: "送货员", name: 'courier_name', align: 'center', width: '12%', isSort: false},
             {display: "投诉/反馈时间", name: 'add_time', align: 'center', width: '12%'}
             ],
             url: '<{:U("feedback/index")}>',

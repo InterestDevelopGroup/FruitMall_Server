@@ -101,7 +101,15 @@ class FeedbackModel extends Model {
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON f.user_id = m.id "
         ))->field(array(
             'f.*',
-            'm.username'
+            'm.username',
+            "(SELECT
+                c.real_name
+            FROM
+                " . M('Order')->getTableName() . " AS o
+            LEFT JOIN
+                " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id
+            WHERE
+                o.order_number = f.order_number)" => 'courier_name'
         ))->order("f." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
