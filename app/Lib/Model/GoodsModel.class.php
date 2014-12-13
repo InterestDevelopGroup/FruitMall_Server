@@ -60,11 +60,15 @@ class GoodsModel extends Model {
      * @param string $name
      *            名称
      * @param float $price
+     *            总价
+     * @param float $single_price
      *            单价
      * @param string $_price
      *            市场价
      * @param string $unit
-     *            价格单位
+     *            总价单位
+     * @param string $single_unit
+     *            单价单位
      * @param int $p_cate_id
      *            大分类ID
      * @param int $c_cate_id
@@ -226,11 +230,15 @@ class GoodsModel extends Model {
      * @param string $name
      *            名称
      * @param float $price
+     *            总价
+     * @param float $single_price
      *            单价
      * @param string $_price
      *            市场价
      * @param string $unit
-     *            价格单位
+     *            总价单位
+     * @param string $single_unit
+     *            单价单位
      * @param int $p_cate_id
      *            大分类ID
      * @param int $c_cate_id

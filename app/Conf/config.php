@@ -82,7 +82,11 @@ $app_config = array(
                 'add' => array(
                     'text' => '添加套餐',
                     'url' => '/package/add'
-                )
+                ),
+                'package_deleted' => array(
+                    'text' => '已刪除套餐',
+                    'url' => '/package/package_deleted'
+                ),
             )
         ),
         'Courier' => array(
@@ -248,6 +252,7 @@ $app_config = array(
         ),
         'package' => array(
             'index' => 'package|index',
+            'package_deleted' => 'package|package_deleted',
             'add' => 'package|add',
             'delete' => 'package|delete',
             'update' => 'package|update'
@@ -370,6 +375,7 @@ $app_config = array(
         'package' => array(
             'package' => '套餐',
             'index' => '所有套餐',
+            'package_deleted' => '已删除套餐',
             'add' => '添加套餐',
             'delete' => '删除套餐',
             'update' => '更新套餐'
@@ -464,6 +470,7 @@ $app_config = array(
         'tag|add',
         'tag|update',
         'package|index',
+        'package|package_deleted',
         'package|add',
         'package|update',
         'courier|index',

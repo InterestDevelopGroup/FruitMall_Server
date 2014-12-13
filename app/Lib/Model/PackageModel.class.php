@@ -139,11 +139,13 @@ class PackageModel extends Model {
      *
      * @param string $keyword
      *            关键字
+     * @param int $is_delete
+     *            是否刪除（0：否，1：是）
      * @return int
      */
-    public function getPackageCount($keyword) {
+    public function getPackageCount($keyword, $is_delete = 0) {
         $where = array(
-            'is_delete' => 0
+            'is_delete' => $is_delete
         );
         empty($keyword) || $where['name'] = array(
             "like",
@@ -165,12 +167,14 @@ class PackageModel extends Model {
      *            排序方式
      * @param string $keyword
      *            关键字
+     * @param int $is_delete
+     *            是否刪除（0：否，1：是）
      * @return array
      */
-    public function getPackageList($page, $pageSize, $order, $sort, $keyword) {
+    public function getPackageList($page, $pageSize, $order, $sort, $keyword, $is_delete = 0) {
         $offset = ($page - 1) * $pageSize;
         $where = array(
-            'is_delete' => 0
+            'is_delete' => $is_delete
         );
         empty($keyword) || $where['name'] = array(
             "like",

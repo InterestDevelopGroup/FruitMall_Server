@@ -157,6 +157,38 @@ class PackageAction extends AdminAction {
     }
 
     /**
+     * 已刪除套餐
+     */
+    public function package_deleted() {
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        if ($this->isAjax()) {
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
+            $package = D('Package');
+            $total = $package->getPackageCount($keyword, 1);
+            if ($total) {
+                $rows = array_map(function ($v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    $v['description'] = strip_tags($v['description']);
+                    return $v;
+                }, $package->getPackageList($page, $pageSize, $order, $sort, $keyword, 1));
+            } else {
+                $rows = null;
+            }
+            $this->ajaxReturn(array(
+                'Rows' => $rows,
+                'Total' => $total
+            ));
+        } else {
+            $this->assign('keyword', $keyword);
+            $this->display();
+        }
+    }
+
+    /**
      * 套餐编辑（更新）
      */
     public function update() {
