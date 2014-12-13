@@ -434,4 +434,44 @@ class MemberModel extends Model {
         }
     }
 
+    /**
+     * 更新用户的真实姓名和性别
+     *
+     * @param int $id
+     *            用户ID
+     * @param string $real_name
+     *            真实姓名
+     * @param int $sex
+     *            性别
+     * @return array
+     */
+    public function updateRealNameAndSex($id, $real_name, $sex) {
+        if ($this->where(array(
+            'id' => $id,
+            'real_name' => $real_name,
+            'sex' => $sex
+        ))->count()) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'real_name' => $real_name,
+            'sex' => $sex
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
+            );
+        }
+    }
+
 }

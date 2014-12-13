@@ -29,19 +29,22 @@ $(function(){
         columns: [
             {display: "用户名", name: 'username', align: 'center', width: '12%', isSort: false},
             {display: "订单号", name: 'order_number', align: 'center', width: '12%', isSort: false},
-            {display: "送货服务", name: 'shipping_service', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "送货服务", name: 'shipping_service', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '赞' : '踩';
                 }
             },
-            {display: "水果质量", name: 'quality', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "水果质量", name: 'quality', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '赞' : '踩';
                 }
             },
-            {display: "水果价格", name: 'price', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "水果价格", name: 'price', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '赞' : '踩';
                 }
             },
-            {display: "送货员", name: 'courier_name', align: 'center', width: '12%', isSort: false},
+            {display: "送货员", name: 'courier_name', align: 'center', width: '8%', isSort: false},
+            {display: "处理结果", name: 'result', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                return value ? value : '暂无';
+            }, editor: {type: 'text'}},
             {display: "投诉/反馈时间", name: 'add_time', align: 'center', width: '12%'}
             ],
             url: '<{:U("feedback/index")}>',
@@ -51,6 +54,8 @@ $(function(){
             checkbox: true,
             frozenCheckbox: false,
             selectRowButtonOnly: true,
+            enabledEdit: true,
+            onAfterEdit: f_onAfterEdit,
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
@@ -59,6 +64,28 @@ $(function(){
     });
     $("#pageloading").hide();
 });
+
+//编辑后事件响应
+function f_onAfterEdit(e) {
+    if (e.record.result.length > 10) {
+        $.ligerDialog.alert('处理结果不能超过10个字', '出错了(>_<)', 'error', function(yes) {
+            if (yes) {
+                window.location.reload(true);
+            }
+        });
+        return false;
+    }
+    $.post('<{:U("feedback/update_result")}>', {id: e.record.id, result: e.record.result}, function(data) {
+        if (!data.status) {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error', function(yes) {
+                if (yes) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }, 'json');
+}
+
 //明细
 function f_onShowDetail(record, container, callback) {
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];

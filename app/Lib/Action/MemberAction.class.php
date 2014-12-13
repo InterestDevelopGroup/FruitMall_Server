@@ -171,4 +171,18 @@ class MemberAction extends AdminAction {
         }
     }
 
+    /**
+     * 更新用户真实姓名和性别
+     */
+    public function update_realname_sex() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $real_name = isset($_POST['real_name']) ? trim($_POST['real_name']) : $this->redirect('/');
+            $sex = isset($_POST['sex']) ? intval($_POST['sex']) : $this->redirect('/');
+            $this->ajaxReturn(D('Member')->updateRealNameAndSex($id, $real_name, $sex));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
 }

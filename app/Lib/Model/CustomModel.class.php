@@ -115,14 +115,7 @@ class CustomModel extends Model {
                 $custom_id
             )
         ))->delete()) {
-            if (D('CustomGoods')->deleteCustomGoodsByCustomId((array) $custom_id)) {
-                // 删除成功，提交事务
-                $this->commit();
-                return array(
-                    'status' => 1,
-                    'result' => '删除成功'
-                );
-            } else {
+            if (!D('CustomGoods')->deleteCustomGoodsByCustomId((array) $custom_id)) {
                 // 删除失败，回滚事务
                 $this->rollback();
                 return array(
@@ -130,6 +123,20 @@ class CustomModel extends Model {
                     'result' => '删除失败'
                 );
             }
+            if (!D('ShoppingCar')->deleteShoppingCarByCustomId((array) $custom_id)) {
+                // 删除失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '删除失败'
+                );
+            }
+            // 删除成功，提交事务
+            $this->commit();
+            return array(
+                'status' => 1,
+                'result' => '删除成功'
+            );
         } else {
             // 删除失败，回滚事务
             $this->rollback();

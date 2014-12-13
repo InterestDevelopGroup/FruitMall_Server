@@ -208,6 +208,34 @@ class ShoppingCarModel extends Model {
     }
 
     /**
+     * 根据定制id删除购物车
+     *
+     * @param array $custom_id
+     *            定制ID
+     * @return boolean
+     */
+    public function deleteShoppingCarByCustomId(array $custom_id) {
+        if (!$this->where(array(
+            'custom_id' => array(
+                'in',
+                $custom_id
+            )
+        ))->count()) {
+            return true;
+        }
+        if ($this->where(array(
+            'custom_id' => array(
+                'in',
+                $custom_id
+            )
+        ))->delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 更新购物车
      *
      * @param int $shopping_car_id

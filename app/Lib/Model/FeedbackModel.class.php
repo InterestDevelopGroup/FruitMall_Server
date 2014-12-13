@@ -113,4 +113,40 @@ class FeedbackModel extends Model {
         ))->order("f." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
+    /**
+     * 更新处理结果
+     *
+     * @param int $id
+     *            反馈ID
+     * @param string $result
+     *            处理结果
+     * @return array
+     */
+    public function updateResult($id, $result) {
+        if ($this->where(array(
+            'id' => $id,
+            'result' => $result
+        ))->count()) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        }
+        if ($this->where(array(
+            'id' => $id
+        ))->save(array(
+            'result' => strlen($result) ? $result : null
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '更新成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '更新失败'
+            );
+        }
+    }
+
 }

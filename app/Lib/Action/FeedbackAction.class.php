@@ -49,4 +49,17 @@ class FeedbackAction extends AdminAction {
         }
     }
 
+    /**
+     * 更新处理结果
+     */
+    public function update_result() {
+        if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? intval($_POST['id']) : $this->redirect('/');
+            $result = isset($_POST['result']) ? trim($_POST['result']) : $this->redirect('/');
+            $this->ajaxReturn(D('Feedback')->updateResult($id, $result));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
 }

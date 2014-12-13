@@ -84,9 +84,9 @@ $app_config = array(
                     'url' => '/package/add'
                 ),
                 'package_deleted' => array(
-                    'text' => '已刪除套餐',
+                    'text' => '已删除套餐',
                     'url' => '/package/package_deleted'
-                ),
+                )
             )
         ),
         'Courier' => array(
@@ -222,7 +222,8 @@ $app_config = array(
             'addblacklist' => 'member|addblacklist',
             'deleteblacklist' => 'member|deleteblacklist',
             'add_coupon' => 'member|add_coupon',
-            'remark' => 'member|remark'
+            'remark' => 'member|remark',
+            'update_realname_sex' => 'member|update_realname_sex'
         ),
         'goods' => array(
             'index' => 'goods|index',
@@ -310,7 +311,8 @@ $app_config = array(
         ),
         'feedback' => array(
             'index' => 'feedback|index',
-            'delete' => 'feedback|delete'
+            'delete' => 'feedback|delete',
+            'update_result' => 'feedback|update_result'
         ),
         'returns' => array(
             'index' => 'returns|index',
@@ -341,7 +343,8 @@ $app_config = array(
             'addblacklist' => '拉入黑名单',
             'deleteblacklist' => '移出黑名单',
             'add_coupon' => '送水果劵',
-            'remark' => '用户备注'
+            'remark' => '用户备注',
+            'update_realname_sex' => '修改用户真实姓名和性别'
         ),
         'goods' => array(
             'goods' => '商品',
@@ -441,7 +444,8 @@ $app_config = array(
         'feedback' => array(
             'feedback' => '投诉/反馈',
             'index' => '投诉/反馈一览',
-            'delete' => '删除投诉/反馈'
+            'delete' => '删除投诉/反馈',
+            'update_result' => '更新处理结果'
         ),
         'returns' => array(
             'returns' => '退货申请',

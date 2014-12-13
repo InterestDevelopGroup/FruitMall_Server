@@ -105,7 +105,7 @@ CREATE TABLE `fruit_admin_user` (
 
 LOCK TABLES `fruit_admin_user` WRITE;
 /*!40000 ALTER TABLE `fruit_admin_user` DISABLE KEYS */;
-INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1418443932,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1418294467,0,1,NULL),(5,'demo','e10adc3949ba59abbe56e057f20f883e','demo',NULL,1417593149,1417597300,0,1,NULL),(7,'test1','e10adc3949ba59abbe56e057f20f883e','ceshi',NULL,1417676700,NULL,0,1,NULL);
+INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1418485529,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1418485513,0,1,NULL),(5,'demo','e10adc3949ba59abbe56e057f20f883e','demo',NULL,1417593149,1417597300,0,1,NULL),(7,'test1','e10adc3949ba59abbe56e057f20f883e','ceshi',NULL,1417676700,NULL,0,1,NULL);
 /*!40000 ALTER TABLE `fruit_admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -502,6 +502,7 @@ CREATE TABLE `fruit_feedback` (
   `quality` tinyint(1) NOT NULL COMMENT '水果质量（0：踩，1：赞）',
   `price` tinyint(1) NOT NULL COMMENT '水果价格（0：踩，1：赞）',
   `postscript` varchar(255) DEFAULT NULL COMMENT '补充说明',
+  `result` varchar(30) DEFAULT NULL COMMENT '处理结果',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户反馈表';
@@ -513,7 +514,7 @@ CREATE TABLE `fruit_feedback` (
 
 LOCK TABLES `fruit_feedback` WRITE;
 /*!40000 ALTER TABLE `fruit_feedback` DISABLE KEYS */;
-INSERT INTO `fruit_feedback` VALUES (1,1,'14111410253561',1,1,1,'postscript testing',1416219320);
+INSERT INTO `fruit_feedback` VALUES (1,1,'14111410253561',1,1,1,'postscript testing','哈哈',1416219320);
 /*!40000 ALTER TABLE `fruit_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -769,7 +770,7 @@ CREATE TABLE `fruit_package` (
 
 LOCK TABLES `fruit_package` WRITE;
 /*!40000 ALTER TABLE `fruit_package` DISABLE KEYS */;
-INSERT INTO `fruit_package` VALUES (19,'測試套餐1',12.00,34.00,'/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg','/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg','/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg','/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg','/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg','/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg','<p>這是套餐測試</p>',0,1416567703,NULL),(20,'測試套餐2',12.00,20.00,'/uploads/2014/11/21/9b370b6be335abd01c70ba6f5c69e061f214c913.jpg','/uploads/2014/11/21/3faeb831305b752a4660a6fc052dac4db1d1735d.jpg','/uploads/2014/11/21/f5967c6e4bb31f97035754123106ba0b7bad9e12.jpg','/uploads/2014/11/21/b80d84b413ecefff68b6803ecc6c2bc11130a09f.jpg','/uploads/2014/11/21/200711d5b532929bec1c03889289eebf31080560.jpg','/uploads/2014/11/21/c60415485dc372eb1957dc155bbbad334e36ab6b.jpg','<p>這是一個測試套餐</p>',0,1416567758,1416567773);
+INSERT INTO `fruit_package` VALUES (19,'測試套餐1',12.00,34.00,'/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg','/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg','/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg','/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg','/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg','/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg','<p>這是套餐測試</p>',0,1416567703,NULL),(20,'測試套餐2',12.00,20.00,'/uploads/2014/11/21/9b370b6be335abd01c70ba6f5c69e061f214c913.jpg','/uploads/2014/11/21/3faeb831305b752a4660a6fc052dac4db1d1735d.jpg','/uploads/2014/11/21/f5967c6e4bb31f97035754123106ba0b7bad9e12.jpg','/uploads/2014/11/21/b80d84b413ecefff68b6803ecc6c2bc11130a09f.jpg','/uploads/2014/11/21/200711d5b532929bec1c03889289eebf31080560.jpg','/uploads/2014/11/21/c60415485dc372eb1957dc155bbbad334e36ab6b.jpg','<p>這是一個測試套餐</p>',1,1416567758,1416567773);
 /*!40000 ALTER TABLE `fruit_package` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1019,4 +1020,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-13 17:47:41
+-- Dump completed on 2014-12-14  0:04:33
