@@ -183,6 +183,24 @@ $app_config = array(
                 )
             )
         ),
+        'Task' => array(
+            'text' => '任务管理',
+            'default' => 'purchase',
+            'children' => array(
+                'purchase' => array(
+                    'text' => '采购任务',
+                    'url' => '/task/purchase'
+                ),
+                'shipping' => array(
+                    'text' => '送货任务',
+                    'url' => '/task/shipping'
+                ),
+                'returns' => array(
+                    'text' => '退货任务',
+                    'url' => '/task/returns'
+                )
+            )
+        ),
         'Feedback' => array(
             'text' => '投诉/反馈',
             'default' => 'index',

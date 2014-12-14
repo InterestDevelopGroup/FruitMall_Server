@@ -413,6 +413,120 @@ class OrderModel extends Model {
     }
 
     /**
+     * 获取采购总数
+     */
+    public function getPurchaseCount() {
+        $start = strtotime(date("Y-m-d"));
+        $end = $start + 86399;
+        return (int) $this->where(array(
+            'status' => 2,
+            'is_purchase' => 0,
+            'add_time' => array(
+                'between',
+                array(
+                    $start,
+                    $end
+                )
+            )
+        ))->count();
+    }
+
+    /**
+     * 获取采购商品列表
+     *
+     * @param int $page
+     *            当前页
+     * @param int $pageSize
+     *            每页显示条数
+     * @param string $order
+     *            排序字段
+     * @param string $sort
+     *            排序方式
+     * @return array
+     */
+    public function getPurchaseList($page, $pageSize, $order, $sort) {
+        $start = strtotime(date("Y-m-d"));
+        $end = $start + 86399;
+        $offset = ($page - 1) * $pageSize;
+        $sql = "SELECT
+                    g.name, goods_id, sum(goods_amount) as amount
+                FROM
+                    (
+                    SELECT
+                        goods_id, amount AS goods_amount
+                    FROM
+                        fruit_order_goods
+                    WHERE
+                        order_id IN (
+                            (
+                            SELECT
+                                order_id
+                            FROM
+                                fruit_order
+                            WHERE
+                                status = 2 AND
+                                is_purchase = 0 AND
+                                (add_time BETWEEN {$start} AND {$end})
+                            )
+                        )
+                    UNION ALL
+                    SELECT
+                        pg.goods_id, (t.amount * pg.amount) AS goods_amount
+                    FROM
+                        fruit_package_goods AS pg
+                    RIGHT JOIN
+                        (
+                        SELECT
+                            package_id, amount
+                        FROM
+                            fruit_order_package
+                        WHERE
+                            order_id IN (
+                                (
+                                SELECT
+                                    order_id
+                                FROM
+                                    fruit_order
+                                WHERE
+                                    status = 2 AND
+                                    is_purchase = 0 AND
+                                    (add_time BETWEEN {$start} AND {$end})
+                                )
+                            )
+                        ) AS t ON pg.package_id = t.package_id
+                    UNION ALL
+                    SELECT
+                        goods_id, (cg.quantity * t.amount) AS goods_amount
+                    FROM
+                        fruit_custom_goods AS cg
+                    RIGHT JOIN
+                        (
+                        SELECT
+                            custom_id, amount
+                        FROM
+                            fruit_order_custom
+                        WHERE
+                            order_id IN (
+                                (
+                                SELECT
+                                    order_id
+                                FROM
+                                    `fruit_order`
+                                WHERE
+                                    status = 2 AND
+                                    is_purchase = 0 AND
+                                    (add_time BETWEEN {$start} AND {$end})
+                                )
+                            )
+                        ) AS t ON cg.custom_id = t.custom_id
+                    ) AS tt
+                    LEFT JOIN fruit_goods AS g ON tt.goods_id = g.id
+                    GROUP BY goods_id
+                    LIMIT {$offset}, {$pageSize}";
+        return $this->query($sql);
+    }
+
+    /**
      * 打印订单
      *
      * @param int $order_id

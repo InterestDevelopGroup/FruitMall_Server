@@ -20,6 +20,7 @@ class GoodsAction extends AdminAction {
             $_price = isset($_POST['_price']) ? trim($_POST['_price']) : $this->redirect('/');
             $unit = isset($_POST['unit']) ? trim($_POST['unit']) : $this->redirect('/');
             $single_unit = isset($_POST['single_unit']) ? trim($_POST['single_unit']) : $this->redirect('/');
+            $priority = isset($_POST['priority']) ? intval($_POST['priority']) : $this->redirect('/');
             $p_cate_id = isset($_POST['p_cate_id']) ? intval($_POST['p_cate_id']) : $this->redirect('/');
             $c_cate_id = isset($_POST['c_cate_id']) ? intval($_POST['c_cate_id']) : $this->redirect('/');
             $tag = isset($_POST['tag']) ? intval($_POST['tag']) : $this->redirect('/');
@@ -28,7 +29,7 @@ class GoodsAction extends AdminAction {
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->select());
             $this->assign('tag', M('Tag')->select());
@@ -52,6 +53,18 @@ class GoodsAction extends AdminAction {
                     'goods_id' => $goods_id
                 )));
             }
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 检测商品权重
+     */
+    public function check_priority() {
+        if ($this->isAjax()) {
+            $priority = isset($_POST['priority']) ? intval($_POST['priority']) : $this->redirect('/');
+            $this->ajaxReturn(D('Goods')->checkGoodsPriority($priority));
         } else {
             $this->redirect('/');
         }

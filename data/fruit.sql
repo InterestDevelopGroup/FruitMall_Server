@@ -105,7 +105,7 @@ CREATE TABLE `fruit_admin_user` (
 
 LOCK TABLES `fruit_admin_user` WRITE;
 /*!40000 ALTER TABLE `fruit_admin_user` DISABLE KEYS */;
-INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1418485529,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1418485513,0,1,NULL),(5,'demo','e10adc3949ba59abbe56e057f20f883e','demo',NULL,1417593149,1417597300,0,1,NULL),(7,'test1','e10adc3949ba59abbe56e057f20f883e','ceshi',NULL,1417676700,NULL,0,1,NULL);
+INSERT INTO `fruit_admin_user` VALUES (1,'admin','e10adc3949ba59abbe56e057f20f883e','admin','admin@admin.com',0,1418558251,1,1,'系统管理员，勿删！'),(4,'test','e10adc3949ba59abbe56e057f20f883e','test',NULL,1415763083,1418487094,0,1,NULL),(5,'demo','e10adc3949ba59abbe56e057f20f883e','demo',NULL,1417593149,1417597300,0,1,NULL),(7,'test1','e10adc3949ba59abbe56e057f20f883e','ceshi',NULL,1417676700,NULL,0,1,NULL);
 /*!40000 ALTER TABLE `fruit_admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -514,7 +514,7 @@ CREATE TABLE `fruit_feedback` (
 
 LOCK TABLES `fruit_feedback` WRITE;
 /*!40000 ALTER TABLE `fruit_feedback` DISABLE KEYS */;
-INSERT INTO `fruit_feedback` VALUES (1,1,'14111410253561',1,1,1,'postscript testing','哈哈',1416219320);
+INSERT INTO `fruit_feedback` VALUES (1,1,'14111410253561',1,1,1,'postscript testing','测试',1416219320);
 /*!40000 ALTER TABLE `fruit_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,7 +552,7 @@ CREATE TABLE `fruit_goods` (
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `pct` (`p_cate_id`,`c_cate_id`,`tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='商品表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -561,7 +561,7 @@ CREATE TABLE `fruit_goods` (
 
 LOCK TABLES `fruit_goods` WRITE;
 /*!40000 ALTER TABLE `fruit_goods` DISABLE KEYS */;
-INSERT INTO `fruit_goods` VALUES (1,1,1,'測試商品1',12.00,24.00,6.00,1,'元/斤','元/斤',1,12,300,'/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg',0,'/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg','/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg','/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg','/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg','/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg',0,'<p>測試商品1</p>',1415615863,1418457644),(2,1,1,'測試商品2',12.00,42.00,0.00,1,'元/斤','元/斤',NULL,20,400,'/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg',21,'/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg','/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg','/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg','/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg','/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg',0,'<p>測試商品2</p>',1415615924,1418457770),(3,1,1,'測試商品3',1.00,2.00,0.00,1,'元/斤','',1,12,300,'/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg',10,'/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg','/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg','/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg','/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg','/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg',1,'<p>測試商品3</p>',1415859221,1415859538),(4,1,1,'測試商品4',12.00,29.00,0.00,1,'元/斤','',1,12,200,'/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg',13,'/uploads/2014/11/13/9c0b367ab7be91a64ab3eedb3db9569372a7f14b.jpg','/uploads/2014/11/13/9feef9d4e6b4da9c282129e2bb4a6608964324b9.jpg','/uploads/2014/11/13/44a3ba953a5ae2e230a4340762eab757aae6d5df.jpg','/uploads/2014/11/13/9f11b7a0433dd4aa9ac0312668c26cfd5d1197af.jpg','/uploads/2014/11/13/f3edeefa2ca2509bc74fee5fe11884e8b5e3a34d.jpg',1,'<p>測試商品4</p>',1415859581,NULL),(5,1,2,'测试商品5',50.00,60.00,20.00,1,'元/斤','元/斤',1,20,400,'/uploads/2014/12/13/5720a00408371ad16fbcac8a3f0670ff36d806ed.png',0,'/uploads/2014/12/13/a92f7bcc0489e51f85552be72b43d4090aaea92a.jpg','/uploads/2014/12/13/1df38f575ff2609a50065076c0df734324f63240.jpg','/uploads/2014/12/13/5b8a283638c295a79cf46b7bb08d294067377be0.jpg','/uploads/2014/12/13/017e76222d2a3e96f8ced63f8c6e47184abf5264.jpg','/uploads/2014/12/13/93f65eb76fc80900f8c56f8f4b54bb82a3bae62a.jpg',0,'<p>测试商品5</p>',1418457079,NULL);
+INSERT INTO `fruit_goods` VALUES (1,1,1,'測試商品1',12.00,24.00,6.00,1,'元/斤','元/斤',1,12,300,'/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg',0,'/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg','/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg','/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg','/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg','/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg',0,'<p>測試商品1</p>',1415615863,1418457644),(2,1,1,'測試商品2',12.00,42.00,0.00,1,'元/斤','元/斤',NULL,20,400,'/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg',21,'/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg','/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg','/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg','/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg','/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg',0,'<p>測試商品2</p>',1415615924,1418457770),(3,1,1,'測試商品3',1.00,2.00,0.00,1,'元/斤','',1,12,300,'/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg',10,'/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg','/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg','/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg','/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg','/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg',1,'<p>測試商品3</p>',1415859221,1415859538),(4,1,1,'測試商品4',12.00,29.00,0.00,1,'元/斤','',1,12,200,'/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg',13,'/uploads/2014/11/13/9c0b367ab7be91a64ab3eedb3db9569372a7f14b.jpg','/uploads/2014/11/13/9feef9d4e6b4da9c282129e2bb4a6608964324b9.jpg','/uploads/2014/11/13/44a3ba953a5ae2e230a4340762eab757aae6d5df.jpg','/uploads/2014/11/13/9f11b7a0433dd4aa9ac0312668c26cfd5d1197af.jpg','/uploads/2014/11/13/f3edeefa2ca2509bc74fee5fe11884e8b5e3a34d.jpg',1,'<p>測試商品4</p>',1415859581,NULL),(5,1,2,'测试商品5',50.00,60.00,20.00,1,'元/斤','元/斤',1,20,400,'/uploads/2014/12/13/5720a00408371ad16fbcac8a3f0670ff36d806ed.png',0,'/uploads/2014/12/13/a92f7bcc0489e51f85552be72b43d4090aaea92a.jpg','/uploads/2014/12/13/1df38f575ff2609a50065076c0df734324f63240.jpg','/uploads/2014/12/13/5b8a283638c295a79cf46b7bb08d294067377be0.jpg','/uploads/2014/12/13/017e76222d2a3e96f8ced63f8c6e47184abf5264.jpg','/uploads/2014/12/13/93f65eb76fc80900f8c56f8f4b54bb82a3bae62a.jpg',0,'<p>测试商品5</p>',1418457079,NULL),(6,1,1,'测试商品6',12.00,123.00,11.00,1,'元/斤','元/斤',1,11,12,'/uploads/2014/12/14/add6a1471bd86827d216449336ec9c93d7000f6f.jpg',11,'/uploads/2014/12/14/e2920df132ee39a1ad98fb1118307819294ea1e8.jpg','/uploads/2014/12/14/6c76b9e65d38eef00dfd0c9acd6acd880acf788a.jpg','/uploads/2014/12/14/810fae9d15b1d6535e282b68388d3f501b4dedca.jpg','/uploads/2014/12/14/a413d12615c8cd1fc44428c54daab933337ac266.jpg','/uploads/2014/12/14/c66dc2c5cff79e2d1607d2ad4a72d5f487528edb.jpg',0,'<p>测试</p>',1418568910,NULL);
 /*!40000 ALTER TABLE `fruit_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -637,6 +637,7 @@ CREATE TABLE `fruit_order` (
   `address_id` int(11) NOT NULL COMMENT '收获地址ID',
   `order_number` char(14) NOT NULL COMMENT '订单号',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收）',
+  `is_purchase` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否采购（0：否，1：是）',
   `shipping_time` char(11) DEFAULT NULL COMMENT '开始送货时间',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
@@ -647,7 +648,7 @@ CREATE TABLE `fruit_order` (
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`),
   KEY `us` (`user_id`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='订单表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -656,7 +657,7 @@ CREATE TABLE `fruit_order` (
 
 LOCK TABLES `fruit_order` WRITE;
 /*!40000 ALTER TABLE `fruit_order` DISABLE KEYS */;
-INSERT INTO `fruit_order` VALUES (1,1,4,'14111410253561',2,'12:00-18:00',12.50,'nothing',NULL,216.00,5,1415960111,1417766759),(3,1,4,'14112049535657',2,NULL,42.50,NULL,NULL,228.00,5,1416473921,1417766629),(4,1,4,'14120154499810',1,'12:00-18:00',15.00,'nothing',NULL,252.00,5,1417402742,1417853577),(5,1,5,'14120310055100',2,NULL,15.00,NULL,6,252.00,5,1417587149,1417845408),(7,1,4,'14120454981015',2,NULL,12.00,NULL,NULL,264.00,5,1417678902,1417845408);
+INSERT INTO `fruit_order` VALUES (1,1,4,'14111410253561',2,0,'12:00-18:00',12.50,'nothing',NULL,216.00,5,1415960111,1417766759),(3,1,4,'14112049535657',2,0,NULL,42.50,NULL,NULL,228.00,5,1416473921,1417766629),(4,1,4,'14120154499810',2,0,'12:00-18:00',15.00,'nothing',NULL,252.00,5,1417402742,1418565055),(5,1,5,'14120310055100',2,0,NULL,15.00,NULL,6,252.00,5,1417587149,1417845408),(7,1,4,'14120454981015',2,0,NULL,12.00,NULL,NULL,264.00,5,1417678902,1417845408),(8,1,4,'14121499485510',1,0,'12:00-18:00',12.50,NULL,NULL,100.00,3,1418530076,1418565086);
 /*!40000 ALTER TABLE `fruit_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -673,7 +674,7 @@ CREATE TABLE `fruit_order_custom` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='订单定制表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='订单定制表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -682,7 +683,7 @@ CREATE TABLE `fruit_order_custom` (
 
 LOCK TABLES `fruit_order_custom` WRITE;
 /*!40000 ALTER TABLE `fruit_order_custom` DISABLE KEYS */;
-INSERT INTO `fruit_order_custom` VALUES (1,1,4,1),(2,1,5,1);
+INSERT INTO `fruit_order_custom` VALUES (1,1,4,1),(2,1,5,1),(3,1,8,1);
 /*!40000 ALTER TABLE `fruit_order_custom` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -699,7 +700,7 @@ CREATE TABLE `fruit_order_goods` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -708,7 +709,7 @@ CREATE TABLE `fruit_order_goods` (
 
 LOCK TABLES `fruit_order_goods` WRITE;
 /*!40000 ALTER TABLE `fruit_order_goods` DISABLE KEYS */;
-INSERT INTO `fruit_order_goods` VALUES (1,1,1,10),(2,2,1,8),(4,1,3,10),(5,2,3,8),(6,3,4,6),(7,3,5,6),(10,1,7,10),(11,2,7,12);
+INSERT INTO `fruit_order_goods` VALUES (1,1,1,10),(2,2,1,8),(4,1,3,10),(5,2,3,8),(6,3,4,6),(7,3,5,6),(10,1,7,10),(11,2,7,12),(12,1,8,10);
 /*!40000 ALTER TABLE `fruit_order_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -725,7 +726,7 @@ CREATE TABLE `fruit_order_package` (
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `amount` int(11) NOT NULL COMMENT '数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -734,7 +735,7 @@ CREATE TABLE `fruit_order_package` (
 
 LOCK TABLES `fruit_order_package` WRITE;
 /*!40000 ALTER TABLE `fruit_order_package` DISABLE KEYS */;
-INSERT INTO `fruit_order_package` VALUES (2,20,3,1),(3,20,4,2),(4,20,5,2);
+INSERT INTO `fruit_order_package` VALUES (2,20,3,1),(3,20,4,2),(4,20,5,2),(5,20,8,2);
 /*!40000 ALTER TABLE `fruit_order_package` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1020,4 +1021,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-12-14  0:04:33
+-- Dump completed on 2014-12-14 22:58:30

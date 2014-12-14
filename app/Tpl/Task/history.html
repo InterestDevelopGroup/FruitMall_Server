@@ -1,0 +1,369 @@
+<include file="./Public/html/header.html" />
+<div id="main">
+    <div id="main-cnt">
+        <div id="contentH" class="cnt-box wall" style="padding-left: 0px;">
+            <div class="title clearfix">
+                <div class="l title-cnt">
+                    <span class="icon icon8"></span>历史订单一览
+                </div>
+            </div>
+        </div>
+        <div class="top_4">
+            <form method="get">
+                订单号：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="删除订单" onclick="javascript:del();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="确认订单" onclick="javascript:sure();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="指定送货员" onclick="javascript:distribute();" />&nbsp;&nbsp;
+            </form>
+        </div>
+        <div>
+            <div id="maingrid4" style="margin:0px auto;padding:0px;clear:both;"></div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.detail_image{width:160px;height:90px;overflow:hidden;margin-left:12px;display:inline-block;margin-left:6px;position:relative;}
+</style>
+<script type="text/javascript">
+//<![CDATA[
+var grid;
+$(function(){
+    grid = $("#maingrid4").ligerGrid({
+        columns: [
+            {display: "用户名", name: 'username', align: 'center', width: '12%', isSort: false},
+            {display: "订单号", name: 'order_number', align: 'center', width: '10%', isSort: false},
+            {display: "收货人", name: 'consignee', align: 'center', width: '10%', isSort: false},
+            {display: "收货人手机", name: 'phone', align: 'center', width: '10%'},
+            {display: "是否黑名单", name: 'is_blacklist', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return parseInt(value) ? '是' : '否';
+                }
+            },
+            {display: "送货时间", name: 'shipping_time', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "送货费", name: 'shipping_fee', align: 'center', width: '6%'},
+            {display: "送货员", name: 'courier', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
+                }
+            },
+            {display: "订单状态", name: 'status', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+                    switch (parseInt(value)) {
+                        case 1 :
+                            return '待确定';
+                        case 2 :
+                            return '配送中';
+                        case 3 :
+                            return '已收货';
+                        case 4 :
+                            return '拒收';
+                    }
+                }
+            },
+            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+                    return '<a href="javascript:void(0);" onclick="update('+rowdata.order_id+')">编辑</a> | <a href="javascript:void(0);" onclick="print_order('+rowdata.order_id+')">打印订单</a>';
+                }
+            }
+            ],
+            url: '<{:U("order/history")}>?keyword=<{$keyword}>',
+            dataAction: 'server',
+            method: 'get',
+            width: '100%',
+            checkbox: true,
+            frozenCheckbox: false,
+            selectRowButtonOnly: true,
+            pageSize:20,
+            pageSizeOptions: [20, 50, 100, 200, 500],
+            onAfterShowData:f_change,
+            onAfterChangeColumnWidth:f_change,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+    });
+    $("#pageloading").hide();
+});
+//订单明细
+function f_onShowDetail(record, container, callback) {
+    switch (parseInt(record.status)) {
+        case 1 :
+            var status = '待确定';
+            break;
+        case 2 :
+            var status = '配送中';
+            break;
+        case 3 :
+            var status = '已收货';
+            break;
+        case 4 :
+            var status = '拒收';
+            break;
+    }
+    var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
+    out.push("<tr><td width='20%' align='right'>用户名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_number + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.consignee + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人手机：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.phone + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>是否黑名单：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.is_blacklist) ? '是' : '否') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>送货时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.shipping_time ? record.shipping_time : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>送货费：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping_fee + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + status + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人地址/省：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.province + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人地址/市：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.city + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人地址/区：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.district ? record.district : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人地址/详细：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.address + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>备用收货人：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._consignee ? record._consignee : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>备用收货人手机：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._phone ? record._phone : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单备注：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.remark ? record.remark : '暂无') + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>下单时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.add_time + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>更新时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.update_time ? record.update_time : '从未更新') + "</td></tr>");
+    out.push("</table>");
+    $(container).html(out.join(''));
+    $.ajax({
+        url: "<{:U('order/getOrderDetail')}>",
+        type: 'POST',
+        data: {order_id : record.order_id},
+        dataType: "json",
+        async: false,
+        success: function(data) {
+            if (data.order_goods) {
+                $(container).append('<h3 style="margin:10px;">订单商品：</h3>');
+                for (var i in data.order_goods) {
+                    var str = '';
+                    str = '<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">';
+                    str += "<tr><td width='20%' align='right'>商品名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].name + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>大分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].parent_category + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>小分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].child_category + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>标签：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].tag ? data.order_goods[i].tag : '暂无') + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].price + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i]._price ? data.order_goods[i]._price : '暂无') + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].unit + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].quantity + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].amount ? data.order_goods[i].amount : '暂无') + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].weight ? data.order_goods[i].weight : '暂无') + "</td></tr>";
+                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>商品缩略图：</h3><div class="detail_image"><a href='+data.order_goods[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_goods[i].thumb+' width="100%" /></a></div></div></td></tr>';
+                    var images = '';
+                    for (var j = 1; j <= 5; j++) {
+                        var image = 'image_' + j;
+                        images += "<div class='detail_image'><a href='" + data.order_goods[i][image] + "' title='点击查看原图' target='_blank'><img src='"+data.order_goods[i][image]+"' width='100%' /></a></div>";
+                    }
+                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>商品介绍图：</h3>'+ images +'</div></td></tr>';;
+                    str += '</table>';
+                    $(container).append(str);
+                }
+            }
+            if (data.order_package) {
+                $(container).append('<h3 style="margin:10px;">订单套餐：</h3>');
+                for (var i in data.order_package) {
+                    var str = '';
+                    str = '<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">';
+                    str += "<tr><td width='20%' align='right'>套餐名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].name + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].price + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>市场价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_package[i]._price ? data.order_package[i]._price : '暂无') + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].quantity + "</td></tr>";
+                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>套餐缩略图：</h3><div class="detail_image"><a href='+data.order_package[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_package[i].thumb+' width="100%" /></a></div></div></td></tr>';
+                    var images = '';
+                    for (var j = 1; j <= 5; j++) {
+                        var image = 'image_' + j;
+                        images += "<div class='detail_image'><a href='" + data.order_package[i][image] + "' title='点击查看原图' target='_blank'><img src='"+data.order_package[i][image]+"' width='100%' /></a></div>";
+                    }
+                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>套餐介绍图：</h3>'+ images +'</div></td></tr>';;
+                    str += '</table>';
+                    $(container).append(str);
+                }
+            }
+        }
+    });
+}
+
+//删除订单
+function del() {
+    var data = getCheckedData('order_id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要删除选中的订单吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("order/delete")}>', {id:id}, function(data) {
+                if (data.msg) {
+                    if (data.status) {
+                        $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                        location.reload(true);
+                    } else {
+                        $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                        return false;
+                    }
+                } else {                
+                    if (parseInt(data.status)) {
+                        $.ligerDialog.alert(data.result, '成功了(^_^)', 'success');
+                        location.reload(true);
+                    } else {
+                        $.ligerDialog.alert(data.result, '出错了(>_<)', 'error');
+                        return false;
+                    }
+                }
+            }, 'json');
+        }
+    });
+}
+
+// 确认订单
+function sure() {
+    var data = getCheckedData('order_id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
+        return false;
+    }
+    var id = '';
+    for (var i=0; i<data.length; i++) {
+        if (i==data.length-1) {
+            id += data[i];
+        } else {
+            id += data[i]+',';
+        }
+    }
+    $.ligerDialog.confirm('您确定要把选中的订单更新为配送中吗？', function(yes) {
+        if (yes) {
+            $.post('<{:U("order/sure")}>', {id:id}, function(data) {
+                if (data.msg) {
+                    if (data.status) {
+                        $.ligerDialog.alert(data.msg, '成功了(^_^)', 'success');
+                        location.reload(true);
+                    } else {
+                        $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                        return false;
+                    }                    
+                } else {
+                    if (parseInt(data.status)) {
+                        $.ligerDialog.alert(data.result, '成功了(^_^)', 'success');
+                        location.reload(true);
+                    } else {
+                        $.ligerDialog.alert(data.result, '出错了(>_<)', 'error');
+                        return false;
+                    }
+                }
+            }, 'json');
+        }
+    });
+}
+
+//指定送货员
+var distributeDialog;
+function distribute() {
+    var data = getCheckedData('order_id');
+    if (data.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
+        return false;
+    }
+    distributeDialog = $.ligerDialog.open({
+        url: '<{:U("order/distribute")}>?id=' + data, height: 400, width: 600,
+        isDrag: true, title: '指定送货员',
+        buttons: [{text: '确定', onclick: function(item, dialog) {distributeDialog.frame.distributeFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//指定送货员回调
+function distributeCallback(obj) {
+    distributeDialog.close();
+    if (obj.status) {
+        $.ligerDialog.alert(obj.msg, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.msg, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+//编辑订单状态
+var updateOrderStatusDialog;
+function update(id) {
+    updateOrderStatusDialog = $.ligerDialog.open({
+        url: '<{:U("order/update_status")}>?id='+id, height: 400, width: 600,
+        isDrag: false, title: '编辑订单状态',
+        buttons: [{text: '确定', onclick: function(item, dialog) {updateOrderStatusDialog.frame.updateOrderStatusFormSubmit();}},
+                  {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
+    });
+}
+
+//编辑订单状态回调
+function updateOrderStatusCallback(obj) {
+    updateOrderStatusDialog.close();
+    if (parseInt(obj.status)) {
+        $.ligerDialog.alert(obj.result, '成功了(^_^)', 'success');
+        location.reload(true);
+    } else {
+        $.ligerDialog.alert(obj.result, '出错了(>_<)', 'error');
+        return false;
+    }
+}
+
+//打印订单
+function print_order(order_id) {
+    $.ajax({
+        url: "<{:U('order/print_order')}>",
+        async: false,
+        data: {order_id: order_id},
+        type: "POST",
+        dataType: "json",
+        success: function(data) {
+            if (data.status) {
+                var str = '<table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[0].consignee+'</td><td width="50%">联系电话：'+data.result[0].phone+'</td></tr>';
+                str += '<tr style="line-height:30px;"><td colspan="2">收货地址：'+data.result[0].address+'</td></tr></table>';
+                var stuff = '<h3>货物清单：</h3><table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
+                var total_amount = 0;
+                if (data.result[0].goods_list) {
+                    var goods_list = data.result[0].goods_list;
+                    for (var i in goods_list) {
+                        stuff += '<tr><td>'+(goods_list[i].name ? goods_list[i].name : '该商品已经删除')+'</td><td>'+(goods_list[i].amount ? goods_list[i].amount : '该商品已经删除')+'</td><td>'+(goods_list[i].price ? goods_list[i].price : '该商品已经删除')+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += goods_list[i].amount * goods_list[i].price;
+                    }
+                }
+                if (data.result[0].package_list) {
+                    var package_list = data.result[0].package_list;
+                    for (var i in package_list) {
+                        stuff += '<tr><td>'+(package_list[i].name ? package_list[i].name : '该套餐已经删除')+'</td><td>'+(package_list[i].amount ? package_list[i].amount : '该套餐已经删除')+'</td><td>'+(package_list[i].price ? package_list[i].price : '该套餐已经删除')+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += package_list[i].amount * package_list[i].price;
+                    }
+                }
+                
+                if (data.result[0].custom_list) {
+                    var custom_list = data.result[0].custom_list;
+                    for (var i in custom_list) {
+                        stuff += '<tr><td>'+(custom_list[i].name ? custom_list[i].name : '该定制已经删除')+'</td><td>'+(custom_list[i].amount ? custom_list[i].amount : '该定制已经删除')+'</td><td>'+(custom_list[i].price ? custom_list[i].price : '该定制已经删除')+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
+                        total_amount += custom_list[i].amount * custom_list[i].price;
+                    }
+                }
+                stuff += '<tr><td colspan="4">总价：'+parseFloat(total_amount).toFixed(2)+'</td></tr>';
+                stuff += '</table>';
+                str += stuff;
+                var iframe = document.createElement('IFRAME');
+                var doc = null;
+                iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');
+                document.body.appendChild(iframe);
+                doc = iframe.contentWindow.document;
+                doc.write(str);
+                doc.close();
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                if (navigator.userAgent.indexOf("MSIE") > 0){
+                    document.body.removeChild(iframe);
+                }
+            } else {
+                $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
+                return false;
+            }
+        }
+    });
+}
+
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

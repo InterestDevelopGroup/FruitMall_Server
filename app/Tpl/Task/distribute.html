@@ -1,0 +1,70 @@
+<include file="./Public/html/header.html" />
+<style type="text/css">
+<!--
+body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{width:130px;}.l-button-submit,.l-button-test{width:80px;float:left;margin-left:10px;padding-bottom:2px;}.l-verify-tip{left:230px;top:120px;}.l-table-edit tr td span{color:#f30;padding-left:5px;}.tipmsg{color:#f30;}
+-->
+</style>
+<table cellpadding="0" cellspacing="0" class="l-table-edit">
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>送货员：</td>
+        <td align="left" class="l-table-edit-td">
+            <select id="courier_id">
+                <option value="0">--请选择--</option>
+                <volist name="courier" id="val">
+                <option value="<{$val['id']}>"><{$val['real_name']}></option>
+                </volist>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+$(function() {
+    $("#courier_id").change(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckCourierId();
+    });
+});
+
+//添加提示
+function addTip(my, tip) {
+    removeTip(my);
+    var tip1 = '<div class="tip_msg">';
+    var tip2 = '</div>';
+    my.append(tip1+tip+tip2);
+}
+
+//删除提示
+function removeTip(my) {
+    my.find(".tip_msg").remove();
+}
+
+//检测送货员
+function ckCourierId() {
+    var courier_id = $("#courier_id").val();
+    if (courier_id <= 0) {
+        addTip($("#courier_id").parent('td').next('td:last'), '请选择送货员');
+        return false;
+    }
+    return true;
+}
+
+//检测表单
+function checkForm() {
+    if (!ckCourierId()) return false;
+    var courier_id = $("#courier_id").val();
+    return {courier_id: courier_id, id: <{$id}>};
+}
+
+//提交表单
+function distributeFormSubmit() {
+    if (checkForm()) {
+        $.post('<{:U("order/distribute")}>', checkForm(), function(data) {
+            window.parent.distributeCallback(data);
+        }, 'json');
+    }
+}
+//]]>
+</script>
+<include file="./Public/html/footer.html" />

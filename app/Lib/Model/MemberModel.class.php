@@ -412,7 +412,7 @@ class MemberModel extends Model {
             );
         }
         // 修改前后没有变化
-        $where = $data['id'] = $id;
+        $where = array_merge($data, array('id' => $id));
         if ($this->where($where)->count()) {
             return array(
                 'status' => 1,
