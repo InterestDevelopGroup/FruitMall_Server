@@ -69,16 +69,16 @@ $(function(){
                     }
                 }
             },
-            {display: "总价单位", name: 'unit', align: 'center', width: '6%'},
-            {display: "单价单位", name: 'single_unit', align: 'center', width: '6%'},
+            {display: "总价单位", name: 'unit', align: 'center', width: '6%', isSort: false},
+            {display: "单价单位", name: 'single_unit', align: 'center', width: '6%', isSort: false},
             {display: "每盒个数", name: 'amount', align: 'center', width: '6%'},
             {display: "每盒重量", name: 'weight', align: 'center', width: '6%'},
-            {display: "商品状态", name: 'status', align: 'center', width: '6%', render: function (rowdata, rowindex, value) {
+            {display: "商品状态", name: 'status', align: 'center', width: '6%', isSort: false, render: function (rowdata, rowindex, value) {
                     return parseInt(value) ? '上架' : '下架';
                 }
             },
             {display: "权重", name: 'priority', align: 'center', width: '4%'},
-            {display: "操作", width:'12%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "操作", width:'16%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     if (parseInt(rowdata.is_advertisement)) {
                         var str = '取消广告';
                         var type = 0;
@@ -101,10 +101,8 @@ $(function(){
             dataAction: 'server',
             method: 'get',
             width: '100%',
-            
             enabledEdit: true,
             onBeforeSubmitEdit: f_onBeforeSubmitEdit,
-
             checkbox: true,
             frozenCheckbox: false,
             selectRowButtonOnly: true,

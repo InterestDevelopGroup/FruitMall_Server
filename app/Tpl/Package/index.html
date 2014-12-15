@@ -91,7 +91,6 @@ function f_onShowDetail(record, container, callback) {
         out.push("<div class='package_goods'><div class='package_goods_img'><img src='"+record.goods_list[i].thumb+"' width='100%' /></div><div class='package_goods_name'>"+record.goods_list[i].name+"</div><div class='package_goods_amount'>数量："+record.goods_list[i].amount+"</div></div>");
     }
     out.push('</div>');
-    
     out.push('<div style="margin:10px;width:88%;">');
     out.push("<h3>套餐缩略图：</h3><div class='detail_image'><a href='"+record.thumb+"' title='点击查看原图' target='_blank'><img src='"+record.thumb+"' width='100%' /></a></div>");
     out.push("<h3 style='clear:both'>套餐介绍图：</h3>");

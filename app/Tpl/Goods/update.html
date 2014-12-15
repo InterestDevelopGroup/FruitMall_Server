@@ -93,6 +93,15 @@
             </tr>
             <tr>
                 <td align="right" class="l-table-edit-td">
+                    <span class="required">*</span>权重：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <input type="text" id="priority" value="<{$goods['priority']}>" />
+                </td>
+                <td align="left" class="tipmsg"></td>
+            </tr>
+            <tr>
+                <td align="right" class="l-table-edit-td">
                     标签：
                 </td>
                 <td align="left" class="l-table-edit-td">
@@ -237,6 +246,10 @@ $(function() {
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckSingleUnit();
+    });
+    $("#priority").blur(function() {
+        removeTip($(this).parent('td').next('td:last'));
+        ckPriority();
     });
     $("#p_cate_id").change(function() {
         var p_cate_id = $(this).val();
@@ -427,6 +440,33 @@ function ckSingleUnit() {
     return true;
 }
 
+//检测权重
+function ckPriority() {
+    var priority = $.trim($("#priority").val());
+    if (priority.length == 0) {
+        addTip($("#priority").parent('td').next('td:last'), '权重不能为空');
+        return false;
+    }
+    var _res = true;
+    $.ajax({
+        url: "<{:U('goods/check_priority')}>",
+        data: {priority: priority, id: <{$goods['id']}>},
+        async: false,
+        type: "post",
+        dataType: "json",
+        success: function(res) {
+            if (!res.status) {
+                _res = res.status;
+            }
+        }
+    });
+    if (!_res) {
+        addTip($("#priority").parent('td').next('td:last'), '该权重已经被其他商品设置');
+        return false;
+    }
+    return _res;
+}
+
 //检测大分类
 function ckPCateId() {
     var p_cate_id = $("#p_cate_id").val();
@@ -459,8 +499,8 @@ function ckThumb() {
 
 //检测介绍图片
 function ckIntroductionImage() {
-    if (image_count.length != 5) {
-        addTip($("#introduction_tip"), '请上传5张商品介绍图片');
+    if (image_count == 0) {
+        addTip($("#introduction_tip"), '请至少上传1张商品介绍图片');
         return false;
     }
     return true;
@@ -474,6 +514,7 @@ function checkForm() {
     if (!ck_Price()) return false;
     if (!ckUnit()) return false;
     if (!ckSingleUnit()) return false;
+    if (!ckPriority()) return false;
     if (!ckPCateId()) return false;
     if (!ckCCateId()) return false;
     if (!ckThumb()) return false;
@@ -484,6 +525,7 @@ function checkForm() {
     var _price = $.trim($("#_price").val());
     var unit = $.trim($("#unit").val());
     var single_unit = $.trim($("#single_unit").val());
+    var priority = $.trim($("#priority").val());
     var p_cate_id = $("#p_cate_id").val();
     var c_cate_id = $("#c_cate_id").val();
     var tag = $("#tag").val();
@@ -498,6 +540,7 @@ function checkForm() {
         _price : _price,
         unit: unit,
         single_unit: single_unit,
+        priority: priority,
         p_cate_id: p_cate_id,
         c_cate_id: c_cate_id,
         tag: tag,

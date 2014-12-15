@@ -73,7 +73,7 @@ class PackageModel extends Model {
             'add_time' => time()
         );
         for ($i = 1; $i <= 5; $i++) {
-            $data["image_{$i}"] = $introduction_image[$i - 1];
+            $data["image_{$i}"] = $introduction_image[$i - 1] ? $introduction_image[$i - 1] : null;
         }
         strlen($_price) && $data['_price'] = floatval($_price);
         strlen($description) && $data['description'] = $description;

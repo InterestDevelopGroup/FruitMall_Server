@@ -99,7 +99,7 @@ class GoodsModel extends Model {
             'add_time' => time()
         );
         for ($i = 1; $i <= 5; $i++) {
-            $data["image_{$i}"] = $introduction_image[$i - 1];
+            $data["image_{$i}"] = $introduction_image[$i - 1] ? $introduction_image[$i - 1] : null;
         }
         strlen($_price) && $data['_price'] = floatval($_price);
         $tag && $data['tag'] = $tag;
@@ -124,18 +124,25 @@ class GoodsModel extends Model {
      *
      * @param int $priority
      *            权重
+     * @param int|null $id
+     *            商品ID
      * @return array
      */
-    public function checkGoodsPriority($priority) {
+    public function checkGoodsPriority($priority, $id) {
         if (!$priority) {
             return array(
                 'status' => true,
                 'msg' => '该权重可用'
             );
         }
-        if ($this->where(array(
+        $where = array(
             'priority' => $priority
-        ))->count()) {
+        );
+        $id && $where['id'] = array(
+            'neq',
+            $id
+        );
+        if ($this->where($where)->count()) {
             return array(
                 'status' => false,
                 'msg' => '该权重不可用'
@@ -162,7 +169,8 @@ class GoodsModel extends Model {
                 $id
             )
         ))->save(array(
-            'is_delete' => 1
+            'is_delete' => 1,
+            'priority' => 0
         ))) {
             return array(
                 'status' => true,
@@ -285,13 +293,14 @@ class GoodsModel extends Model {
      *            简介
      * @return array
      */
-    public function updateGoods($id, $name, $price, $single_price, $_price, $unit, $single_unit, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
+    public function updateGoods($id, $name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, array $introduction_image, $description) {
         $data = array(
             'name' => $name,
             'price' => $price,
             'single_price' => $single_price,
             'unit' => $unit,
             'single_unit' => $single_unit,
+            'priority' => $priority,
             'p_cate_id' => $p_cate_id,
             'c_cate_id' => $c_cate_id,
             'thumb' => $thumb_image,
@@ -303,7 +312,7 @@ class GoodsModel extends Model {
         $data['weight'] = strlen($weight) ? intval($weight) : null;
         $data['tag'] = $tag ? $tag : null;
         for ($i = 1; $i <= 5; $i++) {
-            $data["image_{$i}"] = $introduction_image[$i - 1];
+            $data["image_{$i}"] = $introduction_image[$i - 1] ? $introduction_image[$i - 1] : null;
         }
         if ($this->where(array(
             'id' => $id

@@ -275,8 +275,8 @@ function ckThumb() {
 
 //检测介绍图片
 function ckIntroductionImage() {
-    if (image_count.length != 5) {
-        addTip($("#introduction_tip"), '请上传5张套餐介绍图片');
+    if (image_count.length == 0) {
+        addTip($("#introduction_tip"), '请至少上传1张套餐介绍图片');
         return false;
     }
     return true;

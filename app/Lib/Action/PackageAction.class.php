@@ -211,7 +211,9 @@ class PackageAction extends AdminAction {
             $this->assign('package', $packageAssign);
             $image_count = array();
             for ($i = 1; $i <= 5; $i++) {
-                $image_count[] = $packageAssign["image_{$i}"];
+                if ($packageAssign["image_{$i}"]) {
+                    $image_count[] = $packageAssign["image_{$i}"];
+                }
             }
             $this->assign('introduction_image', $image_count);
             $this->assign('image_count', json_encode($image_count));
