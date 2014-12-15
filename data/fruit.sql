@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-15 12:01:58
+Date: 2014-12-15 19:06:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -647,6 +647,24 @@ CREATE TABLE `fruit_parent_category` (
 -- ----------------------------
 INSERT INTO `fruit_parent_category` VALUES ('1', '測試大分類1', '测试一下', '1415615785', '1418367827');
 INSERT INTO `fruit_parent_category` VALUES ('2', '测试大分类2', null, '1418367803', '1418367837');
+
+-- ----------------------------
+-- Table structure for `fruit_purchase`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_purchase`;
+CREATE TABLE `fruit_purchase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `is_purchase` tinyint(1) NOT NULL COMMENT '是否采购（0：否，1：是）',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
+  `quantity` int(11) NOT NULL COMMENT '数量',
+  `add_time` int(11) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of fruit_purchase
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `fruit_returns`
