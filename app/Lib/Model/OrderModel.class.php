@@ -116,7 +116,7 @@ class OrderModel extends Model {
             'shipping_fee' => $shipping_fee,
             'remark' => $remark,
             'coupon' => $coupon,
-            'total_amount' => $total_amount,
+            'total_amount' => $total_amount + $shipping_fee,
             'add_time' => time()
         ))) {
             $order_id = $this->getLastInsID();
