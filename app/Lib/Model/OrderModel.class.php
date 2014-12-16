@@ -529,15 +529,15 @@ class OrderModel extends Model {
     /**
      * 打印订单
      *
-     * @param int $order_id
+     * @param array $order_id
      *            订单ID
      * @return array
      */
-    public function printOrder($order_id) {
+    public function printOrder(array $order_id) {
         $result = $this->table($this->getTableName() . " AS o ")->join(array(
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
         ))->where(array(
-            'order_id' => $order_id
+            'order_id' => array('in', $order_id)
         ))->field(array(
             'o.order_id',
             'a.consignee',
