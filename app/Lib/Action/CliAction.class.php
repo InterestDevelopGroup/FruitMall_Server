@@ -10,8 +10,7 @@
 class CliAction extends Action {
 
     public function add_purchase() {
-        $now = time();
-        echo $now;
+        D('Purchase')->addPurchase();
     }
 
 }
