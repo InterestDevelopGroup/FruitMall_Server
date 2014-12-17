@@ -193,7 +193,7 @@ class OrderModel extends Model {
     }
 
     /**
-     * 删除订单
+     * 取消订单
      *
      * @param array $id
      *            订单ID
@@ -215,52 +215,70 @@ class OrderModel extends Model {
                 'result' => '该订单状态不允许取消订单'
             );
         }
-        // 开启事务
-        $this->startTrans();
         if ($this->where(array(
             'order_id' => array(
                 'in',
                 $id
             )
-        ))->delete()) {
-            if (!D('OrderGoods')->deleteOrderGoods($id)) {
-                // 删除订单商品失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => 0,
-                    'result' => '删除失败'
-                );
-            }
-            if (!D('OrderPackage')->deleteOrderPackage($id)) {
-                // 删除订单套餐失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => 0,
-                    'result' => '删除失败'
-                );
-            }
-            if (!D('OrderCustom')->deleteOrderCustom($id)) {
-                // 删除订单套餐失败，回滚事务
-                $this->rollback();
-                return array(
-                    'status' => 0,
-                    'result' => '删除失败'
-                );
-            }
-            // 删除成功，提交事务
-            $this->commit();
+        ))->save(array(
+            'status' => 5
+        ))) {
             return array(
                 'status' => 1,
-                'result' => '删除成功'
+                'result' => '取消成功'
             );
         } else {
-            // 删除失败，回滚事务
-            $this->rollback();
             return array(
                 'status' => 0,
-                'result' => '删除失败'
+                'result' => '取消成功'
             );
         }
+        // // 开启事务
+        // $this->startTrans();
+        // if ($this->where(array(
+        // 'order_id' => array(
+        // 'in',
+        // $id
+        // )
+        // ))->delete()) {
+        // if (!D('OrderGoods')->deleteOrderGoods($id)) {
+        // // 删除订单商品失败，回滚事务
+        // $this->rollback();
+        // return array(
+        // 'status' => 0,
+        // 'result' => '删除失败'
+        // );
+        // }
+        // if (!D('OrderPackage')->deleteOrderPackage($id)) {
+        // // 删除订单套餐失败，回滚事务
+        // $this->rollback();
+        // return array(
+        // 'status' => 0,
+        // 'result' => '删除失败'
+        // );
+        // }
+        // if (!D('OrderCustom')->deleteOrderCustom($id)) {
+        // // 删除订单套餐失败，回滚事务
+        // $this->rollback();
+        // return array(
+        // 'status' => 0,
+        // 'result' => '删除失败'
+        // );
+        // }
+        // // 删除成功，提交事务
+        // $this->commit();
+        // return array(
+        // 'status' => 1,
+        // 'result' => '删除成功'
+        // );
+        // } else {
+        // // 删除失败，回滚事务
+        // $this->rollback();
+        // return array(
+        // 'status' => 0,
+        // 'result' => '删除失败'
+        // );
+        // }
     }
 
     /**
@@ -596,14 +614,16 @@ class OrderModel extends Model {
      *            送货员ID
      * @return array
      */
-    public function updateOrderCourier(array $order_id, $courier_id) {
+    public function updateOrderBranchAndCourier(array $order_id, $branch_id, $courier_id) {
         if ($this->where(array(
             'order_id' => array(
                 'in',
                 $order_id
             )
         ))->save(array(
-            'courier_id' => $courier_id
+            'branch_id' => $branch_id,
+            'courier_id' => $courier_id,
+            'update_time' => time()
         ))) {
             return array(
                 'status' => true,

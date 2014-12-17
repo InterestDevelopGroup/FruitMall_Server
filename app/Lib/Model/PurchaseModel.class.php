@@ -17,7 +17,7 @@ class PurchaseModel extends Model {
         $add_time = $orders['add_time'] ? $orders['add_time'] : 0;
         $now = time();
         $sql = "SELECT
-                    goods_id, amount AS quantity, o.order_id,
+                    goods_id, amount AS quantity, o.order_id, o.branch_id,
                     o.add_time AS order_time, {$now} AS add_time
                 FROM
                     fruit_order_goods AS og
@@ -29,7 +29,7 @@ class PurchaseModel extends Model {
                 UNION ALL
                 SELECT
                     pg.goods_id, (op.amount * pg.amount) AS quantity, o.order_id,
-                    o.add_time AS order_time, {$now} AS add_time
+                    o.branch_id, o.add_time AS order_time, {$now} AS add_time
                 FROM
                     fruit_order_package AS op
                 LEFT JOIN
@@ -42,7 +42,7 @@ class PurchaseModel extends Model {
                 UNION ALL
                 SELECT
                     cg.goods_id, (cg.quantity * oc.amount) AS quantity, o.order_id,
-                    o.add_time AS order_time, {$now} AS add_time
+                    o.branch_id, o.add_time AS order_time, {$now} AS add_time
                 FROM
                     fruit_order_custom AS oc
                 LEFT JOIN
@@ -53,6 +53,23 @@ class PurchaseModel extends Model {
                     o.status = 2 AND
                     o.update_time > {$add_time}";
         $result = $this->query($sql);
+        foreach ($result as $k => &$v) {
+            if ($this->where(array(
+                'order_id' => $v['order_id'],
+                'goods_id' => $v['goods_id']
+            ))->count()) {
+                $this->where(array(
+                    'order_id' => $v['order_id'],
+                    'goods_id' => $v['goods_id']
+                ))->save(array(
+                    'quantity' => $v['quantity'],
+                    'branch_id' => $v['branch_id'],
+                    'order_time' => $v['order_time'],
+                    'add_time' => $v['add_time']
+                ));
+                array_splice($result, $k, 1);
+            }
+        }
         if ($result) {
             $log = json_encode(array(
                 'last_update_time' => $add_time,

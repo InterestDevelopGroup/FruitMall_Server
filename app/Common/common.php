@@ -217,6 +217,6 @@ function write_log($message) {
     }
     $fileName = date("Ymd") . ".log";
     $file = fopen($_SERVER['DOCUMENT_ROOT'] . $logPath . "/" . $fileName, "a");
-    fwrite($file, "[" . date("Y-m-d H:i:s") . "]" . $message . "\n");
+    fwrite($file, "[" . date("Y-m-d H:i:s") . "]" . $message . "\r\n");
     fclose($file);
 }

@@ -30,16 +30,38 @@ class OrderAction extends AdminAction {
                 $value = intval($value);
                 return $value;
             }, $_POST['id']) : $this->redirect('/');
+            $branch_id = isset($_POST['branch_id']) ? intval($_POST['branch_id']) : $this->redirect('/');
             $courier_id = isset($_POST['courier_id']) ? intval($_POST['courier_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('Order')->updateOrderCourier($id, $courier_id));
+            $this->ajaxReturn(D('Order')->updateOrderBranchAndCourier($id, $branch_id, $courier_id));
         } else {
             $id = isset($_GET['id']) ? array_map(function ($value) {
                 $value = intval($value);
                 return $value;
             }, explode(',', $_GET['id'])) : $this->redirect('/');
             $this->assign('id', json_encode($id));
+
+            $this->assign('branch', M('Branch')->select());
+
             $this->assign('courier', M('Courier')->select());
             $this->display();
+        }
+    }
+
+    /**
+     * ajax根据分店获取送货员
+     */
+    public function getCourierByBranchId() {
+        if ($this->isAjax()) {
+            $branch_id = isset($_POST['branch_id']) ? intval($_POST['branch_id']) : $this->redirect('/');
+            $this->ajaxReturn(M('BranchCourier')->table(M('BranchCourier')->getTableName() . " AS bc ")->join(array(
+                " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON bc.courier_id = c.id "
+            ))->field(array(
+                'c.id',
+                'c.real_name'
+            ))->where(array(
+                'bc.branch_id' => $branch_id
+            ))->select());
+        } else {
         }
     }
 

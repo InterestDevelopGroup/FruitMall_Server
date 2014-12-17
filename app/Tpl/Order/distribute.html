@@ -5,14 +5,23 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 -->
 </style>
 <table cellpadding="0" cellspacing="0" class="l-table-edit">
+	 <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>分店：</td>
+        <td align="left" class="l-table-edit-td">
+            <select id="branch_id">
+                <option value="0">--请选择--</option>
+                <volist name="branch" id="val">
+                <option value="<{$val['id']}>"><{$val['name']}></option>
+                </volist>
+            </select>
+        </td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
     <tr>
         <td align="right" class="l-table-edit-td"><span>*</span>送货员：</td>
         <td align="left" class="l-table-edit-td">
             <select id="courier_id">
                 <option value="0">--请选择--</option>
-                <volist name="courier" id="val">
-                <option value="<{$val['id']}>"><{$val['real_name']}></option>
-                </volist>
             </select>
         </td>
         <td align="left" class="tipmsg"></td>
@@ -21,6 +30,20 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
 <script type="text/javascript">
 //<![CDATA[
 $(function() {
+	$("#branch_id").change(function() {
+		var branch_id = $(this).val();
+        $.post("<{:U('Order/getCourierByBranchId')}>", {branch_id: branch_id}, function(data) {
+            str = '<option value="0">--请选择--</option>';
+            if (data) {
+                for (var i in data) {
+                    str += '<option value="' + data[i].id + '">' + data[i].real_name + '</option>';
+                }
+            }
+            $("#courier_id").html(str);
+        }, 'json');
+        removeTip($(this).parent('td').next('td:last'));
+        ckBranchId();
+	});
     $("#courier_id").change(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckCourierId();
@@ -40,6 +63,16 @@ function removeTip(my) {
     my.find(".tip_msg").remove();
 }
 
+//检测分店
+function ckBranchId() {
+	var branch_id = $("#branch_id").val();
+    if (branch_id == 0) {
+        addTip($("#branch_id").parent('td').next('td:last'), '请选择分店');
+        return false;
+    }
+    return true;
+}
+
 //检测送货员
 function ckCourierId() {
     var courier_id = $("#courier_id").val();
@@ -52,9 +85,11 @@ function ckCourierId() {
 
 //检测表单
 function checkForm() {
+	if (!ckBranchId()) return false;
     if (!ckCourierId()) return false;
+	var branch_id = $("#branch_id").val();
     var courier_id = $("#courier_id").val();
-    return {courier_id: courier_id, id: <{$id}>};
+    return {branch_id: branch_id, courier_id: courier_id, id: <{$id}>};
 }
 
 //提交表单
