@@ -67,7 +67,7 @@ class OrderModel extends Model {
             'a._phone'
         ))->join(array(
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
-        ))->where($where)->limit($offset, $pagesize)->select();
+        ))->where($where)->order("o.add_time DESC")->limit($offset, $pagesize)->select();
         foreach ($order_list as &$v) {
             $v = array_merge($v, $this->getOrderDetail($v['order_id']));
         }
@@ -537,7 +537,10 @@ class OrderModel extends Model {
         $result = $this->table($this->getTableName() . " AS o ")->join(array(
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
         ))->where(array(
-            'order_id' => array('in', $order_id)
+            'order_id' => array(
+                'in',
+                $order_id
+            )
         ))->field(array(
             'o.order_id',
             'a.consignee',
