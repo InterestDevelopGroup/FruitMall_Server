@@ -22,7 +22,19 @@ class AddressModel extends Model {
      */
     public function _getAddressList($user_id, $offset, $pagesize) {
         return $this->table($this->getTableName() . " AS a ")->field(array(
-            'a.*',
+            'address_id',
+            'user_id',
+            "(SELECT real_name FROM " . M('Member')->getTableName() . " WHERE id = a.user_id)" => 'consignee',
+            'phone',
+            'province',
+            'city',
+            'district',
+            'community',
+            'address',
+            '_consignee',
+            '_phone',
+            'add_time',
+            'update_time',
             "(SELECT COUNT(1) FROM " . M('DefaultAddress')->getTableName() . " WHERE address_id = a.address_id)" => 'is_default'
         ))->where(array(
             'user_id' => $user_id

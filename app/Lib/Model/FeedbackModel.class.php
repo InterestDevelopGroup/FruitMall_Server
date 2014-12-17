@@ -27,24 +27,50 @@ class FeedbackModel extends Model {
      * @return array
      */
     public function addFeedback($user_id, $order_number, $shipping_service, $quality, $price, $postscript) {
-        if ($this->add(array(
+        $result = $this->where(array(
             'user_id' => $user_id,
-            'order_number' => $order_number,
-            'shipping_service' => $shipping_service,
-            'quality' => $quality,
-            'price' => $price,
-            'postscript' => $postscript,
-            'add_time' => time()
-        ))) {
-            return array(
-                'status' => 1,
-                'result' => '反馈成功'
-            );
+            'order_number' => $order_number
+        ))->find();
+        if ($result) {
+            if ($this->where(array(
+                'id' => $result['id']
+            ))->save(array(
+                'shipping_service' => $shipping_service,
+                'quality' => $quality,
+                'price' => $price,
+                'postscript' => $postscript,
+                'add_time' => time()
+            ))) {
+                return array(
+                    'status' => 1,
+                    'result' => '反馈成功'
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'result' => '反馈失败'
+                );
+            }
         } else {
-            return array(
-                'status' => 0,
-                'result' => '反馈失败'
-            );
+            if ($this->add(array(
+                'user_id' => $user_id,
+                'order_number' => $order_number,
+                'shipping_service' => $shipping_service,
+                'quality' => $quality,
+                'price' => $price,
+                'postscript' => $postscript,
+                'add_time' => time()
+            ))) {
+                return array(
+                    'status' => 1,
+                    'result' => '反馈成功'
+                );
+            } else {
+                return array(
+                    'status' => 0,
+                    'result' => '反馈失败'
+                );
+            }
         }
     }
 

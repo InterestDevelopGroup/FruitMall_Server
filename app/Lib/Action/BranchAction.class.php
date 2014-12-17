@@ -66,7 +66,10 @@ class BranchAction extends AdminAction {
             $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
             $page->setConfig('header', '个地址');
             $show = $page->show();
-            $courierList = $courier->limit($page->firstRow, $page->listRows)->select();
+            $courierList = $courier->table(M('Courier')->getTableName() . " AS c ")->field(array(
+                "c.*",
+                "(SELECT name FROM fruit_branch AS b LEFT JOIN fruit_branch_courier AS bc ON b.id = bc.branch_id WHERE bc.courier_id = c.id)" => 'branch_name'
+            ))->limit($page->firstRow, $page->listRows)->select();
             $this->assign('courierList', $courierList);
             $this->assign('count', ceil($count / 12));
             $this->assign('page', $show);
@@ -109,7 +112,10 @@ class BranchAction extends AdminAction {
             $page->setConfig('theme', "共&nbsp;&nbsp;%totalRow%&nbsp;&nbsp;%header%&nbsp;&nbsp;%nowPage%/%totalPage%页&nbsp;&nbsp;%upPage% %downPage% %first% %prePage% %linkPage% %nextPage%&nbsp;&nbsp;%end%");
             $page->setConfig('header', '个地址');
             $show = $page->show();
-            $shippingAddressList = $shippingAddress->limit($page->firstRow, $page->listRows)->select();
+            $shippingAddressList = $shippingAddress->table(M('ShippingAddress')->getTableName() . " as sa ")->field(array(
+                'sa.*',
+                "(SELECT name FROM fruit_branch AS b LEFT JOIN fruit_branch_shipping_address AS bsa ON b.id = bsa.branch_id WHERE bsa.shipping_address_id = sa.id)" => 'branch_name'
+            ))->limit($page->firstRow, $page->listRows)->select();
             $this->assign('shippingAddressList', $shippingAddressList);
             $this->assign('count', ceil($count / 12));
             $this->assign('page', $show);

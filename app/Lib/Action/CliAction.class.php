@@ -9,8 +9,15 @@
  */
 class CliAction extends Action {
 
+    /**
+     * 计划任务获取采购
+     */
     public function add_purchase() {
-        D('Purchase')->addPurchase();
+        if ($this->isPost()) {
+            D('Purchase')->addPurchase();
+        } else {
+            $this->redirect('/');
+        }
     }
 
 }

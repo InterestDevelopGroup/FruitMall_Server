@@ -4,14 +4,16 @@
         <table>
             <tr>
                 <th width="10%"><input type="checkbox" name="a_courier" /></th>
-                <th width="45%">真实姓名</th>
-                <th width="45%">手机</th>
+                <th width="30%">真实姓名</th>
+                <th width="30%">手机</th>
+                <th width="30%">所属分店</th>
             </tr>
             <volist name="courierList" id="val">
             <tr>
                 <td><input type="checkbox" value="<{$val['id']}>" name="courier" /></td>
                 <td><{$val['real_name']}></td>
                 <td><{$val['phone']}></td>
+                <td><if condition="$val['branch_name']"><{$val['branch_name']}><else />---</if></td>
             </tr>
             </volist>
         </table>

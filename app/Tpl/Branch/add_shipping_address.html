@@ -8,8 +8,9 @@
                 <th width="10%">市</th>
                 <th width="10%">区</th>
                 <th width="10%">路牌号</th>
-                <th width="15%">小区（社区）、建筑名</th>
-                <th width="15%">栋、几期、座</th>
+                <th width="10%">小区（社区）、建筑名</th>
+                <th width="10%">栋、几期、座</th>
+                <th width="10%">分店</th>
                 <th width="10%">送货费</th>
                 <th width="15%">价格调整比例</th>
             </tr>
@@ -22,6 +23,7 @@
                 <td><{$val['road_number']}></td>
                 <td><{$val['community']}></td>
                 <td><{$val['building']}></td>
+                <td><if condition="$val['branch_name']"><{$val['branch_name']}><else />---</if></td>
                 <td><{$val['shipping_fee']}></td>
                 <td><{$val['discount']}></td>
             </tr>

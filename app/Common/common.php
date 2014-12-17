@@ -203,3 +203,20 @@ function upload(array $file, $maxSize, array $allowExtension, $is_thumbnail = 0,
         }
     }
 }
+
+/**
+ * 写日志
+ *
+ * @param string $message
+ *            日志内容
+ */
+function write_log($message) {
+    $logPath = "/log";
+    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $logPath)) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . $logPath, 0755, true);
+    }
+    $fileName = date("Ymd") . ".log";
+    $file = fopen($_SERVER['DOCUMENT_ROOT'] . $logPath . "/" . $fileName, "a");
+    fwrite($file, "[" . date("Y-m-d H:i:s") . "]" . $message . "\n");
+    fclose($file);
+}

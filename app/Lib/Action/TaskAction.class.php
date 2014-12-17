@@ -18,10 +18,10 @@ class TaskAction extends AdminAction {
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
-            $_order = D('Order');
-            $total = $_order->getPurchaseCount();
+            $purchase = D('Purchase');
+            $total = $purchase->getPurchaseCount();
             if ($total) {
-                $rows = $_order->getPurchaseList($page, $pageSize, $order, $sort);
+                $rows = $purchase->getPurchaseList($page, $pageSize, $order, $sort);
             } else {
                 $rows = null;
             }

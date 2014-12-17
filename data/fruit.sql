@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-15 19:06:23
+Date: 2014-12-17 15:24:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -82,7 +82,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1418558251', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1418784271', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1418487094', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1417597300', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
@@ -511,7 +511,7 @@ INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '0', '12
 INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '2', '0', null, '42.50', null, null, '228.00', '5', '1416473921', '1417766629');
 INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '2', '0', '12:00-18:00', '15.00', 'nothing', null, '252.00', '5', '1417402742', '1418565055');
 INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '2', '0', null, '15.00', null, '6', '252.00', '5', '1417587149', '1417845408');
-INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '2', '0', null, '12.00', null, null, '264.00', '5', '1417678902', '1417845408');
+INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '1', '0', null, '12.00', null, null, '264.00', '5', '1417678902', '1418700420');
 INSERT INTO `fruit_order` VALUES ('8', '1', '4', '14121499485510', '1', '0', '12:00-18:00', '12.50', null, null, '100.00', '3', '1418530076', '1418565086');
 
 -- ----------------------------
@@ -654,17 +654,40 @@ INSERT INTO `fruit_parent_category` VALUES ('2', '测试大分类2', null, '1418
 DROP TABLE IF EXISTS `fruit_purchase`;
 CREATE TABLE `fruit_purchase` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `is_purchase` tinyint(1) NOT NULL COMMENT '是否采购（0：否，1：是）',
+  `is_purchase` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否采购（0：否，1：是）',
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `goods_id` int(11) NOT NULL COMMENT '商品ID',
   `quantity` int(11) NOT NULL COMMENT '数量',
-  `add_time` int(11) NOT NULL COMMENT '添加时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `order_time` int(10) NOT NULL,
+  `add_time` int(10) NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`id`),
+  KEY `goods_id` (`goods_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of fruit_purchase
 -- ----------------------------
+INSERT INTO `fruit_purchase` VALUES ('1', '0', '1', '1', '10', '1415960111', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('2', '0', '1', '2', '8', '1415960111', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('3', '0', '3', '1', '10', '1416473921', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('4', '0', '3', '2', '8', '1416473921', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('5', '0', '4', '3', '6', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('6', '0', '5', '3', '6', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('7', '0', '3', '3', '2', '1416473921', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('8', '0', '3', '4', '3', '1416473921', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('9', '0', '3', '1', '10', '1416473921', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('10', '0', '4', '3', '4', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('11', '0', '4', '4', '6', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('12', '0', '4', '1', '20', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('13', '0', '5', '3', '4', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('14', '0', '5', '4', '6', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('15', '0', '5', '1', '20', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('16', '0', '4', '1', '10', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('17', '0', '4', '2', '8', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('18', '0', '4', '3', '6', '1417402742', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('19', '0', '5', '1', '10', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('20', '0', '5', '2', '8', '1417587149', '1418794853');
+INSERT INTO `fruit_purchase` VALUES ('21', '0', '5', '3', '6', '1417587149', '1418794853');
 
 -- ----------------------------
 -- Table structure for `fruit_returns`
@@ -728,7 +751,7 @@ CREATE TABLE `fruit_shipping_address` (
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `sf` (`shipping_fee`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='配送地址表';
 
 -- ----------------------------
 -- Records of fruit_shipping_address
@@ -739,6 +762,7 @@ INSERT INTO `fruit_shipping_address` VALUES ('4', '广东省', '广州市', '越
 INSERT INTO `fruit_shipping_address` VALUES ('5', '广东省', '广州市', '白云区', '14', '某小区', '4', '12.00', '13.00', '1417673983', '1417927591');
 INSERT INTO `fruit_shipping_address` VALUES ('6', '广东省', '江门市', '新会区', '120', '新会花园', '12', '20.00', '20.00', '1417927625', null);
 INSERT INTO `fruit_shipping_address` VALUES ('7', '广东省', '江门市', '新会区', '98', '江门花园', '20', '20.00', '20.00', '1417928236', null);
+INSERT INTO `fruit_shipping_address` VALUES ('8', '广东省', '阳江市', '东城区', '120', '怡景花园', '四座', '12.00', '12.00', '1418799915', null);
 
 -- ----------------------------
 -- Table structure for `fruit_shopping_car`
