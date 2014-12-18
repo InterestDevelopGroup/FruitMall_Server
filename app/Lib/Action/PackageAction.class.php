@@ -38,6 +38,7 @@ class PackageAction extends AdminAction {
                 'goods' => M('Goods')->field(array(
                     'id',
                     'name',
+                    'price',
                     'thumb'
                 ))->where(array(
                     'id' => $goods_id
@@ -225,6 +226,7 @@ class PackageAction extends AdminAction {
                 'pg.goods_id',
                 'pg.amount',
                 'g.name',
+                'g.price',
                 'g.thumb'
             ))->select();
             $package_goods_id = array();

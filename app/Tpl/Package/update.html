@@ -42,6 +42,7 @@
                             </div>
                             <div class="per_package_goods_amount">
                                 数量：<input type="text" id="per_goods_amount_<{$val['goods_id']}>" value="<{$val['amount']}>" />
+                                <input type="text" id="per_goods_price_<{$val['goods_id']}>" value="<{$val['price']}>" />
                             </div>
                         </div>
                     </div>
@@ -160,7 +161,9 @@ $(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckPrice();
     });
-    $("#_price").blur(function() {
+    $("#_price").focus(function() {
+		addTip($(this).parent('td').next('td:last'), '市场价不填则为商品价格总和');
+	}).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ck_Price();
     });
@@ -352,16 +355,20 @@ function checkForm() {
     var thumb_image = $.trim($("#thumb_image").val());
     var description = $.trim($("#desc").val());
     var package_goods = [];
+	var _tmpPrice = 0;
     for (var i = 0; i < package_goods_id.length; i++) {
         package_goods.push({
             goods_id: package_goods_id[i],
             goods_amount: parseInt($("#per_goods_amount_" + package_goods_id[i]).val())
         });
+		var goods_amount = $("#per_goods_amount_" + package_goods_id[i]).val();
+		var goods_price = $("#per_goods_price_" + package_goods_id[i]).val();
+		_tmpPrice += parseInt(goods_amount) * parseFloat(goods_price);
     }
     return {
         name : name,
         price : price,
-        _price : _price,
+        _price : (parseFloat(_price) ? parseFloat(_price) : _tmpPrice),
         thumb_image: thumb_image,
         introduction_image : image_count,
         package_goods: package_goods,

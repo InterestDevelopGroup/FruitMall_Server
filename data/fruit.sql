@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-17 19:01:20
+Date: 2014-12-18 11:46:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -599,7 +599,7 @@ CREATE TABLE `fruit_package` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='套餐表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='套餐表';
 
 -- ----------------------------
 -- Records of fruit_package
@@ -607,6 +607,8 @@ CREATE TABLE `fruit_package` (
 INSERT INTO `fruit_package` VALUES ('19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>', '0', '1416567703', null);
 INSERT INTO `fruit_package` VALUES ('20', '測試套餐2', '12.00', '20.00', '/uploads/2014/11/21/9b370b6be335abd01c70ba6f5c69e061f214c913.jpg', '/uploads/2014/11/21/3faeb831305b752a4660a6fc052dac4db1d1735d.jpg', '/uploads/2014/11/21/f5967c6e4bb31f97035754123106ba0b7bad9e12.jpg', '/uploads/2014/11/21/b80d84b413ecefff68b6803ecc6c2bc11130a09f.jpg', '/uploads/2014/11/21/200711d5b532929bec1c03889289eebf31080560.jpg', '/uploads/2014/11/21/c60415485dc372eb1957dc155bbbad334e36ab6b.jpg', '<p>這是一個測試套餐</p>', '1', '1416567758', '1416567773');
 INSERT INTO `fruit_package` VALUES ('21', '测试套餐3', '12.00', '12.00', '/uploads/2014/12/15/bdecfbd139191dc86f04a748678603780452c458.jpg', '/uploads/2014/12/15/9c224bc9a43ac4191940781746649dcf38b22ed3.jpg', '/uploads/2014/12/15/64267f14c5cbd6c08ff5e5da1afd64692b9e5b6f.jpg', null, null, null, '<p>测试</p>', '0', '1418615122', '1418615430');
+INSERT INTO `fruit_package` VALUES ('22', '测试套餐5', '120.00', '160.00', '/uploads/2014/12/18/e78e6eacde5ba0b08b9a2109ec25c8ffb16ed08d.jpg', '/uploads/2014/12/18/d4e2b421422c72fb90edc3003c011d1905a39ebb.jpg', null, null, null, null, '<p>测试</p>', '0', '1418873921', null);
+INSERT INTO `fruit_package` VALUES ('23', '测试套餐8', '120.00', '170.00', '/uploads/2014/12/18/4696c2f9ba339f00a54be68025a0bc5b956b0ab0.jpg', '/uploads/2014/12/18/3e99390d580cdd7868cc7316669081e6e1be5f26.jpg', null, null, null, null, '<p>阿大使</p>', '0', '1418873966', '1418874315');
 
 -- ----------------------------
 -- Table structure for `fruit_package_goods`
@@ -618,7 +620,7 @@ CREATE TABLE `fruit_package_goods` (
   `goods_id` int(11) NOT NULL COMMENT '商品ID',
   `amount` int(11) NOT NULL COMMENT '商品数量',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='套餐商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COMMENT='套餐商品表';
 
 -- ----------------------------
 -- Records of fruit_package_goods
@@ -629,6 +631,10 @@ INSERT INTO `fruit_package_goods` VALUES ('11', '20', '3', '2');
 INSERT INTO `fruit_package_goods` VALUES ('12', '20', '4', '3');
 INSERT INTO `fruit_package_goods` VALUES ('13', '20', '1', '10');
 INSERT INTO `fruit_package_goods` VALUES ('15', '21', '5', '2');
+INSERT INTO `fruit_package_goods` VALUES ('16', '22', '5', '2');
+INSERT INTO `fruit_package_goods` VALUES ('17', '22', '6', '5');
+INSERT INTO `fruit_package_goods` VALUES ('22', '23', '5', '1');
+INSERT INTO `fruit_package_goods` VALUES ('23', '23', '6', '10');
 
 -- ----------------------------
 -- Table structure for `fruit_parent_category`
