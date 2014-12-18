@@ -115,7 +115,7 @@ class ApiAction extends Action {
                     $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
-                }, D('Address')->_getAddressList($user_id, $offset, $pagesize))
+                }, D('Address')->_getAddressList($user_id, $offset, $pagesize, 1))
             ));
         } else {
             $this->redirect('/');
@@ -285,6 +285,28 @@ class ApiAction extends Action {
             $this->ajaxReturn(array(
                 'status' => 1,
                 'result' => $result
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 获取水果劵规则
+     */
+    public function coupon_rule() {
+        if ($this->isPost() || $this->isAjax()) {
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            if ($offset < 0 || $pagesize < 0) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => D('CouponRule')->_getCouponRuleList($offset, $pagesize)
             ));
         } else {
             $this->redirect('/');

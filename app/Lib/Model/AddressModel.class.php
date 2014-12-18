@@ -18,13 +18,14 @@ class AddressModel extends Model {
      *            偏移量
      * @param int $pagesize
      *            条数
+     * @param int $is_api
+     *            是否接口请求
      * @return array
      */
-    public function _getAddressList($user_id, $offset, $pagesize) {
-        return $this->table($this->getTableName() . " AS a ")->field(array(
+    public function _getAddressList($user_id, $offset, $pagesize, $is_api) {
+        $field = array(
             'address_id',
             'user_id',
-            "(SELECT real_name FROM " . M('Member')->getTableName() . " WHERE id = a.user_id)" => 'consignee',
             'phone',
             'province',
             'city',
@@ -36,7 +37,13 @@ class AddressModel extends Model {
             'add_time',
             'update_time',
             "(SELECT COUNT(1) FROM " . M('DefaultAddress')->getTableName() . " WHERE address_id = a.address_id)" => 'is_default'
-        ))->where(array(
+        );
+        if ($is_api) {
+            array_unshift($field, 'consignee');
+        } else {
+            $field["(SELECT real_name FROM " . M('Member')->getTableName() . " WHERE id = a.user_id)"] = 'consignee';
+        }
+        return $this->table($this->getTableName() . " AS a ")->field($field)->where(array(
             'user_id' => $user_id
         ))->limit($offset, $pagesize)->select();
     }

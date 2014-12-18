@@ -102,7 +102,7 @@ class MemberAction extends AdminAction {
     public function getUserAddressList() {
         if ($this->isAjax()) {
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('Address')->_getAddressList($user_id, null, null));
+            $this->ajaxReturn(D('Address')->_getAddressList($user_id, null, null, 0));
         } else {
             $this->redirect('/');
         }
