@@ -10,6 +10,19 @@
 class CouponRuleModel extends Model {
 
     /**
+     * 获取水果劵规则列表（API）
+     *
+     * @param int $offset
+     *            偏移量
+     * @param int $pageSize
+     *            条数
+     * @return array
+     */
+    public function _getCouponRuleList($offset, $pageSize) {
+        return $this->limit($offset, $pageSize)->select();
+    }
+
+    /**
      * 添加规则
      *
      * @param string $description
