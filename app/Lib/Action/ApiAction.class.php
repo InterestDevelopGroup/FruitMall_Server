@@ -915,7 +915,11 @@ class ApiAction extends Action {
                 1,
                 2,
                 3,
-                4
+                4,
+                5,
+                6,
+                7,
+                8
             ))) {
                 $this->ajaxReturn(array(
                     'status' => 0,

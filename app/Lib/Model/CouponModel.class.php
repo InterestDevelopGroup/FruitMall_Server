@@ -140,12 +140,15 @@ class CouponModel extends Model {
                 $total_amount
             )
         ))->order("_condition DESC")->find();
-        return $this->where(array(
+        return $this->field(array(
+            "*",
+            "IF(score > 10, 10, score)" => 'available_score'
+        ))->where(array(
             'user_id' => $user_id,
-            'score' => array(
-                'elt',
-                intval($coupon_usgae['score'])
-            ),
+//             'score' => array(
+//                 'elt',
+//                 intval($coupon_usgae['score'])
+//             ),
             "_string" => " expire_time > " . time() . " OR expire_time is null"
         ))->limit($offset, $pagesize)->select();
     }

@@ -10,6 +10,18 @@
 class TaskAction extends AdminAction {
 
     /**
+     * ajax获取采购详细
+     */
+    public function getPurchaseDetail() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Purchase')->getPurchaseDetail($goods_id));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 采购任务
      */
     public function purchase() {
@@ -31,6 +43,20 @@ class TaskAction extends AdminAction {
             ));
         } else {
             $this->display();
+        }
+    }
+
+    /**
+     * 打印采购任务
+     */
+    public function print_purchase() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? array_map(function ($value) {
+                return intval($value);
+            }, $_POST['goods_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Purchase')->printPurchase($goods_id));
+        } else {
+            $this->redirect('/');
         }
     }
 
@@ -89,6 +115,20 @@ class TaskAction extends AdminAction {
             // ));
         } else {
             $this->display();
+        }
+    }
+
+    /**
+     * 确认采购
+     */
+    public function sure_purchase() {
+        if ($this->isAjax()) {
+            $goods_id = isset($_POST['goods_id']) ? array_map(function ($value) {
+                return intval($value);
+            }, $_POST['goods_id']) : $this->redirect('/');
+            $this->ajaxReturn(D('Purchase')->surePurchase($goods_id));
+        } else {
+            $this->redirect('/');
         }
     }
 

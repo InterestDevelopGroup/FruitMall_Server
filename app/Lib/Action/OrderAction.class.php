@@ -10,6 +10,37 @@
 class OrderAction extends AdminAction {
 
     /**
+     * 取消订单一览
+     */
+    public function cancels() {
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        if ($this->isAjax()) {
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
+            $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
+            $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
+            $orderModel = D('Order');
+            $total = $orderModel->getOrderCount($keyword, 3);
+            if ($total) {
+                $rows = array_map(function ($v) {
+                    $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
+                    $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
+                    return $v;
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 3));
+            } else {
+                $rows = null;
+            }
+            $this->ajaxReturn(array(
+                'Rows' => $rows,
+                'Total' => $total
+            ));
+        } else {
+            $this->assign('keyword', $keyword);
+            $this->display();
+        }
+    }
+
+    /**
      * 删除订单
      */
     public function delete() {
@@ -82,19 +113,20 @@ class OrderAction extends AdminAction {
      */
     public function history() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $status = isset($_GET['status']) ? intval($_GET['status']) : 0;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $orderModel = D('Order');
-            $total = $orderModel->getOrderCount($keyword, 1);
+            $total = $orderModel->getOrderCount($keyword, 1, $status);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1, $stutus));
             } else {
                 $rows = null;
             }

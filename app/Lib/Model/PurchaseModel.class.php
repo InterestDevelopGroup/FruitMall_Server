@@ -85,6 +85,33 @@ class PurchaseModel extends Model {
     }
 
     /**
+     * 订单状态改变时删除采购任务
+     *
+     * @param array $order_id
+     *            订单ID
+     * @return boolean
+     */
+    public function deletePurchaseWhenOrderStatusChange(array $order_id) {
+        if (!$this->where(array(
+            'order_id' => array(
+                'in',
+                $order_id
+            ),
+            'is_purchase' => 0
+        ))->count()) {
+            return true;
+        }
+        if ($this->where(array(
+            'order_id' => $order_id,
+            'is_purchase' => 0
+        ))->delete()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取采购总数
      *
      * @return int
@@ -99,6 +126,24 @@ class PurchaseModel extends Model {
                 GROUP BY
                     goods_id";
         return count($this->query($sql));
+    }
+
+    /**
+     * 获取采购任务详细
+     *
+     * @param int $goods_id
+     *            商品ID
+     */
+    public function getPurchaseDetail($goods_id) {
+        return $this->table($this->getTableName() . " AS p ")->field(array(
+            "SUM(quantity)" => 'quantity',
+            'b.name' => 'branch'
+        ))->join(array(
+            " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
+        ))->where(array(
+            'goods_id' => $goods_id,
+            'is_purchase' => 0
+        ))->group('branch_id')->select();
     }
 
     /**
@@ -128,6 +173,64 @@ class PurchaseModel extends Model {
                     p.goods_id
                 LIMIT $offset, $pageSize";
         return $this->query($sql);
+    }
+
+    /**
+     * 打印商品列表
+     *
+     * @param array $goods_id
+     *            商品ID
+     * @return array
+     */
+    public function printPurchase(array $goods_id) {
+        $result = $this->table($this->getTableName() . " AS p ")->field(array(
+            'goods_id',
+            'g.name' => 'goods_name',
+            'SUM(quantity)' => 'quantity'
+        ))->join(" LEFT JOIN " . M('Goods')->getTableName() . " AS g ON p.goods_id = g.id ")->where(array(
+            "goods_id" => array(
+                'in',
+                $goods_id
+            ),
+            'p.is_purchase' => 0
+        ))->group("goods_id")->select();
+        foreach ($result as &$v) {
+            $v['branch_list'] = $this->table($this->getTableName() . " AS p ")->field(array(
+                "SUM(quantity)" => 'quantity',
+                'b.name' => 'branch'
+            ))->join(array(
+                " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
+            ))->where(array(
+                'goods_id' => intval($v['goods_id']),
+                'is_purchase' => 0
+            ))->group("branch_id")->order(null)->select();
+        }
+        return $result;
+    }
+
+    /**
+     * 确认订单
+     *
+     * @param array $goods_id
+     *            商品ID
+     * @return array
+     */
+    public function surePurchase(array $goods_id) {
+        if ($this->where(array(
+            'goods_id' => $goods_id
+        ))->save(array(
+            'is_purchase' => 1
+        ))) {
+            return array(
+                'status' => true,
+                'msg' => '确认成功'
+            );
+        } else {
+            return array(
+                'status' => false,
+                'msg' => '确认失败'
+            );
+        }
     }
 
 }

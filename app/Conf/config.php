@@ -160,6 +160,10 @@ $app_config = array(
                 'history' => array(
                     'text' => '历史订单一览',
                     'url' => '/order/history'
+                ),
+                'cancels' => array(
+                    'text' => '取消订单一览',
+                    'url' => '/order/cancels'
                 )
             )
         ),

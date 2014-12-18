@@ -215,6 +215,8 @@ class OrderModel extends Model {
                 'result' => '该订单状态不允许取消订单'
             );
         }
+        // 开启事务
+        $this->startTrans();
         if ($this->where(array(
             'order_id' => array(
                 'in',
@@ -223,62 +225,28 @@ class OrderModel extends Model {
         ))->save(array(
             'status' => 5
         ))) {
+            if (!D('Purchase')->deletePurchaseWhenOrderStatusChange($id)) {
+                // 取消订单失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '取消成功'
+                );
+            }
+            // 取消成功，提交事务
+            $this->commit();
             return array(
                 'status' => 1,
                 'result' => '取消成功'
             );
         } else {
+            // 取消订单失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => 0,
                 'result' => '取消成功'
             );
         }
-        // // 开启事务
-        // $this->startTrans();
-        // if ($this->where(array(
-        // 'order_id' => array(
-        // 'in',
-        // $id
-        // )
-        // ))->delete()) {
-        // if (!D('OrderGoods')->deleteOrderGoods($id)) {
-        // // 删除订单商品失败，回滚事务
-        // $this->rollback();
-        // return array(
-        // 'status' => 0,
-        // 'result' => '删除失败'
-        // );
-        // }
-        // if (!D('OrderPackage')->deleteOrderPackage($id)) {
-        // // 删除订单套餐失败，回滚事务
-        // $this->rollback();
-        // return array(
-        // 'status' => 0,
-        // 'result' => '删除失败'
-        // );
-        // }
-        // if (!D('OrderCustom')->deleteOrderCustom($id)) {
-        // // 删除订单套餐失败，回滚事务
-        // $this->rollback();
-        // return array(
-        // 'status' => 0,
-        // 'result' => '删除失败'
-        // );
-        // }
-        // // 删除成功，提交事务
-        // $this->commit();
-        // return array(
-        // 'status' => 1,
-        // 'result' => '删除成功'
-        // );
-        // } else {
-        // // 删除失败，回滚事务
-        // $this->rollback();
-        // return array(
-        // 'status' => 0,
-        // 'result' => '删除失败'
-        // );
-        // }
     }
 
     /**
@@ -288,13 +256,30 @@ class OrderModel extends Model {
      *            关键字
      * @return int
      */
-    public function getOrderCount($keyword, $type) {
-        $where = array(
-            'status' => ($type == 1) ? array(
-                'neq',
-                1
-            ) : 1
-        );
+    public function getOrderCount($keyword, $type, $status = 0) {
+        if ($type == 1) {
+            $where = array(
+                'status' => array(
+                    'in',
+                    array(
+                        2,
+                        3,
+                        4,
+                        6,
+                        7,
+                        8
+                    )
+                )
+            );
+        } else if ($type == 2) {
+            $where = array(
+                'status' => 1
+            );
+        } else if ($type == 3) {
+            $where = array(
+                'status' => 5
+            );
+        }
         empty($keyword) || $where['order_number'] = $keyword;
         return (int) $this->where($where)->select();
     }
@@ -392,14 +377,31 @@ class OrderModel extends Model {
      * @param string $keyword
      *            关键字
      */
-    public function getOrderList($page, $pageSize, $order, $sort, $keyword, $type) {
+    public function getOrderList($page, $pageSize, $order, $sort, $keyword, $type, $status = 0) {
         $offset = ($page - 1) * $pageSize;
-        $where = array(
-            'status' => ($type == 1) ? array(
-                'neq',
-                1
-            ) : 1
-        );
+        if ($type == 1) {
+            $where = array(
+                'status' => array(
+                    'in',
+                    array(
+                        2,
+                        3,
+                        4,
+                        6,
+                        7,
+                        8
+                    )
+                )
+            );
+        } else if ($type == 2) {
+            $where = array(
+                'status' => 1
+            );
+        } else if ($type == 3) {
+            $where = array(
+                'status' => 5
+            );
+        }
         empty($keyword) || $where['order_number'] = $keyword;
         return $this->table($this->getTableName() . " AS o ")->field(array(
             'o.order_id',
@@ -428,120 +430,6 @@ class OrderModel extends Model {
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id ",
             " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id "
         ))->where($where)->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
-    }
-
-    /**
-     * 获取采购总数
-     */
-    public function getPurchaseCount() {
-        $start = strtotime(date("Y-m-d"));
-        $end = $start + 86399;
-        return (int) $this->where(array(
-            'status' => 2,
-            'is_purchase' => 0,
-            'add_time' => array(
-                'between',
-                array(
-                    $start,
-                    $end
-                )
-            )
-        ))->count();
-    }
-
-    /**
-     * 获取采购商品列表
-     *
-     * @param int $page
-     *            当前页
-     * @param int $pageSize
-     *            每页显示条数
-     * @param string $order
-     *            排序字段
-     * @param string $sort
-     *            排序方式
-     * @return array
-     */
-    public function getPurchaseList($page, $pageSize, $order, $sort) {
-        $start = strtotime(date("Y-m-d"));
-        $end = $start + 86399;
-        $offset = ($page - 1) * $pageSize;
-        $sql = "SELECT
-                    g.name, goods_id, sum(goods_amount) as amount
-                FROM
-                    (
-                    SELECT
-                        goods_id, amount AS goods_amount
-                    FROM
-                        fruit_order_goods
-                    WHERE
-                        order_id IN (
-                            (
-                            SELECT
-                                order_id
-                            FROM
-                                fruit_order
-                            WHERE
-                                status = 2 AND
-                                is_purchase = 0 AND
-                                (add_time BETWEEN {$start} AND {$end})
-                            )
-                        )
-                    UNION ALL
-                    SELECT
-                        pg.goods_id, (t.amount * pg.amount) AS goods_amount
-                    FROM
-                        fruit_package_goods AS pg
-                    RIGHT JOIN
-                        (
-                        SELECT
-                            package_id, amount
-                        FROM
-                            fruit_order_package
-                        WHERE
-                            order_id IN (
-                                (
-                                SELECT
-                                    order_id
-                                FROM
-                                    fruit_order
-                                WHERE
-                                    status = 2 AND
-                                    is_purchase = 0 AND
-                                    (add_time BETWEEN {$start} AND {$end})
-                                )
-                            )
-                        ) AS t ON pg.package_id = t.package_id
-                    UNION ALL
-                    SELECT
-                        goods_id, (cg.quantity * t.amount) AS goods_amount
-                    FROM
-                        fruit_custom_goods AS cg
-                    RIGHT JOIN
-                        (
-                        SELECT
-                            custom_id, amount
-                        FROM
-                            fruit_order_custom
-                        WHERE
-                            order_id IN (
-                                (
-                                SELECT
-                                    order_id
-                                FROM
-                                    `fruit_order`
-                                WHERE
-                                    status = 2 AND
-                                    is_purchase = 0 AND
-                                    (add_time BETWEEN {$start} AND {$end})
-                                )
-                            )
-                        ) AS t ON cg.custom_id = t.custom_id
-                    ) AS tt
-                    LEFT JOIN fruit_goods AS g ON tt.goods_id = g.id
-                    GROUP BY goods_id
-                    LIMIT {$offset}, {$pageSize}";
-        return $this->query($sql);
     }
 
     /**
@@ -643,10 +531,12 @@ class OrderModel extends Model {
      * @param array $order_id
      *            订单ID
      * @param int $status
-     *            订单状态（1：待确定，2：配送中，3：已收货，4：拒收）
+     *            订单状态（1：待确定，2：配送中，3：已收货，4：拒收，5：取消，6：待退货，7：同意退货，8：不同意退货）
      * @return array
      */
     public function updateOrderStatus(array $order_id, $status) {
+        // 开启事务
+        $this->startTrans();
         if ($this->where(array(
             'order_id' => array(
                 'in',
@@ -656,11 +546,25 @@ class OrderModel extends Model {
             'status' => $status,
             'update_time' => time()
         ))) {
+            if ($status != 2) {
+                if (!D('Purchase')->deletePurchaseWhenOrderStatusChange($order_id)) {
+                    // 更新失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '更新失败'
+                    );
+                }
+            }
+            // 更新成功，提交事务
+            $this->commit();
             return array(
                 'status' => 1,
                 'result' => '更新成功'
             );
         } else {
+            // 更新失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => 0,
                 'result' => '更新失败'

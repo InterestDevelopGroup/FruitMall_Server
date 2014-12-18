@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-18 13:57:07
+Date: 2014-12-18 19:09:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,7 @@ CREATE TABLE `fruit_address` (
   `address` varchar(255) NOT NULL COMMENT '详细地址',
   `_consignee` varchar(50) DEFAULT NULL COMMENT '备用收货人',
   `_phone` char(11) DEFAULT NULL COMMENT '备用收货人手机',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除（0：否，1：是）',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`address_id`)
@@ -39,9 +40,9 @@ CREATE TABLE `fruit_address` (
 -- ----------------------------
 -- Records of fruit_address
 -- ----------------------------
-INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '1415789535', '1416883529');
-INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '1415790242', null);
-INSERT INTO `fruit_address` VALUES ('6', '1', '张三', '13610004889', '山东省', '潍坊市', '某区', '某小区', '山东省潍坊市某区某小区120号', null, null, '1418875171', null);
+INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '0', '1415789535', '1416883529');
+INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '0', '1415790242', null);
+INSERT INTO `fruit_address` VALUES ('6', '1', '张三', '13610004889', '山东省', '潍坊市', '某区', '某小区', '山东省潍坊市某区某小区120号', null, null, '0', '1418875171', null);
 
 -- ----------------------------
 -- Table structure for `fruit_admin_priv`
@@ -491,7 +492,7 @@ CREATE TABLE `fruit_order` (
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `address_id` int(11) NOT NULL COMMENT '收获地址ID',
   `order_number` char(14) NOT NULL COMMENT '订单号',
-  `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收，5：取消）',
+  `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收，5：取消，6：待退货，7：同意退货，8：不同意退货）',
   `is_purchase` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否采购（0：否，1：是）',
   `shipping_time` char(11) DEFAULT NULL COMMENT '开始送货时间',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
@@ -511,10 +512,10 @@ CREATE TABLE `fruit_order` (
 -- ----------------------------
 INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14111410253561', '2', '0', '12:00-18:00', '12.50', 'nothing', null, '216.00', '11', '5', '1415960111', '1417766759');
 INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14112049535657', '2', '0', null, '42.50', null, null, '228.00', '11', '5', '1416473921', '1417766629');
-INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '2', '0', '12:00-18:00', '15.00', 'nothing', null, '252.00', '11', '5', '1417402742', '1418565055');
-INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '2', '0', null, '15.00', null, '6', '252.00', '8', '3', '1417587149', '1418812741');
+INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14120154499810', '2', '0', '12:00-18:00', '15.00', 'nothing', null, '252.00', '12', '7', '1417402742', '1418888851');
+INSERT INTO `fruit_order` VALUES ('5', '1', '5', '14120310055100', '2', '0', null, '15.00', null, '6', '252.00', '8', '3', '1417587149', '1418887527');
 INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14120454981015', '1', '0', null, '12.00', null, null, '264.00', '9', '4', '1417678902', '1418700420');
-INSERT INTO `fruit_order` VALUES ('8', '1', '4', '14121499485510', '1', '0', '12:00-18:00', '12.50', null, null, '100.00', '9', '4', '1418530076', '1418565086');
+INSERT INTO `fruit_order` VALUES ('8', '1', '4', '14121499485510', '5', '0', '12:00-18:00', '12.50', null, null, '100.00', '9', '4', '1418530076', '1418565086');
 
 -- ----------------------------
 -- Table structure for `fruit_order_custom`
@@ -671,7 +672,7 @@ CREATE TABLE `fruit_purchase` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='采购表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='采购表';
 
 -- ----------------------------
 -- Records of fruit_purchase
@@ -680,23 +681,23 @@ INSERT INTO `fruit_purchase` VALUES ('1', '0', '1', '11', '1', '10', '1415960111
 INSERT INTO `fruit_purchase` VALUES ('2', '0', '1', '11', '2', '8', '1415960111', '1418813808');
 INSERT INTO `fruit_purchase` VALUES ('3', '0', '3', '11', '1', '10', '1416473921', '1418813808');
 INSERT INTO `fruit_purchase` VALUES ('4', '0', '3', '11', '2', '8', '1416473921', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('5', '0', '4', '11', '3', '6', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('6', '0', '5', '8', '3', '6', '1417587149', '1418813808');
+INSERT INTO `fruit_purchase` VALUES ('5', '0', '4', '12', '3', '6', '1417402742', '1418888854');
 INSERT INTO `fruit_purchase` VALUES ('7', '0', '3', '11', '3', '2', '1416473921', '1418813808');
 INSERT INTO `fruit_purchase` VALUES ('8', '0', '3', '11', '4', '3', '1416473921', '1418813808');
 INSERT INTO `fruit_purchase` VALUES ('9', '0', '3', '11', '1', '10', '1416473921', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('10', '0', '4', '11', '3', '4', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('11', '0', '4', '11', '4', '6', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('12', '0', '4', '11', '1', '20', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('13', '0', '5', '8', '3', '4', '1417587149', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('14', '0', '5', '8', '4', '6', '1417587149', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('15', '0', '5', '8', '1', '20', '1417587149', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('16', '0', '4', '11', '1', '10', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('17', '0', '4', '11', '2', '8', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('18', '0', '4', '11', '3', '6', '1417402742', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('19', '0', '5', '8', '1', '10', '1417587149', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('20', '0', '5', '8', '2', '8', '1417587149', '1418813808');
-INSERT INTO `fruit_purchase` VALUES ('21', '0', '5', '8', '3', '6', '1417587149', '1418813808');
+INSERT INTO `fruit_purchase` VALUES ('10', '0', '4', '12', '3', '6', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('11', '0', '4', '12', '4', '6', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('12', '0', '4', '12', '1', '10', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('16', '0', '4', '12', '1', '10', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('17', '0', '4', '12', '2', '8', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('18', '0', '4', '12', '3', '6', '1417402742', '1418888854');
+INSERT INTO `fruit_purchase` VALUES ('22', '0', '5', '8', '3', '6', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('23', '0', '5', '8', '3', '4', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('24', '0', '5', '8', '4', '6', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('25', '0', '5', '8', '1', '20', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('26', '0', '5', '8', '1', '10', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('27', '0', '5', '8', '2', '8', '1417587149', '1418887538');
+INSERT INTO `fruit_purchase` VALUES ('28', '0', '5', '8', '3', '6', '1417587149', '1418887538');
 
 -- ----------------------------
 -- Table structure for `fruit_returns`

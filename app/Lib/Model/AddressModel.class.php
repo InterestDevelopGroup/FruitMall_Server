@@ -44,7 +44,8 @@ class AddressModel extends Model {
             $field["(SELECT real_name FROM " . M('Member')->getTableName() . " WHERE id = a.user_id)"] = 'consignee';
         }
         return $this->table($this->getTableName() . " AS a ")->field($field)->where(array(
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'is_delete' => 0
         ))->limit($offset, $pagesize)->select();
     }
 
@@ -113,7 +114,9 @@ class AddressModel extends Model {
                 'in',
                 $address_id
             )
-        ))->delete()) {
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
             return array(
                 'status' => 1,
                 'result' => '删除成功'
