@@ -39,7 +39,7 @@ class OrderModel extends Model {
                 'between',
                 array(
                     3,
-                    4
+                    8
                 )
             );
         }
@@ -126,24 +126,44 @@ class OrderModel extends Model {
             $order_custom = array();
             foreach ($order as $v) {
                 if ($v['goods_id']) {
+                    $order_price = M('Goods')->field(array(
+                        'price'
+                    ))->where(array(
+                        'id' => $v['goods_id']
+                    ))->find();
                     $order_goods[] = array(
                         'goods_id' => $v['goods_id'],
                         'order_id' => $order_id,
-                        'amount' => $v['amount']
+                        'amount' => $v['amount'],
+                        'order_price' => $order_price['price']
                     );
                 }
                 if ($v['package_id']) {
+                    $order_price = M('Package')->field(array(
+                        'price'
+                    ))->where(array(
+                        'id' => $v['package_id']
+                    ))->find();
                     $order_package[] = array(
                         'package_id' => $v['package_id'],
                         'order_id' => $order_id,
-                        'amount' => $v['amount']
+                        'amount' => $v['amount'],
+                        'order_price' => $order_price['price']
                     );
                 }
                 if ($v['custom_id']) {
+                    $order_price = M('CustomGoods')->table(M('CustomGoods')->getTableName() . " AS cg ")->join(array(
+                        " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON cg.goods_id = g.id "
+                    ))->field(array(
+                        "SUM((quantity * price))" => 'price'
+                    ))->where(array(
+                        'custom_id' => $v['custom_id']
+                    ))->select();
                     $order_custom[] = array(
                         'custom_id' => $v['custom_id'],
                         'order_id' => $order_id,
-                        'amount' => $v['amount']
+                        'amount' => $v['amount'],
+                        'order_price' => $order_price[0]['price']
                     );
                 }
             }
@@ -301,6 +321,7 @@ class OrderModel extends Model {
         $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
             'og.goods_id',
             'og.amount' => 'quantity',
+            'og.order_price',
             'g.name',
             'g.price',
             'g._price',
@@ -329,6 +350,7 @@ class OrderModel extends Model {
         $order_package = M('OrderPackage')->table(M('OrderPackage')->getTableName() . " AS op ")->field(array(
             'op.package_id',
             'op.amount' => 'quantity',
+            'op.order_price',
             'p.name',
             'p.price',
             'p._price',
@@ -349,6 +371,7 @@ class OrderModel extends Model {
         ))->field(array(
             'oc.custom_id',
             'oc.amount' => 'quantity',
+            'oc.order_price',
             'c.name',
             "(
                 SELECT

@@ -35,6 +35,7 @@ class CustomModel extends Model {
                 'g.thumb' => 'goods_thumb'
             ))->where(array(
                 'cg.custom_id' => $value['custom_id'],
+                'g.status' => 1,
                 'g.is_delete' => 0
             ))->select();
             return $value;

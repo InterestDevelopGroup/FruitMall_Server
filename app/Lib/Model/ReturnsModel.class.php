@@ -41,6 +41,8 @@ class ReturnsModel extends Model {
         $image_1 = $image_1 ? base64Code2Image($image_1) : $image_1;
         $image_2 = $image_2 ? base64Code2Image($image_2) : $image_2;
         $image_3 = $image_3 ? base64Code2Image($image_3) : $image_3;
+        // 开启事务
+        $this->startTrans();
         if ($this->add(array(
             'user_id' => $user_id,
             'order_number' => $order_number,
@@ -51,11 +53,28 @@ class ReturnsModel extends Model {
             'postscript' => $postscript,
             'add_time' => time()
         ))) {
-            return array(
-                'status' => 1,
-                'result' => '申请成功'
-            );
+            if (M('Order')->where(array(
+                'order_number' => $order_number
+            ))->save(array(
+                'status' => 6
+            ))) {
+                // 申请成功，提交事务
+                $this->commit();
+                return array(
+                    'status' => 1,
+                    'result' => '申请成功'
+                );
+            } else {
+                // 申请失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '申请失败'
+                );
+            }
         } else {
+            // 申请失败，回滚事务
+            $this->rollback();
             return array(
                 'status' => 0,
                 'result' => '申请失败'
