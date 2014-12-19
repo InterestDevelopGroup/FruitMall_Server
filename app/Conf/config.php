@@ -331,6 +331,11 @@ $app_config = array(
             'add' => 'version|add',
             'delete' => 'version|delete'
         ),
+        'task' => array(
+            'purchase' => 'task|purchase',
+            'sure_purchase' => 'task|sure_purchase',
+            'print_purchase' => 'task|print_purchase'
+        ),
         'feedback' => array(
             'index' => 'feedback|index',
             'delete' => 'feedback|delete',
@@ -345,15 +350,16 @@ $app_config = array(
     'child_priv' => array(
         'member|index' => 'member|getuseraddresslist,member|getusercustomlist',
         'member|blacklist' => 'member|getuseraddresslist,member|getusercustomlist',
-        'goods|add' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
-        'goods|update' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image',
+        'goods|add' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image,goods|check_priority',
+        'goods|update' => 'category|getchildcategorybyparentid,goods|delete_image,goods|upload,goods|upload_image,goods|check_priority',
         'package|add' => 'package|delete_image,package|upload,package|upload_image',
         'package|update' => 'package|delete_image,package|upload,package|upload_image',
         'branch|index' => 'branch|getbranchcourier,branch|getbranchshippingaddress',
         'branch|add' => 'branch|add_courier,branch|add_shipping_address',
         'branch|update' => 'branch|add_courier,branch|add_shipping_address',
         'order|index' => 'order|getorderdetail',
-        'order|history' => 'order|getorderdetail'
+        'order|history' => 'order|getorderdetail',
+        'task|purchase' => 'task|getpurchasedetail'
     ),
     // 权限对应翻译
     'priv_language' => array(
@@ -463,6 +469,12 @@ $app_config = array(
             'add' => '添加版本',
             'delete' => '删除版本'
         ),
+        'task' => array(
+            'task' => '任务管理',
+            'purchase' => '采购任务',
+            'sure_purchase' => '确认采购',
+            'print_purchase' => '打印采购任务'
+        ),
         'feedback' => array(
             'feedback' => '投诉/反馈',
             'index' => '投诉/反馈一览',
@@ -524,6 +536,7 @@ $app_config = array(
         'notification|add',
         'notification|update',
         'version|android',
+        'task|purchase',
         'feedback|index',
         'returns|index'
     ),

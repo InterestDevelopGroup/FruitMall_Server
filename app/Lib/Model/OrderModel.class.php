@@ -257,28 +257,34 @@ class OrderModel extends Model {
      * @return int
      */
     public function getOrderCount($keyword, $type, $status = 0) {
-        if ($type == 1) {
+        if ($status) {
             $where = array(
-                'status' => array(
-                    'in',
-                    array(
-                        2,
-                        3,
-                        4,
-                        6,
-                        7,
-                        8
+                'status' => $status
+            );
+        } else {
+            if ($type == 1) {
+                $where = array(
+                    'status' => array(
+                        'in',
+                        array(
+                            2,
+                            3,
+                            4,
+                            6,
+                            7,
+                            8
+                        )
                     )
-                )
-            );
-        } else if ($type == 2) {
-            $where = array(
-                'status' => 1
-            );
-        } else if ($type == 3) {
-            $where = array(
-                'status' => 5
-            );
+                );
+            } else if ($type == 2) {
+                $where = array(
+                    'status' => 1
+                );
+            } else if ($type == 3) {
+                $where = array(
+                    'status' => 5
+                );
+            }
         }
         empty($keyword) || $where['order_number'] = $keyword;
         return (int) $this->where($where)->select();
@@ -379,28 +385,34 @@ class OrderModel extends Model {
      */
     public function getOrderList($page, $pageSize, $order, $sort, $keyword, $type, $status = 0) {
         $offset = ($page - 1) * $pageSize;
-        if ($type == 1) {
+        if ($status) {
             $where = array(
-                'status' => array(
-                    'in',
-                    array(
-                        2,
-                        3,
-                        4,
-                        6,
-                        7,
-                        8
+                'status' => $status
+            );
+        } else {
+            if ($type == 1) {
+                $where = array(
+                    'status' => array(
+                        'in',
+                        array(
+                            2,
+                            3,
+                            4,
+                            6,
+                            7,
+                            8
+                        )
                     )
-                )
-            );
-        } else if ($type == 2) {
-            $where = array(
-                'status' => 1
-            );
-        } else if ($type == 3) {
-            $where = array(
-                'status' => 5
-            );
+                );
+            } else if ($type == 2) {
+                $where = array(
+                    'status' => 1
+                );
+            } else if ($type == 3) {
+                $where = array(
+                    'status' => 5
+                );
+            }
         }
         empty($keyword) || $where['order_number'] = $keyword;
         return $this->table($this->getTableName() . " AS o ")->field(array(

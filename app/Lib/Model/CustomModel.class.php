@@ -55,6 +55,15 @@ class CustomModel extends Model {
      * @return array
      */
     public function addCustom($user_id, $name, $goods_list) {
+        if ($this->where(array(
+            'user_id' => $user_id,
+            'name' => $name
+        ))->count()) {
+            return array(
+                'status' => 0,
+                'result' => '定制名称不能重复'
+            );
+        }
         $now = time();
         // 开启事务
         $this->startTrans();

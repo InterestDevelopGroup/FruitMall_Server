@@ -54,7 +54,10 @@ class TaskAction extends AdminAction {
             $goods_id = isset($_POST['goods_id']) ? array_map(function ($value) {
                 return intval($value);
             }, $_POST['goods_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('Purchase')->printPurchase($goods_id));
+            $this->ajaxReturn(array(
+                'status' => true,
+                'result' => D('Purchase')->printPurchase($goods_id)
+            ));
         } else {
             $this->redirect('/');
         }

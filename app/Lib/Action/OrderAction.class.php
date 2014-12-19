@@ -136,6 +136,7 @@ class OrderAction extends AdminAction {
             ));
         } else {
             $this->assign('keyword', $keyword);
+            $this->assign('status', $status);
             $this->display();
         }
     }

@@ -114,13 +114,14 @@ function print() {
         type: "POST",
         dataType: "json",
         success: function(data) {
-            if (data.length != 0) {
+            if (data.status) {
+				var _data = data.result;
 				var str = '';
-				for (var i in data) {
-					str += '<table width="100%" style="margin:24px auto;"><tr><td>商品名称：'+data[i].goods_name+'</td><td>采购总数：'+data[i].quantity+'</td></tr>';
+				for (var i in _data) {
+					str += '<table width="100%" style="margin:24px auto;"><tr><td>商品名称：'+_data[i].goods_name+'</td><td>采购总数：'+_data[i].quantity+'</td></tr>';
 					str += '<tr><td colspan="2">分店明细：</td></tr>';
 					str += '<tr><table width="60%"><tr><td>分店名</td><td>采购数量</td></tr>';
-					var branch = data[i].branch_list;
+					var branch = _data[i].branch_list;
 					for (var j in branch) {
 						str += '<tr><td>'+branch[j].branch+'</td><td>'+branch[j].quantity+'</td></tr>';
 					}

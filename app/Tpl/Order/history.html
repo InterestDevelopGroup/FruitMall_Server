@@ -14,11 +14,11 @@
                 订单状态：<select name="status">
                 	<option value="0">--请选择--</option>
                 	<option value="2" <if condition="$status eq 2">selected</if>>配送中</option>
-                    <option value="3" <if condition="$status eq 2">selected</if>>已收货</option>
-                    <option value="4" <if condition="$status eq 2">selected</if>>拒收</option>
-                    <option value="6" <if condition="$status eq 2">selected</if>>待退货</option>
-                    <option value="7" <if condition="$status eq 2">selected</if>>同意退货</option>
-                    <option value="8" <if condition="$status eq 2">selected</if>>不同意退货</option>
+                    <option value="3" <if condition="$status eq 3">selected</if>>已收货</option>
+                    <option value="4" <if condition="$status eq 4">selected</if>>拒收</option>
+                    <option value="6" <if condition="$status eq 6">selected</if>>待退货</option>
+                    <option value="7" <if condition="$status eq 7">selected</if>>同意退货</option>
+                    <option value="8" <if condition="$status eq 8">selected</if>>不同意退货</option>
                 </select>&nbsp;&nbsp;
                 <input class="btn btn-primary" type="submit" value="搜索" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="删除订单" onclick="javascript:del();" />&nbsp;&nbsp;
