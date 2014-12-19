@@ -48,22 +48,22 @@ $(function(){
 
 //明细
 function f_onShowDetail(record, container, callback) {
-	$.ajax({
+    $.ajax({
         url: "<{:U('task/getPurchaseDetail')}>",
         type: 'POST',
         data: {goods_id : record.goods_id},
         dataType: "json",
         async: false,
         success: function(data) {
-			$(container).append('<h3 style="margin:10px;">分店任务：</h3>');
-			for (var i in data) {
-				var str = '';
-				str = '<table align="center" style="margin:10px;width:50%;font-size:14px;">';
-				str += "<tr style='border:1px #fff solid;background:#ddd'><td width='30%' align='right' style='border:1px #fff solid;'>分店名：&nbsp;&nbsp;</td><td width='70%' style='border:1px #fff solid;'>&nbsp;&nbsp;" + data[i].branch + "</td></tr>";
-				str += "<tr style='border:1px #fff solid;background:#f0f'><td width='30%' align='right' style='border:1px #fff solid;'>分店采购量：&nbsp;&nbsp;</td><td width='70%' style='border:1px #fff solid;'>&nbsp;&nbsp;" + data[i].quantity + "</td></tr>";
-				str += '</table>';
-				$(container).append(str);
-			}
+            $(container).append('<h3 style="margin:10px;">分店任务：</h3>');
+            for (var i in data) {
+                var str = '';
+                str = '<table align="center" style="margin:10px;width:50%;font-size:14px;">';
+                str += "<tr style='border:1px #fff solid;background:#ddd'><td width='30%' align='right' style='border:1px #fff solid;'>分店名：&nbsp;&nbsp;</td><td width='70%' style='border:1px #fff solid;'>&nbsp;&nbsp;" + data[i].branch + "</td></tr>";
+                str += "<tr style='border:1px #fff solid;background:#f0f'><td width='30%' align='right' style='border:1px #fff solid;'>分店采购量：&nbsp;&nbsp;</td><td width='70%' style='border:1px #fff solid;'>&nbsp;&nbsp;" + data[i].quantity + "</td></tr>";
+                str += '</table>';
+                $(container).append(str);
+            }
         }
     });
 }
@@ -102,7 +102,7 @@ function sure() {
 
 //打印订单
 function print() {
-	var goods_id = getCheckedData('goods_id');
+    var goods_id = getCheckedData('goods_id');
     if (goods_id.length <= 0) {
         $.ligerDialog.alert('请至少选中一个商品', '温馨提示', 'warn');
         return false;
@@ -115,18 +115,18 @@ function print() {
         dataType: "json",
         success: function(data) {
             if (data.status) {
-				var _data = data.result;
-				var str = '';
-				for (var i in _data) {
-					str += '<table width="100%" style="margin:24px auto;"><tr><td>商品名称：'+_data[i].goods_name+'</td><td>采购总数：'+_data[i].quantity+'</td></tr>';
-					str += '<tr><td colspan="2">分店明细：</td></tr>';
-					str += '<tr><table width="60%"><tr><td>分店名</td><td>采购数量</td></tr>';
-					var branch = _data[i].branch_list;
-					for (var j in branch) {
-						str += '<tr><td>'+branch[j].branch+'</td><td>'+branch[j].quantity+'</td></tr>';
-					}
-					str += '</table></tr></table>';
-				}
+                var _data = data.result;
+                var str = '';
+                for (var i in _data) {
+                    str += '<table width="100%" style="margin:24px auto;"><tr><td>商品名称：'+_data[i].goods_name+'</td><td>采购总数：'+_data[i].quantity+'</td></tr>';
+                    str += '<tr><td colspan="2">分店明细：</td></tr>';
+                    str += '<tr><table width="60%"><tr><td>分店名</td><td>采购数量</td></tr>';
+                    var branch = _data[i].branch_list;
+                    for (var j in branch) {
+                        str += '<tr><td>'+branch[j].branch+'</td><td>'+branch[j].quantity+'</td></tr>';
+                    }
+                    str += '</table></tr></table>';
+                }
                 var iframe = document.createElement('IFRAME');
                 var doc = null;
                 iframe.setAttribute('style', 'position:absolute;width:0px;height:0px;left:-500px;top:-500px;');

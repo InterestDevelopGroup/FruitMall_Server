@@ -12,8 +12,8 @@
             <form method="get">
                 订单号：<input type="text" name="keyword" value="<{$keyword}>" />&nbsp;&nbsp;
                 订单状态：<select name="status">
-                	<option value="0">--请选择--</option>
-                	<option value="2" <if condition="$status eq 2">selected</if>>配送中</option>
+                    <option value="0">--请选择--</option>
+                    <option value="2" <if condition="$status eq 2">selected</if>>配送中</option>
                     <option value="3" <if condition="$status eq 3">selected</if>>已收货</option>
                     <option value="4" <if condition="$status eq 4">selected</if>>拒收</option>
                     <option value="6" <if condition="$status eq 6">selected</if>>待退货</option>
@@ -24,7 +24,8 @@
                 <input class="btn btn-primary" type="button" value="删除订单" onclick="javascript:del();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="确认订单" onclick="javascript:sure();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="指定送货员" onclick="javascript:distribute();" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="打印订单" onclick="javascript:print_order();" />
+                <input class="btn btn-primary" type="button" value="打印订单" onclick="javascript:print_order();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="更新订单" onclick="javascript:update();" />
             </form>
         </div>
         <div>
@@ -60,19 +61,19 @@ $(function(){
             },
             {display: "订单状态", name: 'status', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
-                        case 1 :
-                            return '待确定';
                         case 2 :
                             return '配送中';
                         case 3 :
                             return '已收货';
                         case 4 :
                             return '拒收';
+                        case 6 :
+                            return '待退货';
+                        case 7 :
+                            return '不同意退货';
+                        case 8 :
+                            return '同意退货';
                     }
-                }
-            },
-            {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
-                    return '<a href="javascript:void(0);" onclick="update('+rowdata.order_id+')">编辑</a>';
                 }
             }
             ],
@@ -91,12 +92,10 @@ $(function(){
     });
     $("#pageloading").hide();
 });
+
 //订单明细
 function f_onShowDetail(record, container, callback) {
     switch (parseInt(record.status)) {
-        case 1 :
-            var status = '待确定';
-            break;
         case 2 :
             var status = '配送中';
             break;
@@ -105,6 +104,15 @@ function f_onShowDetail(record, container, callback) {
             break;
         case 4 :
             var status = '拒收';
+            break;
+        case 6 :
+            var status = '待退货';
+            break;
+        case 7 :
+            var status = '同意退货';
+            break;
+        case 8 :
+            var status = '不同意退货';
             break;
     }
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
@@ -294,9 +302,16 @@ function distributeCallback(obj) {
 
 //编辑订单状态
 var updateOrderStatusDialog;
-function update(id) {
+function update() {
+    
+    var order_ids = getCheckedData('order_id');
+    if (order_ids.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
+        return false;
+    }
+    
     updateOrderStatusDialog = $.ligerDialog.open({
-        url: '<{:U("order/update_status")}>?id='+id, height: 400, width: 600,
+        url: '<{:U("order/update_status")}>?id='+order_ids, height: 400, width: 600,
         isDrag: false, title: '编辑订单状态',
         buttons: [{text: '确定', onclick: function(item, dialog) {updateOrderStatusDialog.frame.updateOrderStatusFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]

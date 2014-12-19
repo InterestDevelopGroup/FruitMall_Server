@@ -15,7 +15,8 @@
                 <input class="btn btn-primary" type="button" value="删除订单" onclick="javascript:del();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="确认订单" onclick="javascript:sure();" />&nbsp;&nbsp;
                 <input class="btn btn-primary" type="button" value="指定送货员" onclick="javascript:distribute();" />&nbsp;&nbsp;
-                <input class="btn btn-primary" type="button" value="打印订单" onclick="javascript:print_order();" />
+                <input class="btn btn-primary" type="button" value="打印订单" onclick="javascript:print_order();" />&nbsp;&nbsp;
+                <input class="btn btn-primary" type="button" value="更新订单" onclick="javascript:update();" />
             </form>
         </div>
         <div>
@@ -50,7 +51,7 @@ $(function(){
                 }
             },
             {display: "订单状态", name: 'status', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
-					return '待确定';
+                    return '待确定';
                 }
             },
             {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
@@ -73,22 +74,9 @@ $(function(){
     });
     $("#pageloading").hide();
 });
+
 //订单明细
 function f_onShowDetail(record, container, callback) {
-    switch (parseInt(record.status)) {
-        case 1 :
-            var status = '待确定';
-            break;
-        case 2 :
-            var status = '配送中';
-            break;
-        case 3 :
-            var status = '已收货';
-            break;
-        case 4 :
-            var status = '拒收';
-            break;
-    }
     var out = ['<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">'];
     out.push("<tr><td width='20%' align='right'>用户名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.username + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>订单号：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.order_number + "</td></tr>");
@@ -97,7 +85,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>是否黑名单：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (parseInt(record.is_blacklist) ? '是' : '否') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>送货时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.shipping_time ? record.shipping_time : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>送货费：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping_fee + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>订单状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + status + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>订单状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;待确定</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/省：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.province + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/市：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.city + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/区：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.district ? record.district : '暂无') + "</td></tr>");
@@ -276,9 +264,16 @@ function distributeCallback(obj) {
 
 //编辑订单状态
 var updateOrderStatusDialog;
-function update(id) {
+function update() {
+    
+    var order_ids = getCheckedData('order_id');
+    if (order_ids.length <= 0) {
+        $.ligerDialog.alert('请至少选中一个订单', '温馨提示', 'warn');
+        return false;
+    }
+    
     updateOrderStatusDialog = $.ligerDialog.open({
-        url: '<{:U("order/update_status")}>?id='+id, height: 400, width: 600,
+        url: '<{:U("order/update_status")}>?id='+order_ids, height: 400, width: 600,
         isDrag: false, title: '编辑订单状态',
         buttons: [{text: '确定', onclick: function(item, dialog) {updateOrderStatusDialog.frame.updateOrderStatusFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]

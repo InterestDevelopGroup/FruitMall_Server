@@ -10,10 +10,14 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="l-table-edit-td">
             <select id="status">
                 <option value="0">--请选择--</option>
-                <option value="1" <if condition="$order['status'] eq 1">selected</if>>待确定</option>
-                <option value="2" <if condition="$order['status'] eq 2">selected</if>>配送中</option>
-                <option value="3" <if condition="$order['status'] eq 3">selected</if>>已收货</option>
-                <option value="4" <if condition="$order['status'] eq 4">selected</if>>拒收</option>
+                <option value="1">待确定</option>
+                <option value="2">配送中</option>
+                <option value="3">已收货</option>
+                <option value="4">拒收</option>
+                <option value="5">取消</option>
+                <option value="6">待退货</option>
+                <option value="7">同意退货</option>
+                <option value="8">不同意退货</option>
             </select>
         </td>
         <td align="left" class="tipmsg"></td>
@@ -55,13 +59,13 @@ function ckStatus() {
 function checkForm() {
     if (!ckStatus()) return false;
     var status = $("#status").val();
-    return {status: status};
+    return {status: status, id: <{$id}>};
 }
 
 //提交表单
 function updateOrderStatusFormSubmit() {
     if (checkForm()) {
-        $.post('<{:U("order/update_status")}>?id=<{$order["order_id"]}>', checkForm(), function(data) {
+        $.post('<{:U("order/update_status")}>', checkForm(), function(data) {
             window.parent.updateOrderStatusCallback(data);
         }, 'json');
     }

@@ -70,9 +70,7 @@ class OrderAction extends AdminAction {
                 return $value;
             }, explode(',', $_GET['id'])) : $this->redirect('/');
             $this->assign('id', json_encode($id));
-
             $this->assign('branch', M('Branch')->select());
-
             $this->assign('courier', M('Courier')->select());
             $this->display();
         }
@@ -126,7 +124,7 @@ class OrderAction extends AdminAction {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1, $stutus));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1, $status));
             } else {
                 $rows = null;
             }
@@ -203,14 +201,19 @@ class OrderAction extends AdminAction {
      * 更新订单状态
      */
     public function update_status() {
-        $id = (isset($_GET['id']) && intval($_GET['id'])) ? intval($_GET['id']) : $this->redirect('/');
         if ($this->isAjax()) {
+            $id = isset($_POST['id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, $_POST['id']) : $this->redirect('/');
             $status = (isset($_POST['status']) && intval($_POST['status'])) ? intval($_POST['status']) : $this->redirect('/');
             $this->ajaxReturn(D('Order')->updateOrderStatus((array) $id, $status));
         } else {
-            $this->assign('order', M('Order')->where(array(
-                'order_id' => $id
-            ))->find());
+            $id = isset($_GET['id']) ? array_map(function ($value) {
+                $value = intval($value);
+                return $value;
+            }, explode(',', $_GET['id'])) : $this->redirect('/');
+            $this->assign('id', json_encode($id));
             $this->display();
         }
     }

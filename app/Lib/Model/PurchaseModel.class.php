@@ -102,7 +102,10 @@ class PurchaseModel extends Model {
             return true;
         }
         if ($this->where(array(
-            'order_id' => $order_id,
+            'order_id' => array(
+                'in',
+                $order_id
+            ),
             'is_purchase' => 0
         ))->delete()) {
             return true;

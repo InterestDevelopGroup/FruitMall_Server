@@ -387,12 +387,12 @@ class OrderModel extends Model {
         $offset = ($page - 1) * $pageSize;
         if ($status) {
             $where = array(
-                'status' => $status
+                'o.status' => $status
             );
         } else {
             if ($type == 1) {
                 $where = array(
-                    'status' => array(
+                    'o.status' => array(
                         'in',
                         array(
                             2,
@@ -406,11 +406,11 @@ class OrderModel extends Model {
                 );
             } else if ($type == 2) {
                 $where = array(
-                    'status' => 1
+                    'o.status' => 1
                 );
             } else if ($type == 3) {
                 $where = array(
-                    'status' => 5
+                    'o.status' => 5
                 );
             }
         }
