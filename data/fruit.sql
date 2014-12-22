@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-19 18:45:48
+Date: 2014-12-22 13:47:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -329,13 +329,14 @@ CREATE TABLE `fruit_custom` (
   `user_id` int(11) NOT NULL COMMENT '用户ID',
   `name` varchar(30) NOT NULL COMMENT '定制名称',
   `create_time` int(10) NOT NULL COMMENT '创建时间',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除（0：否，1：是）',
   PRIMARY KEY (`custom_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='我的定制表';
 
 -- ----------------------------
 -- Records of fruit_custom
 -- ----------------------------
-INSERT INTO `fruit_custom` VALUES ('1', '1', '我的定制', '1416906869');
+INSERT INTO `fruit_custom` VALUES ('1', '1', '我的定制', '1416906869', '0');
 
 -- ----------------------------
 -- Table structure for `fruit_custom_goods`
