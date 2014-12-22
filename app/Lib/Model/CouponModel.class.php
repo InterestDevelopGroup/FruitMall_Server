@@ -145,12 +145,49 @@ class CouponModel extends Model {
             "IF(score > 10, 10, score)" => 'available_score'
         ))->where(array(
             'user_id' => $user_id,
-//             'score' => array(
-//                 'elt',
-//                 intval($coupon_usgae['score'])
-//             ),
+            // 'score' => array(
+            // 'elt',
+            // intval($coupon_usgae['score'])
+            // ),
             "_string" => " expire_time > " . time() . " OR expire_time is null"
         ))->limit($offset, $pagesize)->select();
+    }
+
+    /**
+     * 检测是否可用水果劵
+     *
+     * @param int $user_id
+     *            水果劵
+     * @param float $total_amount
+     *            总金额
+     * @return array
+     */
+    public function isAvailable($user_id, $total_amount) {
+        if (!$this->where(array(
+            'user_id' => $user_id,
+            "_string" => " expire_time > " . time() . " OR expire_time is null"
+        ))->count()) {
+            return array(
+                'status' => 0,
+                'result' => '没有可用水果劵'
+            );
+        }
+        if (M('CouponUsage')->where(array(
+            'condition' => array(
+                'elt',
+                $total_amount
+            )
+        ))->count()) {
+            return array(
+                'status' => 1,
+                'result' => '可以使用水果劵'
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '不可使用水果劵'
+            );
+        }
     }
 
     /**

@@ -478,33 +478,6 @@ class ApiAction extends Action {
     }
 
     /**
-     * 获取最新版本信息
-     */
-    public function last_version() {
-        if ($this->isPost() || $this->isAjax()) {
-            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
-            if (!in_array($type, array(
-                0,
-                1
-            ))) {
-                $this->ajaxReturn(array(
-                    'status' => 0,
-                    'result' => '参数错误'
-                ));
-            }
-            $this->ajaxReturn(array(
-                'status' => 1,
-                'result' => array_map(function ($value) {
-                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
-                    return $value;
-                }, D('Version')->lastVersion($type))
-            ));
-        } else {
-            $this->redirect('/');
-        }
-    }
-
-    /**
      * 商品列表
      */
     public function goods() {
@@ -529,6 +502,52 @@ class ApiAction extends Action {
                     $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
                     return $value;
                 }, D('Goods')->_getGoodsList($offset, $pagesize, $user_id, $p_cate_id, $c_cate_id, $tag, $keyword))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 判断是否可用水果劵
+     */
+    public function is_available() {
+        if ($this->isPost() || $this->isAjax()) {
+            $total_amount = isset($_POST['total_amount']) ? floatval($_POST['total_amount']) : $this->redirect('/');
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : $this->redirect('/');
+            if ($total_amount < 0 || $user_id < 1) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Coupon')->isAvailable($user_id, $total_amount));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 获取最新版本信息
+     */
+    public function last_version() {
+        if ($this->isPost() || $this->isAjax()) {
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if (!in_array($type, array(
+                0,
+                1
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    return $value;
+                }, D('Version')->lastVersion($type))
             ));
         } else {
             $this->redirect('/');
