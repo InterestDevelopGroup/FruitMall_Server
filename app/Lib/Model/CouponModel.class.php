@@ -142,7 +142,7 @@ class CouponModel extends Model {
         ))->order("_condition DESC")->find();
         return $this->field(array(
             "*",
-            "IF(score > 10, 10, score)" => 'available_score'
+            "IF(score > {$coupon_usgae['score']}, {$coupon_usgae['score']}, score)" => 'available_score'
         ))->where(array(
             'user_id' => $user_id,
             // 'score' => array(
