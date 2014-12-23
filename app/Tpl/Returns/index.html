@@ -30,7 +30,32 @@ $(function(){
             {display: "用户名", name: 'username', align: 'center', width: '20%', isSort: false},
             {display: "订单号", name: 'order_number', align: 'center', width: '20%', isSort: false},
             {display: "退货原因", name: 'reason', align: 'center', width: '20%', isSort: false},
-            {display: "申请时间", name: 'add_time', align: 'center', width: '20%'}
+            {display: "申请时间", name: 'add_time', align: 'center', width: '12%'},
+            {display: "处理结果", name: 'result', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+                    if (value) {
+                        switch(parseInt(value)) {
+                        case 1 :
+                            return "待确定";
+                        case 2 :
+                            return "配送中";
+                        case 3 :
+                            return "已收货";
+                        case 4 :
+                            return "拒收";
+                        case 5 :
+                            return "取消";
+                        case 6 :
+                            return "待退货";
+                        case 7 :
+                            return "同意退货";
+                        case 8 :
+                            return "不同意退货";
+                        }
+                    } else {
+                        return '取消';
+                    }
+                }
+            }
             ],
             url: '<{:U("returns/index")}>',
             dataAction: 'server',

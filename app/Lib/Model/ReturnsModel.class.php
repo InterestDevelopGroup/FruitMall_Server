@@ -135,7 +135,8 @@ class ReturnsModel extends Model {
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON r.user_id = m.id "
         ))->field(array(
             'r.*',
-            'm.username'
+            'm.username',
+            "(SELECT status FROM " . M('Order')->getTableName() . " WHERE order_number = r.order_number)" => 'result'
         ))->order("r." . $order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 

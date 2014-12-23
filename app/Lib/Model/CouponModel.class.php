@@ -245,11 +245,24 @@ class CouponModel extends Model {
             }
         } else {
             // 允许使用面值<水果券面值，更新水果券面值
+            // if ($this->where(array(
+            // 'id' => $coupon['id']
+            // ))->save(array(
+            // 'score' => $coupon['score'] - $usage['score']
+            // ))) {
+            // return array(
+            // 'status' => 1,
+            // 'result' => $usage['score']
+            // );
+            // } else {
+            // return array(
+            // 'status' => 0,
+            // 'result' => '使用水果券失败'
+            // );
+            // }
             if ($this->where(array(
                 'id' => $coupon['id']
-            ))->save(array(
-                'score' => $coupon['score'] - $usage['score']
-            ))) {
+            ))->delete()) {
                 return array(
                     'status' => 1,
                     'result' => $usage['score']
