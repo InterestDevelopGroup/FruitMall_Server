@@ -40,7 +40,8 @@ class CustomModel extends Model {
             ))->select();
             return $value;
         }, $this->where(array(
-            'user_id' => $user_id
+            'user_id' => $user_id,
+            'is_delete' => 0
         ))->limit($offset, $pagesize)->select());
     }
 
