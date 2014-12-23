@@ -337,76 +337,93 @@ class OrderModel extends Model {
      * @return array
      */
     public function getOrderDetail($order_id) {
-        $order_goods = M('OrderGoods')->where(array('order_id' => $order_id))->select();
-        $order_package = M('OrderPackage')->where(array('order_id' => $order_id))->select();
-        $order_custom = M('OrderCustom')->where(array('order_id' => $order_id))->select();
-//         $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
-//             'og.goods_id',
-//             'og.amount' => 'quantity',
-//             'og.order_price',
-//             'g.name',
-//             'g.price',
-//             'g._price',
-//             'g.unit',
-//             'g.tag',
-//             'g.amount',
-//             'g.weight',
-//             'g.thumb',
-//             'g.image_1',
-//             'g.image_2',
-//             'g.image_3',
-//             'g.image_4',
-//             'g.image_5',
-//             'g.description',
-//             'pc.name' => 'parent_category',
-//             'cc.name' => 'child_category',
-//             't.name' => 'tag'
-//         ))->join(array(
-//             " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON og.goods_id = g.id ",
-//             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON g.p_cate_id = pc.id ",
-//             " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON g.c_cate_id = cc.id ",
-//             " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON g.tag = t.id "
-//         ))->where(array(
-//             'og.order_id' => $order_id
-//         ))->select();
-//         $order_package = M('OrderPackage')->table(M('OrderPackage')->getTableName() . " AS op ")->field(array(
-//             'op.package_id',
-//             'op.amount' => 'quantity',
-//             'op.order_price',
-//             'p.name',
-//             'p.price',
-//             'p._price',
-//             'p.thumb',
-//             'p.image_1',
-//             'p.image_2',
-//             'p.image_3',
-//             'p.image_4',
-//             'p.image_5',
-//             'p.description'
-//         ))->join(array(
-//             " LEFT JOIN " . M('Package')->getTableName() . " AS p ON op.package_id = p.id "
-//         ))->where(array(
-//             'op.order_id' => $order_id
-//         ))->select();
-//         $order_custom = M('OrderCustom')->table(M('OrderCustom')->getTableName() . " AS oc")->join(array(
-//             " LEFT JOIN " . M('Custom')->getTableName() . " AS c ON oc.custom_id = c.custom_id "
-//         ))->field(array(
-//             'oc.custom_id',
-//             'oc.amount' => 'quantity',
-//             'oc.order_price',
-//             'c.name',
-//             "(
-//                 SELECT
-//                     sum(cg.quantity * g.price)
-//                 FROM
-//                     fruit_custom_goods AS cg
-//                 LEFT JOIN
-//                     fruit_goods AS g ON cg.goods_id = g.id
-//                 WHERE
-//                     cg.custom_id = oc.custom_id)" => 'price'
-//         ))->where(array(
-//             'oc.order_id' => $order_id
-//         ))->select();
+        $order_goods = M('OrderGoods')->field(array(
+            '*',
+            'order_quantity' => 'quantity',
+            'price' => 'order_price'
+        ))->where(array(
+            'order_id' => $order_id
+        ))->select();
+        $order_package = M('OrderPackage')->where(array(
+            'order_id' => $order_id
+        ))->field(array(
+            '*',
+            'order_quantity' => 'quantity',
+            'price' => 'order_price'
+        ))->select();
+        $order_custom = M('OrderCustom')->where(array(
+            'order_id' => $order_id
+        ))->field(array(
+            '*',
+            'order_quantity' => 'quantity'
+        ))->select();
+        // $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
+        // 'og.goods_id',
+        // 'og.amount' => 'quantity',
+        // 'og.order_price',
+        // 'g.name',
+        // 'g.price',
+        // 'g._price',
+        // 'g.unit',
+        // 'g.tag',
+        // 'g.amount',
+        // 'g.weight',
+        // 'g.thumb',
+        // 'g.image_1',
+        // 'g.image_2',
+        // 'g.image_3',
+        // 'g.image_4',
+        // 'g.image_5',
+        // 'g.description',
+        // 'pc.name' => 'parent_category',
+        // 'cc.name' => 'child_category',
+        // 't.name' => 'tag'
+        // ))->join(array(
+        // " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON og.goods_id = g.id ",
+        // " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON g.p_cate_id = pc.id ",
+        // " LEFT JOIN " . M('ChildCategory')->getTableName() . " AS cc ON g.c_cate_id = cc.id ",
+        // " LEFT JOIN " . M('Tag')->getTableName() . " AS t ON g.tag = t.id "
+        // ))->where(array(
+        // 'og.order_id' => $order_id
+        // ))->select();
+        // $order_package = M('OrderPackage')->table(M('OrderPackage')->getTableName() . " AS op ")->field(array(
+        // 'op.package_id',
+        // 'op.amount' => 'quantity',
+        // 'op.order_price',
+        // 'p.name',
+        // 'p.price',
+        // 'p._price',
+        // 'p.thumb',
+        // 'p.image_1',
+        // 'p.image_2',
+        // 'p.image_3',
+        // 'p.image_4',
+        // 'p.image_5',
+        // 'p.description'
+        // ))->join(array(
+        // " LEFT JOIN " . M('Package')->getTableName() . " AS p ON op.package_id = p.id "
+        // ))->where(array(
+        // 'op.order_id' => $order_id
+        // ))->select();
+        // $order_custom = M('OrderCustom')->table(M('OrderCustom')->getTableName() . " AS oc")->join(array(
+        // " LEFT JOIN " . M('Custom')->getTableName() . " AS c ON oc.custom_id = c.custom_id "
+        // ))->field(array(
+        // 'oc.custom_id',
+        // 'oc.amount' => 'quantity',
+        // 'oc.order_price',
+        // 'c.name',
+        // "(
+        // SELECT
+        // sum(cg.quantity * g.price)
+        // FROM
+        // fruit_custom_goods AS cg
+        // LEFT JOIN
+        // fruit_goods AS g ON cg.goods_id = g.id
+        // WHERE
+        // cg.custom_id = oc.custom_id)" => 'price'
+        // ))->where(array(
+        // 'oc.order_id' => $order_id
+        // ))->select();
         return array(
             'order_goods' => $order_goods,
             'order_package' => $order_package,

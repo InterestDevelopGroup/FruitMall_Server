@@ -171,6 +171,7 @@ function f_onShowDetail(record, container, callback) {
                     var str = '';
                     str = '<table align="center" border="1" style="margin:10px;width:96%;font-size:14px;">';
                     str += "<tr><td width='20%' align='right'>定制名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].name + "</td></tr>";
+                    str += "<tr><td width='20%' align='right'>定制价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].order_price + "</td></tr>";
                     str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].order_quantity + "</td></tr>";
                     str += '</table>';
                     $(container).append(str);

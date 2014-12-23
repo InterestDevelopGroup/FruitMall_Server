@@ -15,6 +15,16 @@ class OrderCustomModel extends Model {
             'order_quantity' => $amount,
             'custom_id' => $custom_id
         );
+
+        $order_price = M('CustomGoods')->table(M('CustomGoods')->getTableName() . " AS cg ")->field(array(
+            "SUM(g.price * cg.quantity)" => 'order_price'
+        ))->join(array(
+            " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON cg.goods_id = g.id "
+        ))->where(array(
+            'cg.custom_id' => $custom_id
+        ))->find();
+        $data['order_price'] = $order_price['order_price'];
+
         $data = array_merge($data, M('Custom')->field(array(
             'custom_id',
             'name'
