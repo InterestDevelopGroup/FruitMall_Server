@@ -128,7 +128,7 @@ class CustomModel extends Model {
         ))->save(array(
             'is_delete' => 1
         ))) {
-            if (!D('ShoppingCar')->deleteShoppingCarByCustomId((array) $custom_id)) {
+            if (D('ShoppingCar')->deleteShoppingCarByCustomId((array) $custom_id)) {
                 // 删除成功，提交事务
                 $this->commit();
                 return array(

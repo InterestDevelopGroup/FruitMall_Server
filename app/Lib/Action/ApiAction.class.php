@@ -402,7 +402,7 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Order')->deleteOrder((array) $order_id));
+            $this->ajaxReturn(D('Order')->_deleteOrder((array) $order_id));
         } else {
             $this->redirect('/');
         }

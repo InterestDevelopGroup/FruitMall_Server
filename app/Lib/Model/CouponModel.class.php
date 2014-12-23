@@ -24,7 +24,7 @@ class CouponModel extends Model {
         return $this->where(array(
             'user_id' => $user_id,
             "_string" => " expire_time > " . time() . " OR expire_time is null"
-        ))->limit($offset, $pageszie)->select();
+        ))->order("score DESC, expire_time DESC")->limit($offset, $pageszie)->select();
     }
 
     /**
@@ -150,7 +150,7 @@ class CouponModel extends Model {
             // intval($coupon_usgae['score'])
             // ),
             "_string" => " expire_time > " . time() . " OR expire_time is null"
-        ))->limit($offset, $pagesize)->select();
+        ))->order("score DESC, expire_time DESC")->limit($offset, $pagesize)->select();
     }
 
     /**

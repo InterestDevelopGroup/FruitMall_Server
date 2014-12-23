@@ -10,6 +10,61 @@
 class OrderModel extends Model {
 
     /**
+     * 删除订单（API）
+     *
+     * @param array $id
+     *            订单ID
+     * @return array
+     */
+    public function _deleteOrder(array $id) {
+        if ($this->where(array(
+            'order_id' => array(
+                'in',
+                $id
+            ),
+            'status' => array(
+                'neq',
+                1
+            )
+        ))->count()) {
+            return array(
+                'status' => 0,
+                'result' => '该订单状态不允许取消订单'
+            );
+        }
+        // 开启事务
+        $this->startTrans();
+        if ($this->where(array(
+            'order_id' => array(
+                'in',
+                $id
+            )
+        ))->delete()) {
+            if (!D('Purchase')->deletePurchaseWhenOrderStatusChange($id)) {
+                // 取消订单失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '取消成功'
+                );
+            }
+            // 取消成功，提交事务
+            $this->commit();
+            return array(
+                'status' => 1,
+                'result' => '取消成功'
+            );
+        } else {
+            // 取消订单失败，回滚事务
+            $this->rollback();
+            return array(
+                'status' => 0,
+                'result' => '取消成功'
+            );
+        }
+    }
+
+    /**
      * 获取订单列表（API）
      *
      * @param int $user_id
@@ -452,6 +507,11 @@ class OrderModel extends Model {
         }
         $courier && $where['o.courier_id'] = $courier;
         empty($keyword) || $where['order_number'] = $keyword;
+        if ($order == 'community') {
+            $order = "a." . $order;
+        } else {
+            $order = "o." . $order;
+        }
         return $this->table($this->getTableName() . " AS o ")->field(array(
             'o.order_id',
             'o.user_id',
@@ -471,6 +531,7 @@ class OrderModel extends Model {
             'a.province',
             'a.city',
             'a.district',
+            'a.community',
             'a.address',
             'a._consignee',
             'a._phone',
@@ -480,7 +541,7 @@ class OrderModel extends Model {
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id ",
             " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id ",
             " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id "
-        ))->where($where)->order("o." . $order . " " . $sort)->limit($offset, $pageSize)->select();
+        ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 
     /**
