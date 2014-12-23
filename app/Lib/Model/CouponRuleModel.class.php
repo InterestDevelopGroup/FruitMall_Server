@@ -10,7 +10,7 @@
 class CouponRuleModel extends Model {
 
     /**
-     * 获取水果劵规则列表（API）
+     * 获取水果券规则列表（API）
      *
      * @param int $offset
      *            偏移量

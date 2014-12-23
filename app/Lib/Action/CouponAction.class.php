@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 水果劵Action
+ * 水果券Action
  *
  * @author Zonkee
  * @version 1.0.0

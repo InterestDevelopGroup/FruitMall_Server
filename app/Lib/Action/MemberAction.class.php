@@ -10,7 +10,7 @@
 class MemberAction extends AdminAction {
 
     /**
-     * 送水果劵
+     * 送水果券
      */
     public function add_coupon() {
         if ($this->isAjax()) {

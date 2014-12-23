@@ -128,7 +128,7 @@ $app_config = array(
             )
         ),
         'Coupon' => array(
-            'text' => '水果劵',
+            'text' => '水果券',
             'default' => 'index',
             'children' => array(
                 'index' => array(
@@ -370,7 +370,7 @@ $app_config = array(
             'delete' => '删除会员',
             'addblacklist' => '拉入黑名单',
             'deleteblacklist' => '移出黑名单',
-            'add_coupon' => '送水果劵',
+            'add_coupon' => '送水果券',
             'remark' => '用户备注',
             'update_realname_sex' => '修改用户真实姓名和性别'
         ),
@@ -433,7 +433,7 @@ $app_config = array(
             'update' => '更新分店'
         ),
         'coupon' => array(
-            'coupon' => '水果劵',
+            'coupon' => '水果券',
             'rule' => '获取规则',
             'add_rule' => '添加获取规则',
             'delete_rule' => '删除获取规则',

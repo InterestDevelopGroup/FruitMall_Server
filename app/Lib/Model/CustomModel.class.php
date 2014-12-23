@@ -59,7 +59,8 @@ class CustomModel extends Model {
     public function addCustom($user_id, $name, $goods_list) {
         if ($this->where(array(
             'user_id' => $user_id,
-            'name' => $name
+            'name' => $name,
+            'is_delete' => 0
         ))->count()) {
             return array(
                 'status' => 0,

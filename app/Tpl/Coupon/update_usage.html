@@ -31,13 +31,13 @@ $(function() {
         ckDescription();
     });
     $("#condition").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '必须消费满该条件才能使用水果劵，必须为正整数');
+        addTip($(this).parent('td').next('td:last'), '必须消费满该条件才能使用水果券，必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckCondition();
     });
     $("#score").focus(function() {
-        addTip($(this).parent('td').next('td:last'), '允许使用水果劵的面值，必须为正整数');
+        addTip($(this).parent('td').next('td:last'), '允许使用水果券的面值，必须为正整数');
     }).blur(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckScore();

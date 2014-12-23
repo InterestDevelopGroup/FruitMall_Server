@@ -156,7 +156,7 @@ class ApiAction extends Action {
     }
 
     /**
-     * 可用的水果劵
+     * 可用的水果券
      */
     public function available_coupon() {
         if ($this->isPost() || $this->isAjax()) {
@@ -258,7 +258,7 @@ class ApiAction extends Action {
     }
 
     /**
-     * 水果劵
+     * 水果券
      */
     public function coupon() {
         if ($this->isPost() || $this->isAjax()) {
@@ -292,7 +292,7 @@ class ApiAction extends Action {
     }
 
     /**
-     * 获取水果劵规则
+     * 获取水果券规则
      */
     public function coupon_rule() {
         if ($this->isPost() || $this->isAjax()) {
@@ -509,7 +509,7 @@ class ApiAction extends Action {
     }
 
     /**
-     * 判断是否可用水果劵
+     * 判断是否可用水果券
      */
     public function is_available() {
         if ($this->isPost() || $this->isAjax()) {

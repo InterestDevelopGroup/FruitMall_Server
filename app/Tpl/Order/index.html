@@ -53,7 +53,7 @@ $(function(){
             },
             {display: "送货费", name: 'shipping_fee', align: 'center', width: '6%'},
             {display: "订单金额", name: 'total_amount', align: 'center', width: '6%'},
-            {display: "水果劵", name: 'coupon', align: 'center', width: '6%', render:function(rowdata, rowindex, value) {
+            {display: "水果券", name: 'coupon', align: 'center', width: '6%', render:function(rowdata, rowindex, value) {
                     return value ? parseFloat(value).toFixed(2) : '暂无';
                 }
             },
@@ -97,7 +97,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>送货时间：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.shipping_time ? record.shipping_time : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>送货费：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.shipping_fee + "</td></tr>");
 	out.push("<tr><td width='20%' align='right'>订单总金额：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.total_amount + "</td></tr>");
-	out.push("<tr><td width='20%' align='right'>水果劵：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.coupon ? parseFloat(record.coupon).toFixed(2) : '暂无') + "</td></tr>");
+	out.push("<tr><td width='20%' align='right'>水果券：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.coupon ? parseFloat(record.coupon).toFixed(2) : '暂无') + "</td></tr>");
 	out.push("<tr><td width='20%' align='right'>送货员：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.courier ? record.courier : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>订单状态：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;待确定</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/省：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.province + "</td></tr>");
@@ -349,7 +349,7 @@ function print_order() {
                             total_amount += custom_list[i].amount * custom_list[i].price;
                         }
                     }
-                    stuff += '<tr><td>总价：'+parseFloat(total_amount).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果劵抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
+                    stuff += '<tr><td>总价：'+parseFloat(total_amount).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
                     stuff += '</table>';
                     str += stuff;
                 }

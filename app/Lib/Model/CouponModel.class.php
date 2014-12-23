@@ -10,7 +10,7 @@
 class CouponModel extends Model {
 
     /**
-     * 获取水果劵列表（API）
+     * 获取水果券列表（API）
      *
      * @param int $user_id
      *            用户ID
@@ -28,12 +28,12 @@ class CouponModel extends Model {
     }
 
     /**
-     * 添加水果劵
+     * 添加水果券
      *
      * @param int $user_id
      *            用户ID
      * @param int $rule_type
-     *            水果劵规则（1：注册，2：推荐，3：满X送N，4：手动赠送）
+     *            水果券规则（1：注册，2：推荐，3：满X送N，4：手动赠送）
      * @param int|null $score
      *            面值
      * @param int|null $expire_time
@@ -82,12 +82,12 @@ class CouponModel extends Model {
     }
 
     /**
-     * 给指定用户赠送水果劵
+     * 给指定用户赠送水果券
      *
      * @param array $user_id
      *            指定的用户ID
      * @param int $score
-     *            水果劵面值
+     *            水果券面值
      * @param string $expire
      *            过期时间（传空为永久有效）
      * @return array
@@ -118,7 +118,7 @@ class CouponModel extends Model {
     }
 
     /**
-     * 获取可用的水果劵列表
+     * 获取可用的水果券列表
      *
      * @param int $user_id
      *            用户ID
@@ -154,10 +154,10 @@ class CouponModel extends Model {
     }
 
     /**
-     * 检测是否可用水果劵
+     * 检测是否可用水果券
      *
      * @param int $user_id
-     *            水果劵
+     *            水果券
      * @param float $total_amount
      *            总金额
      * @return array
@@ -169,7 +169,7 @@ class CouponModel extends Model {
         ))->count()) {
             return array(
                 'status' => 0,
-                'result' => '没有可用水果劵'
+                'result' => '没有可用代金券'
             );
         }
         $result = M('CouponUsage')->where(array(
@@ -181,21 +181,21 @@ class CouponModel extends Model {
         if ($result) {
             return array(
                 'status' => 1,
-                'result' => "代金劵可抵扣{$result['score']}元"
+                'result' => "代金券可抵扣{$result['score']}元"
             );
         } else {
             return array(
                 'status' => 0,
-                'result' => '不可使用水果劵'
+                'result' => '不可使用代金券'
             );
         }
     }
 
     /**
-     * 使用水果劵
+     * 使用水果券
      *
      * @param int $coupon_id
-     *            水果劵ID
+     *            水果券ID
      * @param float $total_amount
      *            订单总金额
      * @return array
@@ -204,18 +204,18 @@ class CouponModel extends Model {
         $coupon = $this->where(array(
             'id' => $coupon_id
         ))->find();
-        // 不存在水果劵
+        // 不存在水果券
         if (!$coupon) {
             return array(
                 'status' => 0,
-                'result' => '水果劵不存在'
+                'result' => '水果券不存在'
             );
         }
-        // 水果劵已经过期
+        // 水果券已经过期
         if ($coupon['expire_time'] && $coupon['expire_time'] < time()) {
             return array(
                 'status' => 0,
-                'result' => '水果劵已经过期'
+                'result' => '水果券已经过期'
             );
         }
         // 获取使用规则
@@ -229,7 +229,7 @@ class CouponModel extends Model {
             )
         ))->order("_condition DESC")->find();
         if ($usage['score'] >= $coupon['score']) {
-            // 允许使用面值>=水果劵面值，删除水果劵
+            // 允许使用面值>=水果券面值，删除水果券
             if ($this->where(array(
                 'id' => $coupon['id']
             ))->delete()) {
@@ -240,11 +240,11 @@ class CouponModel extends Model {
             } else {
                 return array(
                     'status' => 0,
-                    'result' => '使用水果劵失败'
+                    'result' => '使用水果券失败'
                 );
             }
         } else {
-            // 允许使用面值<水果劵面值，更新水果劵面值
+            // 允许使用面值<水果券面值，更新水果券面值
             if ($this->where(array(
                 'id' => $coupon['id']
             ))->save(array(
@@ -257,7 +257,7 @@ class CouponModel extends Model {
             } else {
                 return array(
                     'status' => 0,
-                    'result' => '使用水果劵失败'
+                    'result' => '使用水果券失败'
                 );
             }
         }

@@ -255,7 +255,7 @@ function delBlacklist() {
     });
 }
 
-//送水果劵
+//送水果券
 var addCouponDialog;
 function addCoupon() {
     var data = getCheckedData('id');
@@ -265,13 +265,13 @@ function addCoupon() {
     }
     addCouponDialog = $.ligerDialog.open({
         url: '<{:U("member/add_coupon")}>?id='+data, height: 400, width: 600,
-        isDrag: false, title: '送水果劵',
+        isDrag: false, title: '送水果券',
         buttons: [{text: '确定', onclick: function(item, dialog) {addCouponDialog.frame.addCouponFormSubmit();}},
                   {text: '取消', onclick: function(item, dialog) {dialog.close()}}]
     });
 }
 
-//送水果劵回调
+//送水果券回调
 function addCouponCallback(obj) {
     addCouponDialog.close();
     if (obj.status) {
