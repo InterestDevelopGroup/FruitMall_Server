@@ -9,6 +9,37 @@
  */
 class OrderCustomModel extends Model {
 
+    public function addOrderCustom($order_id, $custom_id, $amount) {
+        $data = array(
+            'order_id' => $order_id,
+            'order_quantity' => $amount,
+            'custom_id' => $custom_id
+        );
+        $data = array_merge($data, M('Custom')->field(array(
+            'custom_id',
+            'name'
+        ))->where(array(
+            'custom_id' => $custom_id
+        ))->find());
+        // 开启事务
+        $this->startTrans();
+        if ($this->add($data)) {
+            if (D('OrderCustomGoods')->addOrderCustomGoods($order_id, $custom_id)) {
+                // 提交事务
+                $this->commit();
+                return true;
+            } else {
+                // 回滚事务
+                $this->rollback();
+                return false;
+            }
+        } else {
+            // 回滚事务
+            $this->rollback();
+            return false;
+        }
+    }
+
     /**
      * 删除订单定制
      *
