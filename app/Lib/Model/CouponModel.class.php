@@ -172,15 +172,16 @@ class CouponModel extends Model {
                 'result' => '没有可用水果劵'
             );
         }
-        if (M('CouponUsage')->where(array(
+        $result = M('CouponUsage')->where(array(
             'condition' => array(
                 'elt',
                 $total_amount
             )
-        ))->count()) {
+        ))->order("score DESC")->find();
+        if ($result) {
             return array(
                 'status' => 1,
-                'result' => '可以使用水果劵'
+                'result' => "代金劵可抵扣{$result['score']}元"
             );
         } else {
             return array(
