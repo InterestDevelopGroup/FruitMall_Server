@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-22 13:47:29
+Date: 2014-12-23 14:23:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,7 +35,7 @@ CREATE TABLE `fruit_address` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='地址表';
 
 -- ----------------------------
 -- Records of fruit_address
@@ -43,6 +43,7 @@ CREATE TABLE `fruit_address` (
 INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '0', '1415789535', '1416883529');
 INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '0', '1415790242', null);
 INSERT INTO `fruit_address` VALUES ('6', '1', '张三', '13610004889', '山东省', '潍坊市', '某区', '某小区', '山东省潍坊市某区某小区120号', null, null, '0', '1418875171', null);
+INSERT INTO `fruit_address` VALUES ('7', '8', '帅哥', '13437563074', '广东省', '广州市', '越秀区', '某小区', '测试地址', null, null, '0', '1419305877', null);
 
 -- ----------------------------
 -- Table structure for `fruit_admin_priv`
@@ -84,7 +85,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1418968902', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1419302393', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1418971494', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1417597300', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
@@ -368,12 +369,13 @@ CREATE TABLE `fruit_default_address` (
   `address_id` int(11) NOT NULL COMMENT '地址ID',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='默认地址表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='默认地址表';
 
 -- ----------------------------
 -- Records of fruit_default_address
 -- ----------------------------
 INSERT INTO `fruit_default_address` VALUES ('1', '1', '4', '1415845607');
+INSERT INTO `fruit_default_address` VALUES ('2', '8', '7', '1419305965');
 
 -- ----------------------------
 -- Table structure for `fruit_feedback`
@@ -434,7 +436,7 @@ CREATE TABLE `fruit_goods` (
 -- Records of fruit_goods
 -- ----------------------------
 INSERT INTO `fruit_goods` VALUES ('1', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '1', '元/斤', '元/斤', '1', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '13', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '0', '<p>測試商品1</p>', '1415615863', '1418614208');
-INSERT INTO `fruit_goods` VALUES ('2', '1', '1', '測試商品2', '12.00', '42.00', '0.00', '1', '元/斤', '元/斤', null, '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '21', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '0', '<p>測試商品2</p>', '1415615924', '1418457770');
+INSERT INTO `fruit_goods` VALUES ('2', '1', '1', '測試商品2', '12.00', '42.00', '0.00', '1', '元/斤', '元/斤', '2', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '21', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '0', '<p>測試商品2</p>', '1415615924', '1418457770');
 INSERT INTO `fruit_goods` VALUES ('3', '1', '1', '測試商品3', '1.00', '2.00', '0.00', '1', '元/斤', '', '1', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '0', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '1', '<p>測試商品3</p>', '1415859221', '1415859538');
 INSERT INTO `fruit_goods` VALUES ('4', '1', '1', '測試商品4', '12.00', '29.00', '0.00', '1', '元/斤', '', '1', '12', '200', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '0', '/uploads/2014/11/13/9c0b367ab7be91a64ab3eedb3db9569372a7f14b.jpg', '/uploads/2014/11/13/9feef9d4e6b4da9c282129e2bb4a6608964324b9.jpg', '/uploads/2014/11/13/44a3ba953a5ae2e230a4340762eab757aae6d5df.jpg', '/uploads/2014/11/13/9f11b7a0433dd4aa9ac0312668c26cfd5d1197af.jpg', '/uploads/2014/11/13/f3edeefa2ca2509bc74fee5fe11884e8b5e3a34d.jpg', '1', '<p>測試商品4</p>', '1415859581', null);
 INSERT INTO `fruit_goods` VALUES ('5', '1', '2', '测试商品5', '50.00', '60.00', '20.00', '1', '元/斤', '元/斤', '1', '20', '400', '/uploads/2014/12/13/5720a00408371ad16fbcac8a3f0670ff36d806ed.png', '10', '/uploads/2014/12/13/a92f7bcc0489e51f85552be72b43d4090aaea92a.jpg', '/uploads/2014/12/13/1df38f575ff2609a50065076c0df734324f63240.jpg', '/uploads/2014/12/13/5b8a283638c295a79cf46b7bb08d294067377be0.jpg', '/uploads/2014/12/13/017e76222d2a3e96f8ced63f8c6e47184abf5264.jpg', '/uploads/2014/12/13/93f65eb76fc80900f8c56f8f4b54bb82a3bae62a.jpg', '0', '<p>测试商品5</p>', '1418457079', '1418614163');

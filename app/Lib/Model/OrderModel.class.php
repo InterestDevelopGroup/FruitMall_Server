@@ -273,10 +273,16 @@ class OrderModel extends Model {
      * 获取订单数量
      *
      * @param string $keyword
-     *            关键字
+     *            查询关键字
+     * @param int $courier
+     *            送货员ID
+     * @param int $type
+     *            订单类型（1：历史订单，2：新订单，3：已取消的订单）
+     * @param int $status
+     *            订单状态
      * @return int
      */
-    public function getOrderCount($keyword, $type, $status = 0) {
+    public function getOrderCount($keyword, $courier, $type, $status = 0) {
         if ($status) {
             $where = array(
                 'status' => $status
@@ -306,8 +312,9 @@ class OrderModel extends Model {
                 );
             }
         }
+        $courier && $where['courier_id'] = $courier;
         empty($keyword) || $where['order_number'] = $keyword;
-        return (int) $this->where($where)->select();
+        return (int) $this->where($where)->count();
     }
 
     /**
@@ -404,9 +411,15 @@ class OrderModel extends Model {
      * @param string $sort
      *            排序方式
      * @param string $keyword
-     *            关键字
+     *            查询关键字
+     * @param int $courier
+     *            送货员ID
+     * @param int $type
+     *            订单类型（1：历史订单，2：新订单，3：已取消的订单）
+     * @param int $status
+     *            订单状态
      */
-    public function getOrderList($page, $pageSize, $order, $sort, $keyword, $type, $status = 0) {
+    public function getOrderList($page, $pageSize, $order, $sort, $keyword, $courier, $type, $status = 0) {
         $offset = ($page - 1) * $pageSize;
         if ($status) {
             $where = array(
@@ -437,6 +450,7 @@ class OrderModel extends Model {
                 );
             }
         }
+        $courier && $where['o.courier_id'] = $courier;
         empty($keyword) || $where['order_number'] = $keyword;
         return $this->table($this->getTableName() . " AS o ")->field(array(
             'o.order_id',
@@ -446,6 +460,8 @@ class OrderModel extends Model {
             'o.status',
             'o.shipping_time',
             'o.shipping_fee',
+            'o.total_amount',
+            'o.coupon',
             'o.remark',
             'o.add_time',
             'o.update_time',
@@ -484,6 +500,9 @@ class OrderModel extends Model {
             )
         ))->field(array(
             'o.order_id',
+            'o.coupon',
+            'o.shipping_fee',
+            'o.total_amount',
             'a.consignee',
             'a.phone',
             'a.address'

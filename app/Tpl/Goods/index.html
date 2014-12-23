@@ -23,6 +23,12 @@
                     <option value="<{$val['id']}>" <if condition="$c_cate_id eq $val['id']">selected</if>><{$val['name']}></option>
                     </volist>
                 </select>&nbsp;&nbsp;
+                标签：<select name="tag">
+                    <option value="0">--请选择--</option>
+                    <volist name="tagList" id="val">
+                    <option value="<{$val['id']}>" <if condition="$tag eq $val['id']">selected</if>><{$val['text']}></option>
+                    </volist>
+                </select>&nbsp;&nbsp;
                 状态：<select name="status">
                     <option value="-1" <if condition="$status eq -1">selected</if>>全部</option>
                     <option value="0" <if condition="$status eq 0">selected</if>>下架</option>
@@ -43,11 +49,11 @@
 <script type="text/javascript">
 //<![CDATA[
 var grid;
-var tag_data = <{$tag}>;
+var tag_data = <{$tagData}>;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "商品名称", name: 'name', align: 'center', width: '12%', isSort: false},
+            {display: "商品名称", name: 'name', align: 'center', width: '24%', isSort: false},
             {display: "大分类", name: 'parent_category', align: 'center', width: '10%', isSort: false},
             {display: "小分类", name: 'child_category', align: 'center', width: '10%', isSort: false},
             {display: "标签", name: 'tag_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
@@ -97,7 +103,7 @@ $(function(){
                 }
             }
             ],
-            url: '<{:U("goods/index")}>?keyword=<{$keyword}>&p_cate_id=<{$p_cate_id}>&c_cate_id=<{$c_cate_id}>&status=<{$status}>',
+            url: '<{:U("goods/index")}>?keyword=<{$keyword}>&p_cate_id=<{$p_cate_id}>&c_cate_id=<{$c_cate_id}>&tag=<{$tag}>&status=<{$status}>',
             dataAction: 'server',
             method: 'get',
             width: '100%',
@@ -126,7 +132,6 @@ function f_onBeforeSubmitEdit(e) {
         }
     }, 'json');
 }
-
 
 //商品明细
 function f_onShowDetail(record, container, callback) {

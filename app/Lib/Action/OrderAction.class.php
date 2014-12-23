@@ -14,19 +14,20 @@ class OrderAction extends AdminAction {
      */
     public function cancels() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $courier = isset($_GET['courier']) ? intval($_GET['courier']) : 0;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $orderModel = D('Order');
-            $total = $orderModel->getOrderCount($keyword, 3);
+            $total = $orderModel->getOrderCount($keyword, $courier, 3);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 3));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, $courier, 3));
             } else {
                 $rows = null;
             }
@@ -36,6 +37,8 @@ class OrderAction extends AdminAction {
             ));
         } else {
             $this->assign('keyword', $keyword);
+            $this->assign('courier', $courier);
+            $this->assign('courier_list', M('Courier')->select());
             $this->display();
         }
     }
@@ -112,19 +115,20 @@ class OrderAction extends AdminAction {
     public function history() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         $status = isset($_GET['status']) ? intval($_GET['status']) : 0;
+        $courier = isset($_GET['courier']) ? intval($_GET['courier']) : 0;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $orderModel = D('Order');
-            $total = $orderModel->getOrderCount($keyword, 1, $status);
+            $total = $orderModel->getOrderCount($keyword, $courier, 1, $status);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 1, $status));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, $courier, 1, $status));
             } else {
                 $rows = null;
             }
@@ -135,6 +139,8 @@ class OrderAction extends AdminAction {
         } else {
             $this->assign('keyword', $keyword);
             $this->assign('status', $status);
+            $this->assign('courier', $courier);
+            $this->assign('courier_list', M('Courier')->select());
             $this->display();
         }
     }
@@ -144,19 +150,20 @@ class OrderAction extends AdminAction {
      */
     public function index() {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $courier = isset($_GET['courier']) ? intval($_GET['courier']) : 0;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
             $pageSize = isset($_GET['pagesize']) ? $_GET['pagesize'] : 20;
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'order_id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $orderModel = D('Order');
-            $total = $orderModel->getOrderCount($keyword, 2);
+            $total = $orderModel->getOrderCount($keyword, $courier, 2);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     return $v;
-                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, 2));
+                }, $orderModel->getOrderList($page, $pageSize, $order, $sort, $keyword, $courier, 2));
             } else {
                 $rows = null;
             }
@@ -166,6 +173,8 @@ class OrderAction extends AdminAction {
             ));
         } else {
             $this->assign('keyword', $keyword);
+            $this->assign('courier', $courier);
+            $this->assign('courier_list', M('Courier')->select());
             $this->display();
         }
     }

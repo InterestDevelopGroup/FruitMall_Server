@@ -197,7 +197,7 @@ class GoodsModel extends Model {
      *            状态
      * @return int
      */
-    public function getGoodsCount($keyword, $p_cate_id, $c_cate_id, $status) {
+    public function getGoodsCount($keyword, $p_cate_id, $c_cate_id, $tag, $status) {
         $where = array(
             'is_delete' => 0
         );
@@ -207,9 +207,11 @@ class GoodsModel extends Model {
         );
         $p_cate_id && $where['p_cate_id'] = $p_cate_id;
         $c_cate_id && $where['c_cate_id'] = $c_cate_id;
+        $tag && $where['tag'] = $tag;
         if ($status != -1) {
             $where['status'] = $status;
         }
+        $this->where($where)->count();
         return (int) $this->where($where)->count();
     }
 
@@ -233,7 +235,7 @@ class GoodsModel extends Model {
      * @param int $status
      *            状态
      */
-    public function getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $status) {
+    public function getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $tag, $status) {
         $offset = ($page - 1) * $pageSize;
         $where = array(
             'g.is_delete' => 0
@@ -244,6 +246,7 @@ class GoodsModel extends Model {
         );
         $p_cate_id && $where['g.p_cate_id'] = $p_cate_id;
         $c_cate_id && $where['g.c_cate_id'] = $c_cate_id;
+        $tag && $where['g.tag'] = $tag;
         if ($status != -1) {
             $where['g.status'] = $status;
         }

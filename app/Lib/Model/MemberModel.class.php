@@ -166,7 +166,7 @@ class MemberModel extends Model {
             "like",
             "%{$keyword}%"
         );
-        return $this->table($this->getTableName() . " AS m ")->field(array(
+        $result = $this->table($this->getTableName() . " AS m ")->field(array(
             'm.id',
             'm.phone',
             'm.username',
@@ -182,6 +182,15 @@ class MemberModel extends Model {
         ))->join(array(
             " LEFT JOIN " . M('Blacklist')->getTableName() . " AS b ON m.id = b.user_id "
         ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        foreach ($result as &$v) {
+            if (!$v['real_name']) {
+                $consignee = M('DefaultAddress')->table(M('DefaultAddress')->getTableName() . " AS da ")->join(array(
+                    " LEFT JOIN " . M('Address')->getTableName() . " AS a ON a.address_id = da.address_id "
+                ))->field(array('a.consignee'))->where(array('da.user_id' => $v['id']))->find();
+                $v['real_name'] = $consignee['consignee'];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -412,7 +421,9 @@ class MemberModel extends Model {
             );
         }
         // 修改前后没有变化
-        $where = array_merge($data, array('id' => $id));
+        $where = array_merge($data, array(
+            'id' => $id
+        ));
         if ($this->where($where)->count()) {
             return array(
                 'status' => 1,

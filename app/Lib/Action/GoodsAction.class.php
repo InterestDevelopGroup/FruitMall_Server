@@ -118,6 +118,7 @@ class GoodsAction extends AdminAction {
         $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
         $p_cate_id = isset($_GET['p_cate_id']) ? intval($_GET['p_cate_id']) : 0;
         $c_cate_id = isset($_GET['c_cate_id']) ? intval($_GET['c_cate_id']) : 0;
+        $tag = isset($_GET['tag']) ? intval($_GET['tag']) : 0;
         $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
         if ($this->isAjax()) {
             $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -125,14 +126,14 @@ class GoodsAction extends AdminAction {
             $order = isset($_GET['sortname']) ? $_GET['sortname'] : 'id';
             $sort = isset($_GET['sortorder']) ? $_GET['sortorder'] : 'ASC';
             $goods = D('Goods');
-            $total = $goods->getGoodsCount($keyword, $p_cate_id, $c_cate_id, $status);
+            $total = $goods->getGoodsCount($keyword, $p_cate_id, $c_cate_id, $tag, $status);
             if ($total) {
                 $rows = array_map(function ($v) {
                     $v['add_time'] = date("Y-m-d H:i:s", $v['add_time']);
                     $v['update_time'] = $v['update_time'] ? date("Y-m-d H:i:s", $v['update_time']) : $v['update_time'];
                     $v['description'] = strip_tags($v['description']);
                     return $v;
-                }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $status));
+                }, $goods->getGoodsList($page, $pageSize, $order, $sort, $keyword, $p_cate_id, $c_cate_id, $tag, $status));
             } else {
                 $rows = null;
             }
@@ -144,18 +145,20 @@ class GoodsAction extends AdminAction {
             $this->assign('keyword', $keyword);
             $this->assign('p_cate_id', $p_cate_id);
             $this->assign('c_cate_id', $c_cate_id);
+            $this->assign('tag', $tag);
             $this->assign('status', $status);
             $this->assign('parentCategory', M('ParentCategory')->select());
             $this->assign('childCategory', M('ChildCategory')->select());
-            $tag = M('Tag')->field(array(
+            $tagList = M('Tag')->field(array(
                 'id',
                 'name' => 'text'
             ))->select();
-            array_unshift($tag, array(
+            $this->assign('tagList', $tagList);
+            array_unshift($tagList, array(
                 'id' => 0,
                 'text' => '暂无'
             ));
-            $this->assign('tag', json_encode($tag));
+            $this->assign('tagData', json_encode($tagList));
             $this->display();
         }
     }
