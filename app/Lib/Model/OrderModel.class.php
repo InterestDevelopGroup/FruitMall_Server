@@ -355,7 +355,8 @@ class OrderModel extends Model {
             'order_id' => $order_id
         ))->field(array(
             '*',
-            'order_quantity' => 'quantity'
+            'order_quantity' => 'quantity',
+            'order_price' => 'price'
         ))->select();
         // $order_goods = M('OrderGoods')->table(M('OrderGoods')->getTableName() . " AS og ")->field(array(
         // 'og.goods_id',
