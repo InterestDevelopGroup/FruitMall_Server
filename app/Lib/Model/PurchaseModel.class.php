@@ -17,40 +17,35 @@ class PurchaseModel extends Model {
         $add_time = $orders['add_time'] ? $orders['add_time'] : 0;
         $now = time();
         $sql = "SELECT
-                    goods_id, amount AS quantity, o.order_id, o.branch_id,
-                    o.add_time AS order_time, {$now} AS add_time
+                    og.goods_id, og.order_quantity AS quantity, og.order_id,
+                    o.branch_id, o.add_time AS order_time, {$now} AS add_time
                 FROM
                     fruit_order_goods AS og
-                LEFT JOIN
-                    fruit_order AS o ON o.order_id = og.order_id
+                LEFT JOIN fruit_order AS o ON o.order_id = og.order_id
                 WHERE
                     o.status = 2 AND
                     o.update_time > {$add_time}
                 UNION ALL
                 SELECT
-                    pg.goods_id, (op.amount * pg.amount) AS quantity, o.order_id,
-                    o.branch_id, o.add_time AS order_time, {$now} AS add_time
+                    opg.goods_id, (og.order_quantity * opg.goods_quantity) AS quantity,
+                    o.order_id, o.branch_id, o.add_time AS order_time, {$now} AS add_time
                 FROM
-                    fruit_order_package AS op
-                LEFT JOIN
-                    fruit_order AS o ON o.order_id = op.order_id
-                LEFT JOIN
-                    fruit_package_goods AS pg ON pg.package_id = op.package_id
+                    fruit_order_package AS og
+                LEFT JOIN fruit_order AS o ON o.order_id = og.order_id
+                LEFT JOIN fruit_order_package_goods AS opg ON og.order_id = opg.order_id
                 WHERE
                     o.status = 2 AND
                     o.update_time > {$add_time}
                 UNION ALL
                 SELECT
-                    cg.goods_id, (cg.quantity * oc.amount) AS quantity, o.order_id,
-                    o.branch_id, o.add_time AS order_time, {$now} AS add_time
+                    ocg.goods_id, (oc.order_quantity * ocg.goods_quantity) AS quantity,
+                    o.order_id, o.branch_id, o.add_time AS order_time, {$now} AS add_time
                 FROM
                     fruit_order_custom AS oc
-                LEFT JOIN
-                    fruit_order AS o ON o.order_id = oc.order_id
-                LEFT JOIN
-                    fruit_custom_goods AS cg ON cg.custom_id = oc.custom_id
+                LEFT JOIN fruit_order AS o ON o.order_id = oc.order_id
+                LEFT JOIN fruit_order_custom_goods AS ocg ON oc.order_id = ocg.order_id
                 WHERE
-                    o.status = 2 AND
+                    o. status = 2 AND
                     o.update_time > {$add_time}";
         $result = $this->query($sql);
         foreach ($result as $k => &$v) {
@@ -72,7 +67,7 @@ class PurchaseModel extends Model {
         }
         if ($result) {
             $log = json_encode(array(
-                'last_update_time' => $add_time,
+                'last_update_time' => date("Y-m-d H:i:s", $add_time),
                 'amount' => count($result)
             ));
             if ($this->addAll($result)) {

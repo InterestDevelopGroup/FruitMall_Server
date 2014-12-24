@@ -9,6 +9,15 @@
  */
 class OrderCustomGoodsModel extends Model {
 
+    /**
+     * 添加订单定制商品
+     *
+     * @param int $order_id
+     *            订单ID
+     * @param int $custom_id
+     *            定制ID
+     * @return boolean
+     */
     public function addOrderCustomGoods($order_id, $custom_id) {
         $dataList = M('CustomGoods')->table(M('CustomGoods')->getTableName() . " AS cg ")->join(array(
             " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = cg.goods_id ",
@@ -42,34 +51,6 @@ class OrderCustomGoodsModel extends Model {
             'cg.custom_id' => $custom_id
         ))->select();
         if ($this->addAll($dataList)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 删除订单套餐
-     *
-     * @param array $order_id
-     *            订单ID
-     * @return boolean
-     */
-    public function deleteOrderPackage(array $order_id) {
-        if (!$this->where(array(
-            'order_id' => array(
-                'in',
-                $order_id
-            )
-        ))->count()) {
-            return true;
-        }
-        if ($this->where(array(
-            'order_id' => array(
-                'in',
-                $order_id
-            )
-        ))->delete()) {
             return true;
         } else {
             return false;

@@ -121,7 +121,7 @@ class OrderModel extends Model {
             'a._consignee',
             'a._phone'
         ))->join(array(
-            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id "
+            " LEFT JOIN " . M('OrderAddress')->getTableName() . " AS a ON o.order_id = a.order_id "
         ))->where($where)->order("o.add_time DESC")->limit($offset, $pagesize)->select();
         foreach ($order_list as &$v) {
             $v = array_merge($v, $this->getOrderDetail($v['order_id']));
@@ -175,6 +175,14 @@ class OrderModel extends Model {
             'add_time' => time()
         ))) {
             $order_id = $this->getLastInsID();
+            if (!D('OrderAddress')->addOrderAddress($order_id, $address_id)) {
+                // 添加失败，回滚事务
+                $this->rollback();
+                return array(
+                    'status' => 0,
+                    'result' => '未知错误'
+                );
+            }
             $order = json_decode($order, true);
             foreach ($order as $v) {
                 if ($v['goods_id']) {
@@ -517,7 +525,7 @@ class OrderModel extends Model {
             "(SELECT COUNT(1) FROM " . M('Blacklist')->getTableName() . " WHERE user_id = o.user_id)" => 'is_blacklist'
         ))->join(array(
             " LEFT JOIN " . M('Member')->getTableName() . " AS m ON o.user_id = m.id ",
-            " LEFT JOIN " . M('Address')->getTableName() . " AS a ON o.address_id = a.address_id ",
+            " LEFT JOIN " . M('OrderAddress')->getTableName() . " AS a ON o.order_id = a.order_id ",
             " LEFT JOIN " . M('Courier')->getTableName() . " AS c ON o.courier_id = c.id "
         ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }

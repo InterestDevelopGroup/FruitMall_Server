@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2014-12-24 10:19:56
+Date: 2014-12-24 13:25:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,6 +28,8 @@ CREATE TABLE `fruit_address` (
   `city` varchar(50) NOT NULL COMMENT '城市',
   `district` varchar(50) DEFAULT NULL COMMENT '区',
   `community` varchar(255) DEFAULT NULL COMMENT '小区',
+  `road_number` varchar(255) DEFAULT NULL COMMENT '路牌号',
+  `building` varchar(255) DEFAULT NULL COMMENT '栋、期、座',
   `address` varchar(255) NOT NULL COMMENT '详细地址',
   `_consignee` varchar(50) DEFAULT NULL COMMENT '备用收货人',
   `_phone` char(11) DEFAULT NULL COMMENT '备用收货人手机',
@@ -40,10 +42,10 @@ CREATE TABLE `fruit_address` (
 -- ----------------------------
 -- Records of fruit_address
 -- ----------------------------
-INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '0', '1415789535', '1416883529');
-INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '0', '1415790242', null);
-INSERT INTO `fruit_address` VALUES ('6', '1', '张三', '13610004889', '山东省', '潍坊市', '某区', '某小区', '山东省潍坊市某区某小区120号', null, null, '0', '1418875171', null);
-INSERT INTO `fruit_address` VALUES ('7', '8', '帅哥', '13437563074', '广东省', '广州市', '越秀区', '某小区', '测试地址', null, null, '0', '1419305877', null);
+INSERT INTO `fruit_address` VALUES ('4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001', '0', '1415789535', '1416883529');
+INSERT INTO `fruit_address` VALUES ('5', '1', '中国移动', '13800138000', '广东省', '广州市', '天河区', null, null, null, '广州市天河区中山大道羊城花园康苑八座401', '中国联通', '13800138001', '0', '1415790242', null);
+INSERT INTO `fruit_address` VALUES ('6', '1', '张三', '13610004889', '山东省', '潍坊市', '某区', '某小区', null, null, '山东省潍坊市某区某小区120号', null, null, '0', '1418875171', null);
+INSERT INTO `fruit_address` VALUES ('7', '8', '帅哥', '13437563074', '广东省', '广州市', '越秀区', '某小区', null, null, '测试地址', null, null, '0', '1419305877', null);
 
 -- ----------------------------
 -- Table structure for `fruit_admin_priv`
@@ -85,7 +87,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1419339323', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1419388269', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1418971494', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1417597300', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
@@ -496,7 +498,6 @@ CREATE TABLE `fruit_order` (
   `address_id` int(11) NOT NULL COMMENT '收获地址ID',
   `order_number` char(14) NOT NULL COMMENT '订单号',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收，5：取消，6：待退货，7：同意退货，8：不同意退货）',
-  `is_purchase` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否采购（0：否，1：是）',
   `shipping_time` char(11) DEFAULT NULL COMMENT '开始送货时间',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
@@ -508,12 +509,50 @@ CREATE TABLE `fruit_order` (
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`),
   KEY `us` (`user_id`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Records of fruit_order
 -- ----------------------------
-INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14122453100575', '1', '0', '12:00-18:00', '12.50', null, null, '412.50', '8', '3', '1419350997', '1419351038');
+INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14122410248511', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392079', '1419392804');
+INSERT INTO `fruit_order` VALUES ('2', '1', '4', '14122498545297', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392779', '1419392804');
+INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14122410148975', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392782', '1419392804');
+INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14122410298491', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392783', '1419392804');
+INSERT INTO `fruit_order` VALUES ('5', '1', '4', '14122449521029', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392785', '1419392804');
+INSERT INTO `fruit_order` VALUES ('6', '1', '4', '14122454515251', '2', '12:00-18:00', '12.50', 'this is a test', null, '388.50', '9', '4', '1419394102', '1419398288');
+
+-- ----------------------------
+-- Table structure for `fruit_order_address`
+-- ----------------------------
+DROP TABLE IF EXISTS `fruit_order_address`;
+CREATE TABLE `fruit_order_address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `order_id` int(11) NOT NULL COMMENT '订单ID',
+  `address_id` int(11) NOT NULL COMMENT '地址ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `consignee` varchar(30) NOT NULL COMMENT '收货人',
+  `phone` char(11) NOT NULL COMMENT '收货人手机',
+  `province` varchar(50) NOT NULL COMMENT '省份',
+  `city` varchar(50) NOT NULL COMMENT '城市',
+  `district` varchar(50) DEFAULT NULL COMMENT '区',
+  `community` varchar(255) DEFAULT NULL COMMENT '小区',
+  `road_number` varchar(255) DEFAULT NULL COMMENT '路牌号',
+  `building` varchar(255) DEFAULT NULL COMMENT '栋、期、座',
+  `address` varchar(255) NOT NULL COMMENT '详细地址',
+  `_consignee` varchar(50) DEFAULT NULL COMMENT '备用收货人',
+  `_phone` char(11) DEFAULT NULL COMMENT '备用收货人手机',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单地址表';
+
+-- ----------------------------
+-- Records of fruit_order_address
+-- ----------------------------
+INSERT INTO `fruit_order_address` VALUES ('1', '1', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
+INSERT INTO `fruit_order_address` VALUES ('2', '2', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
+INSERT INTO `fruit_order_address` VALUES ('3', '3', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
+INSERT INTO `fruit_order_address` VALUES ('4', '4', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
+INSERT INTO `fruit_order_address` VALUES ('5', '5', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
+INSERT INTO `fruit_order_address` VALUES ('6', '6', '4', '1', '中国电信', '13800000000', '广东省', '广州市', '天河区', '羊城花园', '12号', '8座1102', '广州市天河区中山大道羊城花园康苑八座402', '中国联通', '13800138001');
 
 -- ----------------------------
 -- Table structure for `fruit_order_custom`
@@ -523,15 +562,21 @@ CREATE TABLE `fruit_order_custom` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `order_id` int(11) NOT NULL COMMENT '订单ID',
   `order_quantity` int(11) NOT NULL COMMENT '订单数量',
+  `order_price` decimal(10,2) NOT NULL COMMENT '定制价格',
   `custom_id` int(11) NOT NULL COMMENT '定制ID',
   `name` varchar(255) NOT NULL COMMENT '定制名字',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单定制表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单定制表';
 
 -- ----------------------------
 -- Records of fruit_order_custom
 -- ----------------------------
-INSERT INTO `fruit_order_custom` VALUES ('1', '1', '1', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('1', '1', '1', '222.00', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('2', '2', '1', '222.00', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('3', '3', '1', '222.00', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('4', '4', '1', '222.00', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('5', '5', '1', '222.00', '1', '我的定制');
+INSERT INTO `fruit_order_custom` VALUES ('6', '6', '1', '222.00', '1', '我的定制');
 
 -- ----------------------------
 -- Table structure for `fruit_order_custom_goods`
@@ -562,7 +607,7 @@ CREATE TABLE `fruit_order_custom_goods` (
   `child_category` varchar(60) NOT NULL COMMENT '子分类名',
   `tag_name` varchar(60) NOT NULL COMMENT '标签名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='订单定制商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='订单定制商品表';
 
 -- ----------------------------
 -- Records of fruit_order_custom_goods
@@ -570,6 +615,21 @@ CREATE TABLE `fruit_order_custom_goods` (
 INSERT INTO `fruit_order_custom_goods` VALUES ('1', '1', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
 INSERT INTO `fruit_order_custom_goods` VALUES ('2', '1', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
 INSERT INTO `fruit_order_custom_goods` VALUES ('3', '1', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('4', '2', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('5', '2', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_custom_goods` VALUES ('6', '2', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('7', '3', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('8', '3', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_custom_goods` VALUES ('9', '3', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('10', '4', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('11', '4', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_custom_goods` VALUES ('12', '4', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('13', '5', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('14', '5', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_custom_goods` VALUES ('15', '5', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('16', '6', '1', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_custom_goods` VALUES ('17', '6', '1', '2', '8', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_custom_goods` VALUES ('18', '6', '1', '3', '6', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
 
 -- ----------------------------
 -- Table structure for `fruit_order_goods`
@@ -599,12 +659,17 @@ CREATE TABLE `fruit_order_goods` (
   `child_category` varchar(60) NOT NULL COMMENT '子分类名',
   `tag_name` varchar(60) NOT NULL COMMENT '标签名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单商品表';
 
 -- ----------------------------
 -- Records of fruit_order_goods
 -- ----------------------------
 INSERT INTO `fruit_order_goods` VALUES ('1', '1', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_goods` VALUES ('2', '2', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_goods` VALUES ('3', '3', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_goods` VALUES ('4', '4', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_goods` VALUES ('5', '5', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_goods` VALUES ('6', '6', '10', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
 
 -- ----------------------------
 -- Table structure for `fruit_order_package`
@@ -626,13 +691,17 @@ CREATE TABLE `fruit_order_package` (
   `image_5` varchar(255) DEFAULT NULL COMMENT '介绍图片5',
   `description` text COMMENT '套餐介绍',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单套餐表';
 
 -- ----------------------------
 -- Records of fruit_order_package
 -- ----------------------------
 INSERT INTO `fruit_order_package` VALUES ('1', '1', '1', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
-INSERT INTO `fruit_order_package` VALUES ('2', '1', '1', '20', '測試套餐2', '12.00', '20.00', '/uploads/2014/11/21/9b370b6be335abd01c70ba6f5c69e061f214c913.jpg', '/uploads/2014/11/21/3faeb831305b752a4660a6fc052dac4db1d1735d.jpg', '/uploads/2014/11/21/f5967c6e4bb31f97035754123106ba0b7bad9e12.jpg', '/uploads/2014/11/21/b80d84b413ecefff68b6803ecc6c2bc11130a09f.jpg', '/uploads/2014/11/21/200711d5b532929bec1c03889289eebf31080560.jpg', '/uploads/2014/11/21/c60415485dc372eb1957dc155bbbad334e36ab6b.jpg', '<p>這是一個測試套餐</p>');
+INSERT INTO `fruit_order_package` VALUES ('2', '2', '1', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
+INSERT INTO `fruit_order_package` VALUES ('3', '3', '1', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
+INSERT INTO `fruit_order_package` VALUES ('4', '4', '1', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
+INSERT INTO `fruit_order_package` VALUES ('5', '5', '1', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
+INSERT INTO `fruit_order_package` VALUES ('6', '6', '2', '19', '測試套餐1', '12.00', '34.00', '/uploads/2014/11/21/870de349e67ead4553db49dd7729d8598abced31.jpg', '/uploads/2014/11/21/adcb868fae32b61a3479dc7ffd7b1c7c055bc76d.jpg', '/uploads/2014/11/21/4171400fe53991515dae89ce9f39cbd61241c4f1.jpg', '/uploads/2014/11/21/e765a800564ea255922319757e0e0e0d7028e271.jpg', '/uploads/2014/11/21/bb7e7327487b7fd0691c7d157c7341c65bf83d4b.jpg', '/uploads/2014/11/21/b328144233ee466bdea4206f120498732687c871.jpg', '<p>這是套餐測試</p>');
 
 -- ----------------------------
 -- Table structure for `fruit_order_package_goods`
@@ -663,16 +732,23 @@ CREATE TABLE `fruit_order_package_goods` (
   `child_category` varchar(60) NOT NULL COMMENT '子分类名',
   `tag_name` varchar(60) NOT NULL COMMENT '标签名',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='订单套餐商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='订单套餐商品表';
 
 -- ----------------------------
 -- Records of fruit_order_package_goods
 -- ----------------------------
 INSERT INTO `fruit_order_package_goods` VALUES ('1', '1', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
 INSERT INTO `fruit_order_package_goods` VALUES ('2', '1', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
-INSERT INTO `fruit_order_package_goods` VALUES ('3', '1', '20', '3', '2', '測試商品3', '1.00', '2.00', '0.00', '元/斤', '', '12', '300', '/uploads/2014/11/13/79a6fd13d303a0177f83b2948be241f91a9c1777.jpg', '/uploads/2014/11/13/2c76012d0edf880afaf44601642a7b6b12402bc4.jpg', '/uploads/2014/11/13/113e25470882c86516b9b690987ad0c1e7ef1433.jpg', '/uploads/2014/11/13/2acd1f856170bc6d71fd39035b6a1a7ce5c9bde1.jpg', '/uploads/2014/11/13/a7f1dbfa61e4dfe6c60b592deb607254b57f9205.jpg', '/uploads/2014/11/13/559749228e2efce46cf08f042f01a21c70c65497.jpg', '<p>測試商品3</p>', '測試大分類1', '測試小分類1', '測試標籤1');
-INSERT INTO `fruit_order_package_goods` VALUES ('4', '1', '20', '4', '3', '測試商品4', '12.00', '29.00', '0.00', '元/斤', '', '12', '200', '/uploads/2014/11/13/913f61608dc1fe5ccfdd70db828ffe3dcbb921d5.jpg', '/uploads/2014/11/13/9c0b367ab7be91a64ab3eedb3db9569372a7f14b.jpg', '/uploads/2014/11/13/9feef9d4e6b4da9c282129e2bb4a6608964324b9.jpg', '/uploads/2014/11/13/44a3ba953a5ae2e230a4340762eab757aae6d5df.jpg', '/uploads/2014/11/13/9f11b7a0433dd4aa9ac0312668c26cfd5d1197af.jpg', '/uploads/2014/11/13/f3edeefa2ca2509bc74fee5fe11884e8b5e3a34d.jpg', '<p>測試商品4</p>', '測試大分類1', '測試小分類1', '測試標籤1');
-INSERT INTO `fruit_order_package_goods` VALUES ('5', '1', '20', '1', '10', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('3', '2', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('4', '2', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_package_goods` VALUES ('5', '3', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('6', '3', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_package_goods` VALUES ('7', '4', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('8', '4', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_package_goods` VALUES ('9', '5', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('10', '5', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
+INSERT INTO `fruit_order_package_goods` VALUES ('11', '6', '19', '1', '1', '測試商品1', '12.00', '24.00', '6.00', '元/斤', '元/斤', '12', '300', '/uploads/2014/11/10/a8c73d5a30ce2ded99fcf378b620634de47eacc0.jpg', '/uploads/2014/11/10/f2f1dd304ae7f5242765e5beac4411e0b0783d59.jpg', '/uploads/2014/11/10/0a865c6f2153d774cbc0a79b6142b762659ba0f0.jpg', '/uploads/2014/11/10/0710e1974d0dd9b3753fea32198c2d60e0f18615.jpg', '/uploads/2014/11/10/eace34d09ab9fc110bd5558c3e080663b98b55a4.jpg', '/uploads/2014/11/10/894c2e141988ba0a0d2cb5d1610f2ab8c296a240.jpg', '<p>測試商品1</p>', '測試大分類1', '測試小分類1', '測試標籤1');
+INSERT INTO `fruit_order_package_goods` VALUES ('12', '6', '19', '2', '2', '測試商品2', '12.00', '42.00', '0.00', '元/斤', '元/斤', '20', '400', '/uploads/2014/11/10/3c88ae75196920f4651c2587e063d8051b42b5ac.jpg', '/uploads/2014/11/10/aad47186f5f4a961922a814dce4cce8b11eff97c.jpg', '/uploads/2014/11/10/296bafebd522d0d69e0a7fc9d400e3e64e1a7f06.jpg', '/uploads/2014/11/10/4374eb3b28d3d51dfa4ff0b956a80a44f710de81.jpg', '/uploads/2014/11/10/08efced33d98f170345e8b9f1005822600f104e9.jpg', '/uploads/2014/11/10/5670aeeba00791418e29162963cc967a2ec2bd8d.jpg', '<p>測試商品2</p>', '測試大分類1', '測試小分類1', '测试标签');
 
 -- ----------------------------
 -- Table structure for `fruit_package`
@@ -765,32 +841,47 @@ CREATE TABLE `fruit_purchase` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COMMENT='采购表';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='采购表';
 
 -- ----------------------------
 -- Records of fruit_purchase
 -- ----------------------------
-INSERT INTO `fruit_purchase` VALUES ('29', '0', '1', '11', '1', '10', '1415960111', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('30', '0', '1', '11', '2', '8', '1415960111', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('31', '0', '3', '11', '1', '10', '1416473921', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('32', '0', '3', '11', '2', '8', '1416473921', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('33', '0', '4', '12', '3', '6', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('34', '0', '5', '8', '3', '6', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('35', '0', '3', '11', '3', '2', '1416473921', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('36', '0', '3', '11', '4', '3', '1416473921', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('37', '0', '3', '11', '1', '10', '1416473921', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('38', '0', '4', '12', '3', '4', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('39', '0', '4', '12', '4', '6', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('40', '0', '4', '12', '1', '20', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('41', '0', '5', '8', '3', '4', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('42', '0', '5', '8', '4', '6', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('43', '0', '5', '8', '1', '20', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('44', '0', '4', '12', '1', '10', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('45', '0', '4', '12', '2', '8', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('46', '0', '4', '12', '3', '6', '1417402742', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('47', '0', '5', '8', '1', '10', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('48', '0', '5', '8', '2', '8', '1417587149', '1418971025');
-INSERT INTO `fruit_purchase` VALUES ('49', '0', '5', '8', '3', '6', '1417587149', '1418971025');
+INSERT INTO `fruit_purchase` VALUES ('1', '0', '1', '8', '1', '10', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('2', '0', '2', '8', '1', '10', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('3', '0', '3', '8', '1', '10', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('4', '0', '4', '8', '1', '10', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('5', '0', '5', '8', '1', '10', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('6', '0', '6', '9', '1', '10', '1419394102', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('7', '0', '1', '8', '1', '1', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('8', '0', '1', '8', '2', '2', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('9', '0', '2', '8', '1', '1', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('10', '0', '2', '8', '2', '2', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('11', '0', '3', '8', '1', '1', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('12', '0', '3', '8', '2', '2', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('13', '0', '4', '8', '1', '1', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('14', '0', '4', '8', '2', '2', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('15', '0', '5', '8', '1', '1', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('16', '0', '5', '8', '2', '2', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('17', '0', '6', '9', '1', '2', '1419394102', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('18', '0', '6', '9', '2', '4', '1419394102', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('19', '0', '1', '8', '1', '10', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('20', '0', '1', '8', '2', '8', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('21', '0', '1', '8', '3', '6', '1419392079', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('22', '0', '2', '8', '1', '10', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('23', '0', '2', '8', '2', '8', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('24', '0', '2', '8', '3', '6', '1419392779', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('25', '0', '3', '8', '1', '10', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('26', '0', '3', '8', '2', '8', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('27', '0', '3', '8', '3', '6', '1419392782', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('28', '0', '4', '8', '1', '10', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('29', '0', '4', '8', '2', '8', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('30', '0', '4', '8', '3', '6', '1419392783', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('31', '0', '5', '8', '1', '10', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('32', '0', '5', '8', '2', '8', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('33', '0', '5', '8', '3', '6', '1419392785', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('34', '0', '6', '9', '1', '10', '1419394102', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('35', '0', '6', '9', '2', '8', '1419394102', '1419398403');
+INSERT INTO `fruit_purchase` VALUES ('36', '0', '6', '9', '3', '6', '1419394102', '1419398403');
 
 -- ----------------------------
 -- Table structure for `fruit_returns`

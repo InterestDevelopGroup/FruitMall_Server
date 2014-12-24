@@ -9,13 +9,23 @@
  */
 class OrderCustomModel extends Model {
 
+    /**
+     * 添加订单定制
+     *
+     * @param int $order_id
+     *            订单ID
+     * @param int $custom_id
+     *            定制ID
+     * @param int $amount
+     *            数量
+     * @return boolean
+     */
     public function addOrderCustom($order_id, $custom_id, $amount) {
         $data = array(
             'order_id' => $order_id,
             'order_quantity' => $amount,
             'custom_id' => $custom_id
         );
-
         $order_price = M('CustomGoods')->table(M('CustomGoods')->getTableName() . " AS cg ")->field(array(
             "SUM(g.price * cg.quantity)" => 'order_price'
         ))->join(array(

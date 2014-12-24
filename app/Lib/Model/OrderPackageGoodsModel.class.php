@@ -9,6 +9,15 @@
  */
 class OrderPackageGoodsModel extends Model {
 
+    /**
+     * 添加订单套餐
+     *
+     * @param int $order_id
+     *            订单ID
+     * @param int $package_id
+     *            套餐ID
+     * @return boolean
+     */
     public function addOrderPackageGoods($order_id, $package_id) {
         $dataList = M('PackageGoods')->table(M('PackageGoods')->getTableName() . " AS pg ")->join(array(
             " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON g.id = pg.goods_id ",
@@ -42,34 +51,6 @@ class OrderPackageGoodsModel extends Model {
             'pg.package_id' => $package_id
         ))->select();
         if ($this->addAll($dataList)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 删除订单套餐
-     *
-     * @param array $order_id
-     *            订单ID
-     * @return boolean
-     */
-    public function deleteOrderPackage(array $order_id) {
-        if (!$this->where(array(
-            'order_id' => array(
-                'in',
-                $order_id
-            )
-        ))->count()) {
-            return true;
-        }
-        if ($this->where(array(
-            'order_id' => array(
-                'in',
-                $order_id
-            )
-        ))->delete()) {
             return true;
         } else {
             return false;
