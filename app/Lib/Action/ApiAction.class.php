@@ -9,6 +9,20 @@
  */
 class ApiAction extends Action {
 
+    public function index() {
+        if ($is = M('CouponRule')->where(array(
+            'type' => 3,
+            'condition' => array(
+                'elt',
+                400
+            )
+        ))->order('`condition` DESC')->find()) {
+            print_r($is);
+        } else {
+            echo 222;
+        }
+    }
+
     /**
      * 添加地址
      */

@@ -657,6 +657,16 @@ class OrderModel extends Model {
                     );
                 }
             }
+            if ($status == 3) {
+                if (!D('Coupon')->awardCouponByCompleteOrder($order_id)) {
+                    // 更新失败，回滚事务
+                    $this->rollback();
+                    return array(
+                        'status' => 0,
+                        'result' => '更新失败'
+                    );
+                }
+            }
             // 更新成功，提交事务
             $this->commit();
             return array(

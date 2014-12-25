@@ -92,14 +92,14 @@ class CouponModel extends Model {
      *            过期时间（传空为永久有效）
      * @return array
      */
-    public function addCouponToSpecialUser(array $user_id, $score, $expire) {
+    public function addCouponToSpecialUser(array $user_id, $score, $expire, $type = 4) {
         $len = count($user_id);
         $dataList = array();
         for ($i = 0; $i < $len; $i++) {
             $dataList[] = array(
                 'user_id' => $user_id[$i],
                 'score' => $score,
-                'type' => 4,
+                'type' => $type,
                 'publish_time' => time(),
                 'expire_time' => strlen($expire) ? (intval($expire) * 24 * 3600 + strtotime(date("Y-m-d"))) : null
             );
@@ -114,6 +114,52 @@ class CouponModel extends Model {
                 'status' => false,
                 'msg' => '赠送失败'
             );
+        }
+    }
+
+    /**
+     * 确认订单后送券
+     *
+     * @param array $order_id
+     *            订单ID
+     * @return boolean
+     */
+    public function awardCouponByCompleteOrder(array $order_id) {
+        // 获取总金额
+        $result = M('Order')->where(array(
+            'order_id' => array(
+                'in',
+                $order_id
+            )
+        ))->field(array(
+            'user_id',
+            'total_amount'
+        ))->select();
+        $toAward = array();
+        foreach ($result as $v) {
+            if ($is = M('CouponRule')->where(array(
+                'type' => 3,
+                'condition' => array(
+                    'elt',
+                    $v['total_amount']
+                )
+            ))->order('`condition` DESC')->find()) {
+                $toAward[] = array(
+                    'user_id' => $v['user_id'],
+                    'score' => $is['score'],
+                    'type' => 3,
+                    'publish_time' => time(),
+                    'expire_time' => $is['expire_time'] ? (intval($is['expire_time']) * 24 * 3600 + strtotime(date("Y-m-d"))) : null
+                );
+            }
+        }
+        if (!$toAward) {
+            return true;
+        }
+        if ($this->addAll($toAward)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
