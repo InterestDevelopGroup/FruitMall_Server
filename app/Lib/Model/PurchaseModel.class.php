@@ -215,7 +215,10 @@ class PurchaseModel extends Model {
      */
     public function surePurchase(array $goods_id) {
         if ($this->where(array(
-            'goods_id' => $goods_id
+            'goods_id' => array(
+                'in',
+                $goods_id
+            )
         ))->save(array(
             'is_purchase' => 1
         ))) {
