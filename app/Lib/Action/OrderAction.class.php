@@ -103,7 +103,8 @@ class OrderAction extends AdminAction {
     public function getOrderDetail() {
         if ($this->isAjax()) {
             $order_id = (isset($_POST['order_id']) && intval($_POST['order_id'])) ? intval($_POST['order_id']) : $this->redirect('/');
-            $this->ajaxReturn(D('Order')->getOrderDetail($order_id));
+            // $this->ajaxReturn(D('Order')->getOrderDetail($order_id));
+            $this->ajaxReturn(D('Order')->getOrderGoodsList($order_id));
         } else {
             $this->redirect('/');
         }

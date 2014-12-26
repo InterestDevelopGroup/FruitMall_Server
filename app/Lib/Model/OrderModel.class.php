@@ -531,6 +531,52 @@ class OrderModel extends Model {
     }
 
     /**
+     * 获取订单的所有商品列表
+     *
+     * @param int $order_id
+     *            订单ID
+     * @return array
+     */
+    public function getOrderGoodsList($order_id) {
+        $sql = "SELECT
+                    name, NULL AS package_custom, order_quantity, unit,
+                    single_price, (price * order_quantity) AS price,
+                    NULL AS package_id
+                FROM
+                    fruit_order_goods
+                WHERE
+                    order_id = {$order_id}
+                UNION ALL
+                SELECT
+                    opg.name, op.name AS package_custom,
+                    (op.order_quantity * opg.goods_quantity) AS order_quantity,
+                    NULL AS unit, NULL AS single_price, op.price, op.package_id
+                FROM
+                    fruit_order_package_goods AS opg
+                LEFT JOIN
+                    fruit_order_package AS op
+                ON
+                    opg.package_id = op.package_id AND opg.order_id = op.order_id
+                WHERE
+                    opg.order_id = {$order_id}
+                UNION ALL
+                SELECT
+                    ocg.name, oc.name AS package_custom,
+                    (oc.order_quantity * ocg.goods_quantity) AS order_quantity,
+                    ocg.unit, ocg.price AS single_price,
+                    (ocg.price * ocg.goods_quantity) AS price, NULL AS package_id
+                FROM
+                    fruit_order_custom_goods AS ocg
+                LEFT JOIN
+                    fruit_order_custom AS oc
+                ON
+                    ocg.custom_id = oc.custom_id AND ocg.order_id = oc.order_id
+                WHERE
+                    ocg.order_id = {$order_id}";
+        return $this->query($sql);
+    }
+
+    /**
      * 打印订单
      *
      * @param array $order_id

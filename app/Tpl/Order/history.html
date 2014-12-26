@@ -160,6 +160,17 @@ function f_onShowDetail(record, container, callback) {
         dataType: "json",
         async: false,
         success: function(data) {
+            if (data) {
+                var str = '<h3 style="margin:10px;">订单商品：</h3>';
+                str += '<table align="center" border="1" style="margin:10px;width:90%;font-size:14px;">';
+                str += '<tr align="center"><td width="5%">序号</td><td width="35%">商品名</td><td width="20%">所属套餐/定制</td><td width="10%">购买数量</td><td width="10%">价格单位</td><td width="10%">单价</td><td width="10%">总价</td></tr>';
+                for (var i in data) {
+                    str += '<tr align="center"><td>' + (parseInt(i) + 1) + '</td><td>' + data[i].name + '</td><td>' + (data[i].package_custom ? data[i].package_custom : '-') + '</td><td>' + data[i].order_quantity + '</td><td>' + (data[i].unit ? data[i].unit : '-') + '</td><td>' + (data[i].single_price ? data[i].single_price : '-') + '</td><td>' + (data[i].price ? data[i].price : '-') + '</td></tr>';
+                }
+                str += '</table>';
+                $(container).append(str);
+            }
+            /*
             if (data.order_goods) {
                 $(container).append('<h3 style="margin:10px;">订单商品：</h3>');
                 for (var i in data.order_goods) {
@@ -219,7 +230,7 @@ function f_onShowDetail(record, container, callback) {
                     $(container).append(str);
                 }
             }
-            
+            */
         }
     });
 }
