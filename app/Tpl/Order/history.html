@@ -390,9 +390,9 @@ function print_order() {
             if (data.status) {
                 var str = '';
                 for (var tt = 0; tt < data.result.length; tt++) {
-                    str += '<table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[tt].consignee+'</td><td width="50%">联系电话：'+data.result[tt].phone+'</td></tr>';
+                    str += '<table width="100%" style="margin:24px auto;font-size:12px;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[tt].consignee+'</td><td width="50%">联系电话：'+data.result[tt].phone+'</td></tr>';
                     str += '<tr style="line-height:30px;"><td colspan="2">收货地址：'+data.result[tt].address+'</td></tr></table>';
-                    var stuff = '<h3>货物清单：</h3><table width="100%" style="margin:24px auto;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
+                    var stuff = '<h3 style="font-size:12px;">货物清单：</h3><table width="100%" style="margin:24px auto;font-size:12px;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
                     var total_amount = 0;
                     if (data.result[tt].goods_list) {
                         var goods_list = data.result[tt].goods_list;
@@ -416,8 +416,8 @@ function print_order() {
                             total_amount += custom_list[i].amount * custom_list[i].price;
                         }
                     }
-                    stuff += '<tr><td>总价：'+parseFloat(total_amount).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
-                    stuff += '</table>';
+                    stuff += '<tr><td>总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
+                    stuff += '</table><div style="page-break-before:always;"></div>';
                     str += stuff;
                 }
                 var iframe = document.createElement('IFRAME');

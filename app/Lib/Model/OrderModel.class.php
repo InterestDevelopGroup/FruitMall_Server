@@ -610,31 +610,19 @@ class OrderModel extends Model {
             ))->where(array(
                 'og.order_id' => $v['order_id']
             ))->select();
-            $v['package_list'] = D('OrderPackage')->table(D('OrderPackage')->getTableName() . " AS op ")->join(array(
-                " LEFT JOIN " . M('Package')->getTableName() . " AS p ON op.package_id = p.id "
-            ))->field(array(
-                'op.amount',
-                'p.name',
-                'p.price'
+            $v['package_list'] = D('OrderPackage')->field(array(
+                'order_quantity' => 'amount',
+                'name',
+                '(price * order_quantity)' => 'price'
             ))->where(array(
-                'op.order_id' => $v['order_id']
+                'order_id' => $v['order_id']
             ))->select();
-            $v['custom_list'] = D('OrderCustom')->table(D('OrderCustom')->getTableName() . " AS oc")->join(array(
-                " LEFT JOIN " . M('Custom')->getTableName() . " AS c ON oc.custom_id = c.custom_id "
-            ))->field(array(
-                'oc.amount',
-                'c.name',
-                "(
-                SELECT
-                    sum(cg.quantity * g.price)
-                FROM
-                    fruit_custom_goods AS cg
-                LEFT JOIN
-                    fruit_goods AS g ON cg.goods_id = g.id
-                WHERE
-                    cg.custom_id = oc.custom_id)" => 'price'
+            $v['custom_list'] = D('OrderCustom')->field(array(
+                'order_quantity' => 'amount',
+                'name',
+                '(order_price * order_quantity)' => 'price'
             ))->where(array(
-                'oc.order_id' => $v['order_id']
+                'order_id' => $v['order_id']
             ))->select();
         }
         return $result;
