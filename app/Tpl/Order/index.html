@@ -346,11 +346,49 @@ function print_order() {
         dataType: "json",
         success: function(data) {
             if (data.status) {
-                var str = '';
+                var str = '<html><head><title>&nbsp;&nbsp;</title></head><body>';
                 for (var tt = 0; tt < data.result.length; tt++) {
-                    str += '<table width="100%" style="margin:24px auto;font-size:12px;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[tt].consignee+'</td><td width="50%">联系电话：'+data.result[tt].phone+'</td></tr>';
+                    if (tt != data.result.length - 1) {
+                        var print_style = 'page-break-after:always;';
+                    } else {
+                        var print_style = '';
+                    }
+                    str += '<div style="width:100%;margin:0px;padding:0px;-webkit-text-size-adjust:none;font-size:6px;'+print_style+'">';
+                    str += '收货人：' + data.result[tt].consignee + '<br />';
+                    str += '联系电话：' + data.result[tt].phone + '<br />';
+                    str += '地址：' + data.result[tt].address + '<br />';
+                    str += '货物清单：<br />';
+                    str += '<table style="width:100%;-webkit-text-size-adjust:none;font-size:6px;" border="0" cellspacing="0" cellpadding="0">';
+                    var stuff = '<tr><td width="60%">名称</td><td width="13%">数量</td><td width="13%">单价</td><td width="13%">总价</td></tr>';
+                    var total_amount = 0;
+                    if (data.result[tt].goods_list) {
+                        var goods_list = data.result[tt].goods_list;
+                        for (var i in goods_list) {
+                            stuff += '<tr><td>'+(goods_list[i].name ? goods_list[i].name : '该商品已经删除')+'</td><td>'+(goods_list[i].amount ? goods_list[i].amount : '该商品已经删除')+'</td><td>'+(goods_list[i].price ? goods_list[i].price : '该商品已经删除')+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
+                            total_amount += goods_list[i].amount * goods_list[i].price;
+                        }
+                    }
+                    if (data.result[tt].package_list) {
+                        var package_list = data.result[tt].package_list;
+                        for (var i in package_list) {
+                            stuff += '<tr><td>'+(package_list[i].name ? package_list[i].name : '该套餐已经删除')+'</td><td>'+(package_list[i].amount ? package_list[i].amount : '该套餐已经删除')+'</td><td>'+(package_list[i].price ? package_list[i].price : '该套餐已经删除')+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
+                            total_amount += package_list[i].amount * package_list[i].price;
+                        }
+                    }
+                    if (data.result[tt].custom_list) {
+                        var custom_list = data.result[tt].custom_list;
+                        for (var i in custom_list) {
+                            stuff += '<tr><td>'+(custom_list[i].name ? custom_list[i].name : '该定制已经删除')+'</td><td>'+(custom_list[i].amount ? custom_list[i].amount : '该定制已经删除')+'</td><td>'+(custom_list[i].price ? custom_list[i].price : '该定制已经删除')+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
+                            total_amount += custom_list[i].amount * custom_list[i].price;
+                        }
+                    }
+                    stuff += '<tr><td colspan="4">总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'&nbsp;&nbsp;总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
+                    str += stuff + '</table>';
+                    str += '</div></body></html>';
+                    //str += '<div style="page-break-before:always;"></div>';
+                    /*str += '<table width="200px" style="margin:0px auto;font-size:10px;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[tt].consignee+'</td><td width="50%">联系电话：'+data.result[tt].phone+'</td></tr>';
                     str += '<tr style="line-height:30px;"><td colspan="2">收货地址：'+data.result[tt].address+'</td></tr></table>';
-                    var stuff = '<h3 style="font-size:12px;">货物清单：</h3><table width="100%" style="margin:24px auto;font-size:12px;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
+                    var stuff = '<p style="font-size:12px;width:200px;background:#f00;">货物清单：</p><table width="200px" style="margin:0px auto;font-size:12px;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
                     var total_amount = 0;
                     if (data.result[tt].goods_list) {
                         var goods_list = data.result[tt].goods_list;
@@ -376,7 +414,7 @@ function print_order() {
                     }
                     stuff += '<tr><td>总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
                     stuff += '</table><div style="page-break-before:always;"></div>';
-                    str += stuff;
+                    str += stuff;*/
                 }
                 var iframe = document.createElement('IFRAME');
                 var doc = null;
