@@ -539,18 +539,19 @@ class OrderModel extends Model {
      */
     public function getOrderGoodsList($order_id) {
         $sql = "SELECT
-                    name, NULL AS package_custom, order_quantity, unit,
-                    single_price, (price * order_quantity) AS price,
-                    NULL AS package_id
+                    name, NULL AS package_custom, order_quantity as goods_quantity,
+                    null as package_custom_quantity, unit, single_price,
+                    (price * order_quantity) AS price, NULL AS package_id
                 FROM
                     fruit_order_goods
                 WHERE
                     order_id = {$order_id}
                 UNION ALL
                 SELECT
-                    opg.name, op.name AS package_custom,
-                    (op.order_quantity * opg.goods_quantity) AS order_quantity,
-                    NULL AS unit, NULL AS single_price, op.price, op.package_id
+                    opg.name, op.name AS package_custom, opg.goods_quantity,
+                    order_quantity as package_custom_quantity, NULL AS unit,
+                    NULL AS single_price, (op.price * op.order_quantity) AS price,
+                    op.package_id
                 FROM
                     fruit_order_package_goods AS opg
                 LEFT JOIN
@@ -561,9 +562,9 @@ class OrderModel extends Model {
                     opg.order_id = {$order_id}
                 UNION ALL
                 SELECT
-                    ocg.name, oc.name AS package_custom,
-                    (oc.order_quantity * ocg.goods_quantity) AS order_quantity,
-                    ocg.unit, ocg.price AS single_price,
+                    ocg.name, oc.name AS package_custom, ocg.goods_quantity,
+                    order_quantity as package_custom_quantity, ocg.unit,
+                    ocg.price AS single_price,
                     (ocg.price * ocg.goods_quantity) AS price, NULL AS package_id
                 FROM
                     fruit_order_custom_goods AS ocg
