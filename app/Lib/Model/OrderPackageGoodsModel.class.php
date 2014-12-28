@@ -48,7 +48,9 @@ class OrderPackageGoodsModel extends Model {
             'cc.name' => 'child_category',
             't.name' => 'tag_name'
         ))->where(array(
-            'pg.package_id' => $package_id
+            'pg.package_id' => $package_id,
+            'g.is_delete' => 0,
+            'g.status' => 1
         ))->select();
         if ($this->addAll($dataList)) {
             return true;

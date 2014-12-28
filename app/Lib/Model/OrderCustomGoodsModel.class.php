@@ -48,7 +48,9 @@ class OrderCustomGoodsModel extends Model {
             'cc.name' => 'child_category',
             't.name' => 'tag_name'
         ))->where(array(
-            'cg.custom_id' => $custom_id
+            'cg.custom_id' => $custom_id,
+            'g.is_delete' => 0,
+            'g.status' => 1
         ))->select();
         if ($this->addAll($dataList)) {
             return true;

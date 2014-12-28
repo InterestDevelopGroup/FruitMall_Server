@@ -91,7 +91,27 @@ class CourierModel extends Model {
      * @return int
      */
     public function getCourierCount() {
-        return (int) $this->count();
+        // 获取当前管理员
+        $admin = session('admin_info');
+        if ($admin && $admin['type'] != 1) {
+            $branch_id[] = array_map(function ($value) {
+                return $value['id'];
+            }, M('Branch')->where(array(
+                'admin_id' => $admin['id']
+            ))->select());
+        }
+        if ($branch_id) {
+            return $this->table($this->getTableName() . " AS c ")->join(array(
+                " LEFT JOIN " . M('BranchCourier')->getTableName() . " AS bc ON c.id = bc.courier_id "
+            ))->where(array(
+                'bc.branch_id' => array(
+                    'in',
+                    $branch_id[0]
+                )
+            ))->count();
+        } else {
+            return (int) $this->count();
+        }
     }
 
     /**
@@ -108,14 +128,40 @@ class CourierModel extends Model {
      * @return array
      */
     public function getCourierList($page, $pageSize, $order, $sort) {
+        // 获取当前管理员
+        $admin = session('admin_info');
+        if ($admin && $admin['type'] != 1) {
+            $branch_id[] = array_map(function ($value) {
+                return $value['id'];
+            }, M('Branch')->where(array(
+                'admin_id' => $admin['id']
+            ))->select());
+        }
         $offset = ($page - 1) * $pageSize;
-        return $this->table($this->getTableName() . " AS c ")->field(array(
-            'c.*',
-            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status > 2)" => 'sent_amount',
-            "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status <= 2)" => 'unsend_amount',
-            "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount',
-            "(SELECT b.name FROM " . M('BranchCourier')->getTableName() . " AS bc LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = bc.branch_id WHERE courier_id = c.id)" => 'branch'
-        ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        if ($branch_id) {
+            return $this->table($this->getTableName() . " AS c ")->field(array(
+                'c.*',
+                "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status > 2)" => 'sent_amount',
+                "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status <= 2)" => 'unsend_amount',
+                "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount',
+                "(SELECT b.name FROM " . M('BranchCourier')->getTableName() . " AS bc LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = bc.branch_id WHERE courier_id = c.id)" => 'branch'
+            ))->join(array(
+                " LEFT JOIN " . M('BranchCourier')->getTableName() . " AS bc ON c.id = bc.courier_id "
+            ))->where(array(
+                'bc.branch_id' => array(
+                    'in',
+                    $branch_id[0]
+                )
+            ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        } else {
+            return $this->table($this->getTableName() . " AS c ")->field(array(
+                'c.*',
+                "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status > 2)" => 'sent_amount',
+                "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE courier_id = c.id AND status <= 2)" => 'unsend_amount',
+                "(SELECT COUNT(1) FROM " . M('Returns')->getTableName() . " AS r LEFT JOIN " . M('Order')->getTableName() . " AS o ON o.order_number = r.order_number WHERE o.courier_id = c.id)" => 'complain_amount',
+                "(SELECT b.name FROM " . M('BranchCourier')->getTableName() . " AS bc LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = bc.branch_id WHERE courier_id = c.id)" => 'branch'
+            ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
+        }
     }
 
     /**

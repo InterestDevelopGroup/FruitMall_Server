@@ -530,6 +530,7 @@ $app_config = array(
         'coupon|how_to_use',
         'order|index',
         'order|history',
+        'order|cancels',
         'order|update_status',
         'order|distribute',
         'notification|index',
