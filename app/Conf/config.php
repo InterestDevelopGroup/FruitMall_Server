@@ -311,6 +311,7 @@ $app_config = array(
             'how_to_use' => 'coupon|how_to_use'
         ),
         'order' => array(
+            'cancels' => 'order|cancels',
             'index' => 'order|index',
             'history' => 'order|history',
             'delete' => 'order|delete',
@@ -357,6 +358,7 @@ $app_config = array(
         'branch|index' => 'branch|getbranchcourier,branch|getbranchshippingaddress',
         'branch|add' => 'branch|add_courier,branch|add_shipping_address',
         'branch|update' => 'branch|add_courier,branch|add_shipping_address',
+        'order|cancels' => 'order|getorderdetail',
         'order|index' => 'order|getorderdetail',
         'order|history' => 'order|getorderdetail',
         'task|purchase' => 'task|getpurchasedetail'
@@ -447,6 +449,7 @@ $app_config = array(
         ),
         'order' => array(
             'order' => '订单',
+            'cancels' => '取消订单',
             'index' => '新订单一览',
             'history' => '历史订单一览',
             'delete' => '删除订单',

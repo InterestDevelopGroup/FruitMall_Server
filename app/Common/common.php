@@ -56,7 +56,9 @@ function ob2ar($obj) {
  * @return string
  */
 function orderNumber() {
-    return date('ymd') . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    list($s1, $s2) = explode(' ', microtime());
+    return (float) sprintf('%.0f', (floatval($s1) + floatval($s2)) * 1000);
+    // return date('ymd') . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 }
 
 /**

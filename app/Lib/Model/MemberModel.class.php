@@ -178,7 +178,8 @@ class MemberModel extends Model {
             'm.last_time',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id AND status = 4)" => 'refuse_amount',
             "(SELECT COUNT(1) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'order_amount',
-            "(SELECT SUM(total_amount) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'total_amount'
+            "(SELECT SUM(total_amount) FROM " . M('Order')->getTableName() . " WHERE user_id = m.id)" => 'total_amount',
+            "(SELECT a.address FROM fruit_default_address AS da INNER JOIN fruit_address AS a ON a.address_id = da.address_id WHERE a.user_id = m.id)" => 'default_address'
         ))->join(array(
             " LEFT JOIN " . M('Blacklist')->getTableName() . " AS b ON m.id = b.user_id "
         ))->where($where)->order($order . " " . $sort)->limit($offset, $pageSize)->select();
@@ -186,7 +187,11 @@ class MemberModel extends Model {
             if (!$v['real_name']) {
                 $consignee = M('DefaultAddress')->table(M('DefaultAddress')->getTableName() . " AS da ")->join(array(
                     " LEFT JOIN " . M('Address')->getTableName() . " AS a ON a.address_id = da.address_id "
-                ))->field(array('a.consignee'))->where(array('da.user_id' => $v['id']))->find();
+                ))->field(array(
+                    'a.consignee'
+                ))->where(array(
+                    'da.user_id' => $v['id']
+                ))->find();
                 $v['real_name'] = $consignee['consignee'];
             }
         }

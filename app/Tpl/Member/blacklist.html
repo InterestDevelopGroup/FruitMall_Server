@@ -39,24 +39,35 @@ $(function(){
                     return value ? value : '暂无';
                 }
             },
-            {display: "手机", name: 'phone', align: 'center', width: '12%', isSort: false},
-            {display: "真实姓名", name: 'real_name', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "手机", name: 'phone', align: 'center', width: '8%', isSort: false},
+            {display: "真实姓名", name: 'real_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
+                }, editor: {
+                    type: 'text'
                 }
             },
-            {display: "备注", name: 'remark', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "备注", name: 'remark', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '---';
                 }
             },
-            {display: "性别", name: 'sex', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "性别", name: 'sex', align: 'center', width: '4%', isSort: false, editor: {
+                    type: 'select',
+                    data: [{_sex: 0, text: '保密'}, {_sex: 1, text: '男'}, {_sex: 2, text: '女'}],
+                    valueField: '_sex',
+                    cancelable: false
+                }, render: function(rowdata, rowindex, value) {
                     switch (parseInt(value)) {
-                        case 0 :
-                            return '保密';
-                        case 1 :
-                            return '男';
-                        case 2 :
-                            return '女';
+                    case 0 :
+                        return '保密';
+                    case 1 :
+                        return '男';
+                    case 2 :
+                        return '女';
                     }
+                }
+            },
+            {display: "默认地址", name: 'default_address', align: 'center', width: '30%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '暂无';
                 }
             },
             {display: "拒收次数", name: 'refuse_amount', align: 'center', width: '6%', isSort: false},
@@ -65,7 +76,7 @@ $(function(){
                     return value ? value : '0.00';
                 }
             },
-            {display: "操作", align: 'center', width: '10%', render: function(rowdata, rowindex, value) {
+            {display: "操作", align: 'center', width: '6%', render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="remark('+rowdata.id+')">备注</a>';
                 }
             }
@@ -78,6 +89,8 @@ $(function(){
             checkbox: true,
             frozenCheckbox: false,
             selectRowButtonOnly: true,
+            enabledEdit: true,
+            onAfterEdit: f_onAfterEdit,
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
@@ -86,6 +99,19 @@ $(function(){
     });
     $("#pageloading").hide();
 });
+
+//编辑后事件响应
+function f_onAfterEdit(e) {
+    $.post('<{:U("member/update_realname_sex")}>', {id: e.record.id, real_name: e.record.real_name, sex: e.record.sex}, function(data) {
+        if (!data.status) {
+            $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error', function(yes) {
+                if (yes) {
+                    window.location.reload(true);
+                }
+            });
+        }
+    }, 'json');
+}
 
 //明细
 function f_onShowDetail(record, container, callback) {

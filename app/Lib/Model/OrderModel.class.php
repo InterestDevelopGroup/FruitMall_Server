@@ -160,6 +160,17 @@ class OrderModel extends Model {
         } else {
             $coupon = null;
         }
+        // 根据地址小区分配订单
+        $_address = M('Address')->where(array(
+            'address_id' => $address_id
+        ))->find();
+        if ($_address['community']) {
+            $order_branch = M('BranchShippingAddress')->table(M('BranchShippingAddress')->getTableName() . " AS bsa ")->join(array(
+                " INNER JOIN " . M('ShippingAddress')->getTableName() . " AS sa ON bsa.shipping_address_id = sa.id "
+            ))->where(array(
+                'sa.community' => $_address['community']
+            ))->find();
+        }
         // 开启事务
         $this->startTrans();
         if ($this->add(array(
@@ -172,6 +183,7 @@ class OrderModel extends Model {
             'remark' => $remark,
             'coupon' => $coupon,
             'total_amount' => $total_amount + $shipping_fee,
+            'branch_id' => $order_branch ? $order_branch['branch_id'] : null,
             'add_time' => time()
         ))) {
             $order_id = $this->getLastInsID();
@@ -306,7 +318,7 @@ class OrderModel extends Model {
         // 获取当前管理员
         $admin = session('admin_info');
         if ($admin && $admin['type'] != 1) {
-            $branch_id[] = array_map(function($value) {
+            $branch_id[] = array_map(function ($value) {
                 return $value['id'];
             }, M('Branch')->where(array(
                 'admin_id' => $admin['id']
@@ -343,7 +355,10 @@ class OrderModel extends Model {
         }
         $courier && $where['courier_id'] = $courier;
         empty($keyword) || $where['order_number'] = $keyword;
-        $branch_id && $where['branch_id'] = array('in', $branch_id[0]);
+        $branch_id && $where['branch_id'] = array(
+            'in',
+            $branch_id[0]
+        );
         $this->where($where)->count();
         return (int) $this->where($where)->count();
     }
@@ -408,7 +423,7 @@ class OrderModel extends Model {
         // 获取当前管理员
         $admin = session('admin_info');
         if ($admin && $admin['type'] != 1) {
-            $branch_id[] = array_map(function($value) {
+            $branch_id[] = array_map(function ($value) {
                 return $value['id'];
             }, M('Branch')->where(array(
                 'admin_id' => $admin['id']
@@ -445,7 +460,10 @@ class OrderModel extends Model {
             }
         }
         $courier && $where['o.courier_id'] = $courier;
-        $branch_id && $where['branch_id'] = array('in', $branch_id[0]);
+        $branch_id && $where['branch_id'] = array(
+            'in',
+            $branch_id[0]
+        );
         empty($keyword) || $where['order_number'] = $keyword;
         if ($order == 'community') {
             $order = "a." . $order;
