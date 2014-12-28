@@ -566,11 +566,16 @@ class OrderModel extends Model {
             )
         ))->field(array(
             'o.order_id',
+            'o.order_number',
             'o.coupon',
             'o.shipping_fee',
             'o.total_amount',
             'a.consignee',
             'a.phone',
+            'a.province',
+            'a.city',
+            'a.district',
+            'a.community',
             'a.address'
         ))->select();
         foreach ($result as &$v) {
