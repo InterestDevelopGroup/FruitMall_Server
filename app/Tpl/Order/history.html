@@ -170,67 +170,6 @@ function f_onShowDetail(record, container, callback) {
                 str += '</table>';
                 $(container).append(str);
             }
-            /*
-            if (data.order_goods) {
-                $(container).append('<h3 style="margin:10px;">订单商品：</h3>');
-                for (var i in data.order_goods) {
-                    var str = '';
-                    str = '<table align="center" border="1" style="margin:10px;width:96%;font-size:14px;">';
-                    str += "<tr><td width='20%' align='right'>商品名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].name + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>大分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].parent_category + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>小分类：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].child_category + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>标签：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].tag ? data.order_goods[i].tag : '暂无') + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>单价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].price + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>市场价：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i]._price ? data.order_goods[i]._price : '暂无') + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>价格单位：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].unit + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_goods[i].order_quantity + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>每盒数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].amount ? data.order_goods[i].amount : '暂无') + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>每盒重量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_goods[i].weight ? data.order_goods[i].weight : '暂无') + "</td></tr>";
-                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>商品缩略图：</h3><div class="detail_image"><a href='+data.order_goods[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_goods[i].thumb+' width="100%" /></a></div></div></td></tr>';
-                    var images = '';
-                    for (var j = 1; j <= 5; j++) {
-                        var image = 'image_' + j;
-                        images += "<div class='detail_image'><a href='" + data.order_goods[i][image] + "' title='点击查看原图' target='_blank'><img src='"+data.order_goods[i][image]+"' width='100%' /></a></div>";
-                    }
-                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>商品介绍图：</h3>'+ images +'</div></td></tr>';;
-                    str += '</table>';
-                    $(container).append(str);
-                }
-            }
-            if (data.order_package) {
-                $(container).append('<h3 style="margin:10px;">订单套餐：</h3>');
-                for (var i in data.order_package) {
-                    var str = '';
-                    str = '<table align="center" border="1" style="margin:10px;width:96%;font-size:14px;">';
-                    str += "<tr><td width='20%' align='right'>套餐名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].name + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].price + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>市场价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (data.order_package[i]._price ? data.order_package[i]._price : '暂无') + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_package[i].order_quantity + "</td></tr>";
-                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>套餐缩略图：</h3><div class="detail_image"><a href='+data.order_package[i].thumb+' title="点击查看原图" target="_blank"><img src='+data.order_package[i].thumb+' width="100%" /></a></div></div></td></tr>';
-                    var images = '';
-                    for (var j = 1; j <= 5; j++) {
-                        var image = 'image_' + j;
-                        images += "<div class='detail_image'><a href='" + data.order_package[i][image] + "' title='点击查看原图' target='_blank'><img src='"+data.order_package[i][image]+"' width='100%' /></a></div>";
-                    }
-                    str += '<tr><td colspan="2"><div style="margin:10px;width:88%;"><h3>套餐介绍图：</h3>'+ images +'</div></td></tr>';;
-                    str += '</table>';
-                    $(container).append(str);
-                }
-            }
-            
-            if (data.order_custom) {
-                $(container).append('<h3 style="margin:10px;">订单定制：</h3>');
-                for (var i in data.order_custom) {
-                    var str = '';
-                    str = '<table align="center" border="1" style="margin:10px;width:96%;font-size:14px;">';
-                    str += "<tr><td width='20%' align='right'>定制名：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].name + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>定制价格：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].order_price + "</td></tr>";
-                    str += "<tr><td width='20%' align='right'>购买数量：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + data.order_custom[i].order_quantity + "</td></tr>";
-                    str += '</table>';
-                    $(container).append(str);
-                }
-            }
-            */
         }
     });
 }
@@ -411,57 +350,30 @@ function print_order() {
                     if (data.result[tt].goods_list) {
                         var goods_list = data.result[tt].goods_list;
                         for (var i in goods_list) {
-                            stuff += '<tr><td>'+(goods_list[i].name ? goods_list[i].name : '该商品已经删除')+'</td><td>'+(goods_list[i].amount ? goods_list[i].amount : '该商品已经删除')+'</td><td>'+(goods_list[i].price ? goods_list[i].price : '该商品已经删除')+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += goods_list[i].amount * goods_list[i].price;
+                            stuff += '<tr><td>'+goods_list[i].name.substr(0, 10)+'</td><td>'+goods_list[i].amount+'</td><td>'+goods_list[i].price+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
                         }
                     }
                     if (data.result[tt].package_list) {
                         var package_list = data.result[tt].package_list;
                         for (var i in package_list) {
-                            stuff += '<tr><td>'+(package_list[i].name ? package_list[i].name : '该套餐已经删除')+'</td><td>'+(package_list[i].amount ? package_list[i].amount : '该套餐已经删除')+'</td><td>'+(package_list[i].price ? package_list[i].price : '该套餐已经删除')+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += package_list[i].amount * package_list[i].price;
+                            stuff += '<tr><td>'+package_list[i].name.substr(0, 10)+'</td><td>'+package_list[i].amount+'</td><td>'+package_list[i].price+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
                         }
                     }
                     if (data.result[tt].custom_list) {
                         var custom_list = data.result[tt].custom_list;
                         for (var i in custom_list) {
-                            stuff += '<tr><td>'+(custom_list[i].name ? custom_list[i].name : '该定制已经删除')+'</td><td>'+(custom_list[i].amount ? custom_list[i].amount : '该定制已经删除')+'</td><td>'+(custom_list[i].price ? custom_list[i].price : '该定制已经删除')+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += custom_list[i].amount * custom_list[i].price;
+                            stuff += '<tr><td>'+custom_list[i].name.substr(0, 10)+'</td><td>'+custom_list[i].amount+'</td><td>'+custom_list[i].price+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
+                        }
+                    }
+                    if (data.result[tt].custom_goods_list) {
+                        var custom_goods_list = data.result[tt].custom_goods_list;
+                        for (var i in custom_goods_list) {
+                            stuff += '<tr><td>'+custom_goods_list[i].name.substr(0, 10)+'</td><td>'+custom_goods_list[i].amount+'</td><td>'+custom_goods_list[i].price+'</td><td>'+parseFloat(custom_goods_list[i].amount * custom_goods_list[i].price).toFixed(2)+'</td></tr>';
                         }
                     }
                     stuff += '<tr><td colspan="4">总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'&nbsp;&nbsp;总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
                     str += stuff + '</table>';
                     str += '</div></body></html>';
-                    //str += '<div style="page-break-before:always;"></div>';
-                    /*str += '<table width="200px" style="margin:0px auto;font-size:10px;"><tr style="line-height:30px;"><td width="50%">收货人：'+data.result[tt].consignee+'</td><td width="50%">联系电话：'+data.result[tt].phone+'</td></tr>';
-                    str += '<tr style="line-height:30px;"><td colspan="2">收货地址：'+data.result[tt].address+'</td></tr></table>';
-                    var stuff = '<p style="font-size:12px;width:200px;background:#f00;">货物清单：</p><table width="200px" style="margin:0px auto;font-size:12px;"><tr style="line-height:30px;"><td width="25%">名称</td><td width="25%">数量</td><td width="25%">单价</td><td width="25%">总价</td></tr>';
-                    var total_amount = 0;
-                    if (data.result[tt].goods_list) {
-                        var goods_list = data.result[tt].goods_list;
-                        for (var i in goods_list) {
-                            stuff += '<tr><td>'+(goods_list[i].name ? goods_list[i].name : '该商品已经删除')+'</td><td>'+(goods_list[i].amount ? goods_list[i].amount : '该商品已经删除')+'</td><td>'+(goods_list[i].price ? goods_list[i].price : '该商品已经删除')+'</td><td>'+parseFloat(goods_list[i].amount * goods_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += goods_list[i].amount * goods_list[i].price;
-                        }
-                    }
-                    if (data.result[tt].package_list) {
-                        var package_list = data.result[tt].package_list;
-                        for (var i in package_list) {
-                            stuff += '<tr><td>'+(package_list[i].name ? package_list[i].name : '该套餐已经删除')+'</td><td>'+(package_list[i].amount ? package_list[i].amount : '该套餐已经删除')+'</td><td>'+(package_list[i].price ? package_list[i].price : '该套餐已经删除')+'</td><td>'+parseFloat(package_list[i].amount * package_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += package_list[i].amount * package_list[i].price;
-                        }
-                    }
-                    
-                    if (data.result[tt].custom_list) {
-                        var custom_list = data.result[tt].custom_list;
-                        for (var i in custom_list) {
-                            stuff += '<tr><td>'+(custom_list[i].name ? custom_list[i].name : '该定制已经删除')+'</td><td>'+(custom_list[i].amount ? custom_list[i].amount : '该定制已经删除')+'</td><td>'+(custom_list[i].price ? custom_list[i].price : '该定制已经删除')+'</td><td>'+parseFloat(custom_list[i].amount * custom_list[i].price).toFixed(2)+'</td></tr>';
-                            total_amount += custom_list[i].amount * custom_list[i].price;
-                        }
-                    }
-                    stuff += '<tr><td>总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'</td><td>运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'</td><td>水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'</td><td>总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
-                    stuff += '</table><div style="page-break-before:always;"></div>';
-                    str += stuff;*/
                 }
                 var iframe = document.createElement('IFRAME');
                 var doc = null;

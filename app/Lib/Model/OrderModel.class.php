@@ -602,6 +602,13 @@ class OrderModel extends Model {
             ))->where(array(
                 'order_id' => $v['order_id']
             ))->select();
+            $v['custom_goods_list'] = D('OrderCustomGoods')->field(array(
+                'goods_quantity' => 'amount',
+                'name',
+                'price'
+            ))->where(array(
+                'order_id' => $v['order_id']
+            ))->select();
         }
         return $result;
     }
