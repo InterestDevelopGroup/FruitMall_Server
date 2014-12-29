@@ -31,10 +31,11 @@ class OrderCustomModel extends Model {
         ))->join(array(
             " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON cg.goods_id = g.id "
         ))->where(array(
-            'cg.custom_id' => $custom_id
+            'cg.custom_id' => $custom_id,
+            'g.is_delete' => 0,
+            'g.status' => 1
         ))->find();
         $data['order_price'] = $order_price['order_price'];
-
         $data = array_merge($data, M('Custom')->field(array(
             'custom_id',
             'name'

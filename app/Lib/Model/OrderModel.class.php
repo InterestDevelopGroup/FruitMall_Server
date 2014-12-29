@@ -168,6 +168,9 @@ class OrderModel extends Model {
             $order_branch = M('BranchShippingAddress')->table(M('BranchShippingAddress')->getTableName() . " AS bsa ")->join(array(
                 " INNER JOIN " . M('ShippingAddress')->getTableName() . " AS sa ON bsa.shipping_address_id = sa.id "
             ))->where(array(
+                'sa.province' => $_address['province'],
+                'sa.city' => $_address['city'],
+                'sa.district' => $_address['district'],
                 'sa.community' => $_address['community']
             ))->find();
         }
