@@ -54,8 +54,8 @@ $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
             {display: "商品名称", name: 'name', align: 'center', width: '24%', isSort: false},
-            {display: "大分类", name: 'parent_category', align: 'center', width: '10%', isSort: false},
-            {display: "小分类", name: 'child_category', align: 'center', width: '10%', isSort: false},
+            {display: "大分类", name: 'parent_category', align: 'center', width: '8%', isSort: false},
+            {display: "小分类", name: 'child_category', align: 'center', width: '8%', isSort: false},
             {display: "标签", name: 'tag_name', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }, editor: {
@@ -84,7 +84,7 @@ $(function(){
                 }
             },
             {display: "权重", name: 'priority', align: 'center', width: '4%'},
-            {display: "操作", width:'16%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "操作", width:'14%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     if (parseInt(rowdata.is_advertisement)) {
                         var str = '取消广告';
                         var type = 0;
