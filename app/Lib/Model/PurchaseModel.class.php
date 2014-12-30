@@ -170,7 +170,22 @@ class PurchaseModel extends Model {
                 GROUP BY
                     p.goods_id
                 LIMIT $offset, $pageSize";
-        return $this->query($sql);
+        $result = $this->query($sql);
+        foreach ($result as &$v) {
+            $branch_list = $this->table($this->getTableName() . " AS p ")->field(array(
+                "SUM(quantity)" => 'quantity',
+                'b.name' => 'branch'
+            ))->join(array(
+                " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
+            ))->where(array(
+                'goods_id' => $v['goods_id'],
+                'is_purchase' => 0
+            ))->group('branch_id')->select();
+            foreach ($branch_list as $v_1) {
+                $v['branch_list'] .= ($v_1['branch'] ? $v_1['branch'] : '未分配') . ":" . $v_1['quantity'] . " ";
+            }
+        }
+        return $result;
     }
 
     /**

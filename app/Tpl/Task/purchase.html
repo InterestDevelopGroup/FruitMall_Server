@@ -27,8 +27,9 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "商品名", name: 'name', align: 'center', width: '45%', isSort: false},
-            {display: "合计数量", name: 'amount', align: 'center', width: '45%', isSort: false}
+            {display: "商品名", name: 'name', align: 'center', width: '26%', isSort: false},
+            {display: "合计数量", name: 'amount', align: 'center', width: '8%', isSort: false},
+            {display: "分店数量", name: 'branch_list', align: 'center', width: '60%', isSort: false}
             ],
             url: '<{:U("task/purchase")}>',
             dataAction: 'server',
