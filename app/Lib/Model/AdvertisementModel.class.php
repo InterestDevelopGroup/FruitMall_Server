@@ -18,11 +18,16 @@ class AdvertisementModel extends Model {
      *            条数
      */
     public function _getAdvertisement($offset, $pagesize) {
-        $result = $this->field(array(
+        $result = $this->table($this->getTableName() . " AS a ")->field(array(
             'advertisement_id',
             'goods_id',
             'package_id',
-            'add_time' => 'advertisement_add_time'
+            'a.add_time' => 'advertisement_add_time'
+        ))->join(array(
+            " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON a.goods_id = g.id ",
+            " LEFT JOIN " . M('Package')->getTableName() . " AS p ON a.package_id = p.id "
+        ))->where(array(
+            "_string" => "(g.is_delete = 0 AND g.status = 1) OR (p.is_delete = 0)"
         ))->limit($offset, $pagesize)->select();
         foreach ($result as $k => &$v) {
             if ($v['goods_id']) {
