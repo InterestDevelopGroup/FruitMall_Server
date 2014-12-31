@@ -585,7 +585,7 @@ class OrderModel extends Model {
             $v['goods_list'] = D('OrderGoods')->table(D('OrderGoods')->getTableName() . " AS og ")->join(array(
                 " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON og.goods_id = g.id "
             ))->field(array(
-                'og.amount',
+                'og.order_quantity' => 'amount',
                 'g.name',
                 'g.price'
             ))->where(array(
