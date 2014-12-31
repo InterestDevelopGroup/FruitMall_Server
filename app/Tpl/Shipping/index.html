@@ -25,17 +25,17 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "省", name: 'province', align: 'center', width: '8%', isSort: false},
-            {display: "市", name: 'city', align: 'center', width: '8%', isSort: false},
-            {display: "区", name: 'district', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "省", name: 'province', align: 'center', width: '6%', isSort: false},
+            {display: "市", name: 'city', align: 'center', width: '6%', isSort: false},
+            {display: "区", name: 'district', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ?  value : '暂无';
                 }
             },
-            {display: "路牌号", name: 'road_number', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "路牌号", name: 'road_number', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ?  value : '暂无';
                 }
             },
-            {display: "小区（社区）、建筑名", name: 'community', align: 'center', width: '12%', render: function(rowdata, rowindex, value) {
+            {display: "小区（社区）、建筑名", name: 'community', align: 'center', width: '10%', render: function(rowdata, rowindex, value) {
                     return value ?  value : '暂无';
                 }
             },
@@ -43,16 +43,16 @@ $(function(){
                     return value ?  value : '暂无';
                 }
             },
-            {display: "送货费", name: 'shipping_fee', align: 'center', width: '8%', isSort: false},
-            {display: "价格调整比例", name: 'discount', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "送货费", name: 'shipping_fee', align: 'center', width: '4%', isSort: false},
+            {display: "价格调整比例", name: 'discount', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ?  value + '%' : '暂无';
                 }
             },
-            {display: "所在分店", name: 'branch', align: 'center', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "所在分店", name: 'branch', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
-            {display: "操作", width:'6%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "操作", width:'4%', align: 'center', isSort: false, render: function(rowdata, rowindex, value) {
                     return '<a href="javascript:void(0);" onclick="update('+rowdata.id+')">编辑</a>';
                 }
             }

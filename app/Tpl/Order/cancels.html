@@ -38,29 +38,29 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "用户名", name: 'username', align: 'center', width: '10%', isSort: false},
-            {display: "订单号", name: 'order_number', align: 'center', width: '10%', isSort: false},
-            {display: "收货人", name: 'consignee', align: 'center', width: '8%', isSort: false},
-            {display: "收货人手机", name: 'phone', align: 'center', width: '10%'},
-            {display: "是否黑名单", name: 'is_blacklist', align: 'center', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "用户名", name: 'username', align: 'left', width: '8%', isSort: false},
+            {display: "订单号", name: 'order_number', align: 'left', width: '10%', isSort: false},
+            {display: "收货人", name: 'consignee', align: 'left', width: '5%', isSort: false},
+            {display: "收货人手机", name: 'phone', align: 'left', width: '7%'},
+            {display: "黑名单", name: 'is_blacklist', align: 'center', width: '4%', isSort: false, render: function(rowdata, rowindex, value) {
                     return parseInt(value) ? '是' : '否';
                 }
             },
-            {display: "送货时间", name: 'shipping_time', align: 'center', width: '16%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "送货时间", name: 'shipping_time', align: 'left', width: '12%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
-            {display: "送货费", name: 'shipping_fee', align: 'center', width: '6%'},
-            {display: "订单金额", name: 'total_amount', align: 'center', width: '6%'},
+            {display: "送货费", name: 'shipping_fee', align: 'left', width: '4%'},
+            {display: "订单金额", name: 'total_amount', align: 'left', width: '5%'},
             {display: "水果券", name: 'coupon', align: 'center', width: '6%', render:function(rowdata, rowindex, value) {
                     return value ? parseFloat(value).toFixed(2) : '暂无';
                 }
             },
-            {display: "送货员", name: 'courier', align: 'center', width: '8%', isSort: false, render: function(rowdata, rowindex, value) {
+            {display: "送货员", name: 'courier', align: 'left', width: '6%', isSort: false, render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
-            {display: "收货小区", name: 'community', align: 'center', width: '8%', render: function(rowdata, rowindex, value) {
+            {display: "收货小区", name: 'community', align: 'center', width: '18%', render: function(rowdata, rowindex, value) {
                     return value ? value : '暂无';
                 }
             },
