@@ -515,7 +515,7 @@ class OrderModel extends Model {
     public function getOrderGoodsList($order_id) {
         $sql = "SELECT
                     name, NULL AS package_custom, order_quantity as goods_quantity,
-                    null as package_custom_quantity, unit, single_price,
+                    null as package_custom_quantity, unit, price as single_price,
                     (price * order_quantity) AS price, NULL AS package_id
                 FROM
                     fruit_order_goods
