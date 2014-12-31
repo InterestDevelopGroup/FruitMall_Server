@@ -40,7 +40,8 @@ class PackageModel extends Model {
                 'g.thumb'
             ))->where(array(
                 'pg.package_id' => $value['id'],
-                'g.is_delete' => 0
+                'g.is_delete' => 0,
+                'g.status' => 1
             ))->select();
             return $value;
         }, $this->limit($offset, $pagesize)->where($where)->select());
