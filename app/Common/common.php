@@ -57,7 +57,7 @@ function ob2ar($obj) {
  */
 function orderNumber() {
     list($s1, $s2) = explode(' ', microtime());
-    return date("YmdHis", $s2) . substr(floatval($s1) * 1000, 0, 3);
+    return date("YmdHis", $s2) . substr(floatval($s1) * 10000000, 0, 3) . M('Order')->max('order_id');
     // return date('ymd') . substr(implode(null, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 }
 
