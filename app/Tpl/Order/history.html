@@ -368,7 +368,7 @@ function print_order() {
                             stuff += '<tr><td>'+custom_goods_list[i].name.substr(0, 10)+'</td><td>'+custom_goods_list[i].amount+'</td><td>'+custom_goods_list[i].price+'</td><td>'+parseFloat(custom_goods_list[i].amount * custom_goods_list[i].price).toFixed(2)+'</td></tr>';
                         }
                     }
-                    stuff += '<tr><td colspan="4">总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;运费：'+parseFloat(data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;水果券抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon).toFixed(2) : '0.00')+'&nbsp;&nbsp;总金额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
+                    stuff += '<tr><td colspan="4">总价：'+parseFloat(data.result[tt].total_amount - data.result[tt].shipping_fee).toFixed(2)+'&nbsp;&nbsp;运费：'+parseFloat(data.result[tt].shipping_fee)+'&nbsp;&nbsp;抵扣：'+(data.result[tt].coupon ? parseFloat(data.result[tt].coupon) : '0')+'&nbsp;&nbsp;总额：'+parseFloat(data.result[tt].total_amount).toFixed(2)+'</td></tr>';
                     str += stuff + '</table>';
                     str += '</div></body></html>';
                 }
