@@ -40,6 +40,8 @@ class ChildCategoryModel extends Model {
             "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE c_cate_id = cc.id)" => 'goods_amount'
         ))->join(array(
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = cc.parent_id "
+        ))->where(array(
+            'cc.is_delete' => 0
         ))->limit($offset, $pagesize)->select();
     }
 
@@ -96,48 +98,64 @@ class ChildCategoryModel extends Model {
                 'in',
                 $id
             )
-        ))->delete()) {
-            if (M('Goods')->where(array(
-                'c_cate_id' => array(
-                    'in',
-                    $id
-                )
-            ))->count()) {
-                if (M('Goods')->where(array(
-                    'c_cate_id' => array(
-                        'in',
-                        $id
-                    )
-                ))->delete()) {
-                    // 删除成功，提交事务
-                    $this->commit();
-                    return array(
-                        'status' => true,
-                        'msg' => '删除成功'
-                    );
-                } else {
-                    // 删除失败，回滚事务
-                    $this->rollback();
-                    return array(
-                        'status' => false,
-                        'msg' => '删除失败'
-                    );
-                }
-            } else {
-                // 删除成功，提交事务
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            if (!D('Goods')->deleteGoodsByChildCategoryId($id)) {
+                // 删除失败，回滚事务
                 $this->commit();
                 return array(
-                    'status' => true,
-                    'msg' => '删除成功'
+                    'status' => false,
+                    'msg' => '删除失败'
                 );
             }
+            // 删除成功，提交事务
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
         } else {
             // 删除失败，回滚事务
-            $this->rollback();
+            $this->commit();
             return array(
                 'status' => false,
                 'msg' => '删除失败'
             );
+        }
+    }
+
+    /**
+     * 根据大分类ID删除小分类
+     *
+     * @param array $parent_id
+     *            大分类ID
+     * @return boolean
+     */
+    public function deleteChildCategoryByParentCategoryId(array $parent_id) {
+        if (!$this->where(array(
+            'parent_id' => array(
+                'in',
+                $parent_id
+            ),
+            'is_delete' => 0
+        ))->count()) {
+            return true;
+        }
+        if ($this->where(array(
+            'parent_id' => array(
+                'in',
+                $parent_id
+            )
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            if (!D('Goods')->deleteGoodsByParentCategoryId($parent_id)) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -147,7 +165,9 @@ class ChildCategoryModel extends Model {
      * @return int
      */
     public function getChildCategoryCount() {
-        return (int) $this->count();
+        return $this->where(array(
+            'is_delete' => 0
+        ))->count();
     }
 
     /**
@@ -173,9 +193,11 @@ class ChildCategoryModel extends Model {
             'cc.parent_id',
             'cc.add_time',
             'cc.update_time',
-            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE c_cate_id = cc.id)" => 'goods_amount'
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE c_cate_id = cc.id AND is_delete = 0)" => 'goods_amount'
         ))->join(array(
             " LEFT JOIN " . M('ParentCategory')->getTableName() . " AS pc ON pc.id = cc.parent_id "
+        ))->where(array(
+            'cc.is_delete' => 0
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 

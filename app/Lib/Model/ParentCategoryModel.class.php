@@ -33,6 +33,8 @@ class ParentCategoryModel extends Model {
             'add_time',
             'update_time',
             "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
+        ))->where(array(
+            'pc.is_delete' => 0
         ))->limit($offset, $pagesize)->select();
     }
 
@@ -86,69 +88,23 @@ class ParentCategoryModel extends Model {
                 'in',
                 $id
             )
-        ))->delete()) {
-            if (M('ChildCategory')->where(array(
-                'parent_id' => array(
-                    'in',
-                    $id
-                )
-            ))->count()) {
-                if (M('ChildCategory')->where(array(
-                    'parent_id' => array(
-                        'in',
-                        $id
-                    )
-                ))->delete()) {
-                    if (M('Goods')->where(array(
-                        'p_cate_id' => array(
-                            'in',
-                            $id
-                        )
-                    ))->count()) {
-                        if (M('Goods')->where(array(
-                            'p_cate_id' => array(
-                                'in',
-                                $id
-                            )
-                        ))->delete()) {
-                            // 删除成功，提交事务
-                            $this->commit();
-                            return array(
-                                'status' => true,
-                                'msg' => '删除成功'
-                            );
-                        } else {
-                            // 删除失败，回滚事务
-                            $this->rollback();
-                            return array(
-                                'status' => false,
-                                'msg' => '删除失败'
-                            );
-                        }
-                    } else {
-                        // 删除成功，提交事务
-                        $this->commit();
-                        return array(
-                            'status' => true,
-                            'msg' => '删除成功'
-                        );
-                    }
-                } else {
-                    // 删除失败，回滚事务
-                    $this->rollback();
-                    return array(
-                        'status' => false,
-                        'msg' => '删除失败'
-                    );
-                }
-            } else {
-                // 删除成功，提交事务
-                $this->commit();
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            if (!D('ChildCategory')->deleteChildCategoryByParentCategoryId($id)) {
+                // 删除失败，回滚事务
+                $this->rollback();
                 return array(
-                    'status' => true,
-                    'msg' => '删除成功'
+                    'status' => false,
+                    'msg' => '删除失败'
                 );
             }
+            // 删除成功，提交事务
+            $this->commit();
+            return array(
+                'status' => true,
+                'msg' => '删除成功'
+            );
         } else {
             // 删除失败，回滚事务
             $this->rollback();
@@ -165,7 +121,9 @@ class ParentCategoryModel extends Model {
      * @return int
      */
     public function getParentCategoryCount() {
-        return (int) $this->count();
+        return (int) $this->where(array(
+            'is_delete' => 0
+        ))->count();
     }
 
     /**
@@ -189,7 +147,9 @@ class ParentCategoryModel extends Model {
             'description',
             'add_time',
             'update_time',
-            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id)" => 'goods_amount'
+            "(SELECT COUNT(1) FROM " . M('Goods')->getTableName() . " WHERE p_cate_id = pc.id AND is_delete = 0)" => 'goods_amount'
+        ))->where(array(
+            'is_delete' => 0
         ))->order($order . " " . $sort)->limit($offset, $pageSize)->select();
     }
 

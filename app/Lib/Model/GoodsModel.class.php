@@ -185,6 +185,68 @@ class GoodsModel extends Model {
     }
 
     /**
+     * 根据小分类ID删除商品
+     *
+     * @param array $c_cate_id
+     *            小分类ID
+     * @return boolean
+     */
+    public function deleteGoodsByChildCategoryId(array $c_cate_id) {
+        if (!$this->where(array(
+            'c_cate_id' => array(
+                'in',
+                $c_cate_id
+            ),
+            'is_delete' => 0
+        ))->count()) {
+            return true;
+        }
+        if ($this->where(array(
+            'c_cate_id' => array(
+                'in',
+                $c_cate_id
+            )
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 根据大分类ID删除商品
+     *
+     * @param array $p_cate_id
+     *            大分类ID
+     * @return boolean
+     */
+    public function deleteGoodsByParentCategoryId(array $p_cate_id) {
+        if (!$this->where(array(
+            'p_cate_id' => array(
+                'in',
+                $p_cate_id
+            ),
+            'is_delete' => 0
+        ))->count()) {
+            return true;
+        }
+        if ($this->where(array(
+            'p_cate_id' => array(
+                'in',
+                $p_cate_id
+            )
+        ))->save(array(
+            'is_delete' => 1
+        ))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 获取商品总数
      *
      * @param string $keyword
