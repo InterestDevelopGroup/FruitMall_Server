@@ -540,7 +540,8 @@ class OrderModel extends Model {
                     ocg.name, oc.name AS package_custom, ocg.goods_quantity,
                     order_quantity as package_custom_quantity, ocg.unit,
                     ocg.price AS single_price,
-                    (ocg.price * ocg.goods_quantity) AS price, NULL AS package_id
+                    (ocg.price * ocg.goods_quantity * order_quantity) AS price,
+                    NULL AS package_id
                 FROM
                     fruit_order_custom_goods AS ocg
                 LEFT JOIN
