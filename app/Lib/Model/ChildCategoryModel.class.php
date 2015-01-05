@@ -58,7 +58,8 @@ class ChildCategoryModel extends Model {
      */
     public function addChildCategory($name, $parent_id, $description) {
         if ($this->where(array(
-            'name' => $name
+            'name' => $name,
+            'is_delete' => 0
         ))->count()) {
             return array(
                 'status' => false,

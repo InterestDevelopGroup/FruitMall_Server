@@ -19,7 +19,9 @@ class CategoryAction extends AdminAction {
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
             $this->ajaxReturn(D('ChildCategory')->addChildCategory($name, $parent_id, $description));
         } else {
-            $this->assign('parentCategory', M('ParentCategory')->select());
+            $this->assign('parentCategory', M('ParentCategory')->where(array(
+                'is_delete' => 0
+            ))->select());
             $this->display();
         }
     }

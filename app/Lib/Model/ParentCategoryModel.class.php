@@ -49,7 +49,8 @@ class ParentCategoryModel extends Model {
      */
     public function addParentCategory($name, $description) {
         if ($this->where(array(
-            'name' => $name
+            'name' => $name,
+            'is_delete' => 0
         ))->count()) {
             return array(
                 'status' => false,
