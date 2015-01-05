@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2015-01-05 10:27:39
+Date: 2015-01-05 11:14:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -201,7 +201,7 @@ CREATE TABLE `fruit_child_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `parent_id` int(11) NOT NULL COMMENT '父类ID',
   `name` varchar(60) NOT NULL COMMENT '分类名称',
-  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除（0：否，1：是）',
   `description` text COMMENT '描述',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
@@ -512,6 +512,7 @@ CREATE TABLE `fruit_order` (
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`order_id`),
+  UNIQUE KEY `order_number` (`order_number`),
   KEY `us` (`user_id`,`status`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
@@ -880,7 +881,7 @@ DROP TABLE IF EXISTS `fruit_parent_category`;
 CREATE TABLE `fruit_parent_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(60) NOT NULL COMMENT '分类名称',
-  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
+  `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除（0：否，1：是）',
   `description` text COMMENT '描述',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
