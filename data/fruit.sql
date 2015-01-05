@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2015-01-05 11:14:07
+Date: 2015-01-05 18:47:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -502,7 +502,7 @@ CREATE TABLE `fruit_order` (
   `address_id` int(11) NOT NULL COMMENT '收获地址ID',
   `order_number` char(14) NOT NULL COMMENT '订单号',
   `status` tinyint(1) NOT NULL COMMENT '订单状态（1：待确定，2：配送中，3：已收货，4：拒收，5：取消，6：待退货，7：同意退货，8：不同意退货）',
-  `shipping_time` char(11) DEFAULT NULL COMMENT '开始送货时间',
+  `shipping_time` varchar(255) DEFAULT NULL COMMENT '开始送货时间',
   `shipping_fee` decimal(10,2) NOT NULL COMMENT '送货费',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   `coupon` int(11) DEFAULT NULL COMMENT '使用水果劵',
