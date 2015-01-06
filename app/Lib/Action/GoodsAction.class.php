@@ -31,7 +31,9 @@ class GoodsAction extends AdminAction {
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
             $this->ajaxReturn(D('Goods')->addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
         } else {
-            $this->assign('parentCategory', M('ParentCategory')->select());
+            $this->assign('parentCategory', M('ParentCategory')->where(array(
+                'is_delete' => 0
+            ))->select());
             $this->assign('tag', M('Tag')->select());
             $this->display();
         }
@@ -192,9 +194,12 @@ class GoodsAction extends AdminAction {
                 'id' => $id
             ))->find();
             $this->assign('goods', $goodsAssign);
-            $this->assign('parentCategory', M('ParentCategory')->select());
+            $this->assign('parentCategory', M('ParentCategory')->where(array(
+                'is_delete' => 0
+            ))->select());
             $this->assign('childCategory', M('ChildCategory')->where(array(
-                'parent_id' => $goodsAssign['p_cate_id']
+                'parent_id' => $goodsAssign['p_cate_id'],
+                'is_delete' => 0
             ))->select());
             $this->assign('tag', M('Tag')->select());
             $image_count = array();
