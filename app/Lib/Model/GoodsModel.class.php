@@ -207,7 +207,8 @@ class GoodsModel extends Model {
                 $c_cate_id
             )
         ))->save(array(
-            'is_delete' => 1
+            'is_delete' => 1,
+            'priority' => 0
         ))) {
             return true;
         } else {
@@ -238,7 +239,8 @@ class GoodsModel extends Model {
                 $p_cate_id
             )
         ))->save(array(
-            'is_delete' => 1
+            'is_delete' => 1,
+            'priority' => 0
         ))) {
             return true;
         } else {
