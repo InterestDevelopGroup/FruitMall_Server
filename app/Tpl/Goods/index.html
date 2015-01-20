@@ -156,9 +156,15 @@ function f_onShowDetail(record, container, callback) {
     out.push("<h3 style='clear:both'>商品介绍图：</h3>");
     for (var i = 1; i <= 5; i++) {
         var image = 'image_' + i;
-        out.push("<div class='detail_image'><a href='"+record[image]+"' title='点击查看原图' target='_blank'><img src='"+record[image]+"' width='100%' /></a></div>");
+		if (record[image]) {
+        	out.push("<div class='detail_image'><a href='"+record[image]+"' title='点击查看原图' target='_blank'><img src='"+record[image]+"' width='100%' /></a></div>");
+		}
     }
     out.push('</div>');
+	if (record.ad_image) {
+		out.push('<div style="margin:10px;width:88%;">');
+    	out.push("<h3>商品广告图：</h3><div class='detail_image'><a href='"+record.ad_image+"' title='点击查看原图' target='_blank'><img src='"+record.ad_image+"' width='100%' /></a></div>");
+	}
     $(container).html(out.join(''));
 }
 

@@ -27,9 +27,10 @@ class GoodsAction extends AdminAction {
             $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
+            $ad_image = isset($_POST['ad_image']) ? trim($_POST['ad_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn(D('Goods')->addGoods($name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $ad_image, $introduction_image, $description));
         } else {
             $this->assign('parentCategory', M('ParentCategory')->where(array(
                 'is_delete' => 0
@@ -186,9 +187,10 @@ class GoodsAction extends AdminAction {
             $amount = isset($_POST['amount']) ? trim($_POST['amount']) : $this->redirect('/');
             $weight = isset($_POST['weight']) ? trim($_POST['weight']) : $this->redirect('/');
             $thumb_image = isset($_POST['thumb_image']) ? trim($_POST['thumb_image']) : $this->redirect('/');
+            $ad_image = isset($_POST['ad_image']) ? trim($_POST['ad_image']) : $this->redirect('/');
             $introduction_image = isset($_POST['introduction_image']) ? (array) $_POST['introduction_image'] : $this->redirect('/');
             $description = isset($_POST['description']) ? trim($_POST['description']) : $this->redirect('/');
-            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $introduction_image, $description));
+            $this->ajaxReturn($goods->updateGoods($id, $name, $price, $single_price, $_price, $unit, $single_unit, $priority, $p_cate_id, $c_cate_id, $tag, $amount, $weight, $thumb_image, $ad_image, $introduction_image, $description));
         } else {
             $goodsAssign = M('Goods')->where(array(
                 'id' => $id

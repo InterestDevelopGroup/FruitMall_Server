@@ -55,6 +55,7 @@ class AdvertisementModel extends Model {
                         'g.image_3',
                         'g.image_4',
                         'g.image_5',
+                        'g.ad_image',
                         'g.description',
                         'g.add_time' => 'goods_add_time',
                         'g.update_time' => 'goods_update_time',

@@ -193,6 +193,35 @@
                     <?php endfor; ?>
                 </td>
             </tr>
+            
+            <tr>
+                <td align="right" class="l-table-edit-td">
+                    商品广告图：
+                </td>
+                <td align="left" class="l-table-edit-td">
+                    <span class="btn btn-success fileinput-button" style="color: #fff;">
+                        &nbsp;&nbsp;选择图片
+                        <input id="advertisement" type="file" name="files[]" />
+                        <input type="hidden" id="advertisement_image" value="<{$goods['ad_image']}>" />
+                    </span><br /><br />
+                    <div id="advertisement_progress" class="progress" style="display: none;">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div></td>
+                <td align="left" class="tipmsg" id="advertisement_tip"></td>
+            </tr>
+            <tr>
+                <td id="advertisement_result" colspan="3">
+                	<if condition="$goods['ad_image']">
+	                <div class="image-preview">
+                        <a href="http://<{$_SERVER['HTTP_HOST']}><{$goods['ad_image']}>" target="_blank" title="点击查看原图" class="image-preview-outter">
+                            <img src="http://<{$_SERVER['HTTP_HOST']}><{$goods['ad_image']}>" border="0" />
+                        </a>
+                        <a href="javascript:void(0);" onclick="delete_image('<{$goods['ad_image']}>', $(this), 3);" class="image-preview-delete" title="删除"></a>
+                    </div>
+                    </if>
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div id="add_goods_button"><input class="btn btn-primary" type="button" value="保存" onclick="updateGoodsSubmit();" /></div>
@@ -337,6 +366,39 @@ $(function() {
         progressall : function(e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#introduction_progress .progress-bar').css('width', progress + '%');
+        }
+    });
+	// 上传广告图
+	$('#advertisement').fileupload({
+        maxNumberOfFiles : 1,
+        acceptFileTypes : /(\.|\/)(jpe?g|png)$/i,
+        maxFileSize : 2097152,
+        minFileSize : 1,
+        url : '<{:U("Goods/upload")}>',
+        dataType : 'json',
+        send : function(e, data) {
+            $("#advertisement_progress").show();
+        },
+        done : function(e, data) {
+            if (data.result.status) {
+                $("#advertisement_progress").hide();
+                $("#advertisement_tip").empty();
+                $("#advertisement_image").val(data.result.filename);
+                $("#advertisement_result").html("<div class='image-preview'>"
+                                        + "<a href='"+data.result.src+"' target='_blank' title='点击查看原图' class='image-preview-outter'>"
+                                        + "<img src='"+data.result.src+"' border='0' />"
+                                        + "</a>"
+                                        + "<a href='javascript:void(0);' onclick=\"delete_image(\'"
+                                        + data.result.filename
+                                        + "\', $(this), 3);\" class='image-preview-delete' title='删除'>"
+                                        + "</a>" + "</div>");
+            } else {
+                $("#advertisement_tip").html(data.result.msg);
+            }
+        },
+        progressall : function(e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#advertisement_progress .progress-bar').css('width', progress + '%');
         }
     });
 });
@@ -532,6 +594,7 @@ function checkForm() {
     var amount = $.trim($("#amount").val());
     var weight = $.trim($("#weight").val());
     var thumb_image = $.trim($("#thumb_image").val());
+	var ad_image = $.trim($("#advertisement_image").val());
     var description = $.trim($("#desc").val());
     return {
         name : name,
@@ -547,6 +610,7 @@ function checkForm() {
         amount: amount,
         weight: weight,
         thumb_image: thumb_image,
+		ad_image: ad_image,
         introduction_image : image_count,
         description : description
     };
@@ -576,10 +640,12 @@ function delete_image(filename, obj, type) {
             obj.parent().remove();
             if (type == 1) {
                 $("#thumb_image").val('');
-            } else { 
+            } else if (type == 2) {
                 var index = image_count.indexOf(filename);
-                image_count.splice(index, 1);
-            }
+                   image_count.splice(index, 1);
+            } else if (type == 3) {
+				$("#advertisement_image").val('');
+			}
         } else {
             $.ligerDialog.alert(data.msg, '出错了(>_<)', 'error');
             return false;

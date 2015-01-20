@@ -45,6 +45,7 @@ class OrderGoodsModel extends Model {
             'g.image_3',
             'g.image_4',
             'g.image_5',
+            'g.ad_image',
             'g.description',
             'pc.name' => 'parent_category',
             'cc.name' => 'child_category',
