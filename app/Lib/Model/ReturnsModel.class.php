@@ -38,6 +38,15 @@ class ReturnsModel extends Model {
                 'result' => '该状态的订单不能申请退货'
             );
         }
+        $order_add_time = M('Order')->where(array(
+            'order_number' => $order_number
+        ))->find();
+        if (time() - $order_add_time['add_time'] > 24 * 60 * 60) {
+            return array(
+                'status' => 0,
+                'result' => '超过24小时不能退货'
+            );
+        }
         $image_1 = $image_1 ? base64Code2Image($image_1) : $image_1;
         $image_2 = $image_2 ? base64Code2Image($image_2) : $image_2;
         $image_3 = $image_3 ? base64Code2Image($image_3) : $image_3;
