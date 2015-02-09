@@ -65,6 +65,71 @@ class OrderModel extends Model {
     }
 
     /**
+     * 获取送货员订单列表
+     *
+     * @param int $courier_id
+     *            送货员ID
+     * @param int $offset
+     *            偏移量
+     * @param int $pagesize
+     *            条数
+     * @param int $type
+     *            类型（1：未完成，2：历史）
+     * @return array
+     */
+    public function _getCourierOrderList($courier_id, $offset, $pagesize, $type) {
+        $where = array(
+            'o.courier_id' => $courier_id
+        );
+        if ($type == 1) {
+            $where['o.status'] = array(
+                'between',
+                array(
+                    1,
+                    2
+                )
+            );
+        } else if ($type == 2) {
+            $where['o.status'] = array(
+                'between',
+                array(
+                    3,
+                    8
+                )
+            );
+        }
+        $order_list = $this->table($this->getTableName() . " AS o ")->field(array(
+            'o.order_id',
+            'o.user_id',
+            'o.address_id',
+            'o.order_number',
+            'o.status',
+            'o.shipping_time',
+            'o.shipping_fee',
+            'o.remark',
+            'o.coupon',
+            'o.total_amount',
+            'o.add_time',
+            'o.update_time',
+            'a.consignee',
+            'a.phone',
+            'a.province',
+            'a.city',
+            'a.district',
+            'a.community',
+            'a.address',
+            'a._consignee',
+            'a._phone'
+        ))->join(array(
+            " LEFT JOIN " . M('OrderAddress')->getTableName() . " AS a ON o.order_id = a.order_id "
+        ))->where($where)->order("o.add_time DESC")->limit($offset, $pagesize)->select();
+        foreach ($order_list as &$v) {
+            $v = array_merge($v, $this->getOrderDetail($v['order_id']));
+        }
+        return $order_list;
+    }
+
+    /**
      * 获取订单列表（API）
      *
      * @param int $user_id

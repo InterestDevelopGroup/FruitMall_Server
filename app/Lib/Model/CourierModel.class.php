@@ -165,6 +165,30 @@ class CourierModel extends Model {
     }
 
     /**
+     * 送货员登录
+     *
+     * @param string $phone
+     *            送货员手机
+     * @return array
+     */
+    public function login($phone) {
+        $result = $this->where(array(
+            'phone' => $phone
+        ))->find();
+        if (empty($result)) {
+            return array(
+                'status' => 0,
+                'result' => '送货员不存在'
+            );
+        } else {
+            return array(
+                'status' => 1,
+                'result' => $result
+            );
+        }
+    }
+
+    /**
      * 更新小分类
      *
      * @param int $id

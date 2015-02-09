@@ -314,6 +314,57 @@ class ApiAction extends Action {
     }
 
     /**
+     * 送货员登录
+     */
+    public function courier_login() {
+        if ($this->isPost() || $this->isAjax()) {
+            $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
+            if (empty($phone)) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(D('Courier')->login($phone));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
+     * 送货员获取订单列表
+     *
+     * @return array
+     */
+    public function courier_order_list() {
+        if ($this->isPost() || $this->isAjax()) {
+            $courier_id = isset($_POST['courier_id']) ? intval($_POST['courier_id']) : $this->redirect('/');
+            $offset = isset($_POST['offset']) ? intval($_POST['offset']) : $this->redirect('/');
+            $pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : $this->redirect('/');
+            $type = isset($_POST['type']) ? intval($_POST['type']) : $this->redirect('/');
+            if ($courier_id < 1 || $offset < 0 || $pagesize < 0 || !in_array($type, array(
+                1,
+                2
+            ))) {
+                $this->ajaxReturn(array(
+                    'status' => 0,
+                    'result' => '参数错误'
+                ));
+            }
+            $this->ajaxReturn(array(
+                'status' => 1,
+                'result' => array_map(function ($value) {
+                    $value['add_time'] = date("Y-m-d H:i:s", $value['add_time']);
+                    $value['update_time'] = $value['update_time'] ? date("Y-m-d H:i:s", $value['update_time']) : $value['update_time'];
+                    return $value;
+                }, D('Order')->_getCourierOrderList($courier_id, $offset, $pagesize, $type))
+            ));
+        } else {
+            $this->redirect('/');
+        }
+    }
+
+    /**
      * 设置/取消默认地址
      */
     public function default_address() {
