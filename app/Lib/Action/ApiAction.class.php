@@ -996,7 +996,7 @@ class ApiAction extends Action {
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Order')->updateOrderStatus($order_id, $status));
+            $this->ajaxReturn(D('Order')->updateOrderStatus((array) $order_id, $status));
         } else {
             $this->redirect('/');
         }
