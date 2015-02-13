@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2015-01-20 15:32:04
+Date: 2015-02-13 13:35:39
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -87,7 +87,7 @@ CREATE TABLE `fruit_admin_user` (
 -- ----------------------------
 -- Records of fruit_admin_user
 -- ----------------------------
-INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1421732839', '1', '1', '系统管理员，勿删！');
+INSERT INTO `fruit_admin_user` VALUES ('1', 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'admin', 'admin@admin.com', '0', '1423797103', '1', '1', '系统管理员，勿删！');
 INSERT INTO `fruit_admin_user` VALUES ('4', 'test', 'e10adc3949ba59abbe56e057f20f883e', 'test', null, '1415763083', '1419757295', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('5', 'demo', 'e10adc3949ba59abbe56e057f20f883e', 'demo', null, '1417593149', '1419757352', '0', '1', null);
 INSERT INTO `fruit_admin_user` VALUES ('7', 'test1', 'e10adc3949ba59abbe56e057f20f883e', 'ceshi', null, '1417676700', null, '0', '1', null);
@@ -227,7 +227,7 @@ CREATE TABLE `fruit_coupon` (
   `publish_time` int(11) NOT NULL COMMENT '发劵时间',
   `expire_time` int(11) DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='水果劵表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='水果劵表';
 
 -- ----------------------------
 -- Records of fruit_coupon
@@ -238,6 +238,7 @@ INSERT INTO `fruit_coupon` VALUES ('3', '1', '5', '4', '1417073039', '1417881600
 INSERT INTO `fruit_coupon` VALUES ('5', '1', '5', '4', '1417577956', null);
 INSERT INTO `fruit_coupon` VALUES ('6', '1', '12', '4', '1418112151', '1420646400');
 INSERT INTO `fruit_coupon` VALUES ('7', '8', '12', '4', '1418112151', '1420646400');
+INSERT INTO `fruit_coupon` VALUES ('8', '1', '10', '3', '1422751653', '1427904000');
 
 -- ----------------------------
 -- Table structure for `fruit_coupon_rule`
@@ -310,20 +311,22 @@ CREATE TABLE `fruit_courier` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `real_name` varchar(30) NOT NULL COMMENT '真实姓名',
   `phone` char(11) NOT NULL COMMENT '手机',
+  `password` char(32) NOT NULL COMMENT '客户端密码',
   `add_time` int(10) NOT NULL COMMENT '添加时间',
   `update_time` int(10) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='送货人员表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='送货人员表';
 
 -- ----------------------------
 -- Records of fruit_courier
 -- ----------------------------
-INSERT INTO `fruit_courier` VALUES ('3', '测试送货员', '13800138000', '1417335640', null);
-INSERT INTO `fruit_courier` VALUES ('4', 'demo送货员', '13900000001', '1417593388', '1418375381');
-INSERT INTO `fruit_courier` VALUES ('5', 'test', '13412345678', '1417669712', '1417669776');
-INSERT INTO `fruit_courier` VALUES ('6', 'test1', '13812345678', '1417669753', '1417669770');
-INSERT INTO `fruit_courier` VALUES ('7', '阿茂', '13912345678', '1417928082', null);
-INSERT INTO `fruit_courier` VALUES ('8', 'demo送货员', '13900000000', '1418375394', null);
+INSERT INTO `fruit_courier` VALUES ('3', '测试送货员', '13800138000', 'e10adc3949ba59abbe56e057f20f883e', '1417335640', '1423805407');
+INSERT INTO `fruit_courier` VALUES ('4', 'demo送货员', '13900000001', '', '1417593388', '1418375381');
+INSERT INTO `fruit_courier` VALUES ('5', 'test', '13412345678', '', '1417669712', '1417669776');
+INSERT INTO `fruit_courier` VALUES ('6', 'test1', '13812345678', '', '1417669753', '1417669770');
+INSERT INTO `fruit_courier` VALUES ('7', '阿茂', '13912345678', '', '1417928082', null);
+INSERT INTO `fruit_courier` VALUES ('8', 'demo送货员', '13900000000', '', '1418375394', null);
+INSERT INTO `fruit_courier` VALUES ('9', 'lzjjie', '13456545698', 'e10adc3949ba59abbe56e057f20f883e', '1423800371', null);
 
 -- ----------------------------
 -- Table structure for `fruit_custom`
@@ -525,12 +528,12 @@ CREATE TABLE `fruit_order` (
 -- ----------------------------
 INSERT INTO `fruit_order` VALUES ('1', '1', '4', '14122410248511', '7', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392079', '1419690243');
 INSERT INTO `fruit_order` VALUES ('2', '1', '4', '14122498545297', '6', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392779', '1419690175');
-INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14122410148975', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392782', '1419392804');
-INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14122410298491', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392783', '1419392804');
+INSERT INTO `fruit_order` VALUES ('3', '1', '4', '14122410148975', '3', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392782', '1423712177');
+INSERT INTO `fruit_order` VALUES ('4', '1', '4', '14122410298491', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392783', '1423712030');
 INSERT INTO `fruit_order` VALUES ('5', '1', '4', '14122449521029', '2', '12:00-18:00', '12.50', 'this is a test', null, '376.50', '8', '3', '1419392785', '1419392804');
 INSERT INTO `fruit_order` VALUES ('6', '1', '4', '14122454515251', '2', '12:00-18:00', '12.50', 'this is a test', null, '388.50', '9', '4', '1419394102', '1419398288');
 INSERT INTO `fruit_order` VALUES ('7', '1', '4', '14122757545110', '2', '12:00-18:00', '12.50', null, null, '714.50', '11', '5', '1419685881', '1419686618');
-INSERT INTO `fruit_order` VALUES ('8', '1', '4', '14122797535410', '2', '12:00-18:00', '12.50', null, null, '744.50', '12', '7', '1419686794', '1419686816');
+INSERT INTO `fruit_order` VALUES ('8', '1', '4', '14122797535410', '3', '12:00-18:00', '12.50', null, null, '744.50', '12', '7', '1419686794', '1422751653');
 INSERT INTO `fruit_order` VALUES ('9', '1', '4', '14122757505797', '6', '12:00-18:00', '12.50', null, null, '894.50', null, null, '1419687353', '1419690148');
 INSERT INTO `fruit_order` VALUES ('10', '1', '4', '14122849102495', '1', '12:00-18:00', '12.50', null, null, '474.50', '8', null, '1419756849', null);
 INSERT INTO `fruit_order` VALUES ('11', '1', '4', '1419821734523', '1', '12:00-18:00', '12.50', null, null, '508.50', '8', null, '1419821734', null);
@@ -921,24 +924,12 @@ CREATE TABLE `fruit_purchase` (
 -- ----------------------------
 -- Records of fruit_purchase
 -- ----------------------------
-INSERT INTO `fruit_purchase` VALUES ('3', '0', '3', '8', '1', '10', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('4', '0', '4', '8', '1', '10', '1419392783', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('5', '0', '5', '8', '1', '10', '1419392785', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('6', '0', '6', '9', '1', '10', '1419394102', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('11', '0', '3', '8', '1', '1', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('12', '0', '3', '8', '2', '2', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('13', '0', '4', '8', '1', '1', '1419392783', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('14', '0', '4', '8', '2', '2', '1419392783', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('15', '0', '5', '8', '1', '1', '1419392785', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('16', '0', '5', '8', '2', '2', '1419392785', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('17', '0', '6', '9', '1', '2', '1419394102', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('18', '0', '6', '9', '2', '4', '1419394102', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('25', '0', '3', '8', '1', '10', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('26', '0', '3', '8', '2', '8', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('27', '0', '3', '8', '3', '6', '1419392782', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('28', '0', '4', '8', '1', '10', '1419392783', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('29', '0', '4', '8', '2', '8', '1419392783', '1419398403');
-INSERT INTO `fruit_purchase` VALUES ('30', '0', '4', '8', '3', '6', '1419392783', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('31', '0', '5', '8', '1', '10', '1419392785', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('32', '0', '5', '8', '2', '8', '1419392785', '1419398403');
 INSERT INTO `fruit_purchase` VALUES ('33', '0', '5', '8', '3', '6', '1419392785', '1419398403');

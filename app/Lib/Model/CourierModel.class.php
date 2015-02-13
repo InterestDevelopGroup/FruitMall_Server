@@ -14,11 +14,13 @@ class CourierModel extends Model {
      *
      * @param string $real_name
      *            真实姓名
-     * @param int $phone
+     * @param string $phone
      *            手机
+     * @param string $password
+     *            密码
      * @return array
      */
-    public function addCourier($real_name, $phone) {
+    public function addCourier($real_name, $phone, $password) {
         if ($this->where(array(
             'real_name' => $real_name,
             'phone' => $phone
@@ -31,6 +33,7 @@ class CourierModel extends Model {
         if ($this->add(array(
             'real_name' => $real_name,
             'phone' => $phone,
+            'password' => md5($password),
             'add_time' => time()
         ))) {
             return array(
@@ -169,9 +172,11 @@ class CourierModel extends Model {
      *
      * @param string $phone
      *            送货员手机
+     * @param string $password
+     *            登录密码
      * @return array
      */
-    public function login($phone) {
+    public function login($phone, $password) {
         $result = $this->where(array(
             'phone' => $phone
         ))->find();
@@ -180,10 +185,16 @@ class CourierModel extends Model {
                 'status' => 0,
                 'result' => '送货员不存在'
             );
-        } else {
+        }
+        if (md5($password) == $result['password']) {
             return array(
                 'status' => 1,
                 'result' => $result
+            );
+        } else {
+            return array(
+                'status' => 0,
+                'result' => '密码错误'
             );
         }
     }
@@ -195,11 +206,13 @@ class CourierModel extends Model {
      *            送货员ID
      * @param string $real_name
      *            真实姓名
-     * @param int $phone
+     * @param string $phone
      *            手机
+     * @param string $password
+     *            密码
      * @return array
      */
-    public function updateCourier($id, $real_name, $phone) {
+    public function updateCourier($id, $real_name, $phone, $password) {
         if ($this->where(array(
             'id' => array(
                 'neq',
@@ -218,6 +231,7 @@ class CourierModel extends Model {
         ))->save(array(
             'real_name' => $real_name,
             'phone' => $phone,
+            'password' => md5($password),
             'update_time' => time()
         ))) {
             return array(

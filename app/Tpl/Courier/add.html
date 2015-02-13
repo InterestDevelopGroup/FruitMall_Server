@@ -15,6 +15,11 @@ body{font-size:12px;}.l-table-edit-td{padding:10px 20px;}.l-table-edit-td input{
         <td align="left" class="l-table-edit-td"><input type="text" id="phone" /></td>
         <td align="left" class="tipmsg"></td>
     </tr>
+    <tr>
+        <td align="right" class="l-table-edit-td"><span>*</span>客户端密码：</td>
+        <td align="left" class="l-table-edit-td"><input type="password" id="password" /></td>
+        <td align="left" class="tipmsg"></td>
+    </tr>
 </table>
 <script type="text/javascript">
 //<![CDATA[
@@ -28,6 +33,12 @@ $(function() {
     $("#phone").change(function() {
         removeTip($(this).parent('td').next('td:last'));
         ckPhone();
+    });
+	$("#password").focus(function() {
+        addTip($(this).parent('td').next('td:last'), '密码由6-16个数字或字母组成');
+    }).blur(function() {
+         removeTip($(this).parent('td').next('td:last'));
+         ckPassword();
     });
 });
 
@@ -72,13 +83,38 @@ function ckPhone() {
     return true;
 }
 
+//检测密码
+function ckPassword() {
+    var password = $.trim($("#password").val());
+    if (password.length <= 0) {
+        addTip($("#password").parent('td').next('td:last'), '密码不能为空');
+        return false;        
+    }
+    if (password.length > 0 && password.length < 6) {
+        addTip($("#password").parent('td').next('td:last'), '密码不能少于6个字符');
+        return false;        
+    }
+    if (password.length > 16) {
+        addTip($("#password").parent('td').next('td:last'), '密码不能超过16个字符');
+        return false;
+    }
+    var regOtherString=/[~!@#\$%\^&\*]+/g ;
+    if (regOtherString.test(password)) {
+        addTip($("#password").parent('td').next('td:last'), '不能包含(~\!\@\#\$\%\^\&\*)');
+        return false;
+    }
+    return true;
+}
+
 //检测表单
 function checkForm() {
     if (!ckRealName()) return false;
     if (!ckPhone()) return false;
+	if (!ckPassword()) return false;
     var real_name = $.trim($("#real_name").val());
     var phone = $.trim($("#phone").val());
-    return {real_name: real_name, phone: phone};
+	var password = $.trim($("#password").val());
+    return {real_name: real_name, phone: phone, password: password};
 }
 
 //提交表单

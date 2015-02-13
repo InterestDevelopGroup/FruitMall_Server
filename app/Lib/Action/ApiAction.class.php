@@ -319,13 +319,14 @@ class ApiAction extends Action {
     public function courier_login() {
         if ($this->isPost() || $this->isAjax()) {
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
-            if (empty($phone)) {
+            $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            if (empty($phone) || empty($password)) {
                 $this->ajaxReturn(array(
                     'status' => 0,
                     'result' => '参数错误'
                 ));
             }
-            $this->ajaxReturn(D('Courier')->login($phone));
+            $this->ajaxReturn(D('Courier')->login($phone, $password));
         } else {
             $this->redirect('/');
         }

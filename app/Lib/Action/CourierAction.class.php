@@ -16,7 +16,8 @@ class CourierAction extends AdminAction {
         if ($this->isAjax()) {
             $real_name = isset($_POST['real_name']) ? trim($_POST['real_name']) : $this->redirect('/');
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
-            $this->ajaxReturn(D('Courier')->addCourier($real_name, $phone));
+            $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            $this->ajaxReturn(D('Courier')->addCourier($real_name, $phone, $password));
         } else {
             $this->display();
         }
@@ -71,7 +72,8 @@ class CourierAction extends AdminAction {
         if ($this->isAjax()) {
             $real_name = isset($_POST['real_name']) ? trim($_POST['real_name']) : $this->redirect('/');
             $phone = isset($_POST['phone']) ? trim($_POST['phone']) : $this->redirect('/');
-            $this->ajaxReturn(D('Courier')->updateCourier($id, $real_name, $phone));
+            $password = isset($_POST['password']) ? trim($_POST['password']) : $this->redirect('/');
+            $this->ajaxReturn(D('Courier')->updateCourier($id, $real_name, $phone, $password));
         } else {
             $this->assign('courier', M('Courier')->where(array(
                 'id' => $id
