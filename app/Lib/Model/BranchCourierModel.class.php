@@ -46,6 +46,14 @@ class BranchCourierModel extends Model {
      * @return boolean
      */
     public function deleteBranchCourier(array $branch_id) {
+        if (!$this->where(array(
+            'branch_id' => array(
+                'in',
+                $branch_id
+            )
+        ))->count()) {
+            return true;
+        }
         if ($this->where(array(
             'branch_id' => array(
                 'in',

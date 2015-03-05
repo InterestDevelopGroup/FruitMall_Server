@@ -88,7 +88,7 @@ class BranchModel extends Model {
                 $this->rollback();
                 return array(
                     'status' => false,
-                    'msg' => '删除失败1'
+                    'msg' => '删除失败'
                 );
             }
             if (!D('BranchCourier')->deleteBranchCourier($id)) {
@@ -96,7 +96,7 @@ class BranchModel extends Model {
                 $this->rollback();
                 return array(
                     'status' => false,
-                    'msg' => '删除失败2'
+                    'msg' => '删除失败'
                 );
             }
             // 删除成功，提交事务
@@ -110,7 +110,7 @@ class BranchModel extends Model {
             $this->rollback();
             return array(
                 'status' => false,
-                'msg' => '删除失败3'
+                'msg' => '删除失败'
             );
         }
     }
