@@ -160,7 +160,12 @@ class PurchaseModel extends Model {
     public function getPurchaseList($page, $pageSize, $order, $sort) {
         $offset = ($page - 1) * $pageSize;
         $sql = "SELECT
-                    g.name, p.goods_id, SUM(p.quantity) AS amount
+                    g.name, p.goods_id, SUM(p.quantity) AS amount, p.branch_id,
+                    (SELECT
+                        name
+                    FROM " . M('Branch')->getTableName() . "
+                    WHERE
+                        id = p.branch_id) AS branch_name
                 FROM
                     fruit_purchase AS p
                 LEFT JOIN
@@ -168,23 +173,24 @@ class PurchaseModel extends Model {
                 WHERE
                     p.is_purchase = 0
                 GROUP BY
-                    p.goods_id
+                    p.goods_id, p.branch_id
                 LIMIT $offset, $pageSize";
         $result = $this->query($sql);
-        foreach ($result as &$v) {
-            $branch_list = $this->table($this->getTableName() . " AS p ")->field(array(
-                "SUM(quantity)" => 'quantity',
-                'b.name' => 'branch'
-            ))->join(array(
-                " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
-            ))->where(array(
-                'goods_id' => $v['goods_id'],
-                'is_purchase' => 0
-            ))->group('branch_id')->select();
-            foreach ($branch_list as $v_1) {
-                $v['branch_list'] .= ($v_1['branch'] ? $v_1['branch'] : '未分配') . ":" . $v_1['quantity'] . " ";
-            }
-        }
+//         foreach ($result as &$v) {
+//             $branch_list = $this->table($this->getTableName() . " AS p ")->field(array(
+//                 "SUM(quantity)" => 'quantity',
+//                 'b.name' => 'branch'
+//             ))->join(array(
+//                 " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
+//             ))->where(array(
+//                 'goods_id' => $v['goods_id'],
+//                 'is_purchase' => 0
+//             ))->group('branch_id')->select();
+//             foreach ($branch_list as $v_1) {
+//                 $v['branch_list'] .= ($v_1['branch'] ? $v_1['branch'] : '未分配') . ":" . $v_1['quantity'] . " ";
+//             }
+//         }
+//         print_r($result);exit;
         return $result;
     }
 

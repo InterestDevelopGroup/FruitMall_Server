@@ -27,9 +27,13 @@ var grid;
 $(function(){
     grid = $("#maingrid4").ligerGrid({
         columns: [
-            {display: "商品名", name: 'name', align: 'center', width: '26%', isSort: false},
-            {display: "合计数量", name: 'amount', align: 'center', width: '8%', isSort: false},
-            {display: "分店数量", name: 'branch_list', align: 'center', width: '60%', isSort: false}
+            {display: "商品名", name: 'name', align: 'center', width: '50%', isSort: false},
+            {display: "合计数量", name: 'amount', align: 'center', width: '20%', isSort: false},
+            {display: "分店名", name: 'branch_name', align: 'center', width: '20%', isSort: false, render: function(rowdata, rowindex, value) {
+                    return value ? value : '---';
+                }
+            }/*,
+            {display: "分店数量", name: 'branch_', align: 'center', width: '60%', isSort: false}*/
             ],
             url: '<{:U("task/purchase")}>',
             dataAction: 'server',
@@ -41,12 +45,12 @@ $(function(){
             pageSize:20,
             pageSizeOptions: [20, 50, 100, 200, 500],
             onAfterShowData:f_change,
-            onAfterChangeColumnWidth:f_change,
-            detail: {onShowDetail: f_onShowDetail, height: 'auto'}
+            onAfterChangeColumnWidth:f_change/*,
+            detail: {onShowDetail: f_onShowDetail, height: 'auto'}*/
     });
     $("#pageloading").hide();
 });
-
+/*
 //明细
 function f_onShowDetail(record, container, callback) {
     $.ajax({
@@ -68,7 +72,7 @@ function f_onShowDetail(record, container, callback) {
         }
     });
 }
-
+*/
 // 确认采购
 function sure() {
     var goods_id = getCheckedData('goods_id');
