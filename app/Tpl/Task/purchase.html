@@ -11,6 +11,7 @@
         <div class="top_4">
             <input class="btn btn-primary" type="button" value="确认采购" onclick="javascript:sure();" />&nbsp;&nbsp;
             <input class="btn btn-primary" type="button" value="打印" onclick="javascript:print();" />&nbsp;&nbsp;
+            <input class="btn btn-primary" type="button" value="导出EXCEL" onclick="javascript:excel();" />
             <!-- <input class="btn btn-primary" type="button" value="导出" onclick="javascript:excel();" /> -->
         </div>
         <div>
@@ -150,6 +151,11 @@ function print() {
             }
         }
     });
+}
+
+//导出EXCEL
+function excel() {
+    window.location.href='<{:U("task/export_purchase")}>';
 }
 
 //]]>

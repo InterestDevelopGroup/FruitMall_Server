@@ -80,6 +80,20 @@ class PurchaseModel extends Model {
     }
 
     /**
+     * 获取导出的商品数据
+     */
+    public function export() {
+        return $this->table($this->getTableName() . " AS p ")->field(array(
+            'g.name',
+            'p.goods_id'
+        ))->join(array(
+            " LEFT JOIN " . M('Goods')->getTableName() . " AS g ON p.goods_id = g.id "
+        ))->where(array(
+            'p.is_purchase' => 0
+        ))->group("p.goods_id")->select();
+    }
+
+    /**
      * 订单状态改变时删除采购任务
      *
      * @param array $order_id
@@ -107,6 +121,26 @@ class PurchaseModel extends Model {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 根据分店ID和商品ID获取分店的商品数量
+     *
+     * @param int $branch_id
+     *            分店ID
+     * @param int $goods_id
+     *            商品ID
+     * @return int
+     */
+    public function getPerBranchAmount($branch_id, $goods_id) {
+        $result = $this->field(array(
+            'SUM(quantity)' => 'amount'
+        ))->where(array(
+            'goods_id' => $goods_id,
+            'branch_id' => $branch_id,
+            'is_purchase' => 0
+        ))->select();
+        return $result[0]['amount'] ? $result[0]['amount'] : 0;
     }
 
     /**
@@ -176,21 +210,6 @@ class PurchaseModel extends Model {
                     p.goods_id, p.branch_id
                 LIMIT $offset, $pageSize";
         $result = $this->query($sql);
-//         foreach ($result as &$v) {
-//             $branch_list = $this->table($this->getTableName() . " AS p ")->field(array(
-//                 "SUM(quantity)" => 'quantity',
-//                 'b.name' => 'branch'
-//             ))->join(array(
-//                 " LEFT JOIN " . M('Branch')->getTableName() . " AS b ON b.id = p.branch_id "
-//             ))->where(array(
-//                 'goods_id' => $v['goods_id'],
-//                 'is_purchase' => 0
-//             ))->group('branch_id')->select();
-//             foreach ($branch_list as $v_1) {
-//                 $v['branch_list'] .= ($v_1['branch'] ? $v_1['branch'] : '未分配') . ":" . $v_1['quantity'] . " ";
-//             }
-//         }
-//         print_r($result);exit;
         return $result;
     }
 
