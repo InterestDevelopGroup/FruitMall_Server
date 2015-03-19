@@ -148,7 +148,7 @@ function f_onShowDetail(record, container, callback) {
     out.push("<tr><td width='20%' align='right'>收货人地址/省：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.province + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/市：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.city + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>收货人地址/区：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.district ? record.district : '暂无') + "</td></tr>");
-    out.push("<tr><td width='20%' align='right'>收货人地址/详细：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.address + " " + record.community + "</td></tr>");
+    out.push("<tr><td width='20%' align='right'>收货人地址/详细：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + record.community + " " + record.address + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>备用收货人：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._consignee ? record._consignee : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>备用收货人手机：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record._phone ? record._phone : '暂无') + "</td></tr>");
     out.push("<tr><td width='20%' align='right'>订单备注：&nbsp;&nbsp;</td><td>&nbsp;&nbsp;" + (record.remark ? record.remark : '暂无') + "</td></tr>");
