@@ -552,6 +552,7 @@ class OrderModel extends Model {
             'o.add_time',
             'o.update_time',
             'm.username',
+            'm.phone' => 'user_phone',
             'a.consignee',
             'a.phone',
             'a.province',
