@@ -340,8 +340,8 @@ function print_order() {
                     str += '<div style="width:100%;margin:0px;padding:0px;-webkit-text-size-adjust:none;font-size:6px;'+print_style+'">';
                     str += '收货人：' + data.result[tt].consignee + '&nbsp;&nbsp;';
                     str += '联系电话：' + data.result[tt].phone + '<br />';
-                    str += '地址：' + data.result[tt].city + data.result[tt].district + data.result[tt].community + '<br />';
-                    //str += '地址：' + data.result[tt].address + '<br />';
+                    //str += '地址：' + data.result[tt].city + data.result[tt].district + data.result[tt].community + '<br />';
+                    str += '地址：' + data.result[tt].community + ' ' + data.result[tt].address + '<br />';
                     str += '订单号：' + data.result[tt].order_number + '<br />';
                     str += '货物清单：<br />';
                     str += '<table style="width:100%;-webkit-text-size-adjust:none;font-size:6px;" border="0" cellspacing="0" cellpadding="0">';
